@@ -12,40 +12,55 @@
 ]
 <svg class="sceau" width="72" height="72" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
      role="img" aria-label="Emblème de Marly-Gomont : l’église fortifiée Saint-Rémy">
-  <!-- Sceau bâti autour de l'église fortifiée Saint-Rémy, monument historique
-       classé par arrêté du 3 février 1928. Dessin original au trait : à la
-       taille d'un en-tête, une silhouette pleine se referme et devient une
-       tache, alors qu'un tracé garde ses détails.
+  <!-- Sceau tracé d'après la façade réelle de l'église Saint-Rémy, monument
+       historique classé le 3 février 1928. Dessin original : c'est le bâtiment
+       qui est relevé, pas une photographie qui serait recopiée.
 
-       Éléments retenus, tous attestés : les tours défensives qui flanquent la
-       façade, le portail en tiers-point, les ouvertures étroites. -->
+       Cinq éléments seulement, ceux qui survivent à la réduction :
+       les deux tours rondes coiffées, le pignon pentu, les trois fentes,
+       l'oculus, le portail en tiers-point. Le reste — appareillage de brique,
+       chaînages de pierre, marches — disparaît sous 100px et ne mérite pas
+       d'encombrer le tracé. -->
   <g fill="none" stroke="currentColor" stroke-width="2"
      stroke-linecap="round" stroke-linejoin="round">
 
-    <!-- tours flanquantes -->
-    <path d="M30 72 V50 l6-8 6 8 v22"/>
-    <path d="M58 72 V50 l6-8 6 8 v22"/>
-    <path d="M34 54 v5 M64 54 v5"/>
+    <!-- tour ronde de gauche : fût, toiture conique, base évasée -->
+    <path d="M26 74 V54"/>
+    <path d="M38 74 V54"/>
+    <path d="M25 54 L32 43 L39 54"/>
+    <path d="M26 62 L23 74 M38 62 L41 74"/>
 
-    <!-- corps de la façade et pignon -->
-    <path d="M42 72 V48 l8-10 8 10 v24"/>
+    <!-- tour ronde de droite -->
+    <path d="M62 74 V54"/>
+    <path d="M74 74 V54"/>
+    <path d="M61 54 L68 43 L75 54"/>
+    <path d="M62 62 L59 74 M74 62 L77 74"/>
 
-    <!-- portail en tiers-point : deux arcs qui se rejoignent en pointe -->
-    <path d="M45 72 V62 Q45 55 50 53 Q55 55 55 62 V72"/>
+    <!-- corps de façade et pignon pentu -->
+    <path d="M38 74 V52 L50 36 L62 52 v22"/>
 
-    <!-- ouvertures étroites de la façade -->
-    <path d="M50 44 v4"/>
+    <!-- les trois fentes du pignon -->
+    <path d="M46 45 v5 M50 44 v6 M54 45 v5"/>
 
-    <!-- soubassement -->
-    <path d="M26 72 H74"/>
+    <!-- oculus -->
+    <circle cx="50" cy="58" r="4.6"/>
+
+    <!-- portail en tiers-point -->
+    <path d="M45 74 V65 Q45 60 50 59 Q55 60 55 65 v9"/>
+
+    <!-- croix sommitale -->
+    <path d="M50 36 V29 M47 32 h6"/>
+
+    <!-- sol -->
+    <path d="M22 74 H78"/>
   </g>
 
-  <!-- couronne : le nom -->
-  <path id="arcNom" d="M 14 50 A 36 36 0 0 1 86 50" fill="none"/>
-  <text font-family="Alegreya Sans, Georgia, sans-serif" font-size="12" font-weight="700"
-        letter-spacing="1.1" fill="currentColor">
+  <path id="arcNom" d="M 16 52 A 34 34 0 0 1 84 52" fill="none"/>
+  <text font-family="Alegreya Sans, Georgia, sans-serif" font-size="11" font-weight="700"
+        letter-spacing="1" fill="currentColor">
     <textPath href="#arcNom" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
   </text>
+
   <circle cx="50" cy="50" r="47.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
   <circle cx="50" cy="50" r="40"   fill="none" stroke="currentColor" stroke-width="0.9"/>
 </svg>
