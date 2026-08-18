@@ -1,0 +1,9 @@
+# Captures de sites aspirés — volumineuses et propriété de la commune.
+# Elles servent à maquetter en local, elles n'ont rien à faire dans le dépôt.
+capture_*/
+refonte/capture_*/
+
+# Divers
+*.log
+Thumbs.db
+.DS_Store
