@@ -328,72 +328,115 @@ body::after{
 .recherche button{ border:0; background:var(--accent); color:#fff; padding:0 26px; cursor:pointer; font-weight:700; font-family:var(--texte); font-size:16px; }
 
 /* ===========================================================================
-   BANDE DE RACCOURCIS — sous la bannière
+   ACCÈS RAPIDES — onglet de bord d'écran + panneau latéral
    ---------------------------------------------------------------------------
-   Elle vient AVANT l'éditorial : sur un site de commune on vient faire une
-   démarche, pas lire des actualités. Fond crème pour la détacher de la page
-   sans la cloisonner.
+   Un onglet collé au bord droit, sur toutes les pages. On clique, le panneau
+   se déploie vers la gauche. Le raccourci suit l'habitant au lieu de
+   l'attendre sur l'accueil.
+
+   Choix des unités : l'onglet est en pixels, pas en vw. Sa largeur doit
+   rester la même sur un écran de 13 pouces et sur un 27 pouces — c'est une
+   commande, pas un élément de mise en page.
    =========================================================================== */
 
-.acces{ background:var(--creme); border-bottom:1px solid var(--trait); padding-block:44px; }
-.acces-grille{ display:grid; grid-template-columns:minmax(280px,340px) 1fr; gap:56px; align-items:start; }
-.acces .titre-bloc{ font-size:clamp(30px,3.6vw,44px); margin-bottom:22px; }
-.acces .titre-bloc span{ font-size:clamp(26px,3.2vw,40px); }
+.onglet-acces{
+  position:fixed; right:0; top:42%; z-index:60;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  width:98px; min-height:96px; padding:14px 12px;
+  border:0; border-radius:48px 0 0 48px;
+  background:var(--accent); color:#fff;
+  font-family:var(--titre); font-size:15px; font-weight:700; line-height:1.15;
+  text-align:center; cursor:pointer;
+  /* Un liseré blanc, pas seulement une ombre : l'onglet doit se détacher
+     aussi bien du héros vert que d'une page de contenu blanche. Le vert seul
+     sur le vert du héros ne se voit pas. */
+  box-shadow:0 0 0 4px #fff, 0 8px 24px rgba(0,0,0,.22);
+  transition:background-color .15s ease, transform .2s ease;
+}
+.onglet-acces .ico{ width:26px; height:26px; }
+.onglet-acces .etiquette span{ display:block; font-weight:400; }
+.onglet-acces:hover, .onglet-acces:focus-visible{ background:var(--accent-sombre); transform:translateX(-4px); }
 
-/* --- la liste de démarches ----------------------------------------------- */
-.champ-demarche{ display:flex; }
-.champ-demarche select{
-  flex:1; min-width:0; appearance:none;
-  border:1px solid var(--trait); border-right:0; border-radius:4px 0 0 4px;
-  background-color:#fff; padding:14px 44px 14px 16px;
-  font-family:var(--texte); font-size:15px; color:var(--encre); cursor:pointer;
-  /* Chevron dessiné en dégradés : aucune image à charger. */
-  background-image:linear-gradient(45deg,transparent 50%,var(--accent) 50%),
-                   linear-gradient(135deg,var(--accent) 50%,transparent 50%);
-  background-position:calc(100% - 20px) 21px, calc(100% - 14px) 21px;
-  background-size:6px 6px, 6px 6px;
-  background-repeat:no-repeat;
+/* L'onglet s'efface quand son propre panneau est ouvert : il deviendrait
+   redondant, et il gênerait la fermeture au clic sur le fond. */
+.onglet-acces[aria-expanded="true"]{ opacity:0; pointer-events:none; }
+
+/* Sans JavaScript l'onglet ne peut rien ouvrir : on ne l'affiche pas.
+   La classe est posée par menu.js au chargement. */
+.onglet-acces{ display:none; }
+.js-actif .onglet-acces{ display:flex; }
+
+.panneau-acces{
+  /* Le panneau commence SOUS l'en-tête, qui reste au-dessus (z-index 80) :
+     la commune, le menu et la recherche restent accessibles pendant qu'on
+     regarde les raccourcis. La hauteur d'en-tête est mesurée par menu.js,
+     jamais supposée. */
+  position:fixed; top:var(--h-entete,90px); bottom:0; right:0; left:auto; z-index:70;
+  width:min(440px,100%);
+  background:var(--creme);
+  box-shadow:-14px 0 40px rgba(0,0,0,.16);
+  transform:translateX(100%);
+  transition:transform .3s ease;
+  overflow-y:auto;
+  overscroll-behavior:contain;
 }
-.champ-demarche button{
-  border:0; background:var(--accent); color:#fff; border-radius:0 4px 4px 0;
-  padding:0 22px; font-family:var(--texte); font-weight:700; cursor:pointer; white-space:nowrap;
+.panneau-acces[data-ouvert="oui"]{ transform:translateX(0); }
+.panneau-acces .dedans{ padding:28px 30px 40px; }
+.panneau-acces .tete{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:28px; }
+/* Le titre reprend la grammaire du site (script + serif) mais à l'échelle
+   du panneau : 440 px de large, il ne peut pas porter du 74 px. */
+.panneau-acces .titre-bloc{ font-size:34px; margin:0; line-height:1; }
+.panneau-acces .titre-bloc span{ font-size:30px; }
+.panneau-acces .fermer{
+  flex-shrink:0; width:48px; height:48px; border-radius:50%;
+  border:1px solid var(--trait); background:#fff; color:var(--encre);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
-.champ-demarche button:hover{ background:var(--accent-sombre); }
+.panneau-acces .fermer:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.panneau-acces .fermer .ico{ width:22px; height:22px; }
+.panneau-acces .aide{ margin-top:28px; font-size:14px; color:var(--encre-doux); }
+
+/* Le voile derrière le panneau : cliquer à côté ferme. */
+.voile-acces{
+  position:fixed; top:var(--h-entete,90px); right:0; bottom:0; left:0; z-index:65;
+  background:rgba(29,26,26,.5);
+  opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s ease;
+}
+.voile-acces[data-ouvert="oui"]{ opacity:1; visibility:visible; }
 
 /* --- les six destinations ------------------------------------------------ */
-.acces-liens ul{
+.acces-liens{
   list-style:none; margin:0; padding:0;
-  display:grid; grid-template-columns:repeat(6,1fr); gap:14px;
+  display:grid; grid-template-columns:repeat(2,1fr); gap:22px 14px;
 }
 .acces-liens a{
   display:flex; flex-direction:column; align-items:center; gap:12px;
   text-decoration:none; text-align:center;
-  font-size:13.5px; font-weight:600; line-height:1.3; padding:6px 4px; border-radius:4px;
+  font-size:14px; font-weight:600; line-height:1.3; padding:6px 4px; border-radius:4px;
 }
 .acces-liens .rond{
-  width:74px; height:74px; border-radius:50%;
+  width:82px; height:82px; border-radius:50%;
   background:#fff; border:1px solid var(--trait);
   display:flex; align-items:center; justify-content:center;
   transition:background-color .15s ease, border-color .15s ease, transform .15s ease;
 }
-.acces-liens .rond .ico{ width:30px; height:30px; color:var(--accent); }
+.acces-liens .rond .ico{ width:32px; height:32px; color:var(--accent); }
 .acces-liens a:hover{ color:var(--accent); }
 .acces-liens a:hover .rond{ background:var(--accent); border-color:var(--accent); transform:translateY(-3px); }
 .acces-liens a:hover .rond .ico{ color:#fff; }
 
 @media (prefers-reduced-motion:reduce){
-  .acces-liens .rond{ transition:none; }
-  .acces-liens a:hover .rond{ transform:none; }
+  .onglet-acces, .panneau-acces, .voile-acces, .acces-liens .rond{ transition:none; }
+  .onglet-acces:hover, .acces-liens a:hover .rond{ transform:none; }
 }
-@media (max-width:1080px){
-  .acces-grille{ grid-template-columns:1fr; gap:36px; }
-  .acces-liens ul{ grid-template-columns:repeat(3,1fr); }
-}
-@media (max-width:560px){
-  .acces-liens ul{ grid-template-columns:repeat(2,1fr); gap:10px; }
-  .acces-liens .rond{ width:62px; height:62px; }
-  .acces-liens .rond .ico{ width:26px; height:26px; }
-  .acces-liens a{ font-size:12.5px; }
+
+/* Sur petit écran l'onglet doit rester une commande, pas un bandeau :
+   on retire le libellé et on ne garde que le pictogramme. */
+@media (max-width:700px){
+  .onglet-acces{ width:56px; min-height:56px; padding:0; border-radius:50% 0 0 50%; top:auto; bottom:24px; }
+  .onglet-acces .etiquette{ display:none; }
+  .panneau-acces .dedans{ padding:24px 22px 34px; }
+  .acces-liens .rond{ width:72px; height:72px; }
 }
 
 section{ padding-block:70px; position:relative; }
@@ -523,8 +566,6 @@ section{ padding-block:70px; position:relative; }
   .gravure{ display:none; }
 }
 @media (max-width:760px){
-  .acces .large{ flex-direction:column; align-items:stretch; gap:14px; }
-  .acces-liste{ justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; }
   .actus-petites,.assos{ grid-template-columns:1fr; }
   .bulletin{ flex-direction:column; align-items:flex-start; }
   .filtres{ justify-content:flex-start; }

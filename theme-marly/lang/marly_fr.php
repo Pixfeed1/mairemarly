@@ -41,18 +41,16 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'rechercher_placeholder' => 'Une démarche, un compte rendu, un horaire…',
 	'recherche_amorce'     => 'Qu’est-ce que vous recherchez ?',
 
-	// --- Bande de raccourcis -----------------------------------------------
+	// --- Accès rapides (onglet latéral) ------------------------------------
 	'acces'                => 'Accès',
+	'ouvrir_acces'         => 'Ouvrir les accès rapides',
+	'fermer_acces'         => 'Fermer les accès rapides',
 	'rapides'              => 'rapides',
-	'choisir_demarche'     => 'Choisir une démarche',
-	'valider'              => 'Valider',
 	'comptes_rendus'       => 'Comptes rendus',
 	'urbanisme'            => 'Urbanisme',
 	'bulletin'             => 'La Voix du Village',
 
 	// --- Accueil ------------------------------------------------------------
-	'je'                   => 'Je',
-	'souhaite'             => 'souhaite',
 	'les'                  => 'Les',
 	'actus'                => 'actus',
 	'evenements'           => 'événements',

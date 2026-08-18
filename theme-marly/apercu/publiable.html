@@ -339,72 +339,115 @@ body::after{
 .recherche button{ border:0; background:var(--accent); color:#fff; padding:0 26px; cursor:pointer; font-weight:700; font-family:var(--texte); font-size:16px; }
 
 /* ===========================================================================
-   BANDE DE RACCOURCIS — sous la bannière
+   ACCÈS RAPIDES — onglet de bord d'écran + panneau latéral
    ---------------------------------------------------------------------------
-   Elle vient AVANT l'éditorial : sur un site de commune on vient faire une
-   démarche, pas lire des actualités. Fond crème pour la détacher de la page
-   sans la cloisonner.
+   Un onglet collé au bord droit, sur toutes les pages. On clique, le panneau
+   se déploie vers la gauche. Le raccourci suit l'habitant au lieu de
+   l'attendre sur l'accueil.
+
+   Choix des unités : l'onglet est en pixels, pas en vw. Sa largeur doit
+   rester la même sur un écran de 13 pouces et sur un 27 pouces — c'est une
+   commande, pas un élément de mise en page.
    =========================================================================== */
 
-.acces{ background:var(--creme); border-bottom:1px solid var(--trait); padding-block:44px; }
-.acces-grille{ display:grid; grid-template-columns:minmax(280px,340px) 1fr; gap:56px; align-items:start; }
-.acces .titre-bloc{ font-size:clamp(30px,3.6vw,44px); margin-bottom:22px; }
-.acces .titre-bloc span{ font-size:clamp(26px,3.2vw,40px); }
+.onglet-acces{
+  position:fixed; right:0; top:42%; z-index:60;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  width:98px; min-height:96px; padding:14px 12px;
+  border:0; border-radius:48px 0 0 48px;
+  background:var(--accent); color:#fff;
+  font-family:var(--titre); font-size:15px; font-weight:700; line-height:1.15;
+  text-align:center; cursor:pointer;
+  /* Un liseré blanc, pas seulement une ombre : l'onglet doit se détacher
+     aussi bien du héros vert que d'une page de contenu blanche. Le vert seul
+     sur le vert du héros ne se voit pas. */
+  box-shadow:0 0 0 4px #fff, 0 8px 24px rgba(0,0,0,.22);
+  transition:background-color .15s ease, transform .2s ease;
+}
+.onglet-acces .ico{ width:26px; height:26px; }
+.onglet-acces .etiquette span{ display:block; font-weight:400; }
+.onglet-acces:hover, .onglet-acces:focus-visible{ background:var(--accent-sombre); transform:translateX(-4px); }
 
-/* --- la liste de démarches ----------------------------------------------- */
-.champ-demarche{ display:flex; }
-.champ-demarche select{
-  flex:1; min-width:0; appearance:none;
-  border:1px solid var(--trait); border-right:0; border-radius:4px 0 0 4px;
-  background-color:#fff; padding:14px 44px 14px 16px;
-  font-family:var(--texte); font-size:15px; color:var(--encre); cursor:pointer;
-  /* Chevron dessiné en dégradés : aucune image à charger. */
-  background-image:linear-gradient(45deg,transparent 50%,var(--accent) 50%),
-                   linear-gradient(135deg,var(--accent) 50%,transparent 50%);
-  background-position:calc(100% - 20px) 21px, calc(100% - 14px) 21px;
-  background-size:6px 6px, 6px 6px;
-  background-repeat:no-repeat;
+/* L'onglet s'efface quand son propre panneau est ouvert : il deviendrait
+   redondant, et il gênerait la fermeture au clic sur le fond. */
+.onglet-acces[aria-expanded="true"]{ opacity:0; pointer-events:none; }
+
+/* Sans JavaScript l'onglet ne peut rien ouvrir : on ne l'affiche pas.
+   La classe est posée par menu.js au chargement. */
+.onglet-acces{ display:none; }
+.js-actif .onglet-acces{ display:flex; }
+
+.panneau-acces{
+  /* Le panneau commence SOUS l'en-tête, qui reste au-dessus (z-index 80) :
+     la commune, le menu et la recherche restent accessibles pendant qu'on
+     regarde les raccourcis. La hauteur d'en-tête est mesurée par menu.js,
+     jamais supposée. */
+  position:fixed; top:var(--h-entete,90px); bottom:0; right:0; left:auto; z-index:70;
+  width:min(440px,100%);
+  background:var(--creme);
+  box-shadow:-14px 0 40px rgba(0,0,0,.16);
+  transform:translateX(100%);
+  transition:transform .3s ease;
+  overflow-y:auto;
+  overscroll-behavior:contain;
 }
-.champ-demarche button{
-  border:0; background:var(--accent); color:#fff; border-radius:0 4px 4px 0;
-  padding:0 22px; font-family:var(--texte); font-weight:700; cursor:pointer; white-space:nowrap;
+.panneau-acces[data-ouvert="oui"]{ transform:translateX(0); }
+.panneau-acces .dedans{ padding:28px 30px 40px; }
+.panneau-acces .tete{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:28px; }
+/* Le titre reprend la grammaire du site (script + serif) mais à l'échelle
+   du panneau : 440 px de large, il ne peut pas porter du 74 px. */
+.panneau-acces .titre-bloc{ font-size:34px; margin:0; line-height:1; }
+.panneau-acces .titre-bloc span{ font-size:30px; }
+.panneau-acces .fermer{
+  flex-shrink:0; width:48px; height:48px; border-radius:50%;
+  border:1px solid var(--trait); background:#fff; color:var(--encre);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
-.champ-demarche button:hover{ background:var(--accent-sombre); }
+.panneau-acces .fermer:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.panneau-acces .fermer .ico{ width:22px; height:22px; }
+.panneau-acces .aide{ margin-top:28px; font-size:14px; color:var(--encre-doux); }
+
+/* Le voile derrière le panneau : cliquer à côté ferme. */
+.voile-acces{
+  position:fixed; top:var(--h-entete,90px); right:0; bottom:0; left:0; z-index:65;
+  background:rgba(29,26,26,.5);
+  opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s ease;
+}
+.voile-acces[data-ouvert="oui"]{ opacity:1; visibility:visible; }
 
 /* --- les six destinations ------------------------------------------------ */
-.acces-liens ul{
+.acces-liens{
   list-style:none; margin:0; padding:0;
-  display:grid; grid-template-columns:repeat(6,1fr); gap:14px;
+  display:grid; grid-template-columns:repeat(2,1fr); gap:22px 14px;
 }
 .acces-liens a{
   display:flex; flex-direction:column; align-items:center; gap:12px;
   text-decoration:none; text-align:center;
-  font-size:13.5px; font-weight:600; line-height:1.3; padding:6px 4px; border-radius:4px;
+  font-size:14px; font-weight:600; line-height:1.3; padding:6px 4px; border-radius:4px;
 }
 .acces-liens .rond{
-  width:74px; height:74px; border-radius:50%;
+  width:82px; height:82px; border-radius:50%;
   background:#fff; border:1px solid var(--trait);
   display:flex; align-items:center; justify-content:center;
   transition:background-color .15s ease, border-color .15s ease, transform .15s ease;
 }
-.acces-liens .rond .ico{ width:30px; height:30px; color:var(--accent); }
+.acces-liens .rond .ico{ width:32px; height:32px; color:var(--accent); }
 .acces-liens a:hover{ color:var(--accent); }
 .acces-liens a:hover .rond{ background:var(--accent); border-color:var(--accent); transform:translateY(-3px); }
 .acces-liens a:hover .rond .ico{ color:#fff; }
 
 @media (prefers-reduced-motion:reduce){
-  .acces-liens .rond{ transition:none; }
-  .acces-liens a:hover .rond{ transform:none; }
+  .onglet-acces, .panneau-acces, .voile-acces, .acces-liens .rond{ transition:none; }
+  .onglet-acces:hover, .acces-liens a:hover .rond{ transform:none; }
 }
-@media (max-width:1080px){
-  .acces-grille{ grid-template-columns:1fr; gap:36px; }
-  .acces-liens ul{ grid-template-columns:repeat(3,1fr); }
-}
-@media (max-width:560px){
-  .acces-liens ul{ grid-template-columns:repeat(2,1fr); gap:10px; }
-  .acces-liens .rond{ width:62px; height:62px; }
-  .acces-liens .rond .ico{ width:26px; height:26px; }
-  .acces-liens a{ font-size:12.5px; }
+
+/* Sur petit écran l'onglet doit rester une commande, pas un bandeau :
+   on retire le libellé et on ne garde que le pictogramme. */
+@media (max-width:700px){
+  .onglet-acces{ width:56px; min-height:56px; padding:0; border-radius:50% 0 0 50%; top:auto; bottom:24px; }
+  .onglet-acces .etiquette{ display:none; }
+  .panneau-acces .dedans{ padding:24px 22px 34px; }
+  .acces-liens .rond{ width:72px; height:72px; }
 }
 
 section{ padding-block:70px; position:relative; }
@@ -534,8 +577,6 @@ section{ padding-block:70px; position:relative; }
   .gravure{ display:none; }
 }
 @media (max-width:760px){
-  .acces .large{ flex-direction:column; align-items:stretch; gap:14px; }
-  .acces-liste{ justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; }
   .actus-petites,.assos{ grid-template-columns:1fr; }
   .bulletin{ flex-direction:column; align-items:flex-start; }
   .filtres{ justify-content:flex-start; }
@@ -673,6 +714,7 @@ section{ padding-block:70px; position:relative; }
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
 	<symbol id="ri-account-circle-line" viewBox="0 0 24 24"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12.1597 16C10.1243 16 8.29182 16.8687 7.01276 18.2556C8.38039 19.3474 10.114 20 12 20C13.9695 20 15.7727 19.2883 17.1666 18.1081C15.8956 16.8074 14.1219 16 12.1597 16ZM12 4C7.58172 4 4 7.58172 4 12C4 13.8106 4.6015 15.4807 5.61557 16.8214C7.25639 15.0841 9.58144 14 12.1597 14C14.6441 14 16.8933 15.0066 18.5218 16.6342C19.4526 15.3267 20 13.7273 20 12C20 7.58172 16.4183 4 12 4ZM12 5C14.2091 5 16 6.79086 16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5ZM12 7C10.8954 7 10 7.89543 10 9C10 10.1046 10.8954 11 12 11C13.1046 11 14 10.1046 14 9C14 7.89543 13.1046 7 12 7Z"/></symbol>
+	<symbol id="ri-apps-2-line" viewBox="0 0 24 24"><path d="M7 11.5C4.51472 11.5 2.5 9.48528 2.5 7C2.5 4.51472 4.51472 2.5 7 2.5C9.48528 2.5 11.5 4.51472 11.5 7C11.5 9.48528 9.48528 11.5 7 11.5ZM7 21.5C4.51472 21.5 2.5 19.4853 2.5 17C2.5 14.5147 4.51472 12.5 7 12.5C9.48528 12.5 11.5 14.5147 11.5 17C11.5 19.4853 9.48528 21.5 7 21.5ZM17 11.5C14.5147 11.5 12.5 9.48528 12.5 7C12.5 4.51472 14.5147 2.5 17 2.5C19.4853 2.5 21.5 4.51472 21.5 7C21.5 9.48528 19.4853 11.5 17 11.5ZM17 21.5C14.5147 21.5 12.5 19.4853 12.5 17C12.5 14.5147 14.5147 12.5 17 12.5C19.4853 12.5 21.5 14.5147 21.5 17C21.5 19.4853 19.4853 21.5 17 21.5ZM7 9.5C8.38071 9.5 9.5 8.38071 9.5 7C9.5 5.61929 8.38071 4.5 7 4.5C5.61929 4.5 4.5 5.61929 4.5 7C4.5 8.38071 5.61929 9.5 7 9.5ZM7 19.5C8.38071 19.5 9.5 18.3807 9.5 17C9.5 15.6193 8.38071 14.5 7 14.5C5.61929 14.5 4.5 15.6193 4.5 17C4.5 18.3807 5.61929 19.5 7 19.5ZM17 9.5C18.3807 9.5 19.5 8.38071 19.5 7C19.5 5.61929 18.3807 4.5 17 4.5C15.6193 4.5 14.5 5.61929 14.5 7C14.5 8.38071 15.6193 9.5 17 9.5ZM17 19.5C18.3807 19.5 19.5 18.3807 19.5 17C19.5 15.6193 18.3807 14.5 17 14.5C15.6193 14.5 14.5 15.6193 14.5 17C14.5 18.3807 15.6193 19.5 17 19.5Z"/></symbol>
 	<symbol id="ri-arrow-right-line" viewBox="0 0 24 24"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></symbol>
 	<symbol id="ri-book-open-line" viewBox="0 0 24 24"><path d="M13 21V23H11V21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H9C10.1947 3 11.2671 3.52375 12 4.35418C12.7329 3.52375 13.8053 3 15 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H13ZM20 19V5H15C13.8954 5 13 5.89543 13 7V19H20ZM11 19V7C11 5.89543 10.1046 5 9 5H4V19H11Z"/></symbol>
 	<symbol id="ri-calendar-check-line" viewBox="0 0 24 24"><path d="M9 1V3H15V1H17V3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V1H9ZM20 10H4V19H20V10ZM15.0355 11.136L16.4497 12.5503L11.5 17.5L7.96447 13.9645L9.37868 12.5503L11.5 14.6716L15.0355 11.136ZM7 5H4V8H20V5H17V6H15V5H9V6H7V5Z"/></symbol>
@@ -826,42 +868,6 @@ section{ padding-block:70px; position:relative; }
 	<p class="heros-credit">Illustration provisoire — à remplacer par une photographie du village</p>
 </div>
 
-<section class="acces" aria-labelledby="titre-acces">
-	<div class="large acces-grille">
-
-		<div class="acces-demarches">
-			<h2 class="titre-bloc" id="titre-acces">Je <span>souhaite</span></h2>
-			<form method="get" action="#">
-				<label for="choix-demarche" class="sr">Choisir une démarche</label>
-				<div class="champ-demarche">
-					<select id="choix-demarche" name="demarche">
-						<option value="">Choisir une démarche</option>
-						<option>Demander un acte de naissance</option>
-						<option>M’inscrire sur les listes électorales</option>
-						<option>Déposer une demande d’urbanisme</option>
-						<option>Réserver la salle des fêtes</option>
-						<option>Signaler un problème de voirie</option>
-						<option>Inscrire mon enfant à l’école</option>
-					</select>
-					<button type="submit">Valider</button>
-				</div>
-			</form>
-		</div>
-
-		<div class="acces-liens">
-			<h2 class="titre-bloc">Accès <span>rapides</span></h2>
-			<ul>
-				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>Comptes rendus</a></li>
-				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>Démarches</a></li>
-				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>Urbanisme</a></li>
-				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>Associations</a></li>
-				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>Réserver une salle</a></li>
-				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>La Voix du Village</a></li>
-			</ul>
-		</div>
-
-	</div>
-</section>
 
 
 <div class="menu-plein" id="menu-plein" data-ouvert="non" aria-hidden="true"
@@ -912,6 +918,33 @@ section{ padding-block:70px; position:relative; }
 				<span class="sr">Lancer la recherche</span>
 			</button>
 		</form>
+		<p class="aide">Appuyez sur Échap pour fermer.</p>
+	</div>
+</div>
+
+<button type="button" class="onglet-acces" aria-expanded="false" aria-controls="panneau-acces">
+	<svg class="ico" aria-hidden="true"><use href="#ri-apps-2-line"/></svg>
+	<span class="etiquette">Accès <span>rapides</span></span>
+</button>
+
+<div class="panneau-acces" id="panneau-acces" data-ouvert="non" aria-hidden="true"
+     role="dialog" aria-modal="true" aria-labelledby="titre-panneau-acces">
+	<div class="dedans">
+		<div class="tete">
+			<h2 class="titre-bloc" id="titre-panneau-acces">Accès <span>rapides</span></h2>
+			<button type="button" class="fermer" data-ferme-acces>
+				<svg class="ico" aria-hidden="true"><use href="#ri-close-line"/></svg>
+				<span class="sr">Fermer les accès rapides</span>
+			</button>
+		</div>
+		<ul class="acces-liens">
+			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>Comptes rendus</a></li>
+			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>Démarches</a></li>
+			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>Urbanisme</a></li>
+			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>Associations</a></li>
+			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>Réserver une salle</a></li>
+			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>La Voix du Village</a></li>
+		</ul>
 		<p class="aide">Appuyez sur Échap pour fermer.</p>
 	</div>
 </div>
@@ -1159,6 +1192,90 @@ section{ padding-block:70px; position:relative; }
 	} else {
 		battre();
 	}
+})();
+
+/**
+ * Onglet « Accès rapides » et panneau latéral.
+ * ---------------------------------------------------------------------------
+ * L'onglet est collé au bord droit de l'écran, sur toutes les pages. Le
+ * panneau se déploie vers la gauche par-dessus la page courante : chercher un
+ * raccourci ne doit pas faire perdre l'endroit où l'on se trouvait.
+ *
+ * Sans JavaScript, un bouton qui n'ouvre rien est un mensonge : le CSS le
+ * masque tant que cette fonction ne s'est pas exécutée (.js-actif). Rien
+ * n'est perdu, le pied de page reprend l'intégralité de ces destinations.
+ */
+(function () {
+	'use strict';
+
+	var onglet  = document.querySelector('.onglet-acces');
+	var panneau = document.getElementById('panneau-acces');
+	var entete  = document.querySelector('.entete');
+	if (!onglet || !panneau) { return; }
+
+	/* Le panneau se cale sous l'en-tête. On mesure ici aussi, sans dépendre
+	   du bloc précédent : ce module doit fonctionner même si le menu mobile
+	   n'existe pas sur la page. */
+	function mesurerEntete() {
+		if (!entete) { return; }
+		document.documentElement.style.setProperty('--h-entete', entete.offsetHeight + 'px');
+	}
+	window.addEventListener('resize', mesurerEntete);
+	mesurerEntete();
+
+	/* Le voile n'est pas dans le HTML : sans JavaScript il n'aurait rien à
+	   couvrir. On le fabrique ici, au moment où il devient utile. */
+	var voile = document.createElement('div');
+	voile.className = 'voile-acces';
+	voile.setAttribute('data-ouvert', 'non');
+	document.body.appendChild(voile);
+
+	var ouvert = false;
+
+	function basculer(vers) {
+		ouvert = (typeof vers === 'boolean') ? vers : !ouvert;
+
+		onglet.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+		panneau.setAttribute('data-ouvert', ouvert ? 'oui' : 'non');
+		panneau.setAttribute('aria-hidden', ouvert ? 'false' : 'true');
+		voile.setAttribute('data-ouvert', ouvert ? 'oui' : 'non');
+		if ('inert' in HTMLElement.prototype) { panneau.inert = !ouvert; }
+		document.documentElement.style.overflow = ouvert ? 'hidden' : '';
+
+		if (ouvert) {
+			var premier = panneau.querySelector('button, a[href]');
+			if (premier) { premier.focus(); }
+		} else {
+			onglet.focus();
+		}
+	}
+
+	onglet.addEventListener('click', function () { basculer(); });
+	voile.addEventListener('click', function () { basculer(false); });
+
+	var fermeture = panneau.querySelector('[data-ferme-acces]');
+	if (fermeture) {
+		fermeture.addEventListener('click', function () { basculer(false); });
+	}
+
+	document.addEventListener('keydown', function (e) {
+		if (!ouvert) { return; }
+
+		if (e.key === 'Escape') { basculer(false); return; }
+
+		if (e.key !== 'Tab') { return; }
+		var cibles = panneau.querySelectorAll('a[href], button:not([disabled])');
+		if (!cibles.length) { return; }
+		var premier = cibles[0], dernier = cibles[cibles.length - 1];
+		if (e.shiftKey && document.activeElement === premier) {
+			e.preventDefault(); dernier.focus();
+		} else if (!e.shiftKey && document.activeElement === dernier) {
+			e.preventDefault(); premier.focus();
+		}
+	});
+
+	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
+	document.documentElement.classList.add('js-actif');
 })();
 
 </script>
