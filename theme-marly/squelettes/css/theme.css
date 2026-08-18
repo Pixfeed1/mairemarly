@@ -118,8 +118,104 @@ body::after{
   white-space:nowrap;   /* une entrée de menu ne se coupe jamais en deux lignes */
 }
 .nav a:hover{ color:var(--accent); }
-.loupe{ background:none; border:0; cursor:pointer; padding:4px 0 4px 22px; color:var(--accent); font-size:25px; }
-.burger{ display:none; margin-left:auto; background:none; border:1px solid var(--trait); border-radius:3px; padding:8px 13px; cursor:pointer; font-size:18px; }
+
+
+/* ===========================================================================
+   BOUTONS DE L'EN-TÊTE — recherche et menu
+   ---------------------------------------------------------------------------
+   Ce sont les deux seuls boutons présents sur toutes les pages du site. Ils
+   méritent mieux qu'une icône posée dans un cadre gris.
+
+   Trois partis pris :
+   1. Le menu porte le mot « Menu ». Une icône à trois barres seule reste mal
+      comprise d'une partie du public, et le public d'une mairie n'est pas
+      celui d'une application. Le mot coûte 50px et lève l'ambiguïté.
+   2. Les barres se transforment en croix à l'ouverture, piloté par le seul
+      attribut aria-expanded : l'état visuel et l'état annoncé aux lecteurs
+      d'écran ne peuvent pas diverger, puisque c'est la même source.
+   3. La loupe ouvre un panneau plein écran, elle ne renvoie pas vers une
+      autre page. Chercher ne doit pas faire perdre l'endroit où l'on était.
+
+   Cible tactile : 48px minimum sur les deux, au-delà des 44px recommandés.
+   =========================================================================== */
+
+.btn-entete{
+	display:flex; align-items:center; gap:10px;
+	min-height:48px; padding:0 14px;
+	background:none; border:0; cursor:pointer;
+	font-family:var(--titre); font-weight:700; font-size:15px;
+	text-transform:uppercase; letter-spacing:.08em;
+	color:var(--encre); text-decoration:none;
+	border-radius:4px; transition:background-color .15s ease;
+}
+.btn-entete:hover{ background:var(--creme); }
+.btn-entete .ico{ width:26px; height:26px; color:var(--accent); flex-shrink:0; }
+
+/* --- la loupe ------------------------------------------------------------ */
+.loupe{ min-width:48px; justify-content:center; }
+.loupe .ico{ width:25px; height:25px; }
+
+/* --- le menu : trois barres qui deviennent une croix --------------------- */
+/* Les deux boutons forment un groupe. Sans cela, margin-left:auto sur le seul
+   bouton menu laissait la loupe orpheline au milieu de la barre. */
+.actions-entete{ display:flex; align-items:center; gap:2px; margin-left:auto; }
+.burger{ display:none; }
+.barres{
+	position:relative; display:block; width:30px; height:2px;
+	background:var(--accent); border-radius:2px;
+	transition:background-color .2s ease;
+	/* Les deux autres barres sont des pseudo-éléments posés à ±9px : ils
+	   sortent du flux. Cette marge réserve leur place, sans quoi le libellé
+	   placé dessous vient les chevaucher. */
+	margin:9px 0;
+}
+.barres::before, .barres::after{
+	content:''; position:absolute; left:0; width:100%; height:2px;
+	background:var(--accent); border-radius:2px;
+	transition:transform .25s ease;
+}
+.barres::before{ top:-9px; }
+.barres::after{ top:9px; }
+
+/* L'état ouvert n'est décrit qu'une fois, sur l'attribut que lisent aussi
+   les technologies d'assistance. */
+.burger[aria-expanded="true"] .barres{ background:transparent; }
+.burger[aria-expanded="true"] .barres::before{ transform:translateY(9px) rotate(45deg); }
+.burger[aria-expanded="true"] .barres::after{ transform:translateY(-9px) rotate(-45deg); }
+
+@media (prefers-reduced-motion:reduce){
+	.barres, .barres::before, .barres::after{ transition:none; }
+}
+
+/* --- le panneau de recherche plein écran --------------------------------- */
+.panneau-recherche{
+	position:fixed; inset:0; z-index:80;
+	background:rgba(253,248,238,.97);
+	-webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
+	display:flex; align-items:center; justify-content:center; padding:24px;
+	opacity:0; visibility:hidden; transition:opacity .2s ease, visibility .2s;
+}
+.panneau-recherche[data-ouvert="oui"]{ opacity:1; visibility:visible; }
+.panneau-recherche .dedans{ width:min(700px,100%); }
+.panneau-recherche .titre-bloc{ margin-bottom:22px; }
+.panneau-recherche form{ display:flex; border-bottom:3px solid var(--accent); }
+.panneau-recherche input{
+	flex:1; border:0; background:none; min-width:0;
+	padding:12px 4px; font-family:var(--serif); font-size:clamp(22px,4vw,34px);
+	color:var(--encre);
+}
+.panneau-recherche input::placeholder{ color:var(--encre-doux); opacity:.55; }
+.panneau-recherche button[type="submit"]{
+	border:0; background:none; cursor:pointer; color:var(--accent); padding:0 10px;
+}
+.panneau-recherche button[type="submit"] .ico{ width:30px; height:30px; }
+.panneau-recherche .fermer{
+	position:absolute; top:22px; right:22px;
+	width:48px; height:48px; border-radius:50%;
+	border:1px solid var(--trait); background:#fff; cursor:pointer;
+	display:flex; align-items:center; justify-content:center; color:var(--encre);
+}
+.panneau-recherche .aide{ margin-top:16px; font-size:14px; color:var(--encre-doux); }
 
 /* ---- HÉROS -------------------------------------------------------------- */
 .heros{ position:relative; height:clamp(340px,44vw,500px); --f:linear-gradient(160deg,#2E7154,#10382A); }
@@ -288,11 +384,7 @@ section{ padding-block:70px; position:relative; }
    déborde jusqu'à 1100 inclus, elle rentre à partir de 1200.
    =========================================================================== */
 
-/* La loupe ouvre la page de recherche : pas de champ dans l'en-tête.
-   Un champ en ligne coûtait 220px et faisait déborder la barre en dessous
-   de 1440px — mesuré, pas supposé. Le champ complet vit dans le héros de
-   l'accueil et dans le tiroir mobile. */
-a.loupe{ display:flex; align-items:center; text-decoration:none; }
+
 
 /* --- le tiroir mobile ---------------------------------------------------- */
 .menu-mobile{
@@ -304,6 +396,9 @@ a.loupe{ display:flex; align-items:center; text-decoration:none; }
 	box-shadow:-8px 0 40px rgba(29,26,26,.18);
 }
 .menu-mobile[data-ouvert="oui"]{ transform:translateX(0); visibility:visible; }
+.menu-mobile .tete-tiroir{ display:flex; align-items:center; justify-content:space-between; }
+.menu-mobile .tete-tiroir strong{ font-family:var(--serif); font-size:22px; font-weight:700; }
+
 .menu-mobile ul{ list-style:none; margin:26px 0 0; padding:0; }
 .menu-mobile li{ border-bottom:1px solid var(--trait); }
 .menu-mobile a{
@@ -317,6 +412,19 @@ a.loupe{ display:flex; align-items:center; text-decoration:none; }
 	width:40px; height:40px; font-size:22px; cursor:pointer; color:var(--encre);
 	display:flex; align-items:center; justify-content:center;
 }
+/* Recherche du tiroir : décrite ici, pas en attributs style dans le HTML. */
+.menu-mobile .recherche-mobile{ display:flex; margin-top:20px; }
+.menu-mobile .recherche-mobile input{
+	flex:1; min-width:0; border:1px solid var(--trait); border-right:0;
+	border-radius:22px 0 0 22px; padding:11px 18px; font-family:var(--texte);
+}
+.menu-mobile .recherche-mobile button{
+	border:1px solid var(--accent); background:var(--accent); color:#fff;
+	border-radius:0 22px 22px 0; padding:0 18px; cursor:pointer;
+	display:flex; align-items:center; min-width:52px; justify-content:center;
+}
+.menu-mobile .recherche-mobile button .ico{ width:20px; height:20px; }
+
 .menu-mobile .outils-mobile{ margin-top:28px; display:flex; flex-direction:column; gap:10px; }
 .menu-mobile .pilule{ justify-content:center; padding:11px 16px; font-size:14px; }
 
@@ -342,6 +450,15 @@ a.loupe{ display:flex; align-items:center; text-decoration:none; }
 }
 
 @media (max-width:560px){
+	/* Le mot « Menu » ne tient plus à côté des barres. Plutôt que de le
+	   supprimer — et de retomber sur l'icône seule, mal comprise — on le
+	   passe dessous. La colonne coûte de la hauteur, pas de la largeur. */
+	.burger{ flex-direction:column; gap:5px; padding:0 8px; }
+	.burger > span:last-child{ font-size:10px; letter-spacing:.04em; }
+	.barres{ width:26px; }
+	.loupe{ min-width:44px; }
+	.btn-entete{ padding:0 8px; }
+
 	.marque .sceau{ width:46px; height:46px; }
 	.marque b{ font-size:22px; }
 	.marque small{ font-size:9.5px; letter-spacing:.2em; }

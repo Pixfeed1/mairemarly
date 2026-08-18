@@ -54,14 +54,17 @@
 				</ul>
 			</nav>
 
-			<a class="loupe" href="#" aria-label="Rechercher sur le site">
-				<svg class="ico" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16 16"/></svg>
-			</a>
-
-			<button class="burger" type="button" aria-expanded="true" aria-controls="menu-mobile">
-				<svg class="ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-				<span class="sr">Ouvrir le menu</span>
-			</button>
+			<div class="actions-entete">
+				<a class="btn-entete loupe" href="#" data-ouvre-recherche>
+					<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16 16"/></svg>
+					<span class="sr">Rechercher sur le site</span>
+				</a>
+	
+				<button class="btn-entete burger" type="button" aria-expanded="true" aria-controls="menu-mobile">
+					<span class="barres" aria-hidden="true"></span>
+					<span>Menu</span>
+				</button>
+			</div>
 		</div>
 
 	</div>
@@ -70,16 +73,15 @@
 <button class="voile-menu" type="button" tabindex="-1" aria-hidden="true" data-ouvert="oui"></button>
 
 <div class="menu-mobile" id="menu-mobile" data-ouvert="oui" aria-hidden="false">
-	<div style="display:flex;align-items:center;justify-content:space-between">
-		<strong style="font-family:var(--serif);font-size:22px">Menu</strong>
+	<div class="tete-tiroir">
+		<strong>Menu</strong>
 		<button class="fermer" type="button"><span aria-hidden="true">&times;</span><span class="sr">Fermer</span></button>
 	</div>
 
-	<form class="recherche-mobile" role="search" method="get" action="#" style="margin-top:20px;display:flex">
+	<form class="recherche-mobile" role="search" method="get" action="#">
 		<label for="recherche-tiroir" class="sr">Rechercher sur le site</label>
-		<input type="search" id="recherche-tiroir" name="recherche" placeholder="Rechercher…"
-		       style="flex:1;border:1px solid var(--trait);border-radius:20px 0 0 20px;padding:10px 16px;font-family:var(--texte)">
-		<button type="submit" class="loupe" style="border-radius:0 20px 20px 0;padding:10px 16px">
+		<input type="search" id="recherche-tiroir" name="recherche" placeholder="Rechercher…">
+		<button type="submit">
 			<svg class="ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16 16"/></svg>
 			<span class="sr">Rechercher</span>
 		</button>
@@ -96,6 +98,28 @@
 	<div class="outils-mobile">
 		<a class="pilule" href="#">Newsletter</a>
 		<a class="pilule plein" href="#">Contacter la mairie</a>
+	</div>
+</div>
+
+
+<div class="panneau-recherche" id="panneau-recherche" data-ouvert="non" aria-hidden="true"
+     role="dialog" aria-modal="true" aria-label="Rechercher sur le site">
+	<button class="fermer" type="button" data-ferme-recherche>
+		<svg class="ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+		<span class="sr">Fermer la recherche</span>
+	</button>
+	<div class="dedans">
+		<span class="titre-bloc">Que <span>cherchez-vous&#8239;?</span></span>
+		<form role="search" method="get" action="#">
+			<label for="recherche-panneau" class="sr">Votre recherche</label>
+			<input type="search" id="recherche-panneau" name="recherche"
+			       placeholder="Une démarche, un compte rendu, un horaire…">
+			<button type="submit">
+				<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16 16"/></svg>
+				<span class="sr">Lancer la recherche</span>
+			</button>
+		</form>
+		<p class="aide">Appuyez sur Échap pour fermer.</p>
 	</div>
 </div>
 

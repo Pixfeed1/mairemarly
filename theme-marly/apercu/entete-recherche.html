@@ -102,7 +102,7 @@
 </div>
 
 
-<div class="panneau-recherche" id="panneau-recherche" data-ouvert="non" aria-hidden="true"
+<div class="panneau-recherche" id="panneau-recherche" data-ouvert="oui" aria-hidden="false"
      role="dialog" aria-modal="true" aria-label="Rechercher sur le site">
 	<button class="fermer" type="button" data-ferme-recherche>
 		<svg class="ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -129,28 +129,5 @@
 </div>
 
 <script src="../squelettes/js/menu.js"></script>
-<script>
-window.addEventListener('load', function(){
-  var d=document.documentElement, o=[];
-  o.push('vue='+window.innerWidth);
-  // LE test de debordement : la page est-elle plus large que la vue ?
-  o.push('scroll='+d.scrollWidth);
-  var b=document.querySelector('.burger');
-  o.push('menu='+getComputedStyle(b).display);
-  var l=document.querySelector('.loupe');
-  var lr=l.getBoundingClientRect();
-  o.push('loupe='+getComputedStyle(l).display+' x'+Math.round(lr.left)+' w'+Math.round(lr.width));
-  // element le plus a droite, EN EXCLUANT le tiroir gare hors cadre volontairement
-  var pire='-', max=0;
-  document.querySelectorAll('*').forEach(function(el){
-    if(el.closest('.menu-mobile')||el.classList.contains('menu-mobile')) return;
-    var r=el.getBoundingClientRect();
-    if(r.right>max){ max=r.right; pire=el.tagName.toLowerCase()+'.'+(el.className||'?'); }
-  });
-  o.push('maxReel='+Math.round(max)+' ('+pire+')');
-  var p=document.createElement('div'); p.id='SONDE'; p.textContent=o.join(' | ');
-  document.body.appendChild(p);
-});
-</script>
 </body>
 </html>

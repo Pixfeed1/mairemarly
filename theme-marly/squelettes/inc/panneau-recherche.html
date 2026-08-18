@@ -1,0 +1,30 @@
+[(#REM)
+  inc/panneau-recherche.html — la recherche en plein écran.
+  ---------------------------------------------------------------------------
+  Amélioration progressive : la loupe de l'en-tête est un vrai lien vers la
+  page de recherche. Sans JavaScript, elle y mène et tout fonctionne. Avec
+  JavaScript, le panneau s'ouvre par-dessus et l'usager ne perd pas sa page.
+
+  role="dialog" + aria-modal indiquent aux lecteurs d'écran que le reste de
+  la page est temporairement hors sujet.
+]
+<div class="panneau-recherche" id="panneau-recherche" data-ouvert="non" aria-hidden="true"
+     role="dialog" aria-modal="true" aria-label="<:marly:rechercher_site:>">
+	<button class="fermer" type="button" data-ferme-recherche>
+		<i class="ri-close-line" aria-hidden="true"></i>
+		<span class="sr"><:marly:fermer_recherche:></span>
+	</button>
+	<div class="dedans">
+		<span class="titre-bloc"><:marly:que:> <span><:marly:cherchez_vous:></span></span>
+		<form role="search" method="get" action="#URL_PAGE{recherche}">
+			<label for="recherche-panneau" class="sr"><:marly:rechercher_site:></label>
+			<input type="search" id="recherche-panneau" name="recherche"
+			       placeholder="<:marly:rechercher_placeholder:>">
+			<button type="submit">
+				<i class="ri-search-line" aria-hidden="true"></i>
+				<span class="sr"><:marly:lancer_recherche:></span>
+			</button>
+		</form>
+		<p class="aide"><:marly:echap_ferme:></p>
+	</div>
+</div>

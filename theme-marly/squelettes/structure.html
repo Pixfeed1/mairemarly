@@ -23,12 +23,15 @@
 	<a class="saut" href="#contenu-principal"><:marly:aller_contenu:></a>
 
 	<INCLURE{fond=inc/entete}{env}>
+	<INCLURE{fond=inc/menu-mobile}{env}>
 
 	<main id="contenu-principal">
 		<INCLURE{fond=contenu/#ENV{type-page,sommaire}}{env}>
 	</main>
 
 	<INCLURE{fond=inc/pied}{env}>
+
+	<INCLURE{fond=inc/panneau-recherche}{env}>
 
 </body>
 </html>

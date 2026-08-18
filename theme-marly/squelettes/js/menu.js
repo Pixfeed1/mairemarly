@@ -77,11 +77,85 @@
 	});
 
 	/* Repasser en grand écran doit remettre la page dans un état sain :
-	   sinon le défilement reste bloqué alors que le tiroir a disparu. */
-	var grandEcran = window.matchMedia('(min-width: 1000px)');
+	   sinon le défilement reste bloqué alors que le tiroir a disparu.
+	   ATTENTION : ce seuil doit rester identique à celui de theme.css. */
+	var grandEcran = window.matchMedia('(min-width: 1200px)');
 	var surChangement = function (e) { if (e.matches && ouvert) { basculer(false); } };
 	if (grandEcran.addEventListener) { grandEcran.addEventListener('change', surChangement); }
 	else if (grandEcran.addListener) { grandEcran.addListener(surChangement); }
 
 	majInertie();
+})();
+
+/**
+ * Panneau de recherche plein écran.
+ * ---------------------------------------------------------------------------
+ * Amélioration progressive : la loupe est un vrai lien vers la page de
+ * recherche. Sans JavaScript elle y mène et rien n'est perdu. Avec, on
+ * intercepte le clic et le panneau s'ouvre par-dessus la page courante —
+ * chercher ne doit pas faire perdre l'endroit où l'on se trouvait.
+ */
+(function () {
+	'use strict';
+
+	var declencheurs = document.querySelectorAll('[data-ouvre-recherche]');
+	var panneau = document.getElementById('panneau-recherche');
+	if (!declencheurs.length || !panneau) { return; }
+
+	var champ    = panneau.querySelector('input[type="search"]');
+	var fermeture = panneau.querySelector('[data-ferme-recherche]');
+	var ouvert   = false;
+	var appelant = null;   /* pour rendre le focus à qui l'a ouvert */
+
+	function basculer(vers, origine) {
+		ouvert = (typeof vers === 'boolean') ? vers : !ouvert;
+
+		panneau.setAttribute('data-ouvert', ouvert ? 'oui' : 'non');
+		panneau.setAttribute('aria-hidden', ouvert ? 'false' : 'true');
+		if ('inert' in HTMLElement.prototype) { panneau.inert = !ouvert; }
+		document.documentElement.style.overflow = ouvert ? 'hidden' : '';
+
+		if (ouvert) {
+			appelant = origine || null;
+			if (champ) { champ.focus(); champ.select(); }
+		} else if (appelant) {
+			appelant.focus();
+			appelant = null;
+		}
+	}
+
+	Array.prototype.forEach.call(declencheurs, function (el) {
+		el.addEventListener('click', function (e) {
+			e.preventDefault();          /* le lien reste le repli sans JS */
+			basculer(true, el);
+		});
+	});
+
+	if (fermeture) {
+		fermeture.addEventListener('click', function () { basculer(false); });
+	}
+
+	/* Cliquer en dehors du champ ferme : le fond n'est pas une zone morte. */
+	panneau.addEventListener('click', function (e) {
+		if (e.target === panneau) { basculer(false); }
+	});
+
+	document.addEventListener('keydown', function (e) {
+		if (!ouvert) { return; }
+
+		if (e.key === 'Escape') { basculer(false); return; }
+
+		/* Le focus ne doit pas s'échapper derrière le panneau. */
+		if (e.key !== 'Tab') { return; }
+		var cibles = panneau.querySelectorAll('a[href], button:not([disabled]), input');
+		if (!cibles.length) { return; }
+		var premier = cibles[0], dernier = cibles[cibles.length - 1];
+		if (e.shiftKey && document.activeElement === premier) {
+			e.preventDefault(); dernier.focus();
+		} else if (!e.shiftKey && document.activeElement === dernier) {
+			e.preventDefault(); premier.focus();
+		}
+	});
+
+	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
 })();

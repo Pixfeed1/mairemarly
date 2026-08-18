@@ -22,7 +22,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// --- En-tête et navigation ---------------------------------------------
 	'aller_contenu'        => 'Aller au contenu principal',
 	'menu_principal'       => 'Navigation principale',
+	'menu'                 => 'Menu',
 	'ouvrir_menu'          => 'Ouvrir le menu',
+	'fermer_recherche'     => 'Fermer la recherche',
+	'que'                  => 'Que',
+	'cherchez_vous'        => 'cherchez-vous ?',
+	'lancer_recherche'     => 'Lancer la recherche',
+	'echap_ferme'          => 'Appuyez sur Échap pour fermer.',
 	'newsletter'           => 'Newsletter',
 	'contacter_mairie'     => 'Contacter la mairie',
 	'rechercher'           => 'Rechercher',
