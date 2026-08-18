@@ -1,4 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Blason">
+<!-- Piste B — motif d'église fortifiée, emblème régional de la Thiérache.
+     À NE PAS UTILISER avant d'avoir vérifié sur photo que l'église de
+     Marly-Gomont est bien fortifiée : la Thiérache en compte une soixantaine,
+     toutes les communes n'en ont pas. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Emblème de Marly-Gomont">
   <circle cx="50" cy="50" r="47" fill="none" stroke="#1D1A1A" stroke-width="1.5"/>
   <circle cx="50" cy="50" r="41" fill="none" stroke="#1D1A1A" stroke-width="1"/>
   <g fill="#1D1A1A">

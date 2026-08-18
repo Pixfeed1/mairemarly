@@ -31,6 +31,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'echap_ferme'          => 'Appuyez sur Échap pour fermer.',
 	'newsletter'           => 'Newsletter',
 	'contacter_mairie'     => 'Contacter la mairie',
+	'connexion'            => 'Connexion',
 	'espace_citoyen'       => 'Espace citoyen',
 	'fermer_menu'          => 'Fermer le menu',
 	'rechercher'           => 'Rechercher',

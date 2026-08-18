@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"
+     role="img" aria-label="Emblème de Marly-Gomont">
+  <!-- Un seul arc de texte, et plus gros. À 72px d'affichage, deux couronnes
+       de texte deviennent illisibles — et « Thiérache · Aisne » répétait ce
+       que le mot-symbole dit déjà à côté. -->
+  <circle cx="50" cy="50" r="47.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <circle cx="50" cy="50" r="40"   fill="none" stroke="currentColor" stroke-width="0.9"/>
+  <path id="arcNom" d="M 12 50 A 38 38 0 0 1 88 50" fill="none"/>
+  <text font-family="Alegreya Sans, Georgia, serif" font-size="13" font-weight="700"
+        letter-spacing="1.2" fill="currentColor">
+    <textPath href="#arcNom" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
+  </text>
+  <text x="50" y="62" font-family="Alegreya, Georgia, serif" font-size="30" font-weight="700"
+        text-anchor="middle" fill="currentColor">MG</text>
+  <path d="M36 70 h28" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="50" cy="78" r="1.8" fill="currentColor"/>
+</svg>

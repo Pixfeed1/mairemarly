@@ -143,7 +143,9 @@ body::after{
 
 .rang-nav{ display:flex; align-items:center; gap:26px; padding:10px 0 18px; }
 .marque{ display:flex; align-items:center; gap:14px; text-decoration:none; flex-shrink:0; }
-.marque .sceau{ width:72px; height:72px; flex-shrink:0; }
+/* L'emblème se dessine en currentColor : il suit la couleur du texte,
+   donc la charte, sans avoir à toucher au fichier SVG. */
+.marque .sceau{ width:72px; height:72px; flex-shrink:0; color:var(--encre); }
 .marque b{ font-family:var(--serif); font-size:34px; font-weight:700; display:block; line-height:1; }
 .marque small{ font-size:11px; letter-spacing:.34em; text-transform:uppercase; color:var(--encre-doux); display:block; margin-top:3px; }
 
@@ -626,6 +628,9 @@ section{ padding-block:70px; position:relative; }
 </svg>
 
 
+
+
+
 <header class="entete">
 	<div class="large">
 
@@ -641,27 +646,34 @@ section{ padding-block:70px; position:relative; }
 			</a>
 
 			<a class="pilule plein" href="#">
-				<svg class="ico" aria-hidden="true"><use href="#ri-customer-service-2-line"/></svg> Contacter la mairie
+				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> Connexion
 			</a>
 			<a class="pilule" href="#">
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> Newsletter
 			</a>
 			<a class="pilule" href="#">
-				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> Espace citoyen
+				<svg class="ico" aria-hidden="true"><use href="#ri-customer-service-2-line"/></svg> Contacter la mairie
 			</a>
 		</div>
 
 		<div class="rang-nav">
 			<a class="marque" href="#" rel="home">
-				<svg class="sceau" width="72" height="72" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Blason">
-  <circle cx="50" cy="50" r="47" fill="none" stroke="#1D1A1A" stroke-width="1.5"/>
-  <circle cx="50" cy="50" r="41" fill="none" stroke="#1D1A1A" stroke-width="1"/>
-  <g fill="#1D1A1A">
-    <path d="M38 66V44l12-11 12 11v22z"/>
-    <rect x="46" y="54" width="8" height="12" fill="#fff"/>
-    <path d="M50 25v8M46 29h8" stroke="#1D1A1A" stroke-width="2.4" stroke-linecap="round"/>
-    <rect x="28" y="52" width="10" height="14"/><rect x="62" y="52" width="10" height="14"/>
-  </g>
+				<svg class="sceau" width="72" height="72" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+     role="img" aria-label="Emblème de Marly-Gomont">
+  <!-- Un seul arc de texte, et plus gros. À 72px d'affichage, deux couronnes
+       de texte deviennent illisibles — et « Thiérache · Aisne » répétait ce
+       que le mot-symbole dit déjà à côté. -->
+  <circle cx="50" cy="50" r="47.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <circle cx="50" cy="50" r="40"   fill="none" stroke="currentColor" stroke-width="0.9"/>
+  <path id="arcNom" d="M 12 50 A 38 38 0 0 1 88 50" fill="none"/>
+  <text font-family="Alegreya Sans, Georgia, serif" font-size="13" font-weight="700"
+        letter-spacing="1.2" fill="currentColor">
+    <textPath href="#arcNom" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
+  </text>
+  <text x="50" y="62" font-family="Alegreya, Georgia, serif" font-size="30" font-weight="700"
+        text-anchor="middle" fill="currentColor">MG</text>
+  <path d="M36 70 h28" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="50" cy="78" r="1.8" fill="currentColor"/>
 </svg>
 				<span>
 					<b>Marly-Gomont</b>
@@ -769,6 +781,7 @@ section{ padding-block:70px; position:relative; }
 	<p>Ouvrez le menu, puis la recherche. Fermez avec Échap, avec la croix, ou en touchant à côté.</p>
 	<p>Redimensionnez la fenêtre : la navigation bascule en bouton à 1200&nbsp;px.</p>
 </div>
+
 
 <script>
 /**

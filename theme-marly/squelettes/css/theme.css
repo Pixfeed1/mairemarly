@@ -132,7 +132,9 @@ body::after{
 
 .rang-nav{ display:flex; align-items:center; gap:26px; padding:10px 0 18px; }
 .marque{ display:flex; align-items:center; gap:14px; text-decoration:none; flex-shrink:0; }
-.marque .sceau{ width:72px; height:72px; flex-shrink:0; }
+/* L'emblème se dessine en currentColor : il suit la couleur du texte,
+   donc la charte, sans avoir à toucher au fichier SVG. */
+.marque .sceau{ width:72px; height:72px; flex-shrink:0; color:var(--encre); }
 .marque b{ font-family:var(--serif); font-size:34px; font-weight:700; display:block; line-height:1; }
 .marque small{ font-size:11px; letter-spacing:.34em; text-transform:uppercase; color:var(--encre-doux); display:block; margin-top:3px; }
 
