@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marly-Gomont — maquette de proposition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@400;500;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===========================================================================
+   Marly-Gomont — maquette de proposition
+   Principes retenus de l'analyse de bidart.fr :
+     - fond crème plutôt que blanc  -> chaleur immédiate, coût nul
+     - UNE seule couleur d'accent   -> cohérence, effet "site cher"
+     - recherche dès le premier écran
+     - bande "Je souhaite / Accès rapides" juste sous l'en-tête
+   Identité propre à Marly-Gomont : vert bocage de Thiérache + ocre,
+   au lieu du rouge basque. Polices libres uniquement (SIL OFL / Apache).
+   =========================================================================== */
+
+:root{
+  --encre:      #1C1A18;
+  --encre-doux: #55504A;
+  --creme:      #FBF7EF;
+  --creme-2:    #F4EEE2;
+  --blanc:      #FFFFFF;
+  --vert:       #1E5B41;
+  --vert-fonce: #14402E;
+  --vert-clair: #E7F0EA;
+  --ocre:       #B87333;
+  --ocre-clair: #FBEFE0;
+  --trait:      #E2DACA;
+
+  --serif: "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
+  --sans:  "Open Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --large: 1180px;
+  --r: 4px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--creme);
+  color:var(--encre);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+
+h1,h2,h3,h4{ font-family:var(--serif); font-weight:800; line-height:1.1; margin:0; letter-spacing:-.01em; }
+
+.large{ max-width:var(--large); margin-inline:auto; padding-inline:24px; }
+
+/* focus visible : exigence RGAA */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+  outline:3px solid var(--ocre); outline-offset:2px;
+}
+.saut{
+  position:absolute; left:-9999px; background:var(--vert); color:#fff;
+  padding:12px 20px; z-index:100;
+}
+.saut:focus{ left:12px; top:12px; }
+
+/* --- bandeau maquette ---------------------------------------------------- */
+.bandeau{
+  background:var(--encre); color:#fff; font-size:13px; letter-spacing:.06em;
+  text-align:center; padding:9px 16px; font-weight:600; text-transform:uppercase;
+}
+.bandeau span{ color:#F0C98A; }
+
+/* --- en-tête ------------------------------------------------------------- */
+.entete{
+  background:var(--vert); color:#fff;
+  position:sticky; top:0; z-index:50;
+  box-shadow:0 1px 0 rgba(0,0,0,.15);
+}
+.entete .large{ display:flex; align-items:center; gap:28px; min-height:76px; }
+
+.marque{ display:flex; align-items:center; gap:12px; text-decoration:none; flex-shrink:0; }
+.marque svg{ width:42px; height:42px; flex-shrink:0; }
+.marque b{ font-family:var(--serif); font-size:23px; font-weight:800; display:block; line-height:1.05; }
+.marque small{ font-size:11px; letter-spacing:.16em; text-transform:uppercase; opacity:.8; }
+
+.nav{ margin-left:auto; display:flex; gap:4px; list-style:none; margin-block:0; padding:0; }
+.nav a{
+  display:block; padding:10px 14px; text-decoration:none; border-radius:var(--r);
+  font-family:var(--serif); font-weight:700; font-size:17px;
+}
+.nav a:hover{ background:rgba(255,255,255,.14); }
+
+.btn-contact{
+  background:var(--ocre); color:#fff; text-decoration:none; padding:11px 18px;
+  border-radius:var(--r); font-weight:700; font-size:15px; white-space:nowrap;
+}
+.btn-contact:hover{ background:#a06229; }
+
+.burger{ display:none; background:none; border:1px solid rgba(255,255,255,.4);
+  color:#fff; border-radius:var(--r); padding:9px 13px; font-size:15px; cursor:pointer; }
+
+/* --- héros --------------------------------------------------------------- */
+.heros{ position:relative; background:var(--vert-fonce); overflow:hidden; }
+.heros svg.paysage{ width:100%; height:clamp(300px,44vw,470px); display:block; }
+.heros-texte{
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center;
+  padding:24px; color:#fff;
+}
+.heros h1{ font-size:clamp(34px,5.4vw,66px); text-shadow:0 2px 16px rgba(0,0,0,.45); }
+.heros p{ margin:10px 0 0; font-size:clamp(15px,2vw,20px); text-shadow:0 1px 10px rgba(0,0,0,.5); }
+
+.recherche{
+  margin-top:26px; display:flex; width:min(560px,100%);
+  background:#fff; border-radius:40px; overflow:hidden;
+  box-shadow:0 10px 34px rgba(0,0,0,.28);
+}
+.recherche input{
+  flex:1; border:0; padding:16px 22px; font-size:16px; font-family:var(--sans);
+  color:var(--encre); min-width:0;
+}
+.recherche button{
+  border:0; background:var(--ocre); color:#fff; padding:0 26px; cursor:pointer;
+  font-weight:700; font-size:15px; font-family:var(--sans);
+}
+.recherche button:hover{ background:#a06229; }
+
+/* --- bande accès rapides ------------------------------------------------- */
+.acces{ background:var(--creme-2); border-bottom:1px solid var(--trait); }
+.acces .large{ display:flex; align-items:center; gap:32px; padding-block:22px; flex-wrap:wrap; }
+.acces h2{ font-size:22px; color:var(--vert); white-space:nowrap; }
+.acces-liste{
+  display:flex; gap:8px; list-style:none; margin:0; padding:0;
+  flex:1; flex-wrap:wrap; justify-content:flex-end;
+}
+.acces-liste a{
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  text-decoration:none; padding:10px 14px; border-radius:var(--r);
+  font-size:13px; font-weight:600; text-align:center; min-width:92px;
+}
+.acces-liste a:hover{ background:#fff; }
+.acces-liste svg{ width:26px; height:26px; stroke:var(--vert); fill:none; stroke-width:1.6; }
+
+/* --- rythme des sections ------------------------------------------------- */
+section{ padding-block:64px; }
+.titre-sec{ display:flex; align-items:baseline; gap:16px; margin-bottom:30px; flex-wrap:wrap; }
+.titre-sec h2{ font-size:clamp(28px,4vw,42px); }
+.titre-sec .tout{
+  margin-left:auto; text-decoration:none; font-weight:700; font-size:15px;
+  color:var(--vert); border-bottom:2px solid var(--ocre); padding-bottom:2px;
+}
+.sur-titre{
+  font-family:var(--serif); font-style:italic; font-weight:500;
+  color:var(--ocre); font-size:20px;
+}
+
+/* --- actualités ---------------------------------------------------------- */
+.actus{ display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:22px; }
+.carte{
+  background:#fff; border:1px solid var(--trait); border-radius:var(--r);
+  overflow:hidden; display:flex; flex-direction:column; text-decoration:none;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.carte:hover{ transform:translateY(-3px); box-shadow:0 12px 26px rgba(28,26,24,.10); }
+.carte .visuel{ height:172px; position:relative; }
+.carte.vedette{ grid-row:span 2; }
+.carte.vedette .visuel{ height:290px; }
+.carte .corps{ padding:18px 20px 22px; }
+.etiq{
+  display:inline-block; background:var(--vert); color:#fff; font-size:11px;
+  letter-spacing:.09em; text-transform:uppercase; font-weight:700;
+  padding:4px 10px; border-radius:2px; margin-bottom:10px;
+}
+.etiq.ocre{ background:var(--ocre); }
+.carte h3{ font-size:20px; margin-bottom:8px; }
+.carte.vedette h3{ font-size:27px; }
+.carte p{ margin:0; color:var(--encre-doux); font-size:15px; }
+.date{ font-size:13px; color:var(--encre-doux); font-weight:600; }
+
+/* --- agenda -------------------------------------------------------------- */
+.agenda{ display:grid; grid-template-columns:1fr 1.25fr; gap:40px; align-items:start; }
+.agenda-liste{ list-style:none; margin:0; padding:0; }
+.agenda-liste li{
+  display:flex; gap:18px; align-items:flex-start;
+  padding:18px 0; border-bottom:1px solid var(--trait);
+}
+.pastille{
+  flex-shrink:0; width:66px; height:66px; border-radius:50%;
+  background:var(--vert); color:#fff; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; line-height:1.05;
+}
+.pastille b{ font-family:var(--serif); font-size:23px; font-weight:800; }
+.pastille span{ font-size:10px; letter-spacing:.1em; text-transform:uppercase; }
+.agenda-liste h3{ font-size:19px; margin-bottom:3px; }
+.agenda-liste .lieu{ font-size:14px; color:var(--encre-doux); margin:0; }
+.affiche{
+  border:1px solid var(--trait); border-radius:var(--r); overflow:hidden;
+  background:#fff;
+}
+.affiche .corps{ padding:20px; }
+
+/* --- conseil municipal (le bloc différenciant) --------------------------- */
+.conseil{ background:var(--vert); color:#fff; }
+.conseil h2{ color:#fff; }
+.conseil .sur-titre{ color:#F0C98A; }
+.conseil-grille{ display:grid; grid-template-columns:1fr 1.1fr; gap:48px; align-items:center; }
+.conseil p.intro{ font-size:18px; opacity:.92; margin:0 0 24px; }
+.conseil-recherche{ display:flex; background:#fff; border-radius:var(--r); overflow:hidden; }
+.conseil-recherche input{ flex:1; border:0; padding:15px 18px; font-size:16px; min-width:0; font-family:var(--sans); }
+.conseil-recherche button{ border:0; background:var(--ocre); color:#fff; padding:0 24px; font-weight:700; cursor:pointer; font-family:var(--sans); }
+.pv{ background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.18); border-radius:var(--r); padding:8px; }
+.pv ul{ list-style:none; margin:0; padding:0; }
+.pv li{ display:flex; align-items:center; gap:14px; padding:13px 14px; border-bottom:1px solid rgba(255,255,255,.12); }
+.pv li:last-child{ border-bottom:0; }
+.pv svg{ width:20px; height:20px; stroke:#F0C98A; fill:none; stroke-width:1.6; flex-shrink:0; }
+.pv b{ font-family:var(--serif); font-size:17px; font-weight:700; }
+.pv small{ display:block; opacity:.75; font-size:13px; }
+.pv .marq{ margin-left:auto; font-size:11px; background:#F0C98A; color:var(--vert-fonce);
+  padding:3px 8px; border-radius:2px; font-weight:700; white-space:nowrap; }
+
+/* --- associations -------------------------------------------------------- */
+.assos{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.asso{
+  background:#fff; border:1px solid var(--trait); border-radius:var(--r);
+  padding:26px 22px; text-decoration:none; display:block;
+}
+.asso:hover{ border-color:var(--vert); }
+.asso .rond{
+  width:46px; height:46px; border-radius:50%; background:var(--vert-clair);
+  display:flex; align-items:center; justify-content:center; margin-bottom:14px;
+}
+.asso .rond svg{ width:22px; height:22px; stroke:var(--vert); fill:none; stroke-width:1.7; }
+.asso h3{ font-size:18px; margin-bottom:5px; }
+.asso p{ margin:0; font-size:14px; color:var(--encre-doux); }
+
+/* --- bulletin + newsletter ---------------------------------------------- */
+.bas{ background:var(--creme-2); }
+.bas-grille{ display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+.bulletin{ display:flex; gap:24px; align-items:center; }
+.couv{
+  width:150px; height:205px; flex-shrink:0; border-radius:2px;
+  box-shadow:0 8px 22px rgba(28,26,24,.18); overflow:hidden;
+}
+.lettre{ background:#fff; border:1px solid var(--trait); border-radius:var(--r); padding:28px; }
+.lettre form{ display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+.lettre input{
+  flex:1; min-width:180px; border:1px solid var(--trait); border-radius:var(--r);
+  padding:13px 15px; font-size:15px; font-family:var(--sans);
+}
+.lettre button{
+  border:0; background:var(--vert); color:#fff; border-radius:var(--r);
+  padding:13px 22px; font-weight:700; cursor:pointer; font-family:var(--sans);
+}
+
+/* --- pied ---------------------------------------------------------------- */
+.pied{ background:var(--encre); color:#fff; padding-block:52px 30px; }
+.pied a{ color:#fff; }
+.pied-grille{ display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:44px; }
+.pied h3{ font-size:19px; margin-bottom:14px; }
+.pied ul{ list-style:none; margin:0; padding:0; }
+.pied li{ margin-bottom:9px; font-size:15px; opacity:.85; }
+.pied .coord{ font-size:15px; line-height:1.9; opacity:.9; }
+.pied-bas{
+  border-top:1px solid rgba(255,255,255,.16); margin-top:40px; padding-top:20px;
+  display:flex; gap:20px; flex-wrap:wrap; font-size:13px; opacity:.7;
+}
+.pied-bas a{ text-decoration:none; }
+.pied-bas a:hover{ text-decoration:underline; }
+
+/* --- responsive ---------------------------------------------------------- */
+@media (max-width:980px){
+  .actus{ grid-template-columns:1fr 1fr; }
+  .carte.vedette{ grid-column:span 2; grid-row:auto; }
+  .agenda, .conseil-grille, .bas-grille, .pied-grille{ grid-template-columns:1fr; gap:32px; }
+  .assos{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width:760px){
+  .nav{ display:none; }
+  .burger{ display:block; margin-left:auto; }
+  .btn-contact{ display:none; }
+  .acces .large{ flex-direction:column; align-items:stretch; }
+  .acces-liste{ justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; }
+  .actus{ grid-template-columns:1fr; }
+  .carte.vedette{ grid-column:auto; }
+  .assos{ grid-template-columns:1fr; }
+  .bulletin{ flex-direction:column; align-items:flex-start; }
+  section{ padding-block:46px; }
+}
+</style>
+</head>
+<body>
+
+<a class="saut" href="#contenu">Aller au contenu principal</a>
+
+<div class="bandeau">
+  Maquette de proposition — <span>site non officiel</span> — contenus repris du site actuel à titre d'illustration
+</div>
+
+<header class="entete">
+  <div class="large">
+    <a class="marque" href="#">
+      <!-- Blason : église fortifiée de Thiérache, emblème régional -->
+      <svg viewBox="0 0 48 48" role="img" aria-label="Blason de Marly-Gomont">
+        <path d="M24 3 L43 9 v17 c0 10-8 16-19 19 C13 42 5 36 5 26 V9 Z"
+              fill="#fff" stroke="#B87333" stroke-width="2"/>
+        <path d="M17 34 V21 l7-7 7 7 v13 z" fill="#1E5B41"/>
+        <rect x="21" y="26" width="6" height="8" fill="#fff"/>
+        <path d="M24 8 v6 M21 11 h6" stroke="#B87333" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>
+        <b>Marly-Gomont</b>
+        <small>Aisne · Thiérache</small>
+      </span>
+    </a>
+
+    <nav aria-label="Navigation principale">
+      <ul class="nav">
+        <li><a href="#">La Mairie</a></li>
+        <li><a href="#actus">Vie du village</a></li>
+        <li><a href="#assos">Associations &amp; commerces</a></li>
+        <li><a href="#">Découvrir</a></li>
+      </ul>
+    </nav>
+
+    <a class="btn-contact" href="#pied">Contacter la mairie</a>
+    <button class="burger" aria-label="Ouvrir le menu">☰ Menu</button>
+  </div>
+</header>
+
+<main id="contenu">
+
+  <!-- ===================== HÉROS ===================== -->
+  <div class="heros">
+    <!-- Illustration originale : bocage de Thiérache + église fortifiée.
+         À remplacer par une photographie du village. -->
+    <svg class="paysage" viewBox="0 0 1440 470" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%"  stop-color="#2A6B4E"/>
+          <stop offset="55%" stop-color="#17513A"/>
+          <stop offset="100%" stop-color="#0F3B2A"/>
+        </linearGradient>
+      </defs>
+      <rect width="1440" height="470" fill="url(#ciel)"/>
+      <circle cx="1180" cy="105" r="46" fill="#F0C98A" opacity=".22"/>
+      <!-- lignes de bocage -->
+      <path d="M0 330 Q 360 292 720 322 T 1440 300 V470 H0 Z" fill="#123F2D" opacity=".85"/>
+      <path d="M0 372 Q 400 342 800 366 T 1440 350 V470 H0 Z" fill="#0E3324" opacity=".9"/>
+      <!-- église fortifiée, silhouette -->
+      <g fill="#0B2A1E" opacity=".95">
+        <path d="M690 330 V236 l34-32 34 32 v94 z"/>
+        <rect x="714" y="276" width="20" height="54"/>
+        <rect x="660" y="288" width="34" height="42"/>
+        <rect x="754" y="288" width="34" height="42"/>
+        <path d="M724 186 v22 M714 196 h20" stroke="#0B2A1E" stroke-width="5"/>
+      </g>
+      <!-- arbres -->
+      <g fill="#0B2A1E" opacity=".8">
+        <ellipse cx="240" cy="318" rx="46" ry="34"/><rect x="235" y="318" width="9" height="24"/>
+        <ellipse cx="1120" cy="330" rx="54" ry="38"/><rect x="1115" y="330" width="10" height="26"/>
+        <ellipse cx="420" cy="336" rx="34" ry="25"/><rect x="416" y="336" width="7" height="18"/>
+      </g>
+    </svg>
+
+    <div class="heros-texte">
+      <h1>Bienvenue à Marly-Gomont</h1>
+      <p>Village de Thiérache, dans l'Aisne</p>
+      <form class="recherche" role="search" onsubmit="return false">
+        <label for="q" class="saut">Rechercher sur le site</label>
+        <input id="q" type="search" placeholder="Une démarche, un compte rendu, un horaire…">
+        <button type="submit">Rechercher</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== ACCÈS RAPIDES ===================== -->
+  <div class="acces">
+    <div class="large">
+      <h2><span class="sur-titre">Je souhaite…</span></h2>
+      <ul class="acces-liste">
+        <li><a href="#conseil">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h7M9 17h5"/></svg>
+          Comptes rendus</a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+          Démarches</a></li>
+        <li><a href="#">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l7-6 7 6v12"/><path d="M10 21v-6h4v6"/></svg>
+          Urbanisme</a></li>
+        <li><a href="#assos">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.4"/><path d="M3 20a6 6 0 0112 0M15 20a5 5 0 016-4.5"/></svg>
+          Associations</a></li>
+        <li><a href="#bulletin">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h10v14H4z"/><path d="M14 8h6v11h-6"/><path d="M7 9h4M7 12h4"/></svg>
+          Le bulletin</a></li>
+        <li><a href="#pied">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 10-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+          Nous trouver</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== ACTUALITÉS ===================== -->
+  <section id="actus">
+    <div class="large">
+      <div class="titre-sec">
+        <span class="sur-titre">Les</span><h2>actualités</h2>
+        <a class="tout" href="#">Toutes les actualités →</a>
+      </div>
+
+      <div class="actus">
+        <a class="carte vedette" href="#">
+          <div class="visuel" style="background:linear-gradient(135deg,#B87333,#8E5526)"></div>
+          <div class="corps">
+            <span class="etiq ocre">Événement</span>
+            <h3>Forum des artisans d'art et des produits du terroir</h3>
+            <p>La 21ᵉ édition rassemble artisans, producteurs et savoir-faire de
+               Thiérache. Entrée libre, restauration sur place.</p>
+          </div>
+        </a>
+
+        <a class="carte" href="#">
+          <div class="visuel" style="background:linear-gradient(135deg,#2A6B4E,#17513A)"></div>
+          <div class="corps">
+            <span class="etiq">Conseil municipal</span>
+            <h3>Réunion de conseil du 27 septembre</h3>
+            <p class="date">Procès-verbal disponible</p>
+          </div>
+        </a>
+
+        <a class="carte" href="#">
+          <div class="visuel" style="background:linear-gradient(135deg,#5A7A66,#3C5A48)"></div>
+          <div class="corps">
+            <span class="etiq">Culture</span>
+            <h3>Concert de l'harmonie municipale</h3>
+            <p class="date">Salle des fêtes · entrée libre</p>
+          </div>
+        </a>
+
+        <a class="carte" href="#">
+          <div class="visuel" style="background:linear-gradient(135deg,#8E9B6B,#66744A)"></div>
+          <div class="corps">
+            <span class="etiq">Vie pratique</span>
+            <h3>Horaires du secrétariat de mairie</h3>
+            <p class="date">Mise à jour des permanences</p>
+          </div>
+        </a>
+
+        <a class="carte" href="#">
+          <div class="visuel" style="background:linear-gradient(135deg,#B87333,#96521F)"></div>
+          <div class="corps">
+            <span class="etiq ocre">Tradition</span>
+            <h3>Fête de l'attelage</h3>
+            <p class="date">Défilé et démonstrations</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== AGENDA ===================== -->
+  <section style="background:var(--creme-2)">
+    <div class="large">
+      <div class="titre-sec">
+        <span class="sur-titre">Les</span><h2>rendez-vous</h2>
+        <a class="tout" href="#">Tout l'agenda →</a>
+      </div>
+
+      <div class="agenda">
+        <div class="affiche">
+          <div style="height:250px;background:linear-gradient(160deg,#1E5B41,#0F3B2A);
+                      display:flex;align-items:center;justify-content:center;">
+            <span style="font-family:var(--serif);font-size:34px;font-weight:800;
+                         color:#F0C98A;text-align:center;padding:20px;line-height:1.15;">
+              Fête<br>du village
+            </span>
+          </div>
+          <div class="corps">
+            <span class="etiq ocre">Temps fort</span>
+            <h3>Trois jours de fête au village</h3>
+            <p style="color:var(--encre-doux);font-size:15px;margin-top:6px">
+              Brocante, bal, manèges et feu d'artifice. Organisée par le comité d'animation.
+            </p>
+          </div>
+        </div>
+
+        <ul class="agenda-liste">
+          <li>
+            <span class="pastille"><b>12</b><span>Sept.</span></span>
+            <div>
+              <h3>Forum des artisans et du terroir</h3>
+              <p class="lieu">Place du village · 10h – 18h</p>
+            </div>
+          </li>
+          <li>
+            <span class="pastille"><b>24</b><span>Sept.</span></span>
+            <div>
+              <h3>Réunion du conseil municipal</h3>
+              <p class="lieu">Salle de la mairie · séance publique</p>
+            </div>
+          </li>
+          <li>
+            <span class="pastille"><b>05</b><span>Oct.</span></span>
+            <div>
+              <h3>Concert de l'harmonie municipale</h3>
+              <p class="lieu">Salle des fêtes · entrée libre</p>
+            </div>
+          </li>
+          <li>
+            <span class="pastille"><b>11</b><span>Nov.</span></span>
+            <div>
+              <h3>Commémoration de l'armistice</h3>
+              <p class="lieu">Monument aux morts · 11h</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONSEIL MUNICIPAL ===================== -->
+  <section class="conseil" id="conseil">
+    <div class="large">
+      <div class="conseil-grille">
+        <div>
+          <div class="titre-sec" style="margin-bottom:18px">
+            <span class="sur-titre">Le</span><h2>conseil municipal</h2>
+          </div>
+          <p class="intro">
+            Tous les procès-verbaux depuis 2016, consultables en ligne et
+            <strong>cherchables par mot-clé</strong> — plus besoin d'ouvrir
+            les PDF un par un.
+          </p>
+          <form class="conseil-recherche" role="search" onsubmit="return false">
+            <label for="q2" class="saut">Rechercher dans les comptes rendus</label>
+            <input id="q2" type="search" placeholder="Ex. : voirie, budget, école…">
+            <button type="submit">Chercher</button>
+          </form>
+          <p style="font-size:14px;opacity:.75;margin-top:14px">
+            35 procès-verbaux · également disponibles au format PDF
+          </p>
+        </div>
+
+        <div class="pv">
+          <ul>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+              <span><b>Séance du 27 septembre</b><small>Budget, voirie communale</small></span>
+              <span class="marq">Récent</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+              <span><b>Séance du 10 avril</b><small>Compte administratif</small></span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+              <span><b>Séance du 28 mars</b><small>Vote du budget primitif</small></span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+              <span><b>Séance du 9 octobre</b><small>Travaux, subventions</small></span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+              <span><b>Séance du 29 juin</b><small>Rentrée scolaire</small></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ASSOCIATIONS ===================== -->
+  <section id="assos">
+    <div class="large">
+      <div class="titre-sec">
+        <span class="sur-titre">Nos</span><h2>associations</h2>
+        <a class="tout" href="#">Toutes les associations →</a>
+      </div>
+
+      <div class="assos">
+        <a class="asso" href="#">
+          <span class="rond"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></span>
+          <h3>ASMG</h3>
+          <p>Association sportive de Marly-Gomont</p>
+        </a>
+        <a class="asso" href="#">
+          <span class="rond"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
+          <h3>Harmonie municipale</h3>
+          <p>Orchestre et concerts du village</p>
+        </a>
+        <a class="asso" href="#">
+          <span class="rond"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11z"/><path d="M9 20v-6h6v6"/></svg></span>
+          <h3>Comité d'animation</h3>
+          <p>Fêtes, brocante et animations</p>
+        </a>
+        <a class="asso" href="#">
+          <span class="rond"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M7 8h10"/></svg></span>
+          <h3>Secteur paroissial</h3>
+          <p>Vie paroissiale et horaires des messes</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== BULLETIN + NEWSLETTER ===================== -->
+  <section class="bas" id="bulletin">
+    <div class="large">
+      <div class="bas-grille">
+        <div>
+          <div class="titre-sec" style="margin-bottom:22px">
+            <span class="sur-titre">À</span><h2>lire</h2>
+          </div>
+          <div class="bulletin">
+            <div class="couv" style="background:linear-gradient(160deg,#1E5B41,#0F3B2A);
+                 display:flex;align-items:center;justify-content:center;">
+              <span style="font-family:var(--serif);color:#F0C98A;font-weight:800;
+                    font-size:21px;text-align:center;line-height:1.2;padding:14px">
+                La Voix<br>du Village
+              </span>
+            </div>
+            <div>
+              <h3 style="font-size:22px;margin-bottom:8px">La Voix du Village</h3>
+              <p style="color:var(--encre-doux);font-size:15px;margin:0 0 16px">
+                Le bulletin municipal de Marly-Gomont, à lire en ligne ou à télécharger.
+              </p>
+              <a class="btn-contact" style="display:inline-block" href="#">Feuilleter le bulletin</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lettre">
+          <h3 style="font-size:22px">Restez informé</h3>
+          <p style="color:var(--encre-doux);font-size:15px;margin:8px 0 0">
+            Travaux, coupures d'eau, alertes météo, événements : recevez
+            l'essentiel par courriel.
+          </p>
+          <form onsubmit="return false">
+            <label for="mail" class="saut">Votre adresse électronique</label>
+            <input id="mail" type="email" placeholder="votre@adresse.fr">
+            <button type="submit">Je m'inscris</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== PIED DE PAGE ===================== -->
+<footer class="pied" id="pied">
+  <div class="large">
+    <div class="pied-grille">
+      <div>
+        <h3>Mairie de Marly-Gomont</h3>
+        <p class="coord">
+          02120 Marly-Gomont, Aisne<br>
+          Téléphone : 03 23 60 22 69<br>
+          <a href="mailto:mairie.marlygomont@wanadoo.fr">mairie.marlygomont@wanadoo.fr</a>
+        </p>
+      </div>
+      <div>
+        <h3>Le site</h3>
+        <ul>
+          <li><a href="#">La Mairie</a></li>
+          <li><a href="#actus">Vie du village</a></li>
+          <li><a href="#assos">Associations et commerces</a></li>
+          <li><a href="#conseil">Comptes rendus du conseil</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Démarches</h3>
+        <ul>
+          <li><a href="#">État civil</a></li>
+          <li><a href="#">Urbanisme</a></li>
+          <li><a href="#">Inscription sur les listes électorales</a></li>
+          <li><a href="#">service-public.fr</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pied-bas">
+      <a href="#">Mentions légales</a>
+      <a href="#">Politique de confidentialité</a>
+      <a href="#">Accessibilité : non conforme</a>
+      <a href="#">Plan du site</a>
+      <span style="margin-left:auto">Maquette de proposition — site non officiel</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
