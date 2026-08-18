@@ -327,15 +327,74 @@ body::after{
 .recherche input{ flex:1; border:0; padding:16px 24px; font-size:16px; font-family:var(--texte); min-width:0; }
 .recherche button{ border:0; background:var(--accent); color:#fff; padding:0 26px; cursor:pointer; font-weight:700; font-family:var(--texte); font-size:16px; }
 
-/* ---- ACCÈS RAPIDES ------------------------------------------------------ */
-.acces{ background:#fff; border-bottom:1px solid #EEE8DC; }
-.acces .large{ display:flex; align-items:center; gap:40px; padding-block:26px; flex-wrap:wrap; }
-.acces .titre-bloc{ font-size:clamp(30px,3.6vw,42px); margin:0; white-space:nowrap; }
-.acces .titre-bloc span{ font-size:clamp(26px,3.2vw,38px); }
-.acces-liste{ display:flex; gap:6px; list-style:none; margin:0; padding:0; flex:1; flex-wrap:wrap; justify-content:flex-end; }
-.acces-liste a{ display:flex; flex-direction:column; align-items:center; gap:9px; text-decoration:none; padding:8px 16px; font-size:13px; font-weight:600; text-align:center; min-width:104px; }
-.acces-liste i{ font-size:30px; color:var(--accent); }
-.acces-liste a:hover{ color:var(--accent); }
+/* ===========================================================================
+   BANDE DE RACCOURCIS — sous la bannière
+   ---------------------------------------------------------------------------
+   Elle vient AVANT l'éditorial : sur un site de commune on vient faire une
+   démarche, pas lire des actualités. Fond crème pour la détacher de la page
+   sans la cloisonner.
+   =========================================================================== */
+
+.acces{ background:var(--creme); border-bottom:1px solid var(--trait); padding-block:44px; }
+.acces-grille{ display:grid; grid-template-columns:minmax(280px,340px) 1fr; gap:56px; align-items:start; }
+.acces .titre-bloc{ font-size:clamp(30px,3.6vw,44px); margin-bottom:22px; }
+.acces .titre-bloc span{ font-size:clamp(26px,3.2vw,40px); }
+
+/* --- la liste de démarches ----------------------------------------------- */
+.champ-demarche{ display:flex; }
+.champ-demarche select{
+  flex:1; min-width:0; appearance:none;
+  border:1px solid var(--trait); border-right:0; border-radius:4px 0 0 4px;
+  background-color:#fff; padding:14px 44px 14px 16px;
+  font-family:var(--texte); font-size:15px; color:var(--encre); cursor:pointer;
+  /* Chevron dessiné en dégradés : aucune image à charger. */
+  background-image:linear-gradient(45deg,transparent 50%,var(--accent) 50%),
+                   linear-gradient(135deg,var(--accent) 50%,transparent 50%);
+  background-position:calc(100% - 20px) 21px, calc(100% - 14px) 21px;
+  background-size:6px 6px, 6px 6px;
+  background-repeat:no-repeat;
+}
+.champ-demarche button{
+  border:0; background:var(--accent); color:#fff; border-radius:0 4px 4px 0;
+  padding:0 22px; font-family:var(--texte); font-weight:700; cursor:pointer; white-space:nowrap;
+}
+.champ-demarche button:hover{ background:var(--accent-sombre); }
+
+/* --- les six destinations ------------------------------------------------ */
+.acces-liens ul{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(6,1fr); gap:14px;
+}
+.acces-liens a{
+  display:flex; flex-direction:column; align-items:center; gap:12px;
+  text-decoration:none; text-align:center;
+  font-size:13.5px; font-weight:600; line-height:1.3; padding:6px 4px; border-radius:4px;
+}
+.acces-liens .rond{
+  width:74px; height:74px; border-radius:50%;
+  background:#fff; border:1px solid var(--trait);
+  display:flex; align-items:center; justify-content:center;
+  transition:background-color .15s ease, border-color .15s ease, transform .15s ease;
+}
+.acces-liens .rond .ico{ width:30px; height:30px; color:var(--accent); }
+.acces-liens a:hover{ color:var(--accent); }
+.acces-liens a:hover .rond{ background:var(--accent); border-color:var(--accent); transform:translateY(-3px); }
+.acces-liens a:hover .rond .ico{ color:#fff; }
+
+@media (prefers-reduced-motion:reduce){
+  .acces-liens .rond{ transition:none; }
+  .acces-liens a:hover .rond{ transform:none; }
+}
+@media (max-width:1080px){
+  .acces-grille{ grid-template-columns:1fr; gap:36px; }
+  .acces-liens ul{ grid-template-columns:repeat(3,1fr); }
+}
+@media (max-width:560px){
+  .acces-liens ul{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  .acces-liens .rond{ width:62px; height:62px; }
+  .acces-liens .rond .ico{ width:26px; height:26px; }
+  .acces-liens a{ font-size:12.5px; }
+}
 
 section{ padding-block:70px; position:relative; }
 

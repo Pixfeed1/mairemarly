@@ -41,6 +41,15 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'rechercher_placeholder' => 'Une démarche, un compte rendu, un horaire…',
 	'recherche_amorce'     => 'Qu’est-ce que vous recherchez ?',
 
+	// --- Bande de raccourcis -----------------------------------------------
+	'acces'                => 'Accès',
+	'rapides'              => 'rapides',
+	'choisir_demarche'     => 'Choisir une démarche',
+	'valider'              => 'Valider',
+	'comptes_rendus'       => 'Comptes rendus',
+	'urbanisme'            => 'Urbanisme',
+	'bulletin'             => 'La Voix du Village',
+
 	// --- Accueil ------------------------------------------------------------
 	'je'                   => 'Je',
 	'souhaite'             => 'souhaite',

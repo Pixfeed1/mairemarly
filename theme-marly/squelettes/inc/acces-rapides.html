@@ -1,0 +1,68 @@
+[(#REM)
+  inc/acces-rapides.html — la bande de raccourcis, sous la bannière.
+  ---------------------------------------------------------------------------
+  Sur un site de commune, les visites sont utilitaires : on vient chercher un
+  horaire, un formulaire, un compte rendu — rarement lire des actualités.
+  Cette bande met les six vraies demandes à un clic, AVANT tout l'éditorial.
+
+  Deux moitiés :
+   - à gauche, une liste de démarches : un seul contrôle pour en couvrir
+     beaucoup, sans occuper l'écran
+   - à droite, les six destinations les plus consultées
+
+  RGAA — le formulaire ne part PAS au changement de sélection. Naviguer dès
+  qu'on déplace le curseur piège l'usager au clavier, qui traverse la liste
+  pour la lire. Il faut un bouton, et ce bouton est explicite.
+]
+<section class="acces" aria-labelledby="titre-acces">
+	<div class="large acces-grille">
+
+		<div class="acces-demarches">
+			<h2 class="titre-bloc" id="titre-acces"><:marly:je:> <span><:marly:souhaite:></span></h2>
+			<form method="get" action="#URL_PAGE{demarches}">
+				<label for="choix-demarche" class="sr"><:marly:choisir_demarche:></label>
+				<div class="champ-demarche">
+					<select id="choix-demarche" name="demarche">
+						<option value=""><:marly:choisir_demarche:></option>
+						<BOUCLE_demarches(ARTICLES){titre_mot=demarches}{par num titre, titre}{0,12}>
+						<option value="#ID_ARTICLE">#TITRE</option>
+						</BOUCLE_demarches>
+						<option value="acte-naissance">Demander un acte de naissance</option>
+						<option value="listes-electorales">M’inscrire sur les listes électorales</option>
+						<option value="urbanisme">Déposer une demande d’urbanisme</option>
+						<option value="salle">Réserver la salle des fêtes</option>
+						<option value="voirie">Signaler un problème de voirie</option>
+						<option value="ecole">Inscrire mon enfant à l’école</option>
+						<//B_demarches>
+					</select>
+					<button type="submit"><:marly:valider:></button>
+				</div>
+			</form>
+		</div>
+
+		<div class="acces-liens">
+			<h2 class="titre-bloc"><:marly:acces:> <span><:marly:rapides:></span></h2>
+			<ul>
+				<li><a href="#URL_PAGE{conseil}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
+					<:marly:comptes_rendus:></a></li>
+				<li><a href="#URL_PAGE{demarches}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+					<:marly:demarches:></a></li>
+				<li><a href="#URL_PAGE{urbanisme}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>
+					<:marly:urbanisme:></a></li>
+				<li><a href="#URL_PAGE{associations}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>
+					<:marly:associations:></a></li>
+				<li><a href="#URL_PAGE{reservation}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>
+					<:marly:reserver_salle:></a></li>
+				<li><a href="#URL_PAGE{bulletin}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>
+					<:marly:bulletin:></a></li>
+			</ul>
+		</div>
+
+	</div>
+</section>
