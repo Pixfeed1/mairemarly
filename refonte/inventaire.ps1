@@ -74,6 +74,45 @@ $titresArt = $titresArt | Where-Object { $_ } | Sort-Object -Unique
 if ($titresArt) { $titresArt | ForEach-Object { Add-L "- $_" } } else { Add-L "_(aucun article detecte)_" }
 Add-L ""
 
+# --- Auteurs ---------------------------------------------------------------
+# Les NOMS d'auteurs sont publics (signature des articles). En revanche les
+# comptes, emails et mots de passe vivent en base de donnees et ne sont PAS
+# recuperables de l'exterieur : les comptes devront etre recrees a la main.
+Add-L "## Auteurs detectes (noms publics uniquement)"
+Add-L ""
+$auteurs = @()
+
+# 1. Flux RSS SPIP : balise <dc:creator>
+if (Test-Path $rss) {
+  $cr = Get-Content $rss -Raw -Encoding UTF8
+  $auteurs += [regex]::Matches($cr, '(?is)<dc:creator>(.*?)</dc:creator>') |
+              ForEach-Object { Remove-Html $_.Groups[1].Value }
+}
+
+# 2. Pages HTML : blocs SPIP class="auteurs" / id="auteurs", et <meta name="author">
+foreach ($sd in @('miroir', 'articles', 'rubriques')) {
+  $chemin = Join-Path $Dir $sd
+  if (-not (Test-Path $chemin)) { continue }
+  Get-ChildItem $chemin -Filter *.html -File -Recurse -EA 0 | ForEach-Object {
+    $c = Get-Content $_.FullName -Raw -Encoding UTF8
+    $auteurs += [regex]::Matches($c, '(?is)<[^>]+(?:class|id)="[^"]*auteur[^"]*"[^>]*>(.*?)</') |
+                ForEach-Object { Remove-Html $_.Groups[1].Value }
+    $auteurs += [regex]::Matches($c, '(?i)<meta\s+name="author"\s+content="([^"]+)"') |
+                ForEach-Object { $_.Groups[1].Value }
+  }
+}
+
+# nettoyage : on enleve le "par " initial et on filtre le bruit
+$auteurs = $auteurs |
+           ForEach-Object { ($_ -replace '(?i)^\s*par\s+', '').Trim() } |
+           Where-Object { $_ -and $_.Length -ge 3 -and $_.Length -le 60 } |
+           Sort-Object -Unique
+if ($auteurs) { $auteurs | ForEach-Object { Add-L "- $_" } } else { Add-L "_(aucun auteur detecte)_" }
+Add-L ""
+Add-L "> Identifiants, emails et mots de passe ne sont PAS accessibles depuis"
+Add-L "> l'exterieur. Les comptes seront a recreer dans le nouveau site."
+Add-L ""
+
 # --- Coordonnees -----------------------------------------------------------
 Add-L "## Coordonnees probables de la mairie"
 Add-L ""

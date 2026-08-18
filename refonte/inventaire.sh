@@ -41,6 +41,23 @@ strip() { sed -E 's/<[^>]+>//g; s/&nbsp;/ /g; s/&amp;/\&/g; s/&#39;/'"'"'/g' ; }
   grep -rhoiE '<title>[^<]+</title>' "$DIR/articles" 2>/dev/null | strip | sed 's/^/- /' | sort -u
   echo
 
+  echo "## Auteurs détectés (noms publics uniquement)"
+  echo
+  # Les NOMS d'auteurs sont publics (signature des articles) ; les comptes,
+  # emails et mots de passe sont en base et ne sortent pas du serveur.
+  {
+    [ -f "$DIR/backend.xml" ] && grep -oiE '<dc:creator>[^<]+</dc:creator>' "$DIR/backend.xml" | strip
+    grep -rhoiE '<[^>]+(class|id)="[^"]*auteur[^"]*"[^>]*>[^<]+' "$DIR" 2>/dev/null | strip
+    grep -rhoiE '<meta name="author" content="[^"]+"' "$DIR" 2>/dev/null \
+      | sed -E 's/.*content="([^"]+)".*/\1/'
+  } | sed -E 's/^[[:space:]]*[Pp]ar[[:space:]]+//' \
+    | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//' \
+    | awk 'length($0)>=3 && length($0)<=60' | sort -u | sed 's/^/- /'
+  echo
+  echo "> Identifiants, emails et mots de passe ne sont PAS accessibles depuis"
+  echo "> l'extérieur. Les comptes seront à recréer dans le nouveau site."
+  echo
+
   echo "## Coordonnées probables de la mairie"
   echo
   echo '```'
