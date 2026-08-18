@@ -1,0 +1,33 @@
+# .gitignore du thème — ce dépôt ne versionne QUE le thème.
+# ---------------------------------------------------------------------------
+# Le cœur de SPIP n'a rien à faire ici : il s'installe et se met à jour tout
+# seul. Versionner le cœur, c'est se condamner à des conflits à chaque montée
+# de version. On ne suit que ce qu'on écrit : le dossier squelettes/.
+
+# --- JAMAIS versionné : contient les identifiants de la base ---------------
+config/connect.php
+config/*connect*.php
+config/chmod.php
+
+# --- Généré par SPIP, jamais à la main -------------------------------------
+tmp/
+local/
+IMG/
+config/base/
+plugins/auto/
+
+# --- Environnement de développement ----------------------------------------
+.env
+docker/data/
+*.sql
+*.sql.gz
+
+# --- Ressources téléchargées (se régénèrent) -------------------------------
+squelettes/css/remixicon.css
+squelettes/fonts/
+squelettes/img/photos/
+
+# --- Système ----------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.log

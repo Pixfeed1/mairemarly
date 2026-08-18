@@ -1,0 +1,34 @@
+[(#REM)
+  structure.html — le gabarit dont TOUTES les pages héritent.
+  ---------------------------------------------------------------------------
+  Convention reprise de squelettes-dist : chaque page (sommaire.html,
+  rubrique.html, article.html) ne contient qu'une ligne qui appelle ce
+  gabarit en lui passant son type. Le gabarit va ensuite chercher le corps
+  correspondant dans contenu/.
+
+  Conséquence pratique : l'en-tête et le pied n'existent qu'à un seul
+  endroit. Une correction se fait une fois, pas sur dix fichiers.
+]
+#CACHE{3600}
+<!DOCTYPE html>
+<html lang="#LANG" dir="#LANG_DIR">
+<head>
+	<INCLURE{fond=inc/head}{env}>
+</head>
+
+<body class="page-#ENV{type-page,sommaire}">
+
+	[(#REM) Lien d'évitement : première exigence du RGAA, il doit être
+	        le tout premier élément focusable de la page. ]
+	<a class="saut" href="#contenu-principal"><:marly:aller_contenu:></a>
+
+	<INCLURE{fond=inc/entete}{env}>
+
+	<main id="contenu-principal">
+		<INCLURE{fond=contenu/#ENV{type-page,sommaire}}{env}>
+	</main>
+
+	<INCLURE{fond=inc/pied}{env}>
+
+</body>
+</html>

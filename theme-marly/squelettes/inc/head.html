@@ -1,0 +1,34 @@
+[(#REM)
+  inc/head.html — tout ce qui va dans <head>.
+  ---------------------------------------------------------------------------
+  Bonnes pratiques appliquées ici :
+   - #CHEMIN localise le fichier dans le chemin des squelettes : le thème
+     reste déplaçable, aucun chemin absolu en dur.
+   - polices et icônes AUTO-HÉBERGÉES : un CDN transmet l'adresse IP de
+     chaque visiteur à un tiers, ce qu'une collectivité ne peut pas faire
+     sans base légale (RGPD).
+   - #INSERT_HEAD reste obligatoire : c'est par là que les plugins ajoutent
+     leurs propres feuilles de style et scripts.
+]
+	<meta charset="#CHARSET">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>[(#ENV{titre_page}|textebrut) — ]#NOM_SITE_SPIP</title>
+
+	[<meta name="description" content="(#ENV{description}|textebrut|attribut_html)">]
+	<meta name="theme-color" content="#1E5B41">
+
+	[(#REM) Partage sur les réseaux et messageries ]
+	<meta property="og:site_name" content="#NOM_SITE_SPIP">
+	<meta property="og:title" content="[(#ENV{titre_page}|textebrut|sinon{#NOM_SITE_SPIP})]">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="#SELF|url_absolue">
+
+	<link rel="canonical" href="[(#SELF|url_absolue)]">
+	<link rel="icon" href="#CHEMIN{img/favicon.svg}" type="image/svg+xml">
+
+	[(#REM) Le CSS d'abord, les polices ensuite : le texte s'affiche plus tôt. ]
+	<link rel="stylesheet" href="#CHEMIN{css/theme.css}">
+	<link rel="stylesheet" href="#CHEMIN{css/remixicon.css}">
+
+	#INSERT_HEAD

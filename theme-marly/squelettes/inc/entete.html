@@ -1,0 +1,64 @@
+[(#REM)
+  inc/entete.html — en-tête commun à toutes les pages.
+  ---------------------------------------------------------------------------
+  Rien de figé ici :
+   - le menu vient d'une boucle sur les rubriques racines. Créer une rubrique
+     à la racine dans l'espace privé l'ajoute au menu, sans toucher au code.
+   - le nom et la description du site viennent de la configuration SPIP
+     (Configuration > Identité du site), pas du gabarit.
+   - les libellés viennent de lang/marly_fr.php, pas du HTML.
+
+  #EXPOSE marque l'entrée correspondant à la page courante : une fois pour la
+  classe CSS, une fois pour aria-current que les lecteurs d'écran annoncent.
+]
+<header class="entete">
+	<div class="large">
+
+		<div class="rang-outils">
+			<a class="pilule" href="#URL_PAGE{newsletter}">
+				<i class="ri-mail-line" aria-hidden="true"></i> <:marly:newsletter:>
+			</a>
+			<a class="pilule plein" href="#URL_PAGE{contact}">
+				<i class="ri-customer-service-2-line" aria-hidden="true"></i> <:marly:contacter_mairie:>
+			</a>
+		</div>
+
+		<div class="rang-nav">
+			<a class="marque" href="#URL_SITE_SPIP/" rel="home">
+				<img class="sceau" src="#CHEMIN{img/blason.svg}" width="72" height="72"
+				     alt="[(#NOM_SITE_SPIP|attribut_html)]">
+				<span>
+					<b>#NOM_SITE_SPIP</b>
+					[<small>(#DESCRIPTIF_SITE_SPIP|couper{60})</small>]
+				</span>
+			</a>
+
+			<nav aria-label="<:marly:menu_principal:>">
+				<ul class="nav">
+					<BOUCLE_menu(RUBRIQUES){racine}{par num titre, titre}>
+					<li>
+						<a href="#URL_RUBRIQUE"
+						   class="[(#EXPOSE{actif})]"[(#EXPOSE{' aria-current="true"'})]>#TITRE</a>
+					</li>
+					</BOUCLE_menu>
+				</ul>
+			</nav>
+
+			<form class="recherche-entete" role="search" method="get" action="#URL_PAGE{recherche}">
+				<label for="recherche-globale" class="sr"><:marly:rechercher_site:></label>
+				<input type="search" id="recherche-globale" name="recherche"
+				       placeholder="<:marly:rechercher:>">
+				<button type="submit" class="loupe">
+					<i class="ri-search-line" aria-hidden="true"></i>
+					<span class="sr"><:marly:rechercher:></span>
+				</button>
+			</form>
+
+			<button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile">
+				<i class="ri-menu-line" aria-hidden="true"></i>
+				<span class="sr"><:marly:ouvrir_menu:></span>
+			</button>
+		</div>
+
+	</div>
+</header>

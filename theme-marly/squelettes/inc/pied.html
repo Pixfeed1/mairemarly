@@ -1,0 +1,66 @@
+[(#REM)
+  inc/pied.html — pied de page commun.
+  ---------------------------------------------------------------------------
+  Les coordonnées de la mairie sont des PARAMÈTRES DU SITE, pas du contenu et
+  pas des libellés. Elles sont donc lues en configuration via #CONFIG, et non
+  écrites dans ce gabarit : le jour où la mairie change de numéro, personne
+  n'ouvre un fichier.
+
+  Chaque valeur porte un repli, pour que le site reste correct tant que la
+  configuration n'est pas renseignée.
+
+  RESTE À FAIRE : le formulaire qui renseigne ces valeurs dans l'espace privé.
+  Tant qu'il n'existe pas, elles se posent à la main dans config/mes_options.php.
+
+  Le second menu ne duplique pas le premier : il liste les rubriques racines
+  par une boucle, exactement comme l'en-tête.
+]
+<footer class="pied" id="pied">
+	<div class="large">
+
+		<div class="pied-grille">
+
+			<div>
+				<h3>#NOM_SITE_SPIP</h3>
+				<p class="coord">
+					[<i class="ri-map-pin-2-line" aria-hidden="true"></i> (#CONFIG{marly/adresse}|sinon{'02120 Marly-Gomont, Aisne'})<br>]
+					[<i class="ri-phone-line" aria-hidden="true"></i> <a href="tel:[(#CONFIG{marly/telephone}|sinon{'0323602269'}|replace{' ',''})]">(#CONFIG{marly/telephone}|sinon{'03 23 60 22 69'})</a><br>]
+					[<i class="ri-mail-line" aria-hidden="true"></i> <a href="mailto:(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'})">(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'})</a>]
+				</p>
+				[<p class="horaires">(#CONFIG{marly/horaires})</p>]
+			</div>
+
+			<div>
+				<h3><:marly:le_site:></h3>
+				<ul>
+					<BOUCLE_pied_menu(RUBRIQUES){racine}{par num titre, titre}>
+					<li><a href="#URL_RUBRIQUE">#TITRE</a></li>
+					</BOUCLE_pied_menu>
+				</ul>
+			</div>
+
+			<div>
+				<h3><:marly:demarches:></h3>
+				[(#REM) Ces liens sont du contenu : ils vivent dans une rubrique
+				        dédiée, repérée par le mot-clé « demarches ». La mairie
+				        les ajoute et les retire sans intervention technique. ]
+				<ul>
+					<BOUCLE_demarches(ARTICLES){titre_mot=demarches}{par num titre, titre}{0,6}>
+					<li><a href="#URL_ARTICLE">#TITRE</a></li>
+					</BOUCLE_demarches>
+					<li><a href="https://www.service-public.fr" rel="noopener">service-public.fr</a></li>
+					<//B_demarches>
+				</ul>
+			</div>
+
+		</div>
+
+		<div class="pied-bas">
+			<a href="#URL_PAGE{mentions-legales}"><:marly:mentions_legales:></a>
+			<a href="#URL_PAGE{confidentialite}"><:marly:confidentialite:></a>
+			<a href="#URL_PAGE{accessibilite}"><:marly:accessibilite:></a>
+			<a href="#URL_PAGE{plan}"><:marly:plan_du_site:></a>
+		</div>
+
+	</div>
+</footer>

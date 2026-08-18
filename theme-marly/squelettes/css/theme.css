@@ -1,0 +1,274 @@
+/* ===========================================================================
+   Thème de Marly-Gomont — feuille de style principale
+   ---------------------------------------------------------------------------
+   Issue de la maquette validée (refonte/maquette/index.html).
+   Les icônes viennent de Remix Icon, auto-hébergé dans css/remixicon.css.
+
+   >>> COULEUR DU SITE : une seule ligne, --accent ci-dessous.
+   =========================================================================== */
+/* ===========================================================================
+   Marly-Gomont — maquette de proposition
+   ---------------------------------------------------------------------------
+   Grammaire visuelle :
+     1. titres géants en deux temps : 1er mot script coloré + suite serif noire
+     2. bandes crème pleine largeur, fermées par un liseré d'accent de 3px
+     3. carte blanche qui chevauche l'image, liseré d'accent en pied de carte
+     4. gravures circulaires en mix-blend-mode qui débordent du cadre
+     5. en-tête blanc, la couleur ne sert que d'accent
+   Icônes : Remix Icon.  Polices : Alegreya, Alegreya Sans, Caveat, Open Sans
+   (toutes SIL OFL / Apache 2.0).
+
+   >>> COULEUR DU SITE : une seule ligne, --accent ci-dessous.
+       Vert bocage #1E5B41 · Rouge #BE061C · Bleu ardoise #1F4E79
+   =========================================================================== */
+
+:root{
+  --accent:#1E5B41;  --accent-sombre:#14402E;  --jaune:#E5A93C;
+  --encre:#1D1A1A;   --encre-doux:#55504A;
+  --creme:#FDF8EE;   --trait:#DED6C6;
+
+  --script:"Caveat",cursive;
+  --serif:"Alegreya",Georgia,serif;
+  --titre:"Alegreya Sans","Segoe UI",system-ui,sans-serif;
+  --texte:"Open Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --large:1240px;
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+body{
+  margin:0; background:#fff; color:var(--encre); font-family:var(--texte);
+  font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+a{ color:inherit; }
+h1,h2,h3,h4{ margin:0; line-height:1.1; }
+.large{ max-width:var(--large); margin-inline:auto; padding-inline:24px; }
+a:focus-visible,button:focus-visible,input:focus-visible{ outline:3px solid var(--jaune); outline-offset:2px; }
+.sr{ position:absolute; left:-9999px; }
+.saut{ position:absolute; left:-9999px; background:var(--accent); color:#fff; padding:12px 20px; z-index:100; }
+.saut:focus{ left:12px; top:12px; }
+
+/* ---- icônes Remix : une règle pour tout le set -------------------------- */
+[class^="ri-"],[class*=" ri-"]{ line-height:1; vertical-align:-.1em; }
+
+/* ---- photos : dégradé de secours si le fichier manque ------------------- */
+.ph{ position:relative; overflow:hidden; background:var(--f,var(--accent)); }
+.ph img{ width:100%; height:100%; object-fit:cover; display:block; }
+.ph::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 20% 12%,rgba(255,255,255,.14),transparent 58%);
+}
+
+/* ---- grain papier ------------------------------------------------------- */
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:999; opacity:.03;
+  background-image:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>\
+<filter id='b'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter>\
+<rect width='200' height='200' filter='url(%23b)'/></svg>");
+}
+
+/* ---- 1. TITRE DE SECTION ------------------------------------------------ */
+.titre-bloc{
+  font-family:var(--script); color:var(--accent);
+  font-size:clamp(42px,7vw,74px); font-weight:700; line-height:1.05;
+  margin-bottom:34px; display:block;
+}
+.titre-bloc span{ font-family:var(--serif); color:var(--encre); font-weight:400; font-size:clamp(38px,6.4vw,70px); }
+.titre-bloc.droite{ text-align:right; }
+
+/* ---- bandeau maquette --------------------------------------------------- */
+.bandeau{
+  background:var(--encre); color:#fff; font-size:12.5px; letter-spacing:.06em;
+  text-align:center; padding:9px 16px; font-weight:600; text-transform:uppercase;
+}
+.bandeau span{ color:var(--jaune); }
+
+/* ---- 5. EN-TÊTE BLANC --------------------------------------------------- */
+.entete{ background:#fff; position:sticky; top:0; z-index:60; border-bottom:1px solid #EEE8DC; }
+.rang-outils{ display:flex; justify-content:flex-end; align-items:center; gap:10px; padding-top:12px; }
+.rond-social{
+  width:27px; height:27px; border-radius:50%; background:var(--accent); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:14px; text-decoration:none;
+}
+.pilule{
+  border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:20px;
+  padding:5px 14px; font-size:12.5px; font-weight:600; text-decoration:none;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.pilule.plein{ background:var(--accent); color:#fff; }
+.pilule:hover{ background:var(--accent); color:#fff; }
+
+.rang-nav{ display:flex; align-items:center; gap:26px; padding:10px 0 18px; }
+.marque{ display:flex; align-items:center; gap:14px; text-decoration:none; flex-shrink:0; }
+.marque .sceau{ width:72px; height:72px; flex-shrink:0; }
+.marque b{ font-family:var(--serif); font-size:34px; font-weight:700; display:block; line-height:1; }
+.marque small{ font-size:11px; letter-spacing:.34em; text-transform:uppercase; color:var(--encre-doux); display:block; margin-top:3px; }
+
+.nav{ margin-left:auto; display:flex; list-style:none; margin-block:0; padding:0; align-items:center; }
+.nav li{ border-left:1px solid var(--trait); }
+.nav li:first-child{ border-left:0; }
+.nav a{
+  display:block; padding:4px 22px; text-decoration:none; font-family:var(--titre);
+  font-weight:500; font-size:19px; text-transform:uppercase; letter-spacing:.02em;
+}
+.nav a:hover{ color:var(--accent); }
+.loupe{ background:none; border:0; cursor:pointer; padding:4px 0 4px 22px; color:var(--accent); font-size:25px; }
+.burger{ display:none; margin-left:auto; background:none; border:1px solid var(--trait); border-radius:3px; padding:8px 13px; cursor:pointer; font-size:18px; }
+
+/* ---- HÉROS -------------------------------------------------------------- */
+.heros{ position:relative; height:clamp(340px,44vw,500px); --f:linear-gradient(160deg,#2E7154,#10382A); }
+.heros .voile{ position:absolute; inset:0; background:linear-gradient(to bottom,rgba(0,0,0,.42),rgba(0,0,0,.25) 45%,rgba(0,0,0,.55)); }
+.heros-texte{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; color:#fff; }
+.heros h1{ font-family:var(--serif); font-weight:700; font-size:clamp(34px,5vw,58px); text-shadow:0 2px 20px rgba(0,0,0,.5); }
+.heros .sous{ font-size:clamp(14px,1.8vw,18px); letter-spacing:.22em; text-transform:uppercase; margin-top:10px; opacity:.9; }
+.recherche{ margin-top:26px; display:flex; width:min(600px,100%); background:#fff; border-radius:40px; overflow:hidden; box-shadow:0 14px 40px rgba(0,0,0,.32); }
+.recherche input{ flex:1; border:0; padding:16px 24px; font-size:16px; font-family:var(--texte); min-width:0; }
+.recherche button{ border:0; background:var(--accent); color:#fff; padding:0 26px; cursor:pointer; font-weight:700; font-family:var(--texte); font-size:16px; }
+
+/* ---- ACCÈS RAPIDES ------------------------------------------------------ */
+.acces{ background:#fff; border-bottom:1px solid #EEE8DC; }
+.acces .large{ display:flex; align-items:center; gap:40px; padding-block:26px; flex-wrap:wrap; }
+.acces .titre-bloc{ font-size:clamp(30px,3.6vw,42px); margin:0; white-space:nowrap; }
+.acces .titre-bloc span{ font-size:clamp(26px,3.2vw,38px); }
+.acces-liste{ display:flex; gap:6px; list-style:none; margin:0; padding:0; flex:1; flex-wrap:wrap; justify-content:flex-end; }
+.acces-liste a{ display:flex; flex-direction:column; align-items:center; gap:9px; text-decoration:none; padding:8px 16px; font-size:13px; font-weight:600; text-align:center; min-width:104px; }
+.acces-liste i{ font-size:30px; color:var(--accent); }
+.acces-liste a:hover{ color:var(--accent); }
+
+section{ padding-block:70px; position:relative; }
+
+/* ---- 4. GRAVURE QUI DÉBORDE --------------------------------------------- */
+.gravure{ position:absolute; width:300px; height:300px; opacity:.8; mix-blend-mode:multiply; pointer-events:none; z-index:0; }
+.gravure.dr{ right:0; top:40px; transform:translateX(45%); }
+.gravure.ga{ left:0; top:120px; transform:translateX(-45%); }
+
+/* ---- 3. ACTU VEDETTE ---------------------------------------------------- */
+.actu-vedette{ position:relative; display:flex; align-items:center; z-index:1; text-decoration:none; }
+.actu-vedette .ph{ width:72%; aspect-ratio:1087/578; border-radius:4px; --f:linear-gradient(135deg,#C98B3C,#8E5526); }
+.actu-vedette .txt{
+  background:#fff; border-radius:4px; border-bottom:4px solid var(--accent);
+  padding:40px 44px; max-width:470px; margin-left:-140px; position:relative; z-index:2;
+  box-shadow:0 16px 44px rgba(29,26,26,.12);
+}
+.cat{ display:inline-block; background:var(--jaune); color:var(--encre); font-size:12px; letter-spacing:.09em; text-transform:uppercase; font-weight:700; padding:4px 11px; margin-bottom:12px; }
+.actu-vedette .txt h3{ font-family:var(--titre); font-weight:800; font-size:34px; margin-bottom:12px; }
+.actu-vedette .txt p{ margin:0; color:var(--encre-doux); font-size:16px; }
+
+/* ---- 2. BANDE CRÈME ----------------------------------------------------- */
+.bande-creme{ position:relative; margin-top:46px; padding-top:34px; padding-bottom:38px; }
+.bande-creme::before{
+  content:''; position:absolute; left:50%; transform:translateX(-50%); width:100vw;
+  top:0; bottom:0; background:var(--creme); border-bottom:3px solid var(--accent); z-index:0;
+}
+.bande-creme>*{ position:relative; z-index:1; }
+.actus-petites{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+.actu-petite{ position:relative; aspect-ratio:540/288; border-radius:4px; overflow:hidden; display:block; text-decoration:none; color:#fff; }
+.actu-petite .ph{ position:absolute; inset:0; }
+.actu-petite .voile{ position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.15) 58%,transparent 100%); }
+.actu-petite .txt{ position:absolute; bottom:0; padding:16px 20px; width:100%; }
+.actu-petite h3{ font-family:var(--titre); font-weight:700; font-size:20px; color:#fff; }
+
+.filet{ position:relative; margin-top:38px; text-align:right; }
+.filet::before{ content:''; position:absolute; left:0; right:0; top:50%; height:2px; background:var(--accent); }
+.filet a{ position:relative; display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--accent); border-radius:30px; padding:11px 26px; text-decoration:none; font-weight:600; font-size:15px; }
+.filet a:hover{ background:var(--accent); color:#fff; }
+
+/* ---- ÉVÉNEMENTS --------------------------------------------------------- */
+.evt-zone{ position:relative; }
+.evt-zone::before{ content:''; position:absolute; left:50%; transform:translateX(-50%); width:100vw; top:120px; bottom:0; background:var(--creme); border-bottom:3px solid var(--accent); z-index:0; }
+.evt-grille{ position:relative; z-index:1; display:grid; grid-template-columns:440px 1fr; gap:56px; }
+.affiche{ position:relative; }
+.affiche .ph{ aspect-ratio:450/357; border-radius:4px; --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
+.affiche .txt{ background:#fff; padding:26px 28px 22px; margin:-46px 18px 0; position:relative; border-radius:4px; box-shadow:0 14px 34px rgba(29,26,26,.12); }
+.affiche h3{ font-family:var(--titre); font-weight:800; font-size:26px; margin-bottom:8px; }
+.affiche p{ margin:0; color:var(--encre-doux); font-size:15px; }
+.pastille-date{
+  position:absolute; left:20px; bottom:-26px; z-index:3; width:106px; height:106px;
+  border-radius:50%; background:var(--accent); color:#fff; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; line-height:1;
+}
+.pastille-date b{ font-family:var(--titre); font-size:29px; font-weight:800; }
+.pastille-date span{ font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-top:3px; }
+
+.filtres{ display:flex; gap:10px; justify-content:flex-end; margin-bottom:26px; flex-wrap:wrap; position:relative; z-index:1; }
+.filtres button{ border:1px solid var(--accent); background:#fff; color:var(--encre); border-radius:24px; padding:8px 20px; font-size:14px; cursor:pointer; font-family:var(--texte); }
+.filtres button:hover{ background:var(--accent); color:#fff; }
+
+.evt-liste{ list-style:none; margin:0; padding:0; }
+.evt-liste li{ display:flex; gap:24px; align-items:center; padding:22px 0; border-bottom:1px solid var(--trait); }
+.evt-liste li:last-child{ border-bottom:0; }
+.rond-date{ flex-shrink:0; width:88px; height:88px; border-radius:50%; background:var(--accent); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; }
+.rond-date b{ font-family:var(--titre); font-size:26px; font-weight:800; }
+.rond-date span{ font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; margin-top:2px; }
+.evt-liste h3{ font-family:var(--titre); font-weight:700; font-size:21px; margin-top:6px; }
+
+/* ---- CONSEIL MUNICIPAL -------------------------------------------------- */
+.conseil{ background:var(--accent); color:#fff; }
+.conseil .titre-bloc{ color:var(--jaune); }
+.conseil .titre-bloc span{ color:#fff; }
+.conseil-grille{ display:grid; grid-template-columns:1fr 1.05fr; gap:56px; align-items:center; }
+.conseil p.intro{ font-size:18px; opacity:.93; margin:0 0 26px; }
+.conseil-recherche{ display:flex; background:#fff; border-radius:4px; overflow:hidden; }
+.conseil-recherche input{ flex:1; border:0; padding:16px 18px; font-size:16px; min-width:0; font-family:var(--texte); }
+.conseil-recherche button{ border:0; background:var(--jaune); color:var(--encre); padding:0 26px; font-weight:700; cursor:pointer; font-family:var(--texte); }
+.pv{ background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); border-radius:4px; }
+.pv ul{ list-style:none; margin:0; padding:8px; }
+.pv li{ display:flex; align-items:center; gap:14px; padding:14px; border-bottom:1px solid rgba(255,255,255,.13); }
+.pv li:last-child{ border-bottom:0; }
+.pv i{ color:var(--jaune); font-size:20px; flex-shrink:0; }
+.pv b{ font-family:var(--titre); font-size:17px; font-weight:700; }
+.pv small{ display:block; opacity:.75; font-size:13px; }
+.pv .marq{ margin-left:auto; font-size:11px; background:var(--jaune); color:var(--encre); padding:3px 9px; font-weight:700; white-space:nowrap; }
+
+/* ---- ASSOCIATIONS ------------------------------------------------------- */
+.assos{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
+.asso{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:28px 24px; text-decoration:none; display:block; }
+.asso:hover{ border-color:var(--accent); }
+.asso .rond{ width:52px; height:52px; border-radius:50%; background:var(--creme); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+.asso .rond i{ font-size:25px; color:var(--accent); }
+.asso h3{ font-family:var(--titre); font-weight:800; font-size:19px; margin-bottom:5px; }
+.asso p{ margin:0; font-size:14px; color:var(--encre-doux); }
+
+/* ---- À LIRE ------------------------------------------------------------- */
+.lire{ background:var(--creme); }
+.lire-grille{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+.bulletin{ display:flex; gap:26px; align-items:center; }
+.couv{ width:160px; height:216px; flex-shrink:0; border-radius:2px; box-shadow:0 12px 30px rgba(29,26,26,.22); --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
+.lettre{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:30px; }
+.lettre form{ display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
+.lettre input{ flex:1; min-width:190px; border:1px solid var(--trait); border-radius:3px; padding:13px 15px; font-family:var(--texte); }
+.lettre button{ border:0; background:var(--accent); color:#fff; border-radius:3px; padding:13px 24px; font-weight:700; cursor:pointer; font-family:var(--texte); }
+
+/* ---- PIED --------------------------------------------------------------- */
+.pied{ background:var(--creme); border-top:3px solid var(--accent); padding-block:56px 26px; }
+.pied-grille{ display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:48px; }
+.pied h3{ font-family:var(--titre); font-weight:800; font-size:20px; margin-bottom:14px; }
+.pied ul{ list-style:none; margin:0; padding:0; }
+.pied li{ margin-bottom:9px; font-size:15px; }
+.pied .coord{ font-size:15px; line-height:1.9; }
+.pied .coord i{ color:var(--accent); width:20px; }
+.pied-bas{ border-top:1px solid var(--trait); margin-top:42px; padding-top:20px; display:flex; gap:22px; flex-wrap:wrap; font-size:13px; color:var(--encre-doux); }
+.pied-bas a{ text-decoration:none; }
+.pied-bas a:hover{ text-decoration:underline; }
+
+/* ---- responsive --------------------------------------------------------- */
+@media (max-width:1080px){
+  .actu-vedette{ flex-direction:column; align-items:stretch; }
+  .actu-vedette .ph{ width:100%; }
+  .actu-vedette .txt{ margin-left:0; margin-top:-60px; max-width:none; margin-inline:20px; }
+  .evt-grille{ grid-template-columns:1fr; gap:64px; }
+  .conseil-grille,.lire-grille,.pied-grille{ grid-template-columns:1fr; gap:34px; }
+  .assos{ grid-template-columns:1fr 1fr; }
+  .gravure{ display:none; }
+}
+@media (max-width:760px){
+  .nav,.rang-outils,.loupe{ display:none; }
+  .burger{ display:block; }
+  .acces .large{ flex-direction:column; align-items:stretch; gap:14px; }
+  .acces-liste{ justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; }
+  .actus-petites,.assos{ grid-template-columns:1fr; }
+  .bulletin{ flex-direction:column; align-items:flex-start; }
+  .filtres{ justify-content:flex-start; }
+  .titre-bloc.droite{ text-align:left; }
+  section{ padding-block:48px; }
+}
