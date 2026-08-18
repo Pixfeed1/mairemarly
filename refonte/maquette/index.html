@@ -74,6 +74,37 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 .titre-bloc.droite{ text-align:right; }
 
+
+
+/* ---- grain papier -------------------------------------------------------
+   Un bruit très léger sur toute la page. C'est imperceptible consciemment
+   mais ça enlève l'aspect "aplat numérique" des grandes zones de couleur.
+   Généré en SVG, aucun fichier image à charger.                            */
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:999;
+  opacity:.035;
+  background-image:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>\
+<filter id='b'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter>\
+<rect width='200' height='200' filter='url(%23b)'/></svg>");
+}
+@media (prefers-reduced-motion:reduce){ body::after{ display:none; } }
+
+/* ---- placeholders d'images : dégradé + voile texturé --------------------
+   Tant qu'il n'y a pas de photographies, on évite l'aplat plat : deux
+   dégradés superposés donnent une profondeur de champ crédible.            */
+.img, .fond, .couv{ position:relative; }
+.img::after, .fond::after{
+  content:''; position:absolute; inset:0;
+  background:
+    radial-gradient(120% 90% at 20% 15%, rgba(255,255,255,.22), transparent 60%),
+    radial-gradient(90% 80% at 85% 95%, rgba(0,0,0,.30), transparent 65%);
+}
+
+/* ---- jeu d'icônes : une seule règle gouverne tout le set ---------------- */
+.ico{ fill:none; stroke:currentColor; stroke-width:1.5;
+      stroke-linecap:round; stroke-linejoin:round; }
+
 /* ---- bandeau maquette --------------------------------------------------- */
 .bandeau{
   background:var(--encre); color:#fff; font-size:12.5px; letter-spacing:.06em;
@@ -116,7 +147,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 .nav a:hover{ color:var(--accent); }
 .loupe{ background:none; border:0; cursor:pointer; padding:4px 0 4px 22px; }
-.loupe svg{ width:26px; height:26px; stroke:var(--accent); fill:none; stroke-width:2; }
+.loupe svg{ width:26px; height:26px; color:var(--accent); }
 .burger{ display:none; margin-left:auto; background:none; border:1px solid var(--trait);
   border-radius:3px; padding:9px 13px; cursor:pointer; font-size:15px; }
 
@@ -152,7 +183,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   text-decoration:none; padding:8px 16px; font-size:13px; font-weight:600;
   text-align:center; min-width:100px;
 }
-.acces-liste svg{ width:30px; height:30px; stroke:var(--accent); fill:none; stroke-width:1.5; }
+.acces-liste svg{ width:30px; height:30px; color:var(--accent); }
 .acces-liste a:hover{ color:var(--accent); }
 
 /* ---- sections ----------------------------------------------------------- */
@@ -276,7 +307,7 @@ section{ padding-block:70px; position:relative; }
 .pv ul{ list-style:none; margin:0; padding:8px; }
 .pv li{ display:flex; align-items:center; gap:14px; padding:14px; border-bottom:1px solid rgba(255,255,255,.13); }
 .pv li:last-child{ border-bottom:0; }
-.pv svg{ width:20px; height:20px; stroke:var(--jaune); fill:none; stroke-width:1.6; flex-shrink:0; }
+.pv svg{ width:20px; height:20px; color:var(--jaune); flex-shrink:0; }
 .pv b{ font-family:var(--titre); font-size:17px; font-weight:700; }
 .pv small{ display:block; opacity:.75; font-size:13px; }
 .pv .marq{ margin-left:auto; font-size:11px; background:var(--jaune); color:var(--encre); padding:3px 9px; font-weight:700; white-space:nowrap; }
@@ -286,7 +317,7 @@ section{ padding-block:70px; position:relative; }
 .asso{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:28px 24px; text-decoration:none; display:block; }
 .asso:hover{ border-color:var(--accent); }
 .asso .rond{ width:50px; height:50px; border-radius:50%; background:var(--creme); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
-.asso .rond svg{ width:24px; height:24px; stroke:var(--accent); fill:none; stroke-width:1.6; }
+.asso .rond svg{ width:24px; height:24px; color:var(--accent); }
 .asso h3{ font-family:var(--titre); font-weight:800; font-size:19px; margin-bottom:5px; }
 .asso p{ margin:0; font-size:14px; color:var(--encre-doux); }
 
@@ -336,6 +367,23 @@ section{ padding-block:70px; position:relative; }
 </style>
 </head>
 <body>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+ <defs>
+  <g id="ico-pv"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></g>
+  <g id="ico-agenda"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 11h16"/></g>
+  <g id="ico-urba"><path d="M4 21V8l8-5 8 5v13M3 21h18M10 21v-6h4v6M8 11h.01M16 11h.01"/></g>
+  <g id="ico-assos"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 20a5 5 0 0 1 4.5-5"/></g>
+  <g id="ico-bulletin"><path d="M12 8v13"/><path d="M2 5h6a4 4 0 0 1 4 3.5V21a3.5 3.5 0 0 0-3.5-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 3.5V21a3.5 3.5 0 0 1 3.5-3H22z"/></g>
+  <g id="ico-lieu"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 15 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g>
+  <g id="ico-sport"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 3M16 6h3a3 3 0 0 1-3 3"/><path d="M12 13v4M9.5 20h5M10 17h4"/></g>
+  <g id="ico-musique"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></g>
+  <g id="ico-fete"><path d="M12 3.5l1.9 4.3 4.3 1.9-4.3 1.9L12 16l-1.9-4.4L5.8 9.7l4.3-1.9z"/><path d="M18.5 15l.8 1.8 1.7.7-1.7.7-.8 1.8-.8-1.8-1.7-.7 1.7-.7z"/></g>
+  <g id="ico-eglise"><path d="M12 2.5v4M10 4.5h4"/><path d="M6 21V12l6-4.5 6 4.5v9M5 21h14M10 21v-5h4v5"/></g>
+  <g id="ico-loupe"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16 16"/></g>
+ </defs>
+</svg>
 
 <a class="saut" href="#contenu">Aller au contenu principal</a>
 
@@ -387,7 +435,7 @@ section{ padding-block:70px; position:relative; }
         </ul>
       </nav>
       <button class="loupe" aria-label="Rechercher">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-loupe"/></svg>
       </button>
       <button class="burger" aria-label="Ouvrir le menu">☰ Menu</button>
     </div>
@@ -435,12 +483,12 @@ section{ padding-block:70px; position:relative; }
     <div class="large">
       <h2 class="titre-bloc">Je <span>souhaite</span></h2>
       <ul class="acces-liste">
-        <li><a href="#conseil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/><path d="M9 13h7M9 17h5"/></svg>Comptes rendus</a></li>
-        <li><a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>Démarches</a></li>
-        <li><a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18M5 21V9l7-6 7 6v12"/><path d="M10 21v-6h4v6"/></svg>Urbanisme</a></li>
-        <li><a href="#assos"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.4"/><path d="M3 20a6 6 0 0112 0M15 20a5 5 0 016-4.5"/></svg>Associations</a></li>
-        <li><a href="#bulletin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h10v14H4z"/><path d="M14 8h6v11h-6"/><path d="M7 9h4M7 12h4"/></svg>Le bulletin</a></li>
-        <li><a href="#pied"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.4 7-11a7 7 0 10-14 0c0 4.6 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>Nous trouver</a></li>
+        <li><a href="#conseil"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>Comptes rendus</a></li>
+        <li><a href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-agenda"/></svg>Démarches</a></li>
+        <li><a href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-urba"/></svg>Urbanisme</a></li>
+        <li><a href="#assos"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-assos"/></svg>Associations</a></li>
+        <li><a href="#bulletin"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-bulletin"/></svg>Le bulletin</a></li>
+        <li><a href="#pied"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-lieu"/></svg>Nous trouver</a></li>
       </ul>
     </div>
   </div>
@@ -575,15 +623,15 @@ section{ padding-block:70px; position:relative; }
 
         <div class="pv">
           <ul>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
               <span><b>Séance du 27 septembre</b><small>Budget, voirie communale</small></span><span class="marq">Récent</span></li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
               <span><b>Séance du 10 avril</b><small>Compte administratif</small></span></li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
               <span><b>Séance du 28 mars</b><small>Vote du budget primitif</small></span></li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
               <span><b>Séance du 9 octobre</b><small>Travaux, subventions</small></span></li>
-            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>
+            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
               <span><b>Séance du 29 juin</b><small>Rentrée scolaire</small></span></li>
           </ul>
         </div>
@@ -596,13 +644,13 @@ section{ padding-block:70px; position:relative; }
     <div class="large">
       <h2 class="titre-bloc">Nos <span>associations</span></h2>
       <div class="assos">
-        <a class="asso" href="#"><span class="rond"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></span>
+        <a class="asso" href="#"><span class="rond"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sport"/></svg></span>
           <h3>ASMG</h3><p>Association sportive de Marly-Gomont</p></a>
-        <a class="asso" href="#"><span class="rond"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
+        <a class="asso" href="#"><span class="rond"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-musique"/></svg></span>
           <h3>Harmonie municipale</h3><p>Orchestre et concerts du village</p></a>
-        <a class="asso" href="#"><span class="rond"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11z"/><path d="M9 20v-6h6v6"/></svg></span>
+        <a class="asso" href="#"><span class="rond"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-fete"/></svg></span>
           <h3>Comité d'animation</h3><p>Fêtes, brocante et animations</p></a>
-        <a class="asso" href="#"><span class="rond"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M7 8h10"/></svg></span>
+        <a class="asso" href="#"><span class="rond"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-eglise"/></svg></span>
           <h3>Secteur paroissial</h3><p>Vie paroissiale et horaires des messes</p></a>
       </div>
     </div>
