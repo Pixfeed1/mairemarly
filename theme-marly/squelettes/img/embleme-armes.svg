@@ -1,14 +1,4 @@
-[(#REM)
-  inc/embleme.html — l'emblème de la commune.
-  ---------------------------------------------------------------------------
-  Intégré en SVG et non appelé en <img> : ainsi il se dessine en currentColor
-  et suit la couleur du thème. Une image externe, elle, resterait figée.
-
-  Marly-Gomont n'a PAS d'armoiries officielles : les bases héraldiques lui
-  attribuent un écu d'attente. Ceci est donc un emblème, pas un blason, et
-  ne doit jamais être présenté comme tel.
-]
-<svg class="sceau" width="72" height="72" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"
      role="img" aria-label="Emblème de Marly-Gomont">
   <!-- Sigle DÉRIVÉ des armes : dessin original, aucun fichier repris.
        On ne garde que la partition — fascé à senestre, semé de lis à dextre —

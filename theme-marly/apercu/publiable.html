@@ -660,20 +660,44 @@ section{ padding-block:70px; position:relative; }
 			<a class="marque" href="#" rel="home">
 				<svg class="sceau" width="72" height="72" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
      role="img" aria-label="Emblème de Marly-Gomont">
-  <!-- Un seul arc de texte, et plus gros. À 72px d'affichage, deux couronnes
-       de texte deviennent illisibles — et « Thiérache · Aisne » répétait ce
-       que le mot-symbole dit déjà à côté. -->
+  <!-- Sigle DÉRIVÉ des armes : dessin original, aucun fichier repris.
+       On ne garde que la partition — fascé à senestre, semé de lis à dextre —
+       qui est ce qui reste lisible à petite taille. L'écusson au lion et le
+       détail des pièces sont abandonnés : à 40px ils deviennent une tache. -->
+  <defs>
+    <clipPath id="rond"><circle cx="50" cy="50" r="38"/></clipPath>
+    <path id="lis" d="M0 -5 C1.6 -2.4 1.5 -0.8 0 0.6 C-1.5 -0.8 -1.6 -2.4 0 -5 Z
+                      M-3.4 -1 C-1.9 -0.4 -1.1 0.6 -0.9 1.7 C-2.4 1.6 -3.4 0.4 -3.4 -1 Z
+                      M3.4 -1 C3.4 0.4 2.4 1.6 0.9 1.7 C1.1 0.6 1.9 -0.4 3.4 -1 Z
+                      M-2.2 2.4 H2.2 V3.4 H-2.2 Z M-0.5 3.6 H0.5 V5.4 H-0.5 Z"/>
+  </defs>
+
+  <g clip-path="url(#rond)">
+    <!-- senestre : le fascé -->
+    <g fill="currentColor">
+      <rect x="12" y="12" width="38" height="7"/>
+      <rect x="12" y="26" width="38" height="7"/>
+      <rect x="12" y="40" width="38" height="7"/>
+      <rect x="12" y="54" width="38" height="7"/>
+      <rect x="12" y="68" width="38" height="7"/>
+      <rect x="12" y="82" width="38" height="7"/>
+    </g>
+    <!-- dextre : le semé de lis -->
+    <g fill="currentColor" opacity=".9">
+      <use href="#lis" transform="translate(62 24)"/>
+      <use href="#lis" transform="translate(78 24)"/>
+      <use href="#lis" transform="translate(70 40)"/>
+      <use href="#lis" transform="translate(86 40)"/>
+      <use href="#lis" transform="translate(62 56)"/>
+      <use href="#lis" transform="translate(78 56)"/>
+      <use href="#lis" transform="translate(70 72)"/>
+      <use href="#lis" transform="translate(86 72)"/>
+    </g>
+    <line x1="50" y1="8" x2="50" y2="92" stroke="currentColor" stroke-width="2.2"/>
+  </g>
+
+  <circle cx="50" cy="50" r="38"   fill="none" stroke="currentColor" stroke-width="2.4"/>
   <circle cx="50" cy="50" r="47.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
-  <circle cx="50" cy="50" r="40"   fill="none" stroke="currentColor" stroke-width="0.9"/>
-  <path id="arcNom" d="M 12 50 A 38 38 0 0 1 88 50" fill="none"/>
-  <text font-family="Alegreya Sans, Georgia, serif" font-size="13" font-weight="700"
-        letter-spacing="1.2" fill="currentColor">
-    <textPath href="#arcNom" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
-  </text>
-  <text x="50" y="62" font-family="Alegreya, Georgia, serif" font-size="30" font-weight="700"
-        text-anchor="middle" fill="currentColor">MG</text>
-  <path d="M36 70 h28" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-  <circle cx="50" cy="78" r="1.8" fill="currentColor"/>
 </svg>
 				<span>
 					<b>Marly-Gomont</b>
