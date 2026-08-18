@@ -1,0 +1,46 @@
+[(#REM)
+  inc/menu-plein.html — le menu principal des écrans étroits.
+  ---------------------------------------------------------------------------
+  Plein écran plutôt que tiroir latéral : un tiroir fait application mobile,
+  et une commune n'est pas une application. Ici, de l'air, de grandes cibles,
+  et la recherche en premier — c'est le geste le plus fréquent.
+
+  Même source que l'en-tête : une boucle sur les rubriques racines. Les deux
+  menus ne peuvent pas diverger puisqu'il n'y a qu'une liste.
+]
+<div class="menu-plein" id="menu-plein" data-ouvert="non" aria-hidden="true"
+     role="dialog" aria-modal="true" aria-label="<:marly:menu_principal:>">
+	<div class="dedans">
+
+		<form class="recherche-grande" role="search" method="get" action="#URL_PAGE{recherche}">
+			<label for="recherche-menu" class="sr"><:marly:rechercher_site:></label>
+			<input type="search" id="recherche-menu" name="recherche"
+			       placeholder="<:marly:rechercher_placeholder:>">
+			<button type="submit">
+				<svg class="ico" aria-hidden="true"><use href="#ri-search-line"/></svg>
+				<span class="sr"><:marly:lancer_recherche:></span>
+			</button>
+		</form>
+
+		<nav aria-label="<:marly:menu_principal:>">
+			<ul>
+				<BOUCLE_menu_plein(RUBRIQUES){racine}{par num titre, titre}>
+				<li><a href="#URL_RUBRIQUE"[(#EXPOSE{' aria-current="true"'})]>#TITRE</a></li>
+				</BOUCLE_menu_plein>
+			</ul>
+		</nav>
+
+		<div class="liens-service">
+			<a class="pilule" href="#URL_PAGE{newsletter}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:newsletter:>
+			</a>
+			<a class="pilule" href="#URL_PAGE{login}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:espace_citoyen:>
+			</a>
+			<a class="pilule plein" href="#URL_PAGE{contact}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-customer-service-2-line"/></svg> <:marly:contacter_mairie:>
+			</a>
+		</div>
+
+	</div>
+</div>

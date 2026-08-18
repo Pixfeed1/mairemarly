@@ -103,8 +103,14 @@ body::after{
 .bandeau span{ color:var(--jaune); }
 
 /* ---- 5. EN-TÊTE BLANC --------------------------------------------------- */
-.entete{ background:#fff; position:sticky; top:0; z-index:60; border-bottom:1px solid #EEE8DC; }
-.rang-outils{ display:flex; justify-content:flex-end; align-items:center; gap:10px; padding-top:12px; }
+.entete{ background:#fff; position:sticky; top:0; z-index:80; border-bottom:1px solid #EEE8DC; }
+/* Rangée de service : réseaux, lettre d'information, espace personnel.
+   Elle porte ce qui n'est ni du contenu ni de la navigation. */
+.rang-outils{
+	display:flex; justify-content:flex-end; align-items:center; gap:8px;
+	padding:9px 0; border-bottom:1px solid #F0EBE0;
+}
+.rang-outils .separateur{ width:1px; height:20px; background:var(--trait); margin:0 6px; }
 .rond-social{
   width:27px; height:27px; border-radius:50%; background:var(--accent); color:#fff;
   display:flex; align-items:center; justify-content:center; font-size:14px; text-decoration:none;
@@ -400,60 +406,69 @@ section{ padding-block:70px; position:relative; }
 
 
 
-/* --- le tiroir mobile ---------------------------------------------------- */
-.menu-mobile{
-	position:fixed; inset:0 0 0 auto; width:min(340px,86vw); z-index:70;
-	background:#fff; border-left:3px solid var(--accent);
-	padding:26px 24px; overflow-y:auto;
-	transform:translateX(100%); visibility:hidden;
-	transition:transform .25s ease, visibility .25s;
-	box-shadow:-8px 0 40px rgba(29,26,26,.18);
-}
-.menu-mobile[data-ouvert="oui"]{ transform:translateX(0); visibility:visible; }
-.menu-mobile .tete-tiroir{ display:flex; align-items:center; justify-content:space-between; }
-.menu-mobile .tete-tiroir strong{ font-family:var(--serif); font-size:22px; font-weight:700; }
+/* --- le menu plein écran -------------------------------------------------
+   Un tiroir latéral fait application mobile. Une commune n'est pas une
+   application : le menu prend tout l'écran, avec de l'air, et le bouton
+   Menu se transforme en croix sur place — l'usager sait exactement où
+   cliquer pour revenir.
 
-.menu-mobile ul{ list-style:none; margin:26px 0 0; padding:0; }
-.menu-mobile li{ border-bottom:1px solid var(--trait); }
-.menu-mobile a{
-	display:block; padding:15px 4px; text-decoration:none;
-	font-family:var(--titre); font-weight:700; font-size:19px;
-	text-transform:uppercase;
+   L'en-tête reste au-dessus du menu (z-index supérieur) : le blason ne
+   disparaît jamais, on ne perd pas le fil.                                 */
+.menu-plein{
+	position:fixed; inset:0; z-index:70; overflow-y:auto;
+	background:var(--creme);
+	padding:calc(var(--h-entete,90px) + 28px) 24px 48px;
+	opacity:0; visibility:hidden; transform:translateY(-10px);
+	transition:opacity .22s ease, transform .22s ease, visibility .22s;
 }
-.menu-mobile a:hover, .menu-mobile a[aria-current]{ color:var(--accent); }
-.menu-mobile .fermer{
-	background:none; border:1px solid var(--trait); border-radius:50%;
-	width:40px; height:40px; font-size:22px; cursor:pointer; color:var(--encre);
-	display:flex; align-items:center; justify-content:center;
-}
-/* Recherche du tiroir : décrite ici, pas en attributs style dans le HTML. */
-.menu-mobile .recherche-mobile{ display:flex; margin-top:20px; }
-.menu-mobile .recherche-mobile input{
-	flex:1; min-width:0; border:1px solid var(--trait); border-right:0;
-	border-radius:22px 0 0 22px; padding:11px 18px; font-family:var(--texte);
-}
-.menu-mobile .recherche-mobile button{
-	border:1px solid var(--accent); background:var(--accent); color:#fff;
-	border-radius:0 22px 22px 0; padding:0 18px; cursor:pointer;
-	display:flex; align-items:center; min-width:52px; justify-content:center;
-}
-.menu-mobile .recherche-mobile button .ico{ width:20px; height:20px; }
+.menu-plein[data-ouvert="oui"]{ opacity:1; visibility:visible; transform:none; }
+.menu-plein .dedans{ max-width:var(--large); margin-inline:auto; }
 
-.menu-mobile .outils-mobile{ margin-top:28px; display:flex; flex-direction:column; gap:10px; }
-.menu-mobile .pilule{ justify-content:center; padding:11px 16px; font-size:14px; }
-
-/* le voile : il ferme le tiroir au clic, et isole visuellement la page */
-.voile-menu{
-	position:fixed; inset:0; z-index:65; background:rgba(29,26,26,.5);
-	opacity:0; visibility:hidden; transition:opacity .25s ease, visibility .25s;
-	border:0; padding:0; cursor:pointer;
+/* La recherche ouvre le menu : c'est la première chose qu'on voit. */
+.menu-plein .recherche-grande{
+	display:flex; align-items:center; gap:12px;
+	border-bottom:3px solid var(--accent); padding-bottom:6px; margin-bottom:40px;
 }
-.voile-menu[data-ouvert="oui"]{ opacity:1; visibility:visible; }
+.menu-plein .recherche-grande input{
+	flex:1; min-width:0; border:0; background:none; padding:10px 0;
+	font-family:var(--serif); font-size:clamp(20px,3.4vw,30px); color:var(--encre);
+}
+.menu-plein .recherche-grande input::placeholder{ color:var(--encre-doux); opacity:.5; }
+.menu-plein .recherche-grande button{
+	border:0; background:none; cursor:pointer; color:var(--accent); padding:6px;
+}
+.menu-plein .recherche-grande button .ico{ width:30px; height:30px; }
 
-/* le tiroir n'existe pas tant que le grand écran affiche la navigation */
+.menu-plein ul{ list-style:none; margin:0; padding:0; }
+.menu-plein li{ border-bottom:1px solid var(--trait); }
+.menu-plein li a{
+	display:flex; align-items:baseline; gap:16px;
+	padding:20px 2px; text-decoration:none;
+	font-family:var(--titre); font-weight:800; font-size:clamp(24px,4.4vw,34px);
+	transition:color .15s ease, padding-left .15s ease;
+}
+.menu-plein li a:hover{ color:var(--accent); padding-left:10px; }
+.menu-plein li a[aria-current]{ color:var(--accent); }
+/* Un numéro d'ordre serait décoratif : la position dans la liste n'apporte
+   aucune information. On marque seulement la rubrique courante. */
+.menu-plein li a[aria-current]::before{
+	content:''; width:10px; height:10px; border-radius:50%;
+	background:var(--accent); flex-shrink:0; align-self:center;
+}
+
+.menu-plein .liens-service{
+	margin-top:44px; display:flex; gap:12px; flex-wrap:wrap;
+}
+
 @media (min-width:1200px){
-	.menu-mobile, .voile-menu{ display:none; }
+	.menu-plein{ display:none; }
 }
+
+@media (prefers-reduced-motion:reduce){
+	.menu-plein{ transition:none; }
+	.menu-plein li a{ transition:none; }
+}
+
 
 @media (max-width:1199px){
 	.nav{ display:none; }

@@ -1,50 +1,54 @@
 /**
- * Menu mobile — ouverture, fermeture, accessibilité.
+ * Menu plein écran.
  * ---------------------------------------------------------------------------
- * Amélioration progressive : sans JavaScript, le bouton est masqué par le CSS
- * et le tiroir reste fermé. Le site demeure navigable, on ne perd aucun lien
- * puisque le pied de page reprend l'intégralité des rubriques.
+ * Amélioration progressive : sans JavaScript le bouton est masqué par le CSS
+ * et le menu reste fermé. Le site demeure navigable — le pied de page reprend
+ * l'intégralité des rubriques, aucun lien n'est perdu.
  *
- * Exigences RGAA couvertes ici :
- *   - aria-expanded reflète l'état réel du bouton
- *   - le tiroir est retiré de l'ordre de tabulation quand il est fermé
- *   - la touche Échap ferme
- *   - le focus revient sur le bouton après fermeture, jamais dans le vide
- *   - la tabulation ne peut pas sortir du tiroir ouvert
+ * Exigences RGAA couvertes :
+ *   - aria-expanded reflète l'état réel du bouton, et pilote aussi son dessin
+ *     (barres qui deviennent croix) : l'état visuel ne peut pas diverger de
+ *     l'état annoncé, puisqu'il n'y a qu'une source
+ *   - le menu fermé est retiré de l'ordre de tabulation
+ *   - Échap ferme, le focus revient sur le bouton
+ *   - la tabulation ne peut pas sortir du menu ouvert
  */
 (function () {
 	'use strict';
 
-	var bouton = document.querySelector('.burger');
-	var tiroir = document.getElementById('menu-mobile');
-	var voile  = document.querySelector('.voile-menu');
-	if (!bouton || !tiroir) { return; }
+	var bouton  = document.querySelector('.burger');
+	var menu    = document.getElementById('menu-plein');
+	var entete  = document.querySelector('.entete');
+	if (!bouton || !menu) { return; }
 
 	var ouvert = false;
 
-	/* Rend le tiroir inatteignable au clavier quand il est fermé : sans cela,
-	   la tabulation part dans des liens invisibles hors de l'écran. */
+	/* Le menu commence sous l'en-tête, qui reste visible au-dessus de lui.
+	   Sa hauteur est mesurée, jamais supposée : elle change avec la largeur
+	   de l'écran et avec la longueur du nom de la commune. */
+	function mesurerEntete() {
+		if (!entete) { return; }
+		document.documentElement.style.setProperty('--h-entete', entete.offsetHeight + 'px');
+	}
+
 	function majInertie() {
-		tiroir.setAttribute('aria-hidden', ouvert ? 'false' : 'true');
-		if ('inert' in HTMLElement.prototype) {
-			tiroir.inert = !ouvert;
-		}
+		menu.setAttribute('aria-hidden', ouvert ? 'false' : 'true');
+		if ('inert' in HTMLElement.prototype) { menu.inert = !ouvert; }
 	}
 
 	function basculer(vers) {
 		ouvert = (typeof vers === 'boolean') ? vers : !ouvert;
 
-		bouton.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
-		tiroir.setAttribute('data-ouvert', ouvert ? 'oui' : 'non');
-		if (voile) { voile.setAttribute('data-ouvert', ouvert ? 'oui' : 'non'); }
+		if (ouvert) { mesurerEntete(); }
 
-		/* Empêche la page de défiler derrière le tiroir ouvert. */
+		bouton.setAttribute('aria-expanded', ouvert ? 'true' : 'false');
+		menu.setAttribute('data-ouvert', ouvert ? 'oui' : 'non');
 		document.documentElement.style.overflow = ouvert ? 'hidden' : '';
 
 		majInertie();
 
 		if (ouvert) {
-			var premier = tiroir.querySelector('a, button');
+			var premier = menu.querySelector('input, a, button');
 			if (premier) { premier.focus(); }
 		} else {
 			bouton.focus();
@@ -53,22 +57,17 @@
 
 	bouton.addEventListener('click', function () { basculer(); });
 
-	var fermer = tiroir.querySelector('.fermer');
-	if (fermer) { fermer.addEventListener('click', function () { basculer(false); }); }
-	if (voile)  { voile.addEventListener('click',  function () { basculer(false); }); }
-
 	document.addEventListener('keydown', function (e) {
 		if (!ouvert) { return; }
 
 		if (e.key === 'Escape') { basculer(false); return; }
 
-		/* Piège à focus : la tabulation boucle à l'intérieur du tiroir. */
 		if (e.key !== 'Tab') { return; }
-		var cibles = tiroir.querySelectorAll('a[href], button:not([disabled]), input');
+		var cibles = menu.querySelectorAll('a[href], button:not([disabled]), input');
 		if (!cibles.length) { return; }
-		var premier = cibles[0];
-		var dernier = cibles[cibles.length - 1];
-
+		/* Le bouton de fermeture vit dans l'en-tête, hors du menu : on
+		   l'ajoute au cycle pour qu'il reste atteignable au clavier. */
+		var premier = bouton, dernier = cibles[cibles.length - 1];
 		if (e.shiftKey && document.activeElement === premier) {
 			e.preventDefault(); dernier.focus();
 		} else if (!e.shiftKey && document.activeElement === dernier) {
@@ -77,13 +76,15 @@
 	});
 
 	/* Repasser en grand écran doit remettre la page dans un état sain :
-	   sinon le défilement reste bloqué alors que le tiroir a disparu.
+	   sinon le défilement reste bloqué alors que le menu a disparu.
 	   ATTENTION : ce seuil doit rester identique à celui de theme.css. */
 	var grandEcran = window.matchMedia('(min-width: 1200px)');
 	var surChangement = function (e) { if (e.matches && ouvert) { basculer(false); } };
 	if (grandEcran.addEventListener) { grandEcran.addEventListener('change', surChangement); }
 	else if (grandEcran.addListener) { grandEcran.addListener(surChangement); }
 
+	window.addEventListener('resize', mesurerEntete);
+	mesurerEntete();
 	majInertie();
 })();
 
