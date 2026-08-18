@@ -1,4 +1,4 @@
-# aspirer_site.ps1 — Aspiration NON-DESTRUCTIVE du contenu public d'un site SPIP
+﻿# aspirer_site.ps1 — Aspiration NON-DESTRUCTIVE du contenu public d'un site SPIP
 # ---------------------------------------------------------------------------
 # Version PowerShell native : AUCUNE dépendance (pas besoin de wget ni de WSL).
 #

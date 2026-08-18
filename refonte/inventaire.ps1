@@ -1,4 +1,4 @@
-# inventaire.ps1 — Extrait un inventaire lisible depuis une capture aspiree
+﻿# inventaire.ps1 — Extrait un inventaire lisible depuis une capture aspiree
 # ---------------------------------------------------------------------------
 # Usage : .\inventaire.ps1 capture_marlygomont.free.fr
 #

@@ -1,4 +1,4 @@
-# version_spip.ps1 — Quelle est la dernière version de SPIP ?
+﻿# version_spip.ps1 — Quelle est la dernière version de SPIP ?
 # ---------------------------------------------------------------------------
 # Interroge le dépôt officiel pour lister les versions publiées, plutôt que
 # de se fier à une page de documentation qui peut être en retard.
@@ -12,49 +12,34 @@ try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::
 
 Write-Host "`n=== Versions publiées de SPIP ===" -ForegroundColor Cyan
 
-# --- 1. Miroir GitHub : les étiquettes de version ---------------------------
-try {
-  $tags = Invoke-RestMethod -Uri "https://api.github.com/repos/spip/spip/tags?per_page=100" `
-                            -Headers @{ 'User-Agent' = 'verif-version-spip' } -TimeoutSec 30
-  # on ne garde que les étiquettes numériques, triées en version
-  $versions = $tags.name |
-    Where-Object { $_ -match '^v?\d+\.\d+' } |
-    ForEach-Object { $_ -replace '^v','' } |
-    Sort-Object {
-      $p = ($_ -split '[^\d]+' | Where-Object { $_ })
-      [version]("{0}.{1}.{2}" -f ($p[0],0)[!$p[0]], ($p[1],0)[!$p[1]], ($p[2],0)[!$p[2]])
-    } -Descending
-
-  Write-Host "`n  Dix dernières versions publiées :" -ForegroundColor Green
-  $versions | Select-Object -First 10 | ForEach-Object { Write-Host "    $_" }
-
-  if ($versions) {
-    Write-Host "`n  >>> Dernière version : $($versions[0])" -ForegroundColor Yellow
-    # branches actives = familles de versions majeures.mineures presentes
-    $branches = $versions | ForEach-Object { ($_ -split '\.')[0..1] -join '.' } |
-                Select-Object -Unique | Select-Object -First 5
-    Write-Host "  Branches présentes   : $($branches -join ', ')"
-  }
-} catch {
-  Write-Host "  [!] Dépôt GitHub injoignable : $($_.Exception.Message)" -ForegroundColor Yellow
-}
-
-# --- 2. Dépôt officiel SPIP (source de vérité) ------------------------------
-Write-Host "`n=== Vérification sur le dépôt officiel ===" -ForegroundColor Cyan
+# --- Dépôt officiel SPIP : la source de vérité ------------------------------
 $git = Get-Command git -EA 0
-if ($git) {
-  Write-Host "  git ls-remote --tags https://git.spip.net/spip/spip.git" -ForegroundColor DarkGray
-  $t = git ls-remote --tags https://git.spip.net/spip/spip.git 2>$null
-  if ($t) {
-    $t | ForEach-Object { ($_ -split 'refs/tags/')[-1] } |
-      Where-Object { $_ -match '^\d+\.\d+' -and $_ -notmatch '\^\{\}$' } |
-      Sort-Object -Descending | Select-Object -First 8 |
-      ForEach-Object { Write-Host "    $_" }
-  } else {
-    Write-Host "  (dépôt officiel injoignable, on s'en tient au miroir GitHub)" -ForegroundColor DarkGray
-  }
+if (-not $git) {
+  Write-Host "  [!] git est absent. Installe-le, ou consulte spip.net directement." -ForegroundColor Yellow
 } else {
-  Write-Host "  git absent : passe par le miroir GitHub ci-dessus." -ForegroundColor DarkGray
+  $brut = git ls-remote --tags https://git.spip.net/spip/spip.git 2>$null
+  if (-not $brut) {
+    Write-Host "  [!] Dépôt injoignable. Vérifie ta connexion." -ForegroundColor Yellow
+  } else {
+    $toutes = $brut |
+      ForEach-Object { ($_ -split 'refs/tags/')[-1] } |
+      Where-Object { $_ -match '^\d+\.\d+' -and $_ -notmatch '\^\{\}$' }
+
+    # une version stable ne porte ni beta, ni rc, ni alpha, ni dev
+    $stables = $toutes | Where-Object { $_ -notmatch '(?i)alpha|beta|rc|dev' }
+    $essais  = $toutes | Where-Object { $_ -match  '(?i)alpha|beta|rc' }
+
+    Write-Host "`n  Versions stables (huit dernières) :" -ForegroundColor Green
+    $stables | Sort-Object -Descending | Select-Object -First 8 | ForEach-Object { Write-Host "    $_" }
+
+    $derniere = ($stables | Sort-Object -Descending | Select-Object -First 1)
+    Write-Host "`n  >>> DERNIÈRE STABLE : $derniere" -ForegroundColor Yellow
+
+    if ($essais) {
+      Write-Host "`n  Versions d'essai (à ne PAS mettre en production) :" -ForegroundColor DarkGray
+      $essais | Sort-Object -Descending | Select-Object -First 3 | ForEach-Object { Write-Host "    $_" -ForegroundColor DarkGray }
+    }
+  }
 }
 
 Write-Host @"

@@ -1,4 +1,4 @@
-# preparer_assets.ps1 — Prépare les ressources de la maquette
+﻿# preparer_assets.ps1 — Prépare les ressources de la maquette
 # ---------------------------------------------------------------------------
 # Télécharge, dans le dossier de la maquette :
 #   1. Remix Icon (Apache 2.0)  -> vendor/    police + CSS, auto-hébergés

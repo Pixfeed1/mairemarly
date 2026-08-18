@@ -1,4 +1,4 @@
-# analyser_images.ps1 — Mesure les images recuperees
+﻿# analyser_images.ps1 — Mesure les images recuperees
 # ---------------------------------------------------------------------------
 # Le choix du design depend directement de la qualite des photos disponibles :
 #   - des images >= 1600 px de large permettent un grand visuel plein ecran
