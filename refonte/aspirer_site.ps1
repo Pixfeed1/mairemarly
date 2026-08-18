@@ -80,7 +80,7 @@ while ($queue.Count -gt 0 -and $nbPages -lt $MaxPages) {
   $nbPages++
 
   # on ignore les pages d'action/forum/calendrier (bruit, et on reste poli)
-  if ($url -match '(\?|&)(action|var_mode|calendrier|forum)') { continue }
+  if ($url -match '(\?|&)(action|var_mode|calendrier|forum|debut_)') { continue }
 
   Set-Content -Path (Join-Path "$Out\miroir" (Get-SafeName $url '.html')) `
               -Value $html -Encoding UTF8
@@ -92,12 +92,16 @@ while ($queue.Count -gt 0 -and $nbPages -lt $MaxPages) {
 
   foreach ($l in $liens) {
     if ($l -match '^(mailto:|javascript:|tel:|#)') { continue }
+    # decode &amp; -> & : sinon SPIP re-encode a chaque tour et fabrique une
+    # infinite de variantes de la meme URL (boucle de pagination)
+    $l = [System.Net.WebUtility]::HtmlDecode($l)
     try { $abs = [Uri]::new([Uri]$url, $l).AbsoluteUri } catch { continue }
     $abs = $abs.Split('#')[0]
     # on ne sort jamais du domaine cible
     try { if (([Uri]$abs).Host -ne $HostName) { continue } } catch { continue }
 
     if ($abs -match $extFichier) { [void]$assets.Add($abs) }
+    elseif ($abs -match '(\?|&)debut_') { continue }   # pagination : rien de neuf
     elseif (-not $seen.Contains($abs))  { $queue.Enqueue($abs) | Out-Null }
   }
   Start-Sleep -Milliseconds 300   # poli : on ne martèle pas le serveur

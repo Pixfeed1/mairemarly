@@ -50,6 +50,9 @@ strip() { sed -E 's/<[^>]+>//g; s/&nbsp;/ /g; s/&amp;/\&/g; s/&#39;/'"'"'/g' ; }
     grep -rhoiE '<[^>]+(class|id)="[^"]*auteur[^"]*"[^>]*>[^<]+' "$DIR" 2>/dev/null | strip
     grep -rhoiE '<meta name="author" content="[^"]+"' "$DIR" 2>/dev/null \
       | sed -E 's/.*content="([^"]+)".*/\1/'
+    # signatures presentes dans les <title> : "..., par Untel - Nom du site"
+    grep -rhoiE '<title>[^<]+</title>' "$DIR" 2>/dev/null | strip \
+      | sed -nE 's/.*,[[:space:]]*[Pp]ar[[:space:]]+([^-]+).*/\1/p'
   } | sed -E 's/^[[:space:]]*[Pp]ar[[:space:]]+//' \
     | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//' \
     | awk 'length($0)>=3 && length($0)<=60' | sort -u | sed 's/^/- /'
