@@ -111,10 +111,17 @@ body::after{
 	padding:9px 0; border-bottom:1px solid #F0EBE0;
 }
 .rang-outils .separateur{ width:1px; height:20px; background:var(--trait); margin:0 6px; }
+/* Les réseaux sociaux sont des icônes nues, pas des pastilles : ils
+   accompagnent, ils n'appellent pas à l'action. Une seule chose porte une
+   couleur de fond dans cette rangée — le bouton de contact. */
 .rond-social{
-  width:27px; height:27px; border-radius:50%; background:var(--accent); color:#fff;
-  display:flex; align-items:center; justify-content:center; font-size:14px; text-decoration:none;
+  display:flex; align-items:center; justify-content:center;
+  width:30px; height:30px; border-radius:4px;
+  color:var(--encre-doux); text-decoration:none;
+  transition:color .15s ease;
 }
+.rond-social:hover{ color:var(--accent); }
+.rond-social .ico{ width:18px; height:18px; }
 .pilule{
   border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:20px;
   padding:5px 14px; font-size:12.5px; font-weight:600; text-decoration:none;
@@ -139,6 +146,77 @@ body::after{
 }
 .nav a:hover{ color:var(--accent); }
 
+
+
+/* ===========================================================================
+   HÉROS D'ACCUEIL
+   ---------------------------------------------------------------------------
+   Une image, un voile, et la recherche posée dessus. Rien d'autre : le titre
+   de bienvenue a été retiré, il ne disait rien que le blason ne dise déjà.
+   =========================================================================== */
+
+.heros{
+	position:relative;
+	min-height:clamp(300px,34vw,420px);
+	display:flex; align-items:center; justify-content:center;
+	overflow:hidden;
+	/* Ciel dégradé + bande de paysage ancrée en bas. Une scène plein cadre
+	   se déforme dès que le rapport hauteur/largeur change ; une bande
+	   ancrée garde ses proportions à toutes les tailles d'écran. */
+	background:linear-gradient(to bottom, #3A7D5C 0%, #1E5B41 55%, #123F2D 100%);
+}
+/* Le paysage est un élément, pas une image de fond : un fond dimensionné se
+   maîtrise mal quand le rapport du bloc varie, un élément posé obéit. */
+.heros-paysage{
+	position:absolute; left:0; right:0; bottom:0; width:100%; height:auto;
+	display:block; pointer-events:none;
+}
+/* Dès qu'une photographie existe, elle passe devant l'illustration. */
+.heros-image{ position:absolute; inset:0; }
+.heros-image:empty{ display:none; }
+.heros-image img{ width:100%; height:100%; object-fit:cover; }
+/* Un voile sombre en bas seulement : l'image reste lisible en haut, le champ
+   garde son contraste en bas. */
+.heros-voile{
+	position:absolute; inset:0;
+	background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,.12) 45%,rgba(0,0,0,.45) 100%);
+}
+.heros-dedans{
+	position:relative; z-index:1; width:min(760px,100%); padding:24px;
+}
+
+.recherche-heros{
+	display:flex; align-items:center; gap:8px;
+	background:rgba(255,255,255,.96);
+	border-radius:46px; padding:8px 8px 8px 22px;
+	box-shadow:0 16px 44px rgba(0,0,0,.3);
+}
+.recherche-heros .loupe-champ{ width:24px; height:24px; color:var(--accent); }
+.recherche-heros input{
+	flex:1; min-width:0; border:0; background:none;
+	padding:14px 6px; font-family:var(--texte); font-size:17px; color:var(--encre);
+}
+.recherche-heros input::placeholder{ color:var(--encre-doux); opacity:.7; }
+.recherche-heros button{
+	border:0; background:var(--accent); color:#fff; cursor:pointer;
+	border-radius:40px; padding:14px 28px;
+	font-family:var(--texte); font-weight:700; font-size:15px; white-space:nowrap;
+}
+.recherche-heros button:hover{ background:var(--accent-sombre); }
+
+/* Le crédit photographique : discret, mais toujours présent. */
+.heros-credit{
+	position:absolute; left:0; bottom:0; z-index:1; margin:0;
+	background:rgba(29,26,26,.72); color:#fff;
+	font-size:12px; padding:6px 14px;
+}
+
+@media (max-width:560px){
+	.recherche-heros{ padding:6px 6px 6px 16px; }
+	.recherche-heros input{ font-size:16px; padding:12px 4px; }
+	.recherche-heros button{ padding:12px 18px; font-size:14px; }
+	.recherche-heros .loupe-champ{ width:20px; height:20px; }
+}
 
 /* ===========================================================================
    BOUTONS DE L'EN-TÊTE — recherche et menu
@@ -462,6 +540,9 @@ section{ padding-block:70px; position:relative; }
 
 @media (min-width:1200px){
 	.menu-plein{ display:none; }
+	/* Au-dessus de 1200px la recherche est la grande barre du héros : une
+	   loupe dans l'en-tête ferait doublon, et affaiblirait la barre. */
+	.actions-entete .loupe{ display:none; }
 }
 
 @media (prefers-reduced-motion:reduce){

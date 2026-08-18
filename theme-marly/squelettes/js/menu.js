@@ -160,3 +160,77 @@
 
 	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
 })();
+
+/**
+ * Suggestions animées dans la barre de recherche du héros.
+ * ---------------------------------------------------------------------------
+ * Le champ propose des exemples qui se succèdent, pour montrer ce qu'on peut
+ * y chercher. Sur un site de commune, l'habitant ne sait pas toujours que la
+ * recherche couvre aussi les comptes rendus du conseil ou les horaires : le
+ * dire vaut mieux que l'espérer.
+ *
+ * Précautions :
+ *   - le placeholder n'est JAMAIS le seul porteur d'information : le vrai
+ *     libellé vit dans un <label>, lu par les technologies d'assistance
+ *   - l'animation s'arrête dès que le champ reçoit le focus ou du texte
+ *   - elle ne démarre pas si l'usager a demandé moins d'animations
+ *   - sans JavaScript, le placeholder écrit dans le HTML reste affiché
+ */
+(function () {
+	'use strict';
+
+	var champ = document.getElementById('recherche-heros');
+	if (!champ) { return; }
+
+	if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		return;
+	}
+
+	var AMORCE = 'Qu’est-ce que vous recherchez ? ';
+	var EXEMPLES = [
+		'un service',
+		'une démarche',
+		'un horaire d’ouverture',
+		'un compte rendu du conseil',
+		'une association',
+		'le bulletin municipal'
+	];
+
+	var i = 0, j = 0, efface = false, minuteur = null;
+
+	function battre() {
+		var mot = EXEMPLES[i];
+		j += efface ? -1 : 1;
+		champ.setAttribute('placeholder', AMORCE + mot.slice(0, j));
+
+		var attente = efface ? 35 : 65;
+		if (!efface && j === mot.length) {
+			efface = true; attente = 1800;            /* on laisse lire */
+		} else if (efface && j === 0) {
+			efface = false;
+			i = (i + 1) % EXEMPLES.length;
+			attente = 250;
+		}
+		minuteur = window.setTimeout(battre, attente);
+	}
+
+	function arreter() {
+		window.clearTimeout(minuteur);
+		champ.setAttribute('placeholder', AMORCE);
+	}
+
+	champ.addEventListener('focus', arreter, { once: true });
+	champ.addEventListener('input', arreter, { once: true });
+
+	/* On n'anime pas un champ que l'usager ne voit pas. */
+	if ('IntersectionObserver' in window) {
+		var guetteur = new IntersectionObserver(function (entrees) {
+			entrees.forEach(function (e) {
+				if (e.isIntersecting) { battre(); guetteur.disconnect(); }
+			});
+		});
+		guetteur.observe(champ);
+	} else {
+		battre();
+	}
+})();

@@ -36,6 +36,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'rechercher'           => 'Rechercher',
 	'rechercher_site'      => 'Rechercher sur le site',
 	'rechercher_placeholder' => 'Une démarche, un compte rendu, un horaire…',
+	'recherche_amorce'     => 'Qu’est-ce que vous recherchez ?',
 
 	// --- Accueil ------------------------------------------------------------
 	'je'                   => 'Je',

@@ -1,0 +1,34 @@
+[(#REM)
+  inc/heros.html — la bannière d'accueil.
+  ---------------------------------------------------------------------------
+  La recherche vit ICI, en grand, et non dans l'en-tête : sur un site de
+  commune, chercher une démarche ou un horaire est le premier geste. Une
+  loupe de 25px dans un coin ne dit pas la même chose qu'une barre large
+  posée au milieu de l'image.
+
+  L'en-tête garde une loupe, mais seulement sous 1200px, là où la barre
+  n'aurait plus la place de s'afficher correctement.
+
+  Le crédit photographique n'est pas un détail : une photo a un auteur, et
+  la mairie doit pouvoir le citer sans intervention technique.
+]
+<div class="heros">
+	[(#REM) Image de bannière : logo du site à défaut d'une photographie ]
+	<div class="heros-image">
+		[(#LOGO_SITE_SPIP|image_reduire{1920,0})]
+	</div>
+	<img class="heros-paysage" src="#CHEMIN{img/paysage.svg}" width="1440" height="260" alt="" aria-hidden="true">
+	<div class="heros-voile" aria-hidden="true"></div>
+
+	<div class="heros-dedans">
+		<form class="recherche-heros" role="search" method="get" action="#URL_PAGE{recherche}">
+			<label for="recherche-heros" class="sr"><:marly:rechercher_site:></label>
+			<svg class="ico loupe-champ" aria-hidden="true"><use href="#ri-search-line"/></svg>
+			<input type="search" id="recherche-heros" name="recherche"
+			       placeholder="<:marly:recherche_amorce:>">
+			<button type="submit"><:marly:rechercher:></button>
+		</form>
+	</div>
+
+	[<p class="heros-credit">(#CONFIG{marly/credit_photo})</p>]
+</div>

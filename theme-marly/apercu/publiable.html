@@ -122,10 +122,17 @@ body::after{
 	padding:9px 0; border-bottom:1px solid #F0EBE0;
 }
 .rang-outils .separateur{ width:1px; height:20px; background:var(--trait); margin:0 6px; }
+/* Les réseaux sociaux sont des icônes nues, pas des pastilles : ils
+   accompagnent, ils n'appellent pas à l'action. Une seule chose porte une
+   couleur de fond dans cette rangée — le bouton de contact. */
 .rond-social{
-  width:27px; height:27px; border-radius:50%; background:var(--accent); color:#fff;
-  display:flex; align-items:center; justify-content:center; font-size:14px; text-decoration:none;
+  display:flex; align-items:center; justify-content:center;
+  width:30px; height:30px; border-radius:4px;
+  color:var(--encre-doux); text-decoration:none;
+  transition:color .15s ease;
 }
+.rond-social:hover{ color:var(--accent); }
+.rond-social .ico{ width:18px; height:18px; }
 .pilule{
   border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:20px;
   padding:5px 14px; font-size:12.5px; font-weight:600; text-decoration:none;
@@ -150,6 +157,77 @@ body::after{
 }
 .nav a:hover{ color:var(--accent); }
 
+
+
+/* ===========================================================================
+   HÉROS D'ACCUEIL
+   ---------------------------------------------------------------------------
+   Une image, un voile, et la recherche posée dessus. Rien d'autre : le titre
+   de bienvenue a été retiré, il ne disait rien que le blason ne dise déjà.
+   =========================================================================== */
+
+.heros{
+	position:relative;
+	min-height:clamp(300px,34vw,420px);
+	display:flex; align-items:center; justify-content:center;
+	overflow:hidden;
+	/* Ciel dégradé + bande de paysage ancrée en bas. Une scène plein cadre
+	   se déforme dès que le rapport hauteur/largeur change ; une bande
+	   ancrée garde ses proportions à toutes les tailles d'écran. */
+	background:linear-gradient(to bottom, #3A7D5C 0%, #1E5B41 55%, #123F2D 100%);
+}
+/* Le paysage est un élément, pas une image de fond : un fond dimensionné se
+   maîtrise mal quand le rapport du bloc varie, un élément posé obéit. */
+.heros-paysage{
+	position:absolute; left:0; right:0; bottom:0; width:100%; height:auto;
+	display:block; pointer-events:none;
+}
+/* Dès qu'une photographie existe, elle passe devant l'illustration. */
+.heros-image{ position:absolute; inset:0; }
+.heros-image:empty{ display:none; }
+.heros-image img{ width:100%; height:100%; object-fit:cover; }
+/* Un voile sombre en bas seulement : l'image reste lisible en haut, le champ
+   garde son contraste en bas. */
+.heros-voile{
+	position:absolute; inset:0;
+	background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,.12) 45%,rgba(0,0,0,.45) 100%);
+}
+.heros-dedans{
+	position:relative; z-index:1; width:min(760px,100%); padding:24px;
+}
+
+.recherche-heros{
+	display:flex; align-items:center; gap:8px;
+	background:rgba(255,255,255,.96);
+	border-radius:46px; padding:8px 8px 8px 22px;
+	box-shadow:0 16px 44px rgba(0,0,0,.3);
+}
+.recherche-heros .loupe-champ{ width:24px; height:24px; color:var(--accent); }
+.recherche-heros input{
+	flex:1; min-width:0; border:0; background:none;
+	padding:14px 6px; font-family:var(--texte); font-size:17px; color:var(--encre);
+}
+.recherche-heros input::placeholder{ color:var(--encre-doux); opacity:.7; }
+.recherche-heros button{
+	border:0; background:var(--accent); color:#fff; cursor:pointer;
+	border-radius:40px; padding:14px 28px;
+	font-family:var(--texte); font-weight:700; font-size:15px; white-space:nowrap;
+}
+.recherche-heros button:hover{ background:var(--accent-sombre); }
+
+/* Le crédit photographique : discret, mais toujours présent. */
+.heros-credit{
+	position:absolute; left:0; bottom:0; z-index:1; margin:0;
+	background:rgba(29,26,26,.72); color:#fff;
+	font-size:12px; padding:6px 14px;
+}
+
+@media (max-width:560px){
+	.recherche-heros{ padding:6px 6px 6px 16px; }
+	.recherche-heros input{ font-size:16px; padding:12px 4px; }
+	.recherche-heros button{ padding:12px 18px; font-size:14px; }
+	.recherche-heros .loupe-champ{ width:20px; height:20px; }
+}
 
 /* ===========================================================================
    BOUTONS DE L'EN-TÊTE — recherche et menu
@@ -473,6 +551,9 @@ section{ padding-block:70px; position:relative; }
 
 @media (min-width:1200px){
 	.menu-plein{ display:none; }
+	/* Au-dessus de 1200px la recherche est la grande barre du héros : une
+	   loupe dans l'en-tête ferait doublon, et affaiblirait la barre. */
+	.actions-entete .loupe{ display:none; }
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -538,15 +619,21 @@ section{ padding-block:70px; position:relative; }
 			<a class="rond-social" href="#" aria-label="Facebook">
 				<svg class="ico" aria-hidden="true"><use href="#ri-facebook-fill"/></svg>
 			</a>
-			<span class="separateur" aria-hidden="true"></span>
+			<a class="rond-social" href="#" aria-label="Instagram">
+				<svg class="ico" aria-hidden="true"><use href="#ri-instagram-line"/></svg>
+			</a>
+			<a class="rond-social" href="#" aria-label="YouTube">
+				<svg class="ico" aria-hidden="true"><use href="#ri-youtube-fill"/></svg>
+			</a>
+
+			<a class="pilule plein" href="#">
+				<svg class="ico" aria-hidden="true"><use href="#ri-customer-service-2-line"/></svg> Contacter la mairie
+			</a>
 			<a class="pilule" href="#">
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> Newsletter
 			</a>
 			<a class="pilule" href="#">
 				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> Espace citoyen
-			</a>
-			<a class="pilule plein" href="#">
-				<svg class="ico" aria-hidden="true"><use href="#ri-customer-service-2-line"/></svg> Contacter la mairie
 			</a>
 		</div>
 
@@ -592,6 +679,24 @@ section{ padding-block:70px; position:relative; }
 
 	</div>
 </header>
+
+<div class="heros">
+	<div class="heros-image"></div>
+	<img class="heros-paysage" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDQwIiBoZWlnaHQ9IjI2MCIgdmlld0JveD0iMCAwIDE0NDAgMjYwIgogICAgIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iU2lsaG91ZXR0ZSBkZSBib2NhZ2UgZXQgZCfDqWdsaXNlIGZvcnRpZmnDqWUgZGUgVGhpw6lyYWNoZSI+CiAgPCEtLSBCYW5kZSBkZSBwYXlzYWdlIGFuY3LDqWUgZW4gYmFzIDogZWxsZSBnYXJkZSBzZXMgcHJvcG9ydGlvbnMgcXVlbGxlIHF1ZQogICAgICAgc29pdCBsYSBoYXV0ZXVyIGR1IGjDqXJvcywgY29udHJhaXJlbWVudCDDoCB1bmUgc2PDqG5lIHBsZWluIGNhZHJlLiAtLT4KICA8ZyBmaWxsPSIjMTIzRjJEIiBvcGFjaXR5PSIuNTUiPgogICAgPHBhdGggZD0iTTAgMTIwIFEgMzAwIDg0IDYwMCAxMDggVCAxMTQwIDk2IFQgMTQ0MCAxMTIgVjI2MCBIMCBaIi8+CiAgPC9nPgogIDxnIGZpbGw9IiMwRTMzMjQiIG9wYWNpdHk9Ii44Ij4KICAgIDxwYXRoIGQ9Ik0wIDE2OCBRIDM2MCAxMzggNzYwIDE2MiBUIDE0NDAgMTUwIFYyNjAgSDAgWiIvPgogIDwvZz4KICA8IS0tIMOJZ2xpc2UgZm9ydGlmacOpZSA6IGwnZW1ibMOobWUgZGUgbGEgVGhpw6lyYWNoZSAtLT4KICA8ZyBmaWxsPSIjMDgyMTFBIj4KICAgIDxwYXRoIGQ9Ik02NjAgMTkwIFYxMjYgbDMwLTI4IDMwIDI4IHY2NCB6Ii8+CiAgICA8cmVjdCB4PSI2ODEiIHk9IjE1OCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjMyIiBmaWxsPSIjMEUzMzI0Ii8+CiAgICA8cmVjdCB4PSI2MjgiIHk9IjE1MCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjQwIi8+CiAgICA8cmVjdCB4PSI3MjAiIHk9IjE1MCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjQwIi8+CiAgICA8cGF0aCBkPSJNNjkwIDg0IHYxOCBNNjgxIDkyIGgxOCIgc3Ryb2tlPSIjMDgyMTFBIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwvZz4KICA8IS0tIEhhaWVzIGV0IGFyYnJlcyBkdSBib2NhZ2UgLS0+CiAgPGcgZmlsbD0iIzA4MjExQSI+CiAgICA8ZWxsaXBzZSBjeD0iMjMyIiBjeT0iMTUwIiByeD0iNDYiIHJ5PSIzMCIvPjxyZWN0IHg9IjIyOCIgeT0iMTUwIiB3aWR0aD0iOCIgaGVpZ2h0PSIyNiIvPgogICAgPGVsbGlwc2UgY3g9IjM5MiIgY3k9IjE2NCIgcng9IjMwIiByeT0iMjEiLz48cmVjdCB4PSIzODkiIHk9IjE2NCIgd2lkdGg9IjYiIGhlaWdodD0iMTgiLz4KICAgIDxlbGxpcHNlIGN4PSIxMTA4IiBjeT0iMTU2IiByeD0iNTIiIHJ5PSIzNCIvPjxyZWN0IHg9IjExMDQiIHk9IjE1NiIgd2lkdGg9IjkiIGhlaWdodD0iMjgiLz4KICAgIDxlbGxpcHNlIGN4PSIxMjY4IiBjeT0iMTcwIiByeD0iMzQiIHJ5PSIyMyIvPjxyZWN0IHg9IjEyNjUiIHk9IjE3MCIgd2lkdGg9IjciIGhlaWdodD0iMTkiLz4KICA8L2c+CiAgPGcgZmlsbD0iIzA4MjExQSIgb3BhY2l0eT0iLjkiPgogICAgPHBhdGggZD0iTTAgMTk2IFEgMzgwIDE3NiA4MDAgMTk0IFQgMTQ0MCAxODQgVjI2MCBIMCBaIi8+CiAgPC9nPgo8L3N2Zz4K" width="1440" height="260" alt="" aria-hidden="true">
+	<div class="heros-voile" aria-hidden="true"></div>
+
+	<div class="heros-dedans">
+		<form class="recherche-heros" role="search" method="get" action="#">
+			<label for="recherche-heros" class="sr">Rechercher sur le site</label>
+			<svg class="ico loupe-champ" aria-hidden="true"><use href="#ri-search-line"/></svg>
+			<input type="search" id="recherche-heros" name="recherche"
+			       placeholder="Qu’est-ce que vous recherchez ?">
+			<button type="submit">Rechercher</button>
+		</form>
+	</div>
+
+	<p class="heros-credit">Illustration provisoire — à remplacer par une photographie du village</p>
+</div>
 
 <div class="menu-plein" id="menu-plein" data-ouvert="non" aria-hidden="true"
      role="dialog" aria-modal="true" aria-label="Navigation principale">
@@ -813,6 +918,80 @@ section{ padding-block:70px; position:relative; }
 	});
 
 	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
+})();
+
+/**
+ * Suggestions animées dans la barre de recherche du héros.
+ * ---------------------------------------------------------------------------
+ * Le champ propose des exemples qui se succèdent, pour montrer ce qu'on peut
+ * y chercher. Sur un site de commune, l'habitant ne sait pas toujours que la
+ * recherche couvre aussi les comptes rendus du conseil ou les horaires : le
+ * dire vaut mieux que l'espérer.
+ *
+ * Précautions :
+ *   - le placeholder n'est JAMAIS le seul porteur d'information : le vrai
+ *     libellé vit dans un <label>, lu par les technologies d'assistance
+ *   - l'animation s'arrête dès que le champ reçoit le focus ou du texte
+ *   - elle ne démarre pas si l'usager a demandé moins d'animations
+ *   - sans JavaScript, le placeholder écrit dans le HTML reste affiché
+ */
+(function () {
+	'use strict';
+
+	var champ = document.getElementById('recherche-heros');
+	if (!champ) { return; }
+
+	if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		return;
+	}
+
+	var AMORCE = 'Qu’est-ce que vous recherchez ? ';
+	var EXEMPLES = [
+		'un service',
+		'une démarche',
+		'un horaire d’ouverture',
+		'un compte rendu du conseil',
+		'une association',
+		'le bulletin municipal'
+	];
+
+	var i = 0, j = 0, efface = false, minuteur = null;
+
+	function battre() {
+		var mot = EXEMPLES[i];
+		j += efface ? -1 : 1;
+		champ.setAttribute('placeholder', AMORCE + mot.slice(0, j));
+
+		var attente = efface ? 35 : 65;
+		if (!efface && j === mot.length) {
+			efface = true; attente = 1800;            /* on laisse lire */
+		} else if (efface && j === 0) {
+			efface = false;
+			i = (i + 1) % EXEMPLES.length;
+			attente = 250;
+		}
+		minuteur = window.setTimeout(battre, attente);
+	}
+
+	function arreter() {
+		window.clearTimeout(minuteur);
+		champ.setAttribute('placeholder', AMORCE);
+	}
+
+	champ.addEventListener('focus', arreter, { once: true });
+	champ.addEventListener('input', arreter, { once: true });
+
+	/* On n'anime pas un champ que l'usager ne voit pas. */
+	if ('IntersectionObserver' in window) {
+		var guetteur = new IntersectionObserver(function (entrees) {
+			entrees.forEach(function (e) {
+				if (e.isIntersecting) { battre(); guetteur.disconnect(); }
+			});
+		});
+		guetteur.observe(champ);
+	} else {
+		battre();
+	}
 })();
 
 </script>
