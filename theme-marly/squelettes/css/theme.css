@@ -553,10 +553,24 @@ section{ padding-block:70px; position:relative; }
 
 @media (max-width:1199px){
 	.nav{ display:none; }
-	.burger{ display:flex; align-items:center; gap:8px; margin-left:auto; }
-	.rang-outils{ display:none; }
+	.burger{ display:flex; align-items:center; gap:8px; }
+	/* La rangée de service reste visible : réseaux et contact sont utiles
+	   sur téléphone autant que sur ordinateur. On la compacte, on ne la
+	   supprime pas. */
+	.rang-outils{ padding:7px 0; gap:6px; }
+	.rang-outils .pilule{ font-size:12px; padding:5px 12px; }
 	.marque .sceau{ width:56px; height:56px; }
 	.marque b{ font-size:27px; }
+}
+
+@media (max-width:700px){
+	/* Newsletter et Espace citoyen figurent déjà dans le menu plein écran :
+	   les répéter ici encombrerait sans rien apporter. On garde les réseaux
+	   et la seule action principale. */
+	.rang-outils .pilule:not(.plein){ display:none; }
+	.rang-outils .pilule.plein{ font-size:11.5px; padding:5px 11px; }
+	.rond-social{ width:26px; height:26px; }
+	.rond-social .ico{ width:16px; height:16px; }
 }
 
 @media (max-width:560px){
