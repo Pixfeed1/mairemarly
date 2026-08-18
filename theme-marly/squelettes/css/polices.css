@@ -1,0 +1,51 @@
+/* ===========================================================================
+   Polices auto-hébergées
+   ---------------------------------------------------------------------------
+   Auto-héberger n'est pas un raffinement : passer par Google Fonts transmet
+   l'adresse IP de chaque visiteur à un tiers, ce qu'une collectivité ne peut
+   pas faire sans base légale (RGPD). Les fichiers vivent dans ../fonts/.
+
+   Licences : Alegreya Sans — SIL Open Font License
+              Open Sans    — Apache License 2.0
+   Toutes deux librement utilisables, y compris commercialement.
+
+   font-display:swap : le texte s'affiche immédiatement dans la police de
+   repli, puis bascule. On ne laisse jamais une page blanche le temps du
+   téléchargement.
+
+   MANQUANT — à récupérer sur fonts.google.com puis déposer dans ../fonts/ :
+     - Alegreya (serif) : nom du site, titres de section. Repli : Georgia.
+     - Caveat (script)  : premier mot des titres.       Repli : cursive.
+   =========================================================================== */
+
+@font-face{
+	font-family:"Alegreya Sans";
+	src:url("../fonts/alegreyasans-regular.woff2") format("woff2");
+	font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+	font-family:"Alegreya Sans";
+	src:url("../fonts/alegreyasans-medium.woff2") format("woff2");
+	font-weight:500; font-style:normal; font-display:swap;
+}
+@font-face{
+	font-family:"Alegreya Sans";
+	src:url("../fonts/alegreyasans-bold.woff2") format("woff2");
+	font-weight:700; font-style:normal; font-display:swap;
+}
+@font-face{
+	font-family:"Alegreya Sans";
+	src:url("../fonts/alegreyasans-extrabold.woff2") format("woff2");
+	font-weight:800; font-style:normal; font-display:swap;
+}
+
+@font-face{
+	font-family:"Open Sans";
+	src:url("../fonts/opensans-regular.woff2") format("woff2");
+	font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+	font-family:"Open Sans";
+	src:url("../fonts/opensans-bold.woff2") format("woff2");
+	font-weight:700; font-style:normal; font-display:swap;
+}

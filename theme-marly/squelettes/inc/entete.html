@@ -44,15 +44,10 @@
 				</ul>
 			</nav>
 
-			<form class="recherche-entete" role="search" method="get" action="#URL_PAGE{recherche}">
-				<label for="recherche-globale" class="sr"><:marly:rechercher_site:></label>
-				<input type="search" id="recherche-globale" name="recherche"
-				       placeholder="<:marly:rechercher:>">
-				<button type="submit" class="loupe">
-					<i class="ri-search-line" aria-hidden="true"></i>
-					<span class="sr"><:marly:rechercher:></span>
-				</button>
-			</form>
+			<a class="loupe" href="#URL_PAGE{recherche}">
+				<i class="ri-search-line" aria-hidden="true"></i>
+				<span class="sr"><:marly:rechercher_site:></span>
+			</a>
 
 			<button class="burger" type="button" aria-expanded="false" aria-controls="menu-mobile">
 				<i class="ri-menu-line" aria-hidden="true"></i>

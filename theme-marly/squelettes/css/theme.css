@@ -35,6 +35,7 @@
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
+html{ overflow-x:clip; }
 body{
   margin:0; background:#fff; color:var(--encre); font-family:var(--texte);
   font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
@@ -47,8 +48,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{ outline:3px solid var(
 .saut{ position:absolute; left:-9999px; background:var(--accent); color:#fff; padding:12px 20px; z-index:100; }
 .saut:focus{ left:12px; top:12px; }
 
-/* ---- icônes Remix : une règle pour tout le set -------------------------- */
+/* ---- icônes : une règle gouverne tout le set ---------------------------- */
 [class^="ri-"],[class*=" ri-"]{ line-height:1; vertical-align:-.1em; }
+/* Les SVG en ligne se dessinent au trait, jamais en aplat : sans cette
+   règle un SVG sans attribut fill se remplit de noir par défaut. */
+.ico{ fill:none; stroke:currentColor; stroke-width:1.5;
+      stroke-linecap:round; stroke-linejoin:round; }
 
 /* ---- photos : dégradé de secours si le fichier manque ------------------- */
 .ph{ position:relative; overflow:hidden; background:var(--f,var(--accent)); }
@@ -108,8 +113,9 @@ body::after{
 .nav li{ border-left:1px solid var(--trait); }
 .nav li:first-child{ border-left:0; }
 .nav a{
-  display:block; padding:4px 22px; text-decoration:none; font-family:var(--titre);
-  font-weight:500; font-size:19px; text-transform:uppercase; letter-spacing:.02em;
+  display:block; padding:4px 18px; text-decoration:none; font-family:var(--titre);
+  font-weight:500; font-size:18px; text-transform:uppercase; letter-spacing:.01em;
+  white-space:nowrap;   /* une entrée de menu ne se coupe jamais en deux lignes */
 }
 .nav a:hover{ color:var(--accent); }
 .loupe{ background:none; border:0; cursor:pointer; padding:4px 0 4px 22px; color:var(--accent); font-size:25px; }
@@ -262,8 +268,6 @@ section{ padding-block:70px; position:relative; }
   .gravure{ display:none; }
 }
 @media (max-width:760px){
-  .nav,.rang-outils,.loupe{ display:none; }
-  .burger{ display:block; }
   .acces .large{ flex-direction:column; align-items:stretch; gap:14px; }
   .acces-liste{ justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; }
   .actus-petites,.assos{ grid-template-columns:1fr; }
@@ -271,4 +275,80 @@ section{ padding-block:70px; position:relative; }
   .filtres{ justify-content:flex-start; }
   .titre-bloc.droite{ text-align:left; }
   section{ padding-block:48px; }
+}
+
+/* ===========================================================================
+   EN-TÊTE — comportement responsive complet
+   ---------------------------------------------------------------------------
+   La maquette masquait la navigation sous 760px sans rien mettre à la place :
+   le bouton burger n'ouvrait aucun menu. Voici le tiroir qui manquait.
+
+   Seuil retenu : 1200px. Ce n'est pas un chiffre choisi au jugé : la barre a
+   été mesurée dans Chromium à 1000, 1100, 1200, 1280, 1360 et 1440px. Elle
+   déborde jusqu'à 1100 inclus, elle rentre à partir de 1200.
+   =========================================================================== */
+
+/* La loupe ouvre la page de recherche : pas de champ dans l'en-tête.
+   Un champ en ligne coûtait 220px et faisait déborder la barre en dessous
+   de 1440px — mesuré, pas supposé. Le champ complet vit dans le héros de
+   l'accueil et dans le tiroir mobile. */
+a.loupe{ display:flex; align-items:center; text-decoration:none; }
+
+/* --- le tiroir mobile ---------------------------------------------------- */
+.menu-mobile{
+	position:fixed; inset:0 0 0 auto; width:min(340px,86vw); z-index:70;
+	background:#fff; border-left:3px solid var(--accent);
+	padding:26px 24px; overflow-y:auto;
+	transform:translateX(100%); visibility:hidden;
+	transition:transform .25s ease, visibility .25s;
+	box-shadow:-8px 0 40px rgba(29,26,26,.18);
+}
+.menu-mobile[data-ouvert="oui"]{ transform:translateX(0); visibility:visible; }
+.menu-mobile ul{ list-style:none; margin:26px 0 0; padding:0; }
+.menu-mobile li{ border-bottom:1px solid var(--trait); }
+.menu-mobile a{
+	display:block; padding:15px 4px; text-decoration:none;
+	font-family:var(--titre); font-weight:700; font-size:19px;
+	text-transform:uppercase;
+}
+.menu-mobile a:hover, .menu-mobile a[aria-current]{ color:var(--accent); }
+.menu-mobile .fermer{
+	background:none; border:1px solid var(--trait); border-radius:50%;
+	width:40px; height:40px; font-size:22px; cursor:pointer; color:var(--encre);
+	display:flex; align-items:center; justify-content:center;
+}
+.menu-mobile .outils-mobile{ margin-top:28px; display:flex; flex-direction:column; gap:10px; }
+.menu-mobile .pilule{ justify-content:center; padding:11px 16px; font-size:14px; }
+
+/* le voile : il ferme le tiroir au clic, et isole visuellement la page */
+.voile-menu{
+	position:fixed; inset:0; z-index:65; background:rgba(29,26,26,.5);
+	opacity:0; visibility:hidden; transition:opacity .25s ease, visibility .25s;
+	border:0; padding:0; cursor:pointer;
+}
+.voile-menu[data-ouvert="oui"]{ opacity:1; visibility:visible; }
+
+/* le tiroir n'existe pas tant que le grand écran affiche la navigation */
+@media (min-width:1200px){
+	.menu-mobile, .voile-menu{ display:none; }
+}
+
+@media (max-width:1199px){
+	.nav{ display:none; }
+	.burger{ display:flex; align-items:center; gap:8px; margin-left:auto; }
+	.rang-outils{ display:none; }
+	.marque .sceau{ width:56px; height:56px; }
+	.marque b{ font-size:27px; }
+}
+
+@media (max-width:560px){
+	.marque .sceau{ width:46px; height:46px; }
+	.marque b{ font-size:22px; }
+	.marque small{ font-size:9.5px; letter-spacing:.2em; }
+	.rang-nav{ gap:12px; padding:10px 0 14px; }
+}
+
+/* On respecte le réglage système : pas d'animation pour qui n'en veut pas. */
+@media (prefers-reduced-motion:reduce){
+	.menu-mobile, .voile-menu{ transition:none; }
 }
