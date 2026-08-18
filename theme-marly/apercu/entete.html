@@ -105,6 +105,46 @@
 	<p class="heros-credit">Illustration provisoire — à remplacer par une photographie du village</p>
 </div>
 
+<section class="acces" aria-labelledby="titre-acces">
+	<div class="large acces-grille">
+
+		<div class="acces-demarches">
+			<h2 class="titre-bloc" id="titre-acces">Je <span>souhaite&#8230;</span></h2>
+			<form method="get" action="#">
+				<label for="choix-demarche" class="sr">Choisir une démarche</label>
+				<div class="champ-demarche">
+					<select id="choix-demarche" name="article">
+						<option value="">Choisir une démarche</option>
+						<option value="11">Demander un acte de naissance</option>
+						<option value="12">M&#8217;inscrire sur les listes électorales</option>
+						<option value="13">Déposer une demande d&#8217;urbanisme</option>
+						<option value="14">Réserver la salle des fêtes</option>
+						<option value="15">Signaler un problème de voirie</option>
+						<option value="16">Inscrire mon enfant à l&#8217;école</option>
+					</select>
+					<button type="submit">Valider</button>
+				</div>
+			</form>
+			<p class="acces-tout">
+				<a class="lien-fleche" href="#">Voir toutes les démarches
+					<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a>
+			</p>
+		</div>
+
+		<div class="acces-liens">
+			<h2 class="titre-bloc droite">Accès <span>rapides</span></h2>
+			<ul>
+				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>Comptes rendus</a></li>
+				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>Démarches</a></li>
+				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>Urbanisme</a></li>
+				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>Associations</a></li>
+				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>Réserver une salle</a></li>
+				<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>La Voix du Village</a></li>
+			</ul>
+		</div>
+
+	</div>
+</section>
 
 
 <div class="menu-plein" id="menu-plein" data-ouvert="non" aria-hidden="true"
@@ -155,33 +195,6 @@
 				<span class="sr">Lancer la recherche</span>
 			</button>
 		</form>
-		<p class="aide">Appuyez sur Échap pour fermer.</p>
-	</div>
-</div>
-
-<button type="button" class="onglet-acces" aria-expanded="false" aria-controls="panneau-acces">
-	<svg class="ico" aria-hidden="true"><use href="#ri-apps-2-line"/></svg>
-	<span class="etiquette">Accès <span>rapides</span></span>
-</button>
-
-<div class="panneau-acces" id="panneau-acces" data-ouvert="non" aria-hidden="true"
-     role="dialog" aria-modal="true" aria-labelledby="titre-panneau-acces">
-	<div class="dedans">
-		<div class="tete">
-			<h2 class="titre-bloc" id="titre-panneau-acces">Accès <span>rapides</span></h2>
-			<button type="button" class="fermer" data-ferme-acces>
-				<svg class="ico" aria-hidden="true"><use href="#ri-close-line"/></svg>
-				<span class="sr">Fermer les accès rapides</span>
-			</button>
-		</div>
-		<ul class="acces-liens">
-			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>Comptes rendus</a></li>
-			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>Démarches</a></li>
-			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>Urbanisme</a></li>
-			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>Associations</a></li>
-			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>Réserver une salle</a></li>
-			<li><a href="#"><span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>La Voix du Village</a></li>
-		</ul>
 		<p class="aide">Appuyez sur Échap pour fermer.</p>
 	</div>
 </div>

@@ -1,60 +1,84 @@
 [(#REM)
-  inc/acces-rapides.html — l'onglet « Accès rapides » et son panneau.
+  inc/acces-rapides.html — la bande de raccourcis, sous la bannière.
   ---------------------------------------------------------------------------
-  Ce n'est pas un bloc de la page d'accueil : c'est un onglet collé au bord
-  droit de l'écran, présent sur TOUTES les pages, qui déploie un panneau vers
-  la gauche. L'habitant qui cherche un compte rendu au fond d'un article n'a
-  pas à remonter à l'accueil pour le trouver.
+  Sur un site de commune, les visites sont utilitaires : on vient chercher un
+  horaire, un formulaire, un compte rendu — rarement lire des actualités.
+  Cette bande met les six vraies demandes à un clic, AVANT tout l'éditorial.
 
-  Rien de figé : les six destinations sont des liens vers des pages du site.
-  Les libellés viennent de lang/marly_fr.php.
+  Deux moitiés :
+   - à gauche, une liste de démarches : un seul contrôle pour en couvrir
+     beaucoup, sans occuper l'écran
+   - à droite, les six destinations les plus consultées
 
-  RGAA :
-   - un <button> avec aria-expanded et aria-controls, pas un <div> cliquable
-   - le panneau fermé sort de l'ordre de tabulation (inert)
-   - Échap ferme, le focus revient sur l'onglet
-   - la tabulation ne peut pas s'échapper derrière le panneau
-   - sans JavaScript, l'onglet est masqué : le pied de page reprend tous ces
-     liens, aucune destination n'est perdue
+  RGAA — le formulaire ne part PAS au changement de sélection. Naviguer dès
+  qu'on déplace le curseur piège l'usager au clavier, qui traverse la liste
+  pour la lire. Il faut un bouton, et ce bouton est explicite.
 ]
-<button type="button" class="onglet-acces" aria-expanded="false" aria-controls="panneau-acces">
-	<svg class="ico" aria-hidden="true"><use href="#ri-apps-2-line"/></svg>
-	<span class="etiquette"><:marly:acces:> <span><:marly:rapides:></span></span>
-</button>
+<section class="acces" aria-labelledby="titre-acces">
+	<div class="large acces-grille">
 
-<div class="panneau-acces" id="panneau-acces" data-ouvert="non" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="titre-panneau-acces">
-	<div class="dedans">
+		<div class="acces-demarches">
+			<h2 class="titre-bloc" id="titre-acces"><:marly:je:> <span><:marly:souhaite:></span></h2>
 
-		<div class="tete">
-			<h2 class="titre-bloc" id="titre-panneau-acces"><:marly:acces:> <span><:marly:rapides:></span></h2>
-			<button type="button" class="fermer" data-ferme-acces>
-				<svg class="ico" aria-hidden="true"><use href="#ri-close-line"/></svg>
-				<span class="sr"><:marly:fermer_acces:></span>
-			</button>
+			[(#REM) Les démarches sont les articles portant le mot-clé « demarches » :
+			        la mairie en ajoute une en publiant un article, sans toucher au
+			        code. Le formulaire pointe sur spip.php?article=NN, l'adresse
+			        native de SPIP — elle fonctionne sans JavaScript et sans page
+			        intermédiaire à écrire.
+
+			        Si aucun article ne porte encore le mot-clé, on n'affiche PAS
+			        une liste déroulante vide ni des exemples qui ne mènent nulle
+			        part : un contrôle qui ne fait rien est pire qu'absent. On
+			        affiche le lien vers la rubrique. ]
+			<B_demarches>
+			<form method="get" action="#URL_SITE_SPIP/spip.php">
+				<label for="choix-demarche" class="sr"><:marly:choisir_demarche:></label>
+				<div class="champ-demarche">
+					<select id="choix-demarche" name="article">
+						<option value=""><:marly:choisir_demarche:></option>
+						<BOUCLE_demarches(ARTICLES){titre_mot=demarches}{par num titre, titre}{0,20}>
+						<option value="#ID_ARTICLE">#TITRE</option>
+						</BOUCLE_demarches>
+					</select>
+					<button type="submit"><:marly:valider:></button>
+				</div>
+			</form>
+			<p class="acces-tout">
+				<a class="lien-fleche" href="#URL_PAGE{demarches}"><:marly:toutes_demarches:>
+					<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a>
+			</p>
+			</B_demarches>
+
+			<p class="acces-tout">
+				<a class="lien-fleche" href="#URL_PAGE{demarches}"><:marly:toutes_demarches:>
+					<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a>
+			</p>
+			<//B_demarches>
 		</div>
 
-		<ul class="acces-liens">
-			<li><a href="#URL_PAGE{conseil}">
-				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
-				<:marly:comptes_rendus:></a></li>
-			<li><a href="#URL_PAGE{demarches}">
-				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
-				<:marly:demarches:></a></li>
-			<li><a href="#URL_PAGE{urbanisme}">
-				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>
-				<:marly:urbanisme:></a></li>
-			<li><a href="#URL_PAGE{associations}">
-				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>
-				<:marly:associations:></a></li>
-			<li><a href="#URL_PAGE{reservation}">
-				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>
-				<:marly:reserver_salle:></a></li>
-			<li><a href="#URL_PAGE{bulletin}">
-				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>
-				<:marly:bulletin:></a></li>
-		</ul>
-
-		<p class="aide"><:marly:echap_ferme:></p>
+		<div class="acces-liens">
+			<h2 class="titre-bloc droite"><:marly:acces:> <span><:marly:rapides:></span></h2>
+			<ul>
+				<li><a href="#URL_PAGE{conseil}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
+					<:marly:comptes_rendus:></a></li>
+				<li><a href="#URL_PAGE{demarches}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+					<:marly:demarches:></a></li>
+				<li><a href="#URL_PAGE{urbanisme}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>
+					<:marly:urbanisme:></a></li>
+				<li><a href="#URL_PAGE{associations}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>
+					<:marly:associations:></a></li>
+				<li><a href="#URL_PAGE{reservation}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>
+					<:marly:reserver_salle:></a></li>
+				<li><a href="#URL_PAGE{bulletin}">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>
+					<:marly:bulletin:></a></li>
+			</ul>
+		</div>
 
 	</div>
-</div>
+</section>
