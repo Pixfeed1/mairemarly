@@ -659,45 +659,43 @@ section{ padding-block:70px; position:relative; }
 		<div class="rang-nav">
 			<a class="marque" href="#" rel="home">
 				<svg class="sceau" width="72" height="72" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
-     role="img" aria-label="Emblème de Marly-Gomont">
-  <!-- Sigle DÉRIVÉ des armes : dessin original, aucun fichier repris.
-       On ne garde que la partition — fascé à senestre, semé de lis à dextre —
-       qui est ce qui reste lisible à petite taille. L'écusson au lion et le
-       détail des pièces sont abandonnés : à 40px ils deviennent une tache. -->
-  <defs>
-    <clipPath id="rond"><circle cx="50" cy="50" r="38"/></clipPath>
-    <path id="lis" d="M0 -5 C1.6 -2.4 1.5 -0.8 0 0.6 C-1.5 -0.8 -1.6 -2.4 0 -5 Z
-                      M-3.4 -1 C-1.9 -0.4 -1.1 0.6 -0.9 1.7 C-2.4 1.6 -3.4 0.4 -3.4 -1 Z
-                      M3.4 -1 C3.4 0.4 2.4 1.6 0.9 1.7 C1.1 0.6 1.9 -0.4 3.4 -1 Z
-                      M-2.2 2.4 H2.2 V3.4 H-2.2 Z M-0.5 3.6 H0.5 V5.4 H-0.5 Z"/>
-  </defs>
+     role="img" aria-label="Emblème de Marly-Gomont : l’église fortifiée Saint-Rémy">
+  <!-- Sceau bâti autour de l'église fortifiée Saint-Rémy, monument historique
+       classé par arrêté du 3 février 1928. Dessin original au trait : à la
+       taille d'un en-tête, une silhouette pleine se referme et devient une
+       tache, alors qu'un tracé garde ses détails.
 
-  <g clip-path="url(#rond)">
-    <!-- senestre : le fascé -->
-    <g fill="currentColor">
-      <rect x="12" y="12" width="38" height="7"/>
-      <rect x="12" y="26" width="38" height="7"/>
-      <rect x="12" y="40" width="38" height="7"/>
-      <rect x="12" y="54" width="38" height="7"/>
-      <rect x="12" y="68" width="38" height="7"/>
-      <rect x="12" y="82" width="38" height="7"/>
-    </g>
-    <!-- dextre : le semé de lis -->
-    <g fill="currentColor" opacity=".9">
-      <use href="#lis" transform="translate(62 24)"/>
-      <use href="#lis" transform="translate(78 24)"/>
-      <use href="#lis" transform="translate(70 40)"/>
-      <use href="#lis" transform="translate(86 40)"/>
-      <use href="#lis" transform="translate(62 56)"/>
-      <use href="#lis" transform="translate(78 56)"/>
-      <use href="#lis" transform="translate(70 72)"/>
-      <use href="#lis" transform="translate(86 72)"/>
-    </g>
-    <line x1="50" y1="8" x2="50" y2="92" stroke="currentColor" stroke-width="2.2"/>
+       Éléments retenus, tous attestés : les tours défensives qui flanquent la
+       façade, le portail en tiers-point, les ouvertures étroites. -->
+  <g fill="none" stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+
+    <!-- tours flanquantes -->
+    <path d="M30 72 V50 l6-8 6 8 v22"/>
+    <path d="M58 72 V50 l6-8 6 8 v22"/>
+    <path d="M34 54 v5 M64 54 v5"/>
+
+    <!-- corps de la façade et pignon -->
+    <path d="M42 72 V48 l8-10 8 10 v24"/>
+
+    <!-- portail en tiers-point : deux arcs qui se rejoignent en pointe -->
+    <path d="M45 72 V62 Q45 55 50 53 Q55 55 55 62 V72"/>
+
+    <!-- ouvertures étroites de la façade -->
+    <path d="M50 44 v4"/>
+
+    <!-- soubassement -->
+    <path d="M26 72 H74"/>
   </g>
 
-  <circle cx="50" cy="50" r="38"   fill="none" stroke="currentColor" stroke-width="2.4"/>
+  <!-- couronne : le nom -->
+  <path id="arcNom" d="M 14 50 A 36 36 0 0 1 86 50" fill="none"/>
+  <text font-family="Alegreya Sans, Georgia, sans-serif" font-size="12" font-weight="700"
+        letter-spacing="1.1" fill="currentColor">
+    <textPath href="#arcNom" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
+  </text>
   <circle cx="50" cy="50" r="47.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  <circle cx="50" cy="50" r="40"   fill="none" stroke="currentColor" stroke-width="0.9"/>
 </svg>
 				<span>
 					<b>Marly-Gomont</b>

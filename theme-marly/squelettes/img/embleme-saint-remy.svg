@@ -1,16 +1,4 @@
-[(#REM)
-  inc/embleme.html — l'emblème de la commune.
-  ---------------------------------------------------------------------------
-  Intégré en SVG et non appelé en <img> : ainsi il se dessine en currentColor
-  et suit la couleur du thème. Une image externe, elle, resterait figée.
-
-  Bâti autour de l'église fortifiée Saint-Rémy, monument historique classé
-  par arrêté du 3 février 1928 — un socle vérifié, contrairement aux armes
-  dont le statut reste incertain.
-
-  Ceci reste un emblème, pas un blason : ne jamais le présenter comme tel.
-]
-<svg class="sceau" width="72" height="72" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"
      role="img" aria-label="Emblème de Marly-Gomont : l’église fortifiée Saint-Rémy">
   <!-- Sceau bâti autour de l'église fortifiée Saint-Rémy, monument historique
        classé par arrêté du 3 février 1928. Dessin original au trait : à la
