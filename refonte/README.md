@@ -8,6 +8,36 @@ seul contenu public, pour la **proposer** à la commune et décrocher le client.
 > le web (le conteneur cloud bloque l'accès réseau vers l'extérieur). Clone le
 > repo en local, puis lance-les depuis un terminal Linux / macOS / WSL.
 
+
+## Où lancer les scripts ? (Windows)
+
+Il existe deux jeux de scripts identiques. **Sous Windows, utilise la version
+PowerShell** — elle n'a besoin de rien d'autre que Windows.
+
+| Ton environnement | Scripts à utiliser |
+|---|---|
+| **PowerShell** (Windows) | `aspirer_site.ps1` + `inventaire.ps1` ✅ recommandé |
+| **WSL / Linux / macOS** | `aspirer_site.sh` + `inventaire.sh` |
+| **Git Bash** | ⚠️ les `.sh` ont besoin de `wget`, absent par défaut |
+
+### Mode d'emploi PowerShell
+
+Ouvre PowerShell dans le dossier `refonte`, puis :
+
+```powershell
+# 1. Autoriser l'exécution des scripts pour cette session uniquement
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+# 2. Aspirer le site
+.\aspirer_site.ps1 http://marlygomont.free.fr
+
+# 3. Générer l'inventaire
+.\inventaire.ps1 capture_marlygomont.free.fr
+```
+
+L'aspiration prend quelques minutes (le script attend volontairement entre
+chaque requête pour ne pas surcharger le serveur de la commune).
+
 ## Étapes
 
 ### 1. Aspirer le contenu public
@@ -58,6 +88,8 @@ textes/photos protégés sans l'accord de la mairie : la capture sert à
 ## Fichiers
 | Fichier | Rôle |
 |---|---|
-| `aspirer_site.sh` | Aspiration du contenu public (miroir + endpoints SPIP + Wayback) |
-| `inventaire.sh` | Extraction d'un inventaire lisible (`inventaire.md`) |
+| `aspirer_site.ps1` | **Windows** — aspiration du contenu public (sans dépendance) |
+| `inventaire.ps1` | **Windows** — extraction de l'inventaire (`inventaire.md`) |
+| `aspirer_site.sh` | Linux/WSL/macOS — même chose (nécessite `wget`) |
+| `inventaire.sh` | Linux/WSL/macOS — même chose |
 | `README.md` | Ce guide |
