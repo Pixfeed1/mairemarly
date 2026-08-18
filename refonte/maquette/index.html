@@ -4,106 +4,88 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marly-Gomont — maquette de proposition</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500;700&family=Alegreya+Sans:wght@400;500;700;800&family=Caveat:wght@600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+<!-- Remix Icon (Apache 2.0). Le CDN sert de secours ; la version locale,
+     déposée par preparer_assets.ps1, prend le dessus quand elle existe.
+     En production, on ne garde QUE la locale : un CDN transmet l'IP de
+     chaque visiteur à un tiers, ce qu'une collectivité ne peut pas faire. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css">
+<link rel="stylesheet" href="vendor/remixicon.css">
+
 <style>
 /* ===========================================================================
    Marly-Gomont — maquette de proposition
    ---------------------------------------------------------------------------
-   Grammaire visuelle relevée sur les sites de communes haut de gamme :
+   Grammaire visuelle :
      1. titres géants en deux temps : 1er mot script coloré + suite serif noire
      2. bandes crème pleine largeur, fermées par un liseré d'accent de 3px
-     3. carte blanche qui chevauche l'image, liseré d'accent de 4px sous elle
+     3. carte blanche qui chevauche l'image, liseré d'accent en pied de carte
      4. gravures circulaires en mix-blend-mode qui débordent du cadre
      5. en-tête blanc, la couleur ne sert que d'accent
-   Polices libres uniquement (SIL OFL / Apache 2.0).
+   Icônes : Remix Icon.  Polices : Alegreya, Alegreya Sans, Caveat, Open Sans
+   (toutes SIL OFL / Apache 2.0).
 
-   >>> POUR CHANGER LA COULEUR DU SITE : une seule ligne, --accent ci-dessous.
-       Vert bocage  #1E5B41  (par défaut, identité Thiérache)
-       Rouge        #BE061C  (registre plus institutionnel)
-       Bleu ardoise #1F4E79
+   >>> COULEUR DU SITE : une seule ligne, --accent ci-dessous.
+       Vert bocage #1E5B41 · Rouge #BE061C · Bleu ardoise #1F4E79
    =========================================================================== */
 
 :root{
-  --accent:      #1E5B41;   /* <<< la couleur du site */
-  --accent-sombre:#14402E;
-  --jaune:       #E5A93C;   /* étiquettes de rubrique */
-  --encre:       #1D1A1A;
-  --encre-doux:  #55504A;
-  --creme:       #FDF8EE;
-  --blanc:       #FFFFFF;
-  --trait:       #DED6C6;
+  --accent:#1E5B41;  --accent-sombre:#14402E;  --jaune:#E5A93C;
+  --encre:#1D1A1A;   --encre-doux:#55504A;
+  --creme:#FDF8EE;   --trait:#DED6C6;
 
-  --script: "Caveat", cursive;
-  --serif:  "Alegreya", Georgia, serif;
-  --titre:  "Alegreya Sans", "Segoe UI", system-ui, sans-serif;
-  --texte:  "Open Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
-
-  --large: 1240px;
+  --script:"Caveat",cursive;
+  --serif:"Alegreya",Georgia,serif;
+  --titre:"Alegreya Sans","Segoe UI",system-ui,sans-serif;
+  --texte:"Open Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --large:1240px;
 }
 
 *,*::before,*::after{ box-sizing:border-box; }
 body{
-  margin:0; background:var(--blanc); color:var(--encre);
-  font-family:var(--texte); font-size:17px; line-height:1.6;
-  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  margin:0; background:#fff; color:var(--encre); font-family:var(--texte);
+  font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden;
 }
-img{ max-width:100%; display:block; }
 a{ color:inherit; }
 h1,h2,h3,h4{ margin:0; line-height:1.1; }
-
 .large{ max-width:var(--large); margin-inline:auto; padding-inline:24px; }
-
-a:focus-visible,button:focus-visible,input:focus-visible{
-  outline:3px solid var(--jaune); outline-offset:2px;
-}
+a:focus-visible,button:focus-visible,input:focus-visible{ outline:3px solid var(--jaune); outline-offset:2px; }
 .sr{ position:absolute; left:-9999px; }
 .saut{ position:absolute; left:-9999px; background:var(--accent); color:#fff; padding:12px 20px; z-index:100; }
 .saut:focus{ left:12px; top:12px; }
 
-/* ---- 1. TITRE DE SECTION : script coloré + serif noir -------------------- */
-.titre-bloc{
-  font-family:var(--script); color:var(--accent);
-  font-size:clamp(42px,7vw,74px); font-weight:700;
-  line-height:1.05; margin-bottom:34px; display:block;
+/* ---- icônes Remix : une règle pour tout le set -------------------------- */
+[class^="ri-"],[class*=" ri-"]{ line-height:1; vertical-align:-.1em; }
+
+/* ---- photos : dégradé de secours si le fichier manque ------------------- */
+.ph{ position:relative; overflow:hidden; background:var(--f,var(--accent)); }
+.ph img{ width:100%; height:100%; object-fit:cover; display:block; }
+.ph::after{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(120% 90% at 20% 12%,rgba(255,255,255,.14),transparent 58%);
 }
-.titre-bloc span{
-  font-family:var(--serif); color:var(--encre); font-weight:400;
-  font-size:clamp(38px,6.4vw,70px);
-}
-.titre-bloc.droite{ text-align:right; }
 
-
-
-/* ---- grain papier -------------------------------------------------------
-   Un bruit très léger sur toute la page. C'est imperceptible consciemment
-   mais ça enlève l'aspect "aplat numérique" des grandes zones de couleur.
-   Généré en SVG, aucun fichier image à charger.                            */
+/* ---- grain papier ------------------------------------------------------- */
 body::after{
-  content:''; position:fixed; inset:0; pointer-events:none; z-index:999;
-  opacity:.035;
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:999; opacity:.03;
   background-image:url("data:image/svg+xml;utf8,\
 <svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>\
 <filter id='b'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter>\
 <rect width='200' height='200' filter='url(%23b)'/></svg>");
 }
-@media (prefers-reduced-motion:reduce){ body::after{ display:none; } }
 
-/* ---- placeholders d'images : dégradé + voile texturé --------------------
-   Tant qu'il n'y a pas de photographies, on évite l'aplat plat : deux
-   dégradés superposés donnent une profondeur de champ crédible.            */
-.img, .fond, .couv{ position:relative; }
-.img::after, .fond::after{
-  content:''; position:absolute; inset:0;
-  background:
-    radial-gradient(120% 90% at 20% 15%, rgba(255,255,255,.22), transparent 60%),
-    radial-gradient(90% 80% at 85% 95%, rgba(0,0,0,.30), transparent 65%);
+/* ---- 1. TITRE DE SECTION ------------------------------------------------ */
+.titre-bloc{
+  font-family:var(--script); color:var(--accent);
+  font-size:clamp(42px,7vw,74px); font-weight:700; line-height:1.05;
+  margin-bottom:34px; display:block;
 }
-
-/* ---- jeu d'icônes : une seule règle gouverne tout le set ---------------- */
-.ico{ fill:none; stroke:currentColor; stroke-width:1.5;
-      stroke-linecap:round; stroke-linejoin:round; }
+.titre-bloc span{ font-family:var(--serif); color:var(--encre); font-weight:400; font-size:clamp(38px,6.4vw,70px); }
+.titre-bloc.droite{ text-align:right; }
 
 /* ---- bandeau maquette --------------------------------------------------- */
 .bandeau{
@@ -116,14 +98,13 @@ body::after{
 .entete{ background:#fff; position:sticky; top:0; z-index:60; border-bottom:1px solid #EEE8DC; }
 .rang-outils{ display:flex; justify-content:flex-end; align-items:center; gap:10px; padding-top:12px; }
 .rond-social{
-  width:26px; height:26px; border-radius:50%; background:var(--accent);
-  display:flex; align-items:center; justify-content:center;
+  width:27px; height:27px; border-radius:50%; background:var(--accent); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:14px; text-decoration:none;
 }
-.rond-social svg{ width:13px; height:13px; fill:#fff; }
 .pilule{
-  border:1px solid var(--accent); color:var(--accent); background:#fff;
-  border-radius:20px; padding:5px 14px; font-size:12.5px; font-weight:600;
-  text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+  border:1px solid var(--accent); color:var(--accent); background:#fff; border-radius:20px;
+  padding:5px 14px; font-size:12.5px; font-weight:600; text-decoration:none;
+  display:inline-flex; align-items:center; gap:6px;
 }
 .pilule.plein{ background:var(--accent); color:#fff; }
 .pilule:hover{ background:var(--accent); color:#fff; }
@@ -132,169 +113,107 @@ body::after{
 .marque{ display:flex; align-items:center; gap:14px; text-decoration:none; flex-shrink:0; }
 .marque .sceau{ width:72px; height:72px; flex-shrink:0; }
 .marque b{ font-family:var(--serif); font-size:34px; font-weight:700; display:block; line-height:1; }
-.marque small{
-  font-size:11px; letter-spacing:.34em; text-transform:uppercase;
-  color:var(--encre-doux); display:block; margin-top:3px;
-}
+.marque small{ font-size:11px; letter-spacing:.34em; text-transform:uppercase; color:var(--encre-doux); display:block; margin-top:3px; }
 
 .nav{ margin-left:auto; display:flex; list-style:none; margin-block:0; padding:0; align-items:center; }
 .nav li{ border-left:1px solid var(--trait); }
 .nav li:first-child{ border-left:0; }
 .nav a{
-  display:block; padding:4px 22px; text-decoration:none;
-  font-family:var(--titre); font-weight:500; font-size:19px;
-  text-transform:uppercase; letter-spacing:.02em;
+  display:block; padding:4px 22px; text-decoration:none; font-family:var(--titre);
+  font-weight:500; font-size:19px; text-transform:uppercase; letter-spacing:.02em;
 }
 .nav a:hover{ color:var(--accent); }
-.loupe{ background:none; border:0; cursor:pointer; padding:4px 0 4px 22px; }
-.loupe svg{ width:26px; height:26px; color:var(--accent); }
-.burger{ display:none; margin-left:auto; background:none; border:1px solid var(--trait);
-  border-radius:3px; padding:9px 13px; cursor:pointer; font-size:15px; }
+.loupe{ background:none; border:0; cursor:pointer; padding:4px 0 4px 22px; color:var(--accent); font-size:25px; }
+.burger{ display:none; margin-left:auto; background:none; border:1px solid var(--trait); border-radius:3px; padding:8px 13px; cursor:pointer; font-size:18px; }
 
 /* ---- HÉROS -------------------------------------------------------------- */
-.heros{ position:relative; background:var(--accent-sombre); }
-.heros .paysage{ width:100%; height:clamp(320px,42vw,460px); display:block; }
-.heros-texte{
-  position:absolute; inset:0; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; text-align:center; padding:24px; color:#fff;
-}
-.heros h1{
-  font-family:var(--serif); font-weight:700;
-  font-size:clamp(34px,5vw,58px); text-shadow:0 2px 18px rgba(0,0,0,.5);
-}
-.recherche{
-  margin-top:24px; display:flex; width:min(600px,100%);
-  background:#fff; border-radius:40px; overflow:hidden; box-shadow:0 12px 36px rgba(0,0,0,.3);
-}
+.heros{ position:relative; height:clamp(340px,44vw,500px); --f:linear-gradient(160deg,#2E7154,#10382A); }
+.heros .voile{ position:absolute; inset:0; background:linear-gradient(to bottom,rgba(0,0,0,.42),rgba(0,0,0,.25) 45%,rgba(0,0,0,.55)); }
+.heros-texte{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; color:#fff; }
+.heros h1{ font-family:var(--serif); font-weight:700; font-size:clamp(34px,5vw,58px); text-shadow:0 2px 20px rgba(0,0,0,.5); }
+.heros .sous{ font-size:clamp(14px,1.8vw,18px); letter-spacing:.22em; text-transform:uppercase; margin-top:10px; opacity:.9; }
+.recherche{ margin-top:26px; display:flex; width:min(600px,100%); background:#fff; border-radius:40px; overflow:hidden; box-shadow:0 14px 40px rgba(0,0,0,.32); }
 .recherche input{ flex:1; border:0; padding:16px 24px; font-size:16px; font-family:var(--texte); min-width:0; }
-.recherche button{
-  border:0; background:var(--accent); color:#fff; padding:0 28px;
-  cursor:pointer; font-weight:700; font-family:var(--texte);
-}
+.recherche button{ border:0; background:var(--accent); color:#fff; padding:0 26px; cursor:pointer; font-weight:700; font-family:var(--texte); font-size:16px; }
 
-/* ---- BANDE ACCÈS RAPIDES ------------------------------------------------ */
+/* ---- ACCÈS RAPIDES ------------------------------------------------------ */
 .acces{ background:#fff; border-bottom:1px solid #EEE8DC; }
 .acces .large{ display:flex; align-items:center; gap:40px; padding-block:26px; flex-wrap:wrap; }
 .acces .titre-bloc{ font-size:clamp(30px,3.6vw,42px); margin:0; white-space:nowrap; }
 .acces .titre-bloc span{ font-size:clamp(26px,3.2vw,38px); }
 .acces-liste{ display:flex; gap:6px; list-style:none; margin:0; padding:0; flex:1; flex-wrap:wrap; justify-content:flex-end; }
-.acces-liste a{
-  display:flex; flex-direction:column; align-items:center; gap:8px;
-  text-decoration:none; padding:8px 16px; font-size:13px; font-weight:600;
-  text-align:center; min-width:100px;
-}
-.acces-liste svg{ width:30px; height:30px; color:var(--accent); }
+.acces-liste a{ display:flex; flex-direction:column; align-items:center; gap:9px; text-decoration:none; padding:8px 16px; font-size:13px; font-weight:600; text-align:center; min-width:104px; }
+.acces-liste i{ font-size:30px; color:var(--accent); }
 .acces-liste a:hover{ color:var(--accent); }
 
-/* ---- sections ----------------------------------------------------------- */
 section{ padding-block:70px; position:relative; }
 
-/* ---- 4. GRAVURE CIRCULAIRE QUI DÉBORDE ---------------------------------- */
-.gravure{
-  position:absolute; width:300px; height:300px; opacity:.85;
-  mix-blend-mode:multiply; pointer-events:none; z-index:0;
-}
+/* ---- 4. GRAVURE QUI DÉBORDE --------------------------------------------- */
+.gravure{ position:absolute; width:300px; height:300px; opacity:.8; mix-blend-mode:multiply; pointer-events:none; z-index:0; }
 .gravure.dr{ right:0; top:40px; transform:translateX(45%); }
 .gravure.ga{ left:0; top:120px; transform:translateX(-45%); }
 
-/* ---- 3. ACTU VEDETTE : carte blanche chevauchant l'image ---------------- */
-.actu-vedette{ position:relative; display:flex; align-items:center; z-index:1; }
-.actu-vedette .img{
-  width:72%; aspect-ratio:1087/578; border-radius:4px; overflow:hidden;
-  background:var(--accent);
-}
+/* ---- 3. ACTU VEDETTE ---------------------------------------------------- */
+.actu-vedette{ position:relative; display:flex; align-items:center; z-index:1; text-decoration:none; }
+.actu-vedette .ph{ width:72%; aspect-ratio:1087/578; border-radius:4px; --f:linear-gradient(135deg,#C98B3C,#8E5526); }
 .actu-vedette .txt{
   background:#fff; border-radius:4px; border-bottom:4px solid var(--accent);
   padding:40px 44px; max-width:470px; margin-left:-140px; position:relative; z-index:2;
-  box-shadow:0 14px 40px rgba(29,26,26,.10);
+  box-shadow:0 16px 44px rgba(29,26,26,.12);
 }
-.cat{
-  display:inline-block; background:var(--jaune); color:var(--encre);
-  font-size:12px; letter-spacing:.09em; text-transform:uppercase; font-weight:700;
-  padding:4px 11px; margin-bottom:12px;
-}
+.cat{ display:inline-block; background:var(--jaune); color:var(--encre); font-size:12px; letter-spacing:.09em; text-transform:uppercase; font-weight:700; padding:4px 11px; margin-bottom:12px; }
 .actu-vedette .txt h3{ font-family:var(--titre); font-weight:800; font-size:34px; margin-bottom:12px; }
 .actu-vedette .txt p{ margin:0; color:var(--encre-doux); font-size:16px; }
 
-/* ---- 2. BANDE CRÈME PLEINE LARGEUR + LISERÉ ----------------------------- */
+/* ---- 2. BANDE CRÈME ----------------------------------------------------- */
 .bande-creme{ position:relative; margin-top:46px; padding-top:34px; padding-bottom:38px; }
 .bande-creme::before{
-  content:''; position:absolute; left:50%; transform:translateX(-50%);
-  width:100vw; top:0; bottom:0; background:var(--creme);
-  border-bottom:3px solid var(--accent); z-index:0;
+  content:''; position:absolute; left:50%; transform:translateX(-50%); width:100vw;
+  top:0; bottom:0; background:var(--creme); border-bottom:3px solid var(--accent); z-index:0;
 }
-.bande-creme > *{ position:relative; z-index:1; }
-
+.bande-creme>*{ position:relative; z-index:1; }
 .actus-petites{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-.actu-petite{
-  position:relative; aspect-ratio:540/288; border-radius:4px; overflow:hidden;
-  display:flex; align-items:flex-end; text-decoration:none; color:#fff;
-}
-.actu-petite .fond{ position:absolute; inset:0; }
-.actu-petite .voile{
-  position:absolute; inset:0;
-  background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.15) 55%,transparent 100%);
-}
-.actu-petite .txt{ position:relative; padding:16px 20px; width:100%; }
+.actu-petite{ position:relative; aspect-ratio:540/288; border-radius:4px; overflow:hidden; display:block; text-decoration:none; color:#fff; }
+.actu-petite .ph{ position:absolute; inset:0; }
+.actu-petite .voile{ position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.15) 58%,transparent 100%); }
+.actu-petite .txt{ position:absolute; bottom:0; padding:16px 20px; width:100%; }
 .actu-petite h3{ font-family:var(--titre); font-weight:700; font-size:20px; color:#fff; }
-.actu-petite .cat{ background:var(--jaune); color:var(--encre); margin-bottom:8px; }
 
-/* bouton "tout voir" posé sur un filet d'accent */
 .filet{ position:relative; margin-top:38px; text-align:right; }
-.filet::before{
-  content:''; position:absolute; left:0; right:0; top:50%; height:2px; background:var(--accent);
-}
-.filet a{
-  position:relative; display:inline-flex; align-items:center; gap:10px;
-  background:#fff; border:1px solid var(--accent); border-radius:30px;
-  padding:11px 26px; text-decoration:none; font-weight:600; font-size:15px;
-}
+.filet::before{ content:''; position:absolute; left:0; right:0; top:50%; height:2px; background:var(--accent); }
+.filet a{ position:relative; display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--accent); border-radius:30px; padding:11px 26px; text-decoration:none; font-weight:600; font-size:15px; }
 .filet a:hover{ background:var(--accent); color:#fff; }
 
 /* ---- ÉVÉNEMENTS --------------------------------------------------------- */
 .evt-zone{ position:relative; }
-.evt-zone::before{
-  content:''; position:absolute; left:50%; transform:translateX(-50%);
-  width:100vw; top:120px; bottom:0; background:var(--creme);
-  border-bottom:3px solid var(--accent); z-index:0;
-}
+.evt-zone::before{ content:''; position:absolute; left:50%; transform:translateX(-50%); width:100vw; top:120px; bottom:0; background:var(--creme); border-bottom:3px solid var(--accent); z-index:0; }
 .evt-grille{ position:relative; z-index:1; display:grid; grid-template-columns:440px 1fr; gap:56px; }
 .affiche{ position:relative; }
-.affiche .img{ aspect-ratio:450/357; border-radius:4px; overflow:hidden; background:var(--accent); }
-.affiche .txt{
-  background:#fff; padding:26px 28px 22px; margin:-46px 18px 0; position:relative;
-  border-radius:4px; box-shadow:0 12px 30px rgba(29,26,26,.10);
-}
+.affiche .ph{ aspect-ratio:450/357; border-radius:4px; --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
+.affiche .txt{ background:#fff; padding:26px 28px 22px; margin:-46px 18px 0; position:relative; border-radius:4px; box-shadow:0 14px 34px rgba(29,26,26,.12); }
 .affiche h3{ font-family:var(--titre); font-weight:800; font-size:26px; margin-bottom:8px; }
 .affiche p{ margin:0; color:var(--encre-doux); font-size:15px; }
-
 .pastille-date{
-  position:absolute; left:20px; bottom:-26px; z-index:3;
-  width:104px; height:104px; border-radius:50%; background:var(--accent); color:#fff;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1;
+  position:absolute; left:20px; bottom:-26px; z-index:3; width:106px; height:106px;
+  border-radius:50%; background:var(--accent); color:#fff; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; line-height:1;
 }
-.pastille-date b{ font-family:var(--titre); font-size:30px; font-weight:800; }
+.pastille-date b{ font-family:var(--titre); font-size:29px; font-weight:800; }
 .pastille-date span{ font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-top:3px; }
 
-.filtres{ display:flex; gap:10px; justify-content:flex-end; margin-bottom:26px; flex-wrap:wrap; }
-.filtres button{
-  border:1px solid var(--accent); background:#fff; color:var(--encre);
-  border-radius:24px; padding:8px 20px; font-size:14px; cursor:pointer; font-family:var(--texte);
-}
+.filtres{ display:flex; gap:10px; justify-content:flex-end; margin-bottom:26px; flex-wrap:wrap; position:relative; z-index:1; }
+.filtres button{ border:1px solid var(--accent); background:#fff; color:var(--encre); border-radius:24px; padding:8px 20px; font-size:14px; cursor:pointer; font-family:var(--texte); }
 .filtres button:hover{ background:var(--accent); color:#fff; }
 
 .evt-liste{ list-style:none; margin:0; padding:0; }
 .evt-liste li{ display:flex; gap:24px; align-items:center; padding:22px 0; border-bottom:1px solid var(--trait); }
 .evt-liste li:last-child{ border-bottom:0; }
-.rond-date{
-  flex-shrink:0; width:88px; height:88px; border-radius:50%; background:var(--accent);
-  color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1;
-}
+.rond-date{ flex-shrink:0; width:88px; height:88px; border-radius:50%; background:var(--accent); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; }
 .rond-date b{ font-family:var(--titre); font-size:26px; font-weight:800; }
 .rond-date span{ font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; margin-top:2px; }
 .evt-liste h3{ font-family:var(--titre); font-weight:700; font-size:21px; margin-top:6px; }
 
-/* ---- CONSEIL MUNICIPAL (bloc différenciant) ----------------------------- */
+/* ---- CONSEIL MUNICIPAL -------------------------------------------------- */
 .conseil{ background:var(--accent); color:#fff; }
 .conseil .titre-bloc{ color:var(--jaune); }
 .conseil .titre-bloc span{ color:#fff; }
@@ -307,7 +226,7 @@ section{ padding-block:70px; position:relative; }
 .pv ul{ list-style:none; margin:0; padding:8px; }
 .pv li{ display:flex; align-items:center; gap:14px; padding:14px; border-bottom:1px solid rgba(255,255,255,.13); }
 .pv li:last-child{ border-bottom:0; }
-.pv svg{ width:20px; height:20px; color:var(--jaune); flex-shrink:0; }
+.pv i{ color:var(--jaune); font-size:20px; flex-shrink:0; }
 .pv b{ font-family:var(--titre); font-size:17px; font-weight:700; }
 .pv small{ display:block; opacity:.75; font-size:13px; }
 .pv .marq{ margin-left:auto; font-size:11px; background:var(--jaune); color:var(--encre); padding:3px 9px; font-weight:700; white-space:nowrap; }
@@ -316,8 +235,8 @@ section{ padding-block:70px; position:relative; }
 .assos{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
 .asso{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:28px 24px; text-decoration:none; display:block; }
 .asso:hover{ border-color:var(--accent); }
-.asso .rond{ width:50px; height:50px; border-radius:50%; background:var(--creme); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
-.asso .rond svg{ width:24px; height:24px; color:var(--accent); }
+.asso .rond{ width:52px; height:52px; border-radius:50%; background:var(--creme); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+.asso .rond i{ font-size:25px; color:var(--accent); }
 .asso h3{ font-family:var(--titre); font-weight:800; font-size:19px; margin-bottom:5px; }
 .asso p{ margin:0; font-size:14px; color:var(--encre-doux); }
 
@@ -325,7 +244,7 @@ section{ padding-block:70px; position:relative; }
 .lire{ background:var(--creme); }
 .lire-grille{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
 .bulletin{ display:flex; gap:26px; align-items:center; }
-.couv{ width:158px; height:214px; flex-shrink:0; box-shadow:0 10px 28px rgba(29,26,26,.2); display:flex; align-items:center; justify-content:center; }
+.couv{ width:160px; height:216px; flex-shrink:0; border-radius:2px; box-shadow:0 12px 30px rgba(29,26,26,.22); --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
 .lettre{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:30px; }
 .lettre form{ display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
 .lettre input{ flex:1; min-width:190px; border:1px solid var(--trait); border-radius:3px; padding:13px 15px; font-family:var(--texte); }
@@ -338,6 +257,7 @@ section{ padding-block:70px; position:relative; }
 .pied ul{ list-style:none; margin:0; padding:0; }
 .pied li{ margin-bottom:9px; font-size:15px; }
 .pied .coord{ font-size:15px; line-height:1.9; }
+.pied .coord i{ color:var(--accent); width:20px; }
 .pied-bas{ border-top:1px solid var(--trait); margin-top:42px; padding-top:20px; display:flex; gap:22px; flex-wrap:wrap; font-size:13px; color:var(--encre-doux); }
 .pied-bas a{ text-decoration:none; }
 .pied-bas a:hover{ text-decoration:underline; }
@@ -345,7 +265,7 @@ section{ padding-block:70px; position:relative; }
 /* ---- responsive --------------------------------------------------------- */
 @media (max-width:1080px){
   .actu-vedette{ flex-direction:column; align-items:stretch; }
-  .actu-vedette .img{ width:100%; }
+  .actu-vedette .ph{ width:100%; }
   .actu-vedette .txt{ margin-left:0; margin-top:-60px; max-width:none; margin-inline:20px; }
   .evt-grille{ grid-template-columns:1fr; gap:64px; }
   .conseil-grille,.lire-grille,.pied-grille{ grid-template-columns:1fr; gap:34px; }
@@ -357,8 +277,7 @@ section{ padding-block:70px; position:relative; }
   .burger{ display:block; }
   .acces .large{ flex-direction:column; align-items:stretch; gap:14px; }
   .acces-liste{ justify-content:flex-start; overflow-x:auto; flex-wrap:nowrap; }
-  .actus-petites{ grid-template-columns:1fr; }
-  .assos{ grid-template-columns:1fr; }
+  .actus-petites,.assos{ grid-template-columns:1fr; }
   .bulletin{ flex-direction:column; align-items:flex-start; }
   .filtres{ justify-content:flex-start; }
   .titre-bloc.droite{ text-align:left; }
@@ -368,43 +287,25 @@ section{ padding-block:70px; position:relative; }
 </head>
 <body>
 
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
- <defs>
-  <g id="ico-pv"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></g>
-  <g id="ico-agenda"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 11h16"/></g>
-  <g id="ico-urba"><path d="M4 21V8l8-5 8 5v13M3 21h18M10 21v-6h4v6M8 11h.01M16 11h.01"/></g>
-  <g id="ico-assos"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M16 20a5 5 0 0 1 4.5-5"/></g>
-  <g id="ico-bulletin"><path d="M12 8v13"/><path d="M2 5h6a4 4 0 0 1 4 3.5V21a3.5 3.5 0 0 0-3.5-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 3.5V21a3.5 3.5 0 0 1 3.5-3H22z"/></g>
-  <g id="ico-lieu"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 15 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g>
-  <g id="ico-sport"><path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 3M16 6h3a3 3 0 0 1-3 3"/><path d="M12 13v4M9.5 20h5M10 17h4"/></g>
-  <g id="ico-musique"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></g>
-  <g id="ico-fete"><path d="M12 3.5l1.9 4.3 4.3 1.9-4.3 1.9L12 16l-1.9-4.4L5.8 9.7l4.3-1.9z"/><path d="M18.5 15l.8 1.8 1.7.7-1.7.7-.8 1.8-.8-1.8-1.7-.7 1.7-.7z"/></g>
-  <g id="ico-eglise"><path d="M12 2.5v4M10 4.5h4"/><path d="M6 21V12l6-4.5 6 4.5v9M5 21h14M10 21v-5h4v5"/></g>
-  <g id="ico-loupe"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16 16"/></g>
- </defs>
-</svg>
-
 <a class="saut" href="#contenu">Aller au contenu principal</a>
 
 <div class="bandeau">
-  Maquette de proposition — <span>site non officiel</span> — contenus repris du site actuel à titre d'illustration
+  Maquette de proposition — <span>site non officiel</span> — photographies d'illustration, à remplacer
 </div>
 
-<!-- ===================== EN-TÊTE BLANC ===================== -->
+<!-- ===================== EN-TÊTE ===================== -->
 <header class="entete">
   <div class="large">
     <div class="rang-outils">
-      <span class="rond-social"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 12s0-4-.5-5.8a3 3 0 00-2.1-2.1C18.6 3.5 12 3.5 12 3.5s-6.6 0-8.4.6A3 3 0 001.5 6.2C1 8 1 12 1 12s0 4 .5 5.8a3 3 0 002.1 2.1c1.8.6 8.4.6 8.4.6s6.6 0 8.4-.6a3 3 0 002.1-2.1C23 16 23 12 23 12zM9.8 15.4V8.6l5.7 3.4z"/></svg><span class="sr">YouTube</span></span>
-      <span class="rond-social"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.9c-.1 3.2-1.6 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1s-3.6 0-4.9-.1c-3.3-.2-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9C2.4 3.9 3.9 2.4 7.1 2.3 8.4 2.2 8.8 2.2 12 2.2zm0 3.1a6.7 6.7 0 106.7 6.7A6.7 6.7 0 0012 5.3zm0 11a4.3 4.3 0 114.3-4.3 4.3 4.3 0 01-4.3 4.3zm6.9-11.2a1.6 1.6 0 101.6 1.6 1.6 1.6 0 00-1.6-1.6z"/></svg><span class="sr">Instagram</span></span>
-      <span class="rond-social"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8.5V6.8c0-.8.2-1.2 1.4-1.2h1.7V2.5h-2.7c-3.3 0-4.4 1.5-4.4 4.1v1.9H7.9V12H10v9.5h4V12h2.7l.4-3.5z"/></svg><span class="sr">Facebook</span></span>
-      <a class="pilule" href="#bulletin">✉ Newsletter</a>
-      <a class="pilule plein" href="#pied">Contacter la mairie</a>
+      <a class="rond-social" href="#" aria-label="YouTube"><i class="ri-youtube-fill" aria-hidden="true"></i></a>
+      <a class="rond-social" href="#" aria-label="Instagram"><i class="ri-instagram-line" aria-hidden="true"></i></a>
+      <a class="rond-social" href="#" aria-label="Facebook"><i class="ri-facebook-fill" aria-hidden="true"></i></a>
+      <a class="pilule" href="#bulletin"><i class="ri-mail-line" aria-hidden="true"></i> Newsletter</a>
+      <a class="pilule plein" href="#pied"><i class="ri-customer-service-2-line" aria-hidden="true"></i> Contacter la mairie</a>
     </div>
 
     <div class="rang-nav">
       <a class="marque" href="#">
-        <!-- Sceau : église fortifiée de Thiérache, emblème régional -->
         <svg class="sceau" viewBox="0 0 100 100" role="img" aria-label="Blason de Marly-Gomont">
           <circle cx="50" cy="50" r="47" fill="none" stroke="var(--encre)" stroke-width="1.5"/>
           <circle cx="50" cy="50" r="41" fill="none" stroke="var(--encre)" stroke-width="1"/>
@@ -419,10 +320,7 @@ section{ padding-block:70px; position:relative; }
             <textPath href="#arc" startOffset="50%" text-anchor="middle">THIÉRACHE · AISNE</textPath>
           </text>
         </svg>
-        <span>
-          <b>Marly-Gomont</b>
-          <small>Commune de l'Aisne</small>
-        </span>
+        <span><b>Marly-Gomont</b><small>Commune de l'Aisne</small></span>
       </a>
 
       <nav aria-label="Navigation principale">
@@ -434,10 +332,8 @@ section{ padding-block:70px; position:relative; }
           <li><a href="#">Découvrir</a></li>
         </ul>
       </nav>
-      <button class="loupe" aria-label="Rechercher">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-loupe"/></svg>
-      </button>
-      <button class="burger" aria-label="Ouvrir le menu">☰ Menu</button>
+      <button class="loupe" aria-label="Rechercher"><i class="ri-search-line" aria-hidden="true"></i></button>
+      <button class="burger" aria-label="Ouvrir le menu"><i class="ri-menu-line" aria-hidden="true"></i></button>
     </div>
   </div>
 </header>
@@ -445,35 +341,16 @@ section{ padding-block:70px; position:relative; }
 <main id="contenu">
 
   <!-- ===================== HÉROS ===================== -->
-  <div class="heros">
-    <svg class="paysage" viewBox="0 0 1440 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#2E7154"/><stop offset="55%" stop-color="#1A5540"/><stop offset="100%" stop-color="#10382A"/>
-        </linearGradient>
-      </defs>
-      <rect width="1440" height="460" fill="url(#ciel)"/>
-      <circle cx="1190" cy="98" r="48" fill="#E5A93C" opacity=".2"/>
-      <path d="M0 322 Q 360 284 720 314 T 1440 292 V460 H0 Z" fill="#123F2D" opacity=".85"/>
-      <path d="M0 366 Q 400 336 800 360 T 1440 344 V460 H0 Z" fill="#0D3122" opacity=".92"/>
-      <g fill="#0A2619" opacity=".95">
-        <path d="M690 322 V228 l34-32 34 32 v94 z"/>
-        <rect x="714" y="268" width="20" height="54"/>
-        <rect x="658" y="280" width="34" height="42"/><rect x="756" y="280" width="34" height="42"/>
-        <path d="M724 178 v22 M714 188 h20" stroke="#0A2619" stroke-width="5"/>
-      </g>
-      <g fill="#0A2619" opacity=".8">
-        <ellipse cx="238" cy="310" rx="48" ry="35"/><rect x="233" y="310" width="9" height="26"/>
-        <ellipse cx="1122" cy="324" rx="56" ry="39"/><rect x="1117" y="324" width="10" height="28"/>
-        <ellipse cx="420" cy="330" rx="35" ry="26"/><rect x="416" y="330" width="7" height="19"/>
-      </g>
-    </svg>
+  <div class="heros ph">
+    <img src="img/hero.jpg" alt="" onerror="this.remove()">
+    <div class="voile"></div>
     <div class="heros-texte">
       <h1>Bienvenue à Marly-Gomont</h1>
+      <p class="sous">Thiérache · Aisne</p>
       <form class="recherche" role="search" onsubmit="return false">
         <label for="q" class="sr">Rechercher sur le site</label>
         <input id="q" type="search" placeholder="Une démarche, un compte rendu, un horaire…">
-        <button type="submit">Rechercher</button>
+        <button type="submit"><i class="ri-search-line" aria-hidden="true"></i></button>
       </form>
     </div>
   </div>
@@ -483,19 +360,18 @@ section{ padding-block:70px; position:relative; }
     <div class="large">
       <h2 class="titre-bloc">Je <span>souhaite</span></h2>
       <ul class="acces-liste">
-        <li><a href="#conseil"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>Comptes rendus</a></li>
-        <li><a href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-agenda"/></svg>Démarches</a></li>
-        <li><a href="#"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-urba"/></svg>Urbanisme</a></li>
-        <li><a href="#assos"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-assos"/></svg>Associations</a></li>
-        <li><a href="#bulletin"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-bulletin"/></svg>Le bulletin</a></li>
-        <li><a href="#pied"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-lieu"/></svg>Nous trouver</a></li>
+        <li><a href="#conseil"><i class="ri-file-list-3-line" aria-hidden="true"></i>Comptes rendus</a></li>
+        <li><a href="#"><i class="ri-calendar-check-line" aria-hidden="true"></i>Démarches</a></li>
+        <li><a href="#"><i class="ri-home-4-line" aria-hidden="true"></i>Urbanisme</a></li>
+        <li><a href="#assos"><i class="ri-team-line" aria-hidden="true"></i>Associations</a></li>
+        <li><a href="#bulletin"><i class="ri-book-open-line" aria-hidden="true"></i>Le bulletin</a></li>
+        <li><a href="#pied"><i class="ri-map-pin-2-line" aria-hidden="true"></i>Nous trouver</a></li>
       </ul>
     </div>
   </div>
 
   <!-- ===================== LES ACTUS ===================== -->
   <section id="actus">
-    <!-- gravure décorative qui déborde, en fusion multiply -->
     <svg class="gravure dr" viewBox="0 0 200 200" aria-hidden="true">
       <circle cx="100" cy="100" r="96" fill="none" stroke="#9C8F78" stroke-width="1.2"/>
       <circle cx="100" cy="100" r="88" fill="none" stroke="#9C8F78" stroke-width=".7"/>
@@ -513,7 +389,7 @@ section{ padding-block:70px; position:relative; }
       <h2 class="titre-bloc">Les <span>actus</span></h2>
 
       <a class="actu-vedette" href="#">
-        <div class="img" style="background:linear-gradient(135deg,#C98B3C,#8E5526)"></div>
+        <div class="ph"><img src="img/actu-forum.jpg" alt="" onerror="this.remove()"></div>
         <div class="txt">
           <span class="cat">Événement</span>
           <h3>Forum des artisans d'art et des produits du terroir</h3>
@@ -525,22 +401,22 @@ section{ padding-block:70px; position:relative; }
       <div class="bande-creme">
         <div class="actus-petites">
           <a class="actu-petite" href="#">
-            <div class="fond" style="background:linear-gradient(135deg,#2E7154,#123F2D)"></div>
+            <div class="ph" style="--f:linear-gradient(135deg,#2E7154,#123F2D)"><img src="img/actu-conseil.jpg" alt="" onerror="this.remove()"></div>
             <div class="voile"></div>
             <div class="txt"><span class="cat">Conseil municipal</span><h3>Réunion du 27 septembre</h3></div>
           </a>
           <a class="actu-petite" href="#">
-            <div class="fond" style="background:linear-gradient(135deg,#6E8A74,#3C5A48)"></div>
+            <div class="ph" style="--f:linear-gradient(135deg,#6E8A74,#3C5A48)"><img src="img/actu-concert.jpg" alt="" onerror="this.remove()"></div>
             <div class="voile"></div>
             <div class="txt"><span class="cat">Culture</span><h3>Concert de l'harmonie municipale</h3></div>
           </a>
           <a class="actu-petite" href="#">
-            <div class="fond" style="background:linear-gradient(135deg,#A08A5E,#6B5836)"></div>
+            <div class="ph" style="--f:linear-gradient(135deg,#A08A5E,#6B5836)"><img src="img/actu-mairie.jpg" alt="" onerror="this.remove()"></div>
             <div class="voile"></div>
             <div class="txt"><span class="cat">Vie pratique</span><h3>Horaires du secrétariat</h3></div>
           </a>
         </div>
-        <div class="filet"><a href="#">Toutes les actualités <span aria-hidden="true">→</span></a></div>
+        <div class="filet"><a href="#">Toutes les actualités <i class="ri-arrow-right-line" aria-hidden="true"></i></a></div>
       </div>
     </div>
   </section>
@@ -553,14 +429,12 @@ section{ padding-block:70px; position:relative; }
       <g stroke="#9C8F78" stroke-width="1.2" fill="none">
         <path d="M56 138q14-46 44-46t44 46"/>
         <path d="M78 138V104M100 138V92M122 138V104"/>
-        <circle cx="100" cy="76" r="12"/>
-        <path d="M52 150h96"/>
+        <circle cx="100" cy="76" r="12"/><path d="M52 150h96"/>
       </g>
     </svg>
 
     <div class="large">
       <h2 class="titre-bloc droite">Les <span>événements</span></h2>
-
       <div class="filtres">
         <button type="button">Ce mois-ci</button>
         <button type="button">Cette semaine</button>
@@ -569,9 +443,7 @@ section{ padding-block:70px; position:relative; }
 
       <div class="evt-grille">
         <div class="affiche">
-          <div class="img" style="background:linear-gradient(160deg,#1E5B41,#0F3B2A);display:flex;align-items:center;justify-content:center">
-            <span style="font-family:var(--serif);font-size:38px;color:#E5A93C;text-align:center;line-height:1.15;padding:24px">Fête<br>du village</span>
-          </div>
+          <div class="ph"><img src="img/evt-fete.jpg" alt="" onerror="this.remove()"></div>
           <span class="pastille-date"><b>05</b><span>›</span><b>07</b></span>
           <div class="txt">
             <span class="cat">Temps fort</span>
@@ -581,22 +453,14 @@ section{ padding-block:70px; position:relative; }
         </div>
 
         <ul class="evt-liste">
-          <li>
-            <span class="rond-date"><b>12</b><span>Sept.</span></span>
-            <div><span class="cat">Terroir</span><h3>Forum des artisans et du terroir</h3></div>
-          </li>
-          <li>
-            <span class="rond-date"><b>24</b><span>Sept.</span></span>
-            <div><span class="cat">Conseil</span><h3>Réunion du conseil municipal</h3></div>
-          </li>
-          <li>
-            <span class="rond-date"><b>05</b><span>Oct.</span></span>
-            <div><span class="cat">Culture</span><h3>Concert de l'harmonie municipale</h3></div>
-          </li>
-          <li>
-            <span class="rond-date"><b>11</b><span>Nov.</span></span>
-            <div><span class="cat">Mémoire</span><h3>Commémoration de l'armistice</h3></div>
-          </li>
+          <li><span class="rond-date"><b>12</b><span>Sept.</span></span>
+            <div><span class="cat">Terroir</span><h3>Forum des artisans et du terroir</h3></div></li>
+          <li><span class="rond-date"><b>24</b><span>Sept.</span></span>
+            <div><span class="cat">Conseil</span><h3>Réunion du conseil municipal</h3></div></li>
+          <li><span class="rond-date"><b>05</b><span>Oct.</span></span>
+            <div><span class="cat">Culture</span><h3>Concert de l'harmonie municipale</h3></div></li>
+          <li><span class="rond-date"><b>11</b><span>Nov.</span></span>
+            <div><span class="cat">Mémoire</span><h3>Commémoration de l'armistice</h3></div></li>
         </ul>
       </div>
     </div>
@@ -610,8 +474,7 @@ section{ padding-block:70px; position:relative; }
           <h2 class="titre-bloc">Le <span>conseil municipal</span></h2>
           <p class="intro">
             Tous les procès-verbaux depuis 2016, consultables en ligne et
-            <strong>cherchables par mot-clé</strong> — plus besoin d'ouvrir
-            les PDF un par un.
+            <strong>cherchables par mot-clé</strong> — plus besoin d'ouvrir les PDF un par un.
           </p>
           <form class="conseil-recherche" role="search" onsubmit="return false">
             <label for="q2" class="sr">Rechercher dans les comptes rendus</label>
@@ -623,16 +486,11 @@ section{ padding-block:70px; position:relative; }
 
         <div class="pv">
           <ul>
-            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
-              <span><b>Séance du 27 septembre</b><small>Budget, voirie communale</small></span><span class="marq">Récent</span></li>
-            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
-              <span><b>Séance du 10 avril</b><small>Compte administratif</small></span></li>
-            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
-              <span><b>Séance du 28 mars</b><small>Vote du budget primitif</small></span></li>
-            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
-              <span><b>Séance du 9 octobre</b><small>Travaux, subventions</small></span></li>
-            <li><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pv"/></svg>
-              <span><b>Séance du 29 juin</b><small>Rentrée scolaire</small></span></li>
+            <li><i class="ri-file-text-line" aria-hidden="true"></i><span><b>Séance du 27 septembre</b><small>Budget, voirie communale</small></span><span class="marq">Récent</span></li>
+            <li><i class="ri-file-text-line" aria-hidden="true"></i><span><b>Séance du 10 avril</b><small>Compte administratif</small></span></li>
+            <li><i class="ri-file-text-line" aria-hidden="true"></i><span><b>Séance du 28 mars</b><small>Vote du budget primitif</small></span></li>
+            <li><i class="ri-file-text-line" aria-hidden="true"></i><span><b>Séance du 9 octobre</b><small>Travaux, subventions</small></span></li>
+            <li><i class="ri-file-text-line" aria-hidden="true"></i><span><b>Séance du 29 juin</b><small>Rentrée scolaire</small></span></li>
           </ul>
         </div>
       </div>
@@ -644,13 +502,13 @@ section{ padding-block:70px; position:relative; }
     <div class="large">
       <h2 class="titre-bloc">Nos <span>associations</span></h2>
       <div class="assos">
-        <a class="asso" href="#"><span class="rond"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-sport"/></svg></span>
+        <a class="asso" href="#"><span class="rond"><i class="ri-football-line" aria-hidden="true"></i></span>
           <h3>ASMG</h3><p>Association sportive de Marly-Gomont</p></a>
-        <a class="asso" href="#"><span class="rond"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-musique"/></svg></span>
+        <a class="asso" href="#"><span class="rond"><i class="ri-music-2-line" aria-hidden="true"></i></span>
           <h3>Harmonie municipale</h3><p>Orchestre et concerts du village</p></a>
-        <a class="asso" href="#"><span class="rond"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-fete"/></svg></span>
+        <a class="asso" href="#"><span class="rond"><i class="ri-calendar-event-line" aria-hidden="true"></i></span>
           <h3>Comité d'animation</h3><p>Fêtes, brocante et animations</p></a>
-        <a class="asso" href="#"><span class="rond"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-eglise"/></svg></span>
+        <a class="asso" href="#"><span class="rond"><i class="ri-ancient-gate-line" aria-hidden="true"></i></span>
           <h3>Secteur paroissial</h3><p>Vie paroissiale et horaires des messes</p></a>
       </div>
     </div>
@@ -662,14 +520,12 @@ section{ padding-block:70px; position:relative; }
       <h2 class="titre-bloc">À <span>lire</span></h2>
       <div class="lire-grille">
         <div class="bulletin">
-          <div class="couv" style="background:linear-gradient(160deg,#1E5B41,#0F3B2A)">
-            <span style="font-family:var(--serif);color:#E5A93C;font-size:23px;text-align:center;line-height:1.2;padding:14px">La Voix<br>du Village</span>
-          </div>
+          <div class="couv ph"><img src="img/bulletin.jpg" alt="" onerror="this.remove()"></div>
           <div>
             <h3 style="font-family:var(--titre);font-weight:800;font-size:24px;margin-bottom:8px">La Voix du Village</h3>
             <p style="color:var(--encre-doux);font-size:15px;margin:0 0 18px">
               Le bulletin municipal, à lire en ligne ou à télécharger.</p>
-            <a class="pilule plein" href="#">Feuilleter le bulletin</a>
+            <a class="pilule plein" href="#"><i class="ri-book-read-line" aria-hidden="true"></i> Feuilleter le bulletin</a>
           </div>
         </div>
 
@@ -696,9 +552,9 @@ section{ padding-block:70px; position:relative; }
       <div>
         <h3>Mairie de Marly-Gomont</h3>
         <p class="coord">
-          02120 Marly-Gomont, Aisne<br>
-          Téléphone : 03 23 60 22 69<br>
-          <a href="mailto:mairie.marlygomont@wanadoo.fr">mairie.marlygomont@wanadoo.fr</a>
+          <i class="ri-map-pin-2-line" aria-hidden="true"></i> 02120 Marly-Gomont, Aisne<br>
+          <i class="ri-phone-line" aria-hidden="true"></i> 03 23 60 22 69<br>
+          <i class="ri-mail-line" aria-hidden="true"></i> <a href="mailto:mairie.marlygomont@wanadoo.fr">mairie.marlygomont@wanadoo.fr</a>
         </p>
       </div>
       <div>

@@ -7,3 +7,8 @@ refonte/capture_*/
 *.log
 Thumbs.db
 .DS_Store
+
+# Ressources téléchargées par preparer_assets.ps1 : elles se régénèrent
+# en une commande, inutile de les versionner.
+refonte/maquette/vendor/
+refonte/maquette/img/
