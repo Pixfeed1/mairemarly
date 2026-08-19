@@ -18,6 +18,17 @@ for f in glob.glob(os.path.join(RACINE, 'squelettes/**/*.html'), recursive=True)
          glob.glob(os.path.join(RACINE, 'apercu/*.html')):
     utilisees |= set(re.findall(r'\bri-[a-z0-9-]+', open(f, encoding='utf-8').read()))
 
+# La palette proposée à la mairie dans l'espace privé. Ces icônes ne sont pas
+# écrites dans les gabarits — elles sont choisies au clic — donc le scan ne
+# peut pas les voir. Sans cette lecture, une icône choisie par la mairie
+# s'afficherait vide.
+palette = os.path.join(RACINE, 'outils/palette-icones.txt')
+if os.path.exists(palette):
+    for ligne in open(palette, encoding='utf-8'):
+        ligne = ligne.strip()
+        if ligne and not ligne.startswith('#'):
+            utilisees.add(ligne.split()[0])
+
 index = {os.path.splitext(os.path.basename(p))[0]: p
          for p in glob.glob(os.path.join(SRC, '**', '*.svg'), recursive=True)}
 
@@ -43,7 +54,8 @@ entete = (
     "  ---------------------------------------------------------------------------\n"
     "  Icônes issues de Remix Icon (Apache License 2.0), voir\n"
     "  squelettes/fonts/LICENSE-remixicon.txt\n\n"
-    f"  Seules les {len(symboles)} icônes réellement employées sont embarquées. La police\n"
+    f"  {len(symboles)} icônes embarquées : celles employées dans les gabarits, plus la\n"
+    "  palette de outils/palette-icones.txt que la mairie peut choisir au clic. La police\n"
     "  complète pèse 189 Ko et sa feuille de style 157 Ko pour 3229 icônes : ici\n"
     "  quelques kilo-octets, aucun clignotement au chargement, et un SVG reste\n"
     "  lisible par les outils d'assistance là où un glyphe de police est annoncé\n"

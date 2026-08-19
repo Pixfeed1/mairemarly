@@ -61,6 +61,11 @@ a:focus-visible,button:focus-visible,input:focus-visible{ outline:3px solid var(
 	fill:currentColor;       /* les icônes Remix sont pleines, pas au trait */
 	vertical-align:-.16em;
 }
+/* Le marqueur de lien extérieur : plus petit que le texte, il signale sans
+   crier. Il double une mention textuelle lue par les lecteurs d'écran — un
+   pictogramme seul ne dit rien à qui ne le voit pas. */
+.ico-ext{ width:13px; height:13px; opacity:.7; vertical-align:0; margin-left:2px; }
+
 /* Les tracés dessinés à la main, eux, se rendent au trait. */
 .ico.trait{ fill:none; stroke:currentColor; stroke-width:1.5;
             stroke-linecap:round; stroke-linejoin:round; }

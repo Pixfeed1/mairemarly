@@ -47,12 +47,40 @@
 
 			<nav aria-label="<:marly:menu_principal:>">
 				<ul class="nav">
+					[(#REM) Socle du menu : les rubriques à la racine. En créer une
+					        dans l'espace privé l'ajoute au menu ; l'ordre vient de la
+					        numérotation du titre (« 10. Ma mairie »), que SPIP masque
+					        à l'affichage.
+
+					        #EXPOSE marque l'entrée de la page courante : une fois pour
+					        la classe CSS, une fois pour aria-current que les lecteurs
+					        d'écran annoncent. ]
 					<BOUCLE_menu(RUBRIQUES){racine}{par num titre, titre}>
 					<li>
 						<a href="#URL_RUBRIQUE"
 						   class="[(#EXPOSE{actif})]"[(#EXPOSE{' aria-current="true"'})]>#TITRE</a>
 					</li>
 					</BOUCLE_menu>
+
+					[(#REM) Entrées libres, ajoutées après les rubriques : les articles
+					        portant le mot-clé « Menu ». Elles servent à ce qu'une
+					        rubrique ne peut pas faire — pointer vers un site extérieur
+					        (France Services, service-public.fr) ou vers un article seul.
+
+					        Comme pour les raccourcis, la destination vient du chapo :
+					        « = » suivi d'une adresse fait de l'article une redirection.
+
+					        Ces entrées n'ont pas d'état « page courante » : SPIP ne peut
+					        pas savoir qu'une redirection vers un site extérieur
+					        correspond à la page affichée. C'est le prix de la liberté
+					        de destination, et il ne se paie que sur ces entrées-là. ]
+					<BOUCLE_libre(ARTICLES){titre_mot=Menu}{par num titre, titre}{0,4}>
+					<li>
+						<a href="[(#VIRTUEL|sinon{#URL_ARTICLE})]">#TITRE[(#VIRTUEL|match{'^https?://'})
+							<svg class="ico ico-ext" aria-hidden="true"><use href="#ri-external-link-line"/></svg>
+							<span class="sr"> (site extérieur)</span>]</a>
+					</li>
+					</BOUCLE_libre>
 				</ul>
 			</nav>
 

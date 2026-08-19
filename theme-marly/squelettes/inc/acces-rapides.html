@@ -20,7 +20,7 @@
 		<div class="acces-demarches">
 			<h2 class="titre-bloc" id="titre-acces"><:marly:je:> <span><:marly:souhaite:></span></h2>
 
-			[(#REM) Les démarches sont les articles portant le mot-clé « demarches » :
+			[(#REM) Les démarches sont les articles portant le mot-clé « Démarches » :
 			        la mairie en ajoute une en publiant un article, sans toucher au
 			        code. Le formulaire pointe sur spip.php?article=NN, l'adresse
 			        native de SPIP — elle fonctionne sans JavaScript et sans page
@@ -36,7 +36,7 @@
 				<div class="champ-demarche">
 					<select id="choix-demarche" name="article">
 						<option value=""><:marly:choisir_demarche:></option>
-						<BOUCLE_demarches(ARTICLES){titre_mot=demarches}{par num titre, titre}{0,20}>
+						<BOUCLE_demarches(ARTICLES){titre_mot=Démarches}{par num titre, titre}{0,20}>
 						<option value="#ID_ARTICLE">#TITRE</option>
 						</BOUCLE_demarches>
 					</select>
@@ -58,6 +58,49 @@
 
 		<div class="acces-liens">
 			<h2 class="titre-bloc droite"><:marly:acces:> <span><:marly:rapides:></span></h2>
+
+			[(#REM) Les raccourcis sont les articles portant le mot-clé
+			        « Raccourcis ». Chacun apporte ses trois éléments :
+
+			          - son TITRE devient le libellé ;
+			          - sa DESTINATION vient du chapo : un chapo qui commence par
+			            « = » suivi d'une adresse fait de l'article un article
+			            virtuel, une redirection — fonction native de SPIP. On
+			            peut donc pointer vers une rubrique, un article, ou un
+			            site extérieur. Sans « = », le raccourci mène à l'article
+			            lui-même ;
+			          - son ICÔNE vient d'un mot-clé du groupe « Icônes ». Le
+			            mot-clé porte un nom lisible (« Maison »), son descriptif
+			            porte le nom technique (ri-home-4-line). La secrétaire
+			            coche « Maison », elle ne tape jamais de code.
+
+			        L'ordre vient de la numérotation du titre : « 10. Comptes
+			        rendus », « 20. Démarches ». SPIP masque le numéro.
+
+			        On s'arrête à six. Au-delà la grille se déséquilibre, et une
+			        liste de raccourcis qui s'allonge cesse d'être un raccourci.
+
+			        Tant qu'aucun article ne porte le mot-clé, ce sont les six
+			        destinations ci-dessous qui s'affichent : le site n'est
+			        jamais vide, et la mairie reprend la main quand elle veut. ]
+			<B_raccourcis>
+			<ul>
+				<BOUCLE_raccourcis(ARTICLES){titre_mot=Raccourcis}{par num titre, titre}{0,6}>
+				<li><a href="[(#VIRTUEL|sinon{#URL_ARTICLE})]">
+					<span class="rond">
+						<B_ico>
+						<BOUCLE_ico(MOTS){id_article}{type=Icônes}{0,1}>
+						<svg class="ico" aria-hidden="true"><use href="#[(#DESCRIPTIF|supprimer_tags|trim)]"/></svg>
+						</BOUCLE_ico>
+						</B_ico>
+						<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg>
+						<//B_ico>
+					</span>
+					#TITRE</a></li>
+				</BOUCLE_raccourcis>
+			</ul>
+			</B_raccourcis>
+
 			<ul>
 				<li><a href="#URL_PAGE{conseil}">
 					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
@@ -78,6 +121,7 @@
 					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>
 					<:marly:bulletin:></a></li>
 			</ul>
+			<//B_raccourcis>
 		</div>
 
 	</div>

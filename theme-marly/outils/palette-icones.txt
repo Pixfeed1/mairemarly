@@ -1,0 +1,37 @@
+# Palette d'icônes de la commune de Marly-Gomont
+# ---------------------------------------------------------------------------
+# Ce fichier est la SOURCE DE VÉRITÉ. Il fait deux choses à la fois :
+#
+#  1. il dit à outils/construire-icones.py quelles icônes embarquer dans le
+#     sprite, en plus de celles employées directement dans les gabarits ;
+#  2. il donne la liste exacte des mots-clés à créer dans l'espace privé,
+#     groupe « Icônes » — un mot-clé par ligne : le titre est le libellé
+#     français, le descriptif est le nom technique.
+#
+# Les deux doivent rester alignés. Une icône choisie dans l'espace privé mais
+# absente du sprite ne s'affiche pas : c'est le seul point de fragilité de ce
+# montage, et c'est pour cela que la liste est ici, écrite, et pas devinée.
+#
+# Pour ajouter une icône : ajouter une ligne, relancer construire-icones.py,
+# créer le mot-clé correspondant dans l'espace privé.
+#
+# Format :  nom-technique <TAB ou espaces> Libellé français
+#
+ri-file-list-3-line      Compte rendu
+ri-file-text-line        Document
+ri-home-4-line           Maison, urbanisme
+ri-team-line             Personnes, associations
+ri-calendar-check-line   Calendrier, réservation
+ri-book-open-line        Bulletin, lecture
+ri-map-pin-2-line        Adresse, plan
+ri-phone-line            Téléphone
+ri-mail-line             Courriel
+ri-recycle-line          Déchets, tri
+ri-bus-2-line            Transports
+ri-school-line           École, enfance
+ri-heart-pulse-line      Santé, social
+ri-plant-line            Environnement, cadre de vie
+ri-tools-line            Travaux, voirie
+ri-government-line       Mairie, administration
+ri-scales-3-line         Élections, démocratie
+ri-water-flash-line      Eau, énergie
