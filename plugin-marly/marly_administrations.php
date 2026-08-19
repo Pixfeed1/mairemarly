@@ -50,6 +50,11 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_abonnes')),
 	);
 
+	/* 3.5.0 — prenom, code postal et commune sur les abonnes. */
+	$maj['3.5.0'] = array(
+		array('maj_tables', array('spip_abonnes')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }

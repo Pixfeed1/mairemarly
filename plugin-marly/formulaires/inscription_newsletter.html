@@ -1,6 +1,7 @@
 [(#REM)
-  Le formulaire d'inscription, tel qu'il apparait dans la fenetre.
-  Court par principe : une adresse suffit, le prenom est facultatif.
+  Le formulaire de la fenetre. Un seul gabarit, deux modes : abonnement et
+  desabonnement. Se desabonner doit etre aussi simple que s'abonner — c'est
+  une obligation, pas une courtoisie.
 ]
 <div class="formulaire_spip formulaire_newsletter">
 
@@ -17,6 +18,14 @@
 		</div>
 		<input type="hidden" name="_pose" value="[(#ENV{_pose}|attribut_html)]">
 
+		[(#ENV{_mode}|=={desabonnement}|oui)
+		[(#REM) MODE DESABONNEMENT. Une seule adresse suffit — mais on envoie un
+		        lien plutot que de desabonner sur-le-champ : sans cela,
+		        n'importe qui desabonnerait son voisin, qui cesserait de
+		        recevoir les alertes de la commune sans jamais comprendre
+		        pourquoi. Depuis un lien recu dans un envoi, un seul clic
+		        suffit : la personne a deja prouve qu'elle tient l'adresse. ]
+		<p class="nl-intro"><:marly:desabonnement_intro:></p>
 		<ul>
 			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
 				<label for="nl-courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
@@ -24,16 +33,68 @@
 				<input type="email" class="text" name="courriel" id="nl-courriel"
 				       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true">
 			</li>
-			<li class="editer editer_nom">
-				<label for="nl-nom"><:marly:votre_prenom:></label>
-				<input type="text" class="text" name="nom" id="nl-nom"
-				       value="[(#ENV{nom}|attribut_html)]" autocomplete="given-name">
-			</li>
+		</ul>
+		<p class="boutons">
+			<input type="submit" class="submit" value="<:marly:me_desabonner:>">
+		</p>
+		<p class="nl-bascule">
+			<a href="[(#SELF|parametre_url{mode,abonnement})]"><:marly:plutot_mabonner:></a>
+		</p>
+		]
 
-			[(#REM) La case de consentement. Elle part DECOCHEE : une case
+		[(#ENV{_mode}|=={desabonnement}|non)
+		<p class="nl-requis"><:marly:requis_explication:></p>
+		<ul>
+				<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
+					<label for="nl-courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+					<input type="email" class="text" name="courriel" id="nl-courriel"
+					       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true">
+				</li>
+				<li class="editer editer_courriel_bis[ (#ENV**{erreurs}|table_valeur{courriel_bis}|oui)erreur]">
+					<label for="nl-courriel_bis"><:marly:confirmez_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel_bis})</span>]
+					<input type="email" class="text" name="courriel_bis" id="nl-courriel_bis"
+					       value="[(#ENV{courriel_bis}|attribut_html)]" autocomplete="off" required aria-required="true">
+				</li>
+				<li class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
+					<label for="nl-nom"><:marly:votre_nom_seul:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+					<input type="text" class="text" name="nom" id="nl-nom"
+					       value="[(#ENV{nom}|attribut_html)]" autocomplete="family-name">
+				</li>
+				<li class="editer editer_prenom[ (#ENV**{erreurs}|table_valeur{prenom}|oui)erreur]">
+					<label for="nl-prenom"><:marly:votre_prenom:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{prenom})</span>]
+					<input type="text" class="text" name="prenom" id="nl-prenom"
+					       value="[(#ENV{prenom}|attribut_html)]" autocomplete="given-name">
+				</li>
+			</ul>
+
+			<div class="rang-lieu">
+				<ul>
+				<li class="editer editer_code_postal[ (#ENV**{erreurs}|table_valeur{code_postal}|oui)erreur]">
+					<label for="nl-code_postal"><:marly:code_postal:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{code_postal})</span>]
+					<input type="text" class="text" name="code_postal" id="nl-code_postal"
+					       value="[(#ENV{code_postal}|attribut_html)]" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required aria-required="true">
+				</li>
+								</ul>
+				<ul>
+				<li class="editer editer_ville[ (#ENV**{erreurs}|table_valeur{ville}|oui)erreur]">
+					<label for="nl-ville"><:marly:ville:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ville})</span>]
+					<input type="text" class="text" name="ville" id="nl-ville"
+					       value="[(#ENV{ville}|attribut_html)]" autocomplete="address-level2" required aria-required="true">
+				</li>
+				</ul>
+			</div>
+
+			<ul>
+
+			[(#REM) La case de consentement. DECOCHEE par defaut : une case
 			        pre-cochee n'est pas un consentement, le RGPD le dit et la
-			        CNIL sanctionne. Elle est aussi un champ obligatoire, et le
-			        formulaire est refuse tant qu'elle ne l'est pas. ]
+			        CNIL sanctionne. ]
 			<li class="editer editer_consent[ (#ENV**{erreurs}|table_valeur{consent}|oui)erreur]">
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{consent})</span>]
 				<label class="case" for="nl-consent">
@@ -46,8 +107,25 @@
 		<p class="boutons">
 			<input type="submit" class="submit" value="<:marly:je_mabonne:>">
 		</p>
+		<p class="nl-bascule">
+			<a href="[(#SELF|parametre_url{mode,desabonnement})]"><:marly:me_desabonner:></a>
+		</p>
+		]
 
-		<p class="nl-note"><:marly:newsletter_note:></p>
+		[(#REM) LA MENTION D'INFORMATION. Ecrite pour le RGPD, pas pour la loi
+		        de 1978 : le modele dont on s'inspire cite encore un texte
+		        d'avant 2018 et omet les droits d'effacement, de portabilite et
+		        de limitation, la base legale et la duree de conservation.
+
+		        On evite aussi la formule << jamais transmise a un tiers non
+		        autorise >>, qui autorise en creux la transmission a des tiers
+		        dits autorises. Ici : aucune transmission, point. ]
+		<div class="nl-mention">
+			<p><strong><:marly:mention_titre:></strong></p>
+			<p><:marly:mention_texte:></p>
+			<p><:marly:mention_droits:></p>
+			<p><:marly:mention_cnil:></p>
+		</div>
 	</form>
 	]
 

@@ -96,6 +96,15 @@ function marly_declarer_tables_objets_sql($tables) {
 			'id_abonne'    => 'bigint(21) NOT NULL',
 			'courriel'     => 'varchar(255) NOT NULL DEFAULT ""',
 			'nom'          => 'varchar(255) NOT NULL DEFAULT ""',
+			'prenom'       => 'varchar(255) NOT NULL DEFAULT ""',
+
+			/* Le code postal et la commune servent a distinguer les habitants
+			   des residents secondaires et des voisins abonnes : la mairie ne
+			   communique pas la meme chose aux uns et aux autres. C'est la
+			   seule justification acceptable pour les demander — sans usage
+			   prevu, ce serait une collecte de trop. */
+			'code_postal'  => 'varchar(10) NOT NULL DEFAULT ""',
+			'ville'        => 'varchar(255) NOT NULL DEFAULT ""',
 
 			/* attente -> confirme -> desinscrit */
 			'statut'       => 'varchar(20) NOT NULL DEFAULT "attente"',

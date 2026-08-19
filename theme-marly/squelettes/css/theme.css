@@ -923,3 +923,28 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   .panneau-nl, .nl-dedans{ transition:none; }
   .nl-dedans{ transform:none; }
 }
+
+/* --- Lettre d'information : champs, bascule, mention ---------------------- */
+.nl-requis{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin:0 0 18px; }
+.formulaire_newsletter .obligatoire{ font-weight:400; font-size:12px; color:var(--encre-doux); }
+
+/* Deux champs courts côte à côte : code postal et commune vont ensemble,
+   les séparer sur deux lignes allonge le formulaire pour rien. */
+/* Une rangée en grille plutôt que deux inline-block : l'espace blanc entre
+   deux éléments inline compte dans la largeur et faisait passer la commune
+   à la ligne suivante. La grille ignore le blanc. */
+.formulaire_newsletter .rang-lieu{ display:grid; grid-template-columns:36% 1fr; gap:0 14px; }
+
+.nl-bascule{ margin:14px 0 0; text-align:center; font-family:var(--texte); font-size:13.5px; }
+.nl-bascule a{ color:var(--encre-doux); }
+.nl-bascule a:hover{ color:var(--accent); }
+
+.nl-mention{ margin-top:22px; padding-top:16px; border-top:1px solid var(--trait);
+             font-family:var(--texte); font-size:11.5px; line-height:1.55; color:var(--encre-doux); }
+.nl-mention p{ margin:0 0 8px; }
+.nl-mention p:last-child{ margin-bottom:0; }
+
+@media (max-width:420px){
+  .formulaire_newsletter .editer_code_postal,
+  .formulaire_newsletter .editer_ville{ display:block; width:100%; margin-right:0; }
+}

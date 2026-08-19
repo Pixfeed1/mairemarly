@@ -303,6 +303,45 @@ adresse ne sera pas utilisée et sera effacée sous sept jours.
 	'aucun_abonne'          => 'Aucun abonné pour le moment.',
 	'exporter_csv'          => 'Exporter la liste (CSV)',
 
+	'votre_nom_seul'        => 'Nom',
+	'confirmez_courriel'    => 'Confirmez votre adresse électronique',
+	'code_postal'           => 'Code postal',
+	'ville'                 => 'Commune',
+	'requis_explication'    => 'Les champs marqués « obligatoire » doivent être remplis.',
+	'me_desabonner'         => 'Me désabonner',
+	'plutot_mabonner'       => 'Plutôt m’abonner',
+	'desabonnement_intro'   => 'Indiquez l’adresse à retirer de la liste. Nous vous enverrons un lien de confirmation — ainsi personne ne peut désabonner quelqu’un d’autre.',
+	'desabonnement_verifiez' => 'Si cette adresse figure sur la liste, un courriel vient de lui être envoyé avec un lien de désinscription.',
+	'erreur_courriels_differents' => 'Les deux adresses ne correspondent pas. Vérifiez la seconde.',
+	'erreur_code_postal'    => 'Un code postal s’écrit avec cinq chiffres.',
+
+	'mention_titre'         => 'Que devient ce que vous saisissez ?',
+	'mention_texte'         => 'La commune de Marly-Gomont est responsable de ce traitement. Votre adresse
+		et vos coordonnées ne servent qu’à vous envoyer la lettre d’information, sur la base de votre
+		consentement. Elles ne sont transmises à personne — ni association, ni prestataire, ni autre
+		administration — et ne servent à aucun envoi commercial. Elles sont conservées jusqu’à votre
+		désinscription, puis effacées.',
+	'mention_droits'        => 'Vous pouvez à tout moment accéder à vos données, les corriger, les faire
+		effacer, en demander la portabilité, ou retirer votre consentement — le lien de désinscription
+		figure dans chaque envoi. Écrivez à la mairie pour exercer ces droits.',
+	'mention_cnil'          => 'Si une réponse ne vous satisfait pas, vous pouvez saisir la CNIL, autorité
+		de contrôle française.',
+
+	'courriel_sujet_desinscription' => '@site@ — confirmez votre désinscription',
+	'courriel_corps_desinscription' => 'Bonjour @nom@,
+
+Une désinscription de la lettre d’information de @site@ a été demandée pour
+cette adresse.
+
+Pour la confirmer, cliquez sur ce lien :
+
+@lien@
+
+Si vous n’avez rien demandé, ignorez ce message : sans ce clic, vous
+resterez abonné.
+
+@site@',
+
 	'enregistrer'      => 'Enregistrer',
 	'reglages_ok'      => 'Les réglages ont été enregistrés.',
 	'erreur_adresse'   => 'L’adresse doit commencer par https:// — copiez-la depuis la barre du navigateur.',

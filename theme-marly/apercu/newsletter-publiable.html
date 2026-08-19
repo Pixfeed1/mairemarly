@@ -1,7 +1,5 @@
 <!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
+<html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lettre d’information — Marly-Gomont</title>
 <meta name="robots" content="noindex, nofollow">
@@ -1006,8 +1004,34 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   .nl-dedans{ transform:none; }
 }
 
-</style>
-</head>
+/* --- Lettre d'information : champs, bascule, mention ---------------------- */
+.nl-requis{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin:0 0 18px; }
+.formulaire_newsletter .obligatoire{ font-weight:400; font-size:12px; color:var(--encre-doux); }
+
+/* Deux champs courts côte à côte : code postal et commune vont ensemble,
+   les séparer sur deux lignes allonge le formulaire pour rien. */
+/* Une rangée en grille plutôt que deux inline-block : l'espace blanc entre
+   deux éléments inline compte dans la largeur et faisait passer la commune
+   à la ligne suivante. La grille ignore le blanc. */
+.formulaire_newsletter .rang-lieu{ display:grid; grid-template-columns:36% 1fr; gap:0 14px; }
+
+.nl-bascule{ margin:14px 0 0; text-align:center; font-family:var(--texte); font-size:13.5px; }
+.nl-bascule a{ color:var(--encre-doux); }
+.nl-bascule a:hover{ color:var(--accent); }
+
+.nl-mention{ margin-top:22px; padding-top:16px; border-top:1px solid var(--trait);
+             font-family:var(--texte); font-size:11.5px; line-height:1.55; color:var(--encre-doux); }
+.nl-mention p{ margin:0 0 8px; }
+.nl-mention p:last-child{ margin-bottom:0; }
+
+@media (max-width:420px){
+  .formulaire_newsletter .editer_code_postal,
+  .formulaire_newsletter .editer_ville{ display:block; width:100%; margin-right:0; }
+}
+
+.panneau-nl{ align-items:flex-start; }
+.nl-dedans{ max-height:none; }
+</style></head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
 	<symbol id="ri-account-circle-line" viewBox="0 0 24 24"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12.1597 16C10.1243 16 8.29182 16.8687 7.01276 18.2556C8.38039 19.3474 10.114 20 12 20C13.9695 20 15.7727 19.2883 17.1666 18.1081C15.8956 16.8074 14.1219 16 12.1597 16ZM12 4C7.58172 4 4 7.58172 4 12C4 13.8106 4.6015 15.4807 5.61557 16.8214C7.25639 15.0841 9.58144 14 12.1597 14C14.6441 14 16.8933 15.0066 18.5218 16.6342C19.4526 15.3267 20 13.7273 20 12C20 7.58172 16.4183 4 12 4ZM12 5C14.2091 5 16 6.79086 16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5ZM12 7C10.8954 7 10 7.89543 10 9C10 10.1046 10.8954 11 12 11C13.1046 11 14 10.1046 14 9C14 7.89543 13.1046 7 12 7Z"/></symbol>
@@ -1168,56 +1192,71 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 
 	</div>
 </header>
-
-<main id="contenu-principal">
-<div class="heros">
-	<img class="heros-paysage" src="" alt="" aria-hidden="true" style="display:none">
-	<div class="heros-voile" aria-hidden="true"></div>
-	<div class="heros-dedans">
-		<form class="recherche-heros"><svg class="ico loupe-champ" aria-hidden="true"><use href="#ri-search-line"/></svg>
-		<input type="search" placeholder="Qu’est-ce que vous recherchez ?"><button type="submit">Rechercher</button></form>
-	</div>
-</div>
-</main>
-
+<main><div class="heros"><div class="heros-voile" aria-hidden="true"></div>
+<div class="heros-dedans"><form class="recherche-heros">
+<svg class="ico loupe-champ" aria-hidden="true"><use href="#ri-search-line"/></svg>
+<input type="search" placeholder="Qu’est-ce que vous recherchez ?"><button type="submit">Rechercher</button>
+</form></div></div></main>
 
 <div class="panneau-nl" data-ouvert="oui" role="dialog" aria-modal="true">
 	<div class="nl-dedans">
 		<button class="fermer" type="button">
-			<svg class="ico" aria-hidden="true"><use href="#ri-close-line"/></svg>
-			<span class="sr">Fermer</span>
+			<svg class="ico" aria-hidden="true"><use href="#ri-close-line"/></svg><span class="sr">Fermer</span>
 		</button>
 
 		<h2 class="titre-bloc">Lettre <span>d’information</span></h2>
 		<p class="nl-intro">Travaux, coupures d’eau, alertes météo, conseil municipal,
-		manifestations : recevez l’essentiel par courriel. Quelques envois par an,
-		jamais plus.</p>
+		manifestations : recevez l’essentiel par courriel. Quelques envois par an, jamais plus.</p>
 
 		<div class="formulaire_spip formulaire_newsletter">
 			<form method="post" action="#">
+				<p class="nl-requis">Les champs marqués « obligatoire » doivent être remplis.</p>
 				<ul>
-					<li class="editer">
-						<label for="e">Adresse électronique <span class="obligatoire">(obligatoire)</span></label>
-						<input type="email" id="e" placeholder="prenom.nom@exemple.fr">
-					</li>
-					<li class="editer">
-						<label for="p">Prénom</label>
-						<input type="text" id="p">
-					</li>
-					<li class="editer">
-						<label class="case" for="c">
-							<input type="checkbox" id="c">
+					<li class="editer editer_courriel"><label for="nl-courriel">Adresse électronique <span class="obligatoire">(obligatoire)</span></label>
+<input type="email" class="text" id="nl-courriel" placeholder="prenom.nom@exemple.fr"></li>
+					<li class="editer editer_courriel_bis"><label for="nl-courriel_bis">Confirmez votre adresse électronique <span class="obligatoire">(obligatoire)</span></label>
+<input type="email" class="text" id="nl-courriel_bis" ></li>
+					<li class="editer editer_nom"><label for="nl-nom">Nom</label>
+<input type="text" class="text" id="nl-nom" ></li>
+					<li class="editer editer_prenom"><label for="nl-prenom">Prénom</label>
+<input type="text" class="text" id="nl-prenom" ></li>
+				</ul>
+
+				<div class="rang-lieu">
+					<ul><li class="editer editer_code_postal"><label for="nl-code_postal">Code postal <span class="obligatoire">(obligatoire)</span></label>
+<input type="text" class="text" id="nl-code_postal" maxlength="5" inputmode="numeric"></li></ul>
+					<ul><li class="editer editer_ville"><label for="nl-ville">Commune <span class="obligatoire">(obligatoire)</span></label>
+<input type="text" class="text" id="nl-ville" ></li></ul>
+				</div>
+
+				<ul>
+					<li class="editer editer_consent">
+						<label class="case" for="nl-consent">
+							<input type="checkbox" id="nl-consent">
 							<span>J’accepte que la mairie utilise mon adresse pour m’envoyer sa lettre d’information.</span>
 						</label>
 					</li>
 				</ul>
+
 				<p class="boutons"><input type="submit" class="submit" value="Je m’abonne"></p>
-				<p class="nl-note">Votre adresse ne sert qu’à cela. Elle n’est transmise à personne
-				et vous pouvez vous désinscrire en un clic, depuis n’importe quel envoi.</p>
+				<p class="nl-bascule"><a href="#">Me désabonner</a></p>
+
+				<div class="nl-mention">
+					<p><strong>Que devient ce que vous saisissez ?</strong></p>
+					<p>La commune de Marly-Gomont est responsable de ce traitement. Votre adresse et vos
+					coordonnées ne servent qu’à vous envoyer la lettre d’information, sur la base de votre
+					consentement. Elles ne sont transmises à personne — ni association, ni prestataire, ni
+					autre administration — et ne servent à aucun envoi commercial. Elles sont conservées
+					jusqu’à votre désinscription, puis effacées.</p>
+					<p>Vous pouvez à tout moment accéder à vos données, les corriger, les faire effacer, en
+					demander la portabilité, ou retirer votre consentement — le lien de désinscription figure
+					dans chaque envoi. Écrivez à la mairie pour exercer ces droits.</p>
+					<p>Si une réponse ne vous satisfait pas, vous pouvez saisir la CNIL, autorité de contrôle
+					française.</p>
+				</div>
 			</form>
 		</div>
 	</div>
 </div>
 
-</body>
-</html>
+</body></html>

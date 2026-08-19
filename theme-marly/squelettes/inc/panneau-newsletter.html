@@ -21,7 +21,7 @@
 		<h2 class="titre-bloc" id="titre-newsletter"><:marly:lettre:> <span><:marly:dinformation:></span></h2>
 		<p class="nl-intro"><:marly:newsletter_intro:></p>
 
-		[(#FORMULAIRE_INSCRIPTION_NEWSLETTER)]
+		[(#FORMULAIRE_INSCRIPTION_NEWSLETTER{#ENV{mode,abonnement}})]
 
 	</div>
 </div>
