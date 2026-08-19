@@ -1,0 +1,75 @@
+[(#REM)
+  contenu/reservation.html — la page publique de reservation.
+  ---------------------------------------------------------------------------
+  Trois choses dans cet ordre, et l'ordre compte :
+
+   1. LES CONDITIONS. Tarif, capacite, caution, ce qui est fourni. Quelqu'un
+      qui decouvre le tarif apres avoir rempli le formulaire a perdu son
+      temps, et la mairie recoit une demande qui sera annulee.
+   2. LES DATES DEJA PRISES. C'est ce qui evite le plus de demandes inutiles.
+      On n'affiche que les dates et les creneaux : qui a reserve et pourquoi
+      ne regardent personne.
+   3. LE FORMULAIRE.
+
+  La page fonctionne sans salle enregistree : elle dit alors de telephoner,
+  plutot que d'afficher un formulaire vide.
+]
+<div class="large page-reservation">
+
+	<B_salles>
+	<BOUCLE_salles(SALLES){statut=publie}{par titre}>
+
+	<section class="salle" id="salle-#ID_SALLE">
+		<h1 class="titre-bloc"><:marly:reserver:> <span>#TITRE</span></h1>
+
+		<div class="salle-grille">
+
+			<div class="salle-conditions">
+				[<div class="salle-texte">(#DESCRIPTIF|propre)</div>]
+
+				<dl class="fiche">
+					[<dt><:marly:champ_capacite:></dt><dd>(#CAPACITE) <:marly:personnes:></dd>]
+					[<dt><:marly:champ_tarif_commune:></dt><dd>(#TARIF_COMMUNE)</dd>]
+					[<dt><:marly:champ_tarif_hors_commune:></dt><dd>(#TARIF_HORS_COMMUNE)</dd>]
+					[<dt><:marly:champ_caution:></dt><dd>(#CAUTION)</dd>]
+				</dl>
+
+				[(#REM) Les dates prises. Aucun nom : une reservation est un
+				        acte administratif, pas une information publique sur
+				        la vie privee des gens. ]
+				<B_prises>
+				<div class="salle-occupe">
+					<h2><:marly:dates_prises:></h2>
+					<ul>
+						<BOUCLE_prises(RESERVATIONS){id_salle}{statut=acceptee}{date_debut>#DATE}{par date_debut}{0,25}>
+						<li>
+							<strong>[(#DATE_DEBUT|affdate{'l j F Y'})]</strong>
+							<span>[(#DATE_DEBUT|affdate{'H\hi'})] – [(#DATE_FIN|affdate{'H\hi'})]</span>
+						</li>
+						</BOUCLE_prises>
+					</ul>
+				</div>
+				</B_prises>
+				<p class="salle-libre"><:marly:aucune_date_prise:></p>
+				<//B_prises>
+			</div>
+
+			<div class="salle-formulaire">
+				[(#FORMULAIRE_RESERVER_SALLE{#ID_SALLE})]
+			</div>
+
+		</div>
+	</section>
+
+	</BOUCLE_salles>
+	</B_salles>
+
+	[(#REM) Aucune salle ouverte : on ne montre pas un formulaire sans objet. ]
+	<section class="salle">
+		<h1 class="titre-bloc"><:marly:reserver:> <span><:marly:une_salle:></span></h1>
+		<p class="salle-texte"><:marly:aucune_salle_publique:></p>
+		[<p class="salle-texte"><strong>(#CONFIG{marly/telephone})</strong></p>]
+	</section>
+	<//B_salles>
+
+</div>

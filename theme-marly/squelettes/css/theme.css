@@ -673,3 +673,58 @@ section{ padding-block:70px; position:relative; }
 @media (prefers-reduced-motion:reduce){
 	.menu-mobile, .voile-menu{ transition:none; }
 }
+
+/* ===========================================================================
+   RÉSERVATION DE SALLE
+   ---------------------------------------------------------------------------
+   Deux colonnes : les conditions à gauche, le formulaire à droite. Les
+   conditions viennent en premier dans le HTML, donc en premier au clavier et
+   au lecteur d'écran — on lit les tarifs avant de remplir, jamais l'inverse.
+   =========================================================================== */
+
+.page-reservation{ padding-block:56px; }
+.salle + .salle{ margin-top:72px; padding-top:56px; border-top:1px solid var(--trait); }
+.salle-grille{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+.salle-texte{ font-family:var(--texte); line-height:1.65; max-width:62ch; }
+
+.fiche{ margin:26px 0 0; display:grid; grid-template-columns:auto 1fr; gap:10px 20px; }
+.fiche dt{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.04em;
+           text-transform:uppercase; color:var(--encre-doux); }
+.fiche dd{ margin:0; font-family:var(--texte); font-weight:600; }
+
+.salle-occupe{ margin-top:34px; background:var(--creme); border-left:3px solid var(--accent); padding:20px 24px; }
+.salle-occupe h2{ font-family:var(--titre); font-size:17px; margin:0 0 12px; }
+.salle-occupe ul{ list-style:none; margin:0; padding:0; font-family:var(--texte); font-size:14.5px; }
+.salle-occupe li{ display:flex; justify-content:space-between; gap:18px; padding:6px 0; border-bottom:1px solid var(--trait); }
+.salle-occupe li:last-child{ border-bottom:0; }
+.salle-occupe span{ color:var(--encre-doux); white-space:nowrap; }
+.salle-libre{ margin-top:34px; font-family:var(--texte); color:var(--encre-doux); }
+
+/* Le formulaire. On reprend la structure des formulaires SPIP telle quelle
+   pour que les plugins qui les décorent continuent de fonctionner. */
+.salle-formulaire .formulaire_spip{ background:var(--creme); padding:28px 30px 34px; border-top:4px solid var(--accent); }
+.salle-formulaire fieldset{ border:0; margin:0 0 26px; padding:0; }
+.salle-formulaire legend{ font-family:var(--titre); font-weight:700; font-size:18px; padding:0 0 12px; }
+.salle-formulaire ul{ list-style:none; margin:0; padding:0; }
+.salle-formulaire li{ margin-bottom:16px; }
+.salle-formulaire label{ display:block; font-family:var(--texte); font-size:14px; font-weight:700; margin-bottom:5px; }
+.salle-formulaire input, .salle-formulaire textarea{
+  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+  padding:11px 13px; font-family:var(--texte); font-size:15px; color:var(--encre);
+}
+.salle-formulaire small{ display:block; margin-top:5px; font-family:var(--texte); font-size:13px; color:var(--encre-doux); }
+.salle-formulaire .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; color:#A32020; margin-bottom:5px; }
+.salle-formulaire .erreur input, .salle-formulaire .erreur textarea{ border-color:#A32020; }
+.salle-formulaire .explication{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); margin:0 0 22px; }
+.salle-formulaire .submit{
+  border:0; background:var(--accent); color:#fff; border-radius:4px;
+  padding:14px 30px; font-family:var(--texte); font-weight:700; font-size:15px; cursor:pointer;
+}
+.salle-formulaire .submit:hover{ background:var(--accent-sombre); }
+.reponse_formulaire{ font-family:var(--texte); padding:14px 18px; border-radius:4px; margin:0 0 20px; }
+.reponse_formulaire_ok{ background:#E7F2EC; border-left:4px solid var(--accent); }
+.reponse_formulaire_erreur{ background:#FBEAEA; border-left:4px solid #A32020; }
+
+@media (max-width:900px){
+  .salle-grille{ grid-template-columns:1fr; gap:38px; }
+}

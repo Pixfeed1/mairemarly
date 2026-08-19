@@ -161,3 +161,85 @@ Ces gabarits n'ont pas encore tourné sur un SPIP en fonctionnement — ils ont
 - le critère `{titre_mot=Raccourcis}` ;
 - le rendu de `#VIRTUEL` sur un article virtuel ;
 - le comportement de `spip.php?article=NN` depuis la liste « Je souhaite… ».
+
+
+---
+
+## 6. Réserver une salle
+
+C'est une application, pas une page : deux tables en base, un cycle de
+décisions, des courriels. Elle vit dans `plugin-marly/`.
+
+### Créer une salle
+
+`Édition ▸ Salles à louer ▸ Créer une salle`
+
+| Champ | Ce qu'on y met |
+|---|---|
+| Nom | « Salle des fêtes », « Salle du conseil » |
+| Capacité | le nombre autorisé par la commission de sécurité, pas le nombre de chaises |
+| Tarifs | texte libre : « 80 € la journée », « gratuit pour les associations » |
+| Caution | idem |
+| Délai minimum | en jours. Une demande faite plus tard est refusée automatiquement |
+| Délai maximum | en jours. Évite les réservations posées deux ans à l'avance |
+| Description | ce qui est fourni : tables, chaises, cuisine, vaisselle |
+| Ouverte à la réservation | tant que c'est « non », la salle n'apparaît pas sur le site |
+
+Les délais sont **par salle**, parce qu'ils ne sont pas les mêmes partout —
+Bidart impose 6 mois maximum sur une salle et 1 à 3 mois sur l'autre.
+
+### Le cycle d'une réservation
+
+```
+        formulaire public
+               │
+               ▼
+          ┌─────────┐   la mairie accepte    ┌──────────┐
+          │ demande │ ─────────────────────► │ acceptée │ ── le créneau est pris
+          └─────────┘                        └──────────┘
+               │                                   │
+               │ la mairie refuse                  │ la mairie annule
+               ▼                                   ▼
+          ┌─────────┐                        ┌──────────┐
+          │ refusée │                        │ annulée  │
+          └─────────┘                        └──────────┘
+```
+
+**Seul « acceptée » bloque un créneau.** Deux personnes peuvent demander le
+même samedi : c'est normal, et c'est à la mairie de trancher. Un logiciel qui
+interdirait la seconde demande cacherait le conflit au lieu de le montrer.
+
+L'écran `Édition ▸ Réservations de salles` signale explicitement les
+concurrences : « Attention, ce créneau est déjà accordé à… »
+
+### Ce qui est refusé automatiquement
+
+- une date passée ;
+- une date hors des délais de la salle ;
+- un créneau déjà accordé.
+
+Le demandeur le voit **avant** d'avoir rempli le reste du formulaire.
+
+### Les courriels
+
+| Quand | Qui reçoit |
+|---|---|
+| Demande déposée | le demandeur (accusé de réception) **et** la mairie |
+| Acceptée | le demandeur |
+| Refusée | le demandeur, avec le motif saisi par la mairie |
+| Annulée | le demandeur |
+
+L'adresse de la mairie est celle des réglages ; à défaut, celle du webmestre.
+
+### La limite qu'il faut connaître
+
+Le verrouillage se joue **à l'acceptation**, pas à la demande. Deux agents
+qui accepteraient deux demandes concurrentes à quelques secondes d'intervalle
+sont départagés par une transaction : la seconde reçoit « le créneau vient
+d'être accordé à… » et n'est pas enregistrée. La salle ne peut pas être
+louée deux fois.
+
+En revanche il n'y a **pas de paiement en ligne**. Une commune ne peut pas
+brancher Stripe ou PayPal : les encaissements publics passent par PayFiP, un
+service de la DGFiP qui demande une démarche administrative. À traiter
+séparément si la mairie le souhaite.

@@ -1,0 +1,97 @@
+[(#AUTORISER{voir,reservation}|sinon_interdire_acces)]
+
+<h1 class="grostitre"><:marly:titre_reservations:></h1>
+
+[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+[(#REM) Les demandes en attente d'abord : c'est la seule liste sur laquelle
+        quelqu'un doit agir. Les autres sont de la consultation. ]
+<B_attente>
+<h2><:marly:en_attente:> <span class="petit">(#TOTAL_BOUCLE)</span></h2>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:col_creneau:></th>
+			<th><:marly:col_salle:></th>
+			<th><:marly:col_demandeur:></th>
+			<th><:marly:col_motif:></th>
+			<th><:marly:col_action:></th>
+		</tr>
+	</thead>
+	<tbody>
+	<BOUCLE_attente(RESERVATIONS){statut=demande}{par date_debut}{pagination 20}>
+		<tr>
+			<td>
+				<strong>[(#DATE_DEBUT|affdate{'l j F Y'})]</strong><br>
+				[(#DATE_DEBUT|heures):(#DATE_DEBUT|minutes)] – [(#DATE_FIN|heures):(#DATE_FIN|minutes)]
+			</td>
+			<td>
+				<BOUCLE_s(SALLES){id_salle}>#TITRE</BOUCLE_s>
+
+				[(#REM) Le conflit se signale ICI, au moment de decider. Une
+				        liste qui n'avertit pas de la concurrence oblige a
+				        verifier a la main dans le calendrier, et c'est ce
+				        genre de verification qu'on finit par sauter. ]
+				<BOUCLE_conflit(RESERVATIONS){id_salle}{statut=acceptee}
+					{date_debut<#_attente:DATE_FIN}{date_fin>#_attente:DATE_DEBUT}>
+				<p class="alerte"><:marly:conflit_accepte:> [(#NOM)]</p>
+				</BOUCLE_conflit>
+			</td>
+			<td>
+				[<strong>(#ORGANISME)</strong><br>]
+				#NOM<br>
+				<a href="mailto:#COURRIEL">#COURRIEL</a><br>
+				[(#TELEPHONE)]
+			</td>
+			<td>[(#MOTIF|couper{140})]</td>
+			<td class="actions">
+				[(#AUTORISER{modifier,reservation,#ID_RESERVATION})
+				<a class="btn accepter"
+				   href="[(#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-acceptee,#SELF})]"><:marly:accepter:></a>
+				<a class="btn refuser"
+				   href="[(#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-refusee,#SELF})]"><:marly:refuser:></a>
+				]
+			</td>
+		</tr>
+	</BOUCLE_attente>
+	</tbody>
+</table>
+</B_attente>
+
+<p class="rien"><:marly:aucune_demande:></p>
+<//B_attente>
+
+
+<h2><:marly:acceptees:></h2>
+<B_prises>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:col_creneau:></th>
+			<th><:marly:col_salle:></th>
+			<th><:marly:col_demandeur:></th>
+			<th><:marly:col_action:></th>
+		</tr>
+	</thead>
+	<tbody>
+	<BOUCLE_prises(RESERVATIONS){statut=acceptee}{date_debut>#DATE}{par date_debut}{pagination 20}>
+		<tr>
+			<td>
+				<strong>[(#DATE_DEBUT|affdate{'l j F Y'})]</strong><br>
+				[(#DATE_DEBUT|heures):(#DATE_DEBUT|minutes)] – [(#DATE_FIN|heures):(#DATE_FIN|minutes)]
+			</td>
+			<td><BOUCLE_s2(SALLES){id_salle}>#TITRE</BOUCLE_s2></td>
+			<td>[<strong>(#ORGANISME)</strong> — ]#NOM</td>
+			<td class="actions">
+				[(#AUTORISER{modifier,reservation,#ID_RESERVATION})
+				<a class="btn annuler"
+				   href="[(#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-annulee,#SELF})]"><:marly:annuler:></a>
+				]
+			</td>
+		</tr>
+	</BOUCLE_prises>
+	</tbody>
+</table>
+</B_prises>
+<p class="rien"><:marly:aucune_acceptee:></p>
+<//B_prises>

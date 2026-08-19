@@ -1,0 +1,74 @@
+[(#REM)
+  Creation et modification d'une salle. Les delais sont en jours : c'est
+  l'unite dans laquelle une mairie raisonne (<< au moins une semaine avant >>),
+  pas en dates absolues qu'il faudrait ressaisir chaque annee.
+]
+<div class="formulaire_spip formulaire_editer_salle">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<ul>
+			<li class="editer editer_titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
+				<label for="titre"><:marly:champ_titre:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
+			</li>
+			<li class="editer editer_capacite[ (#ENV**{erreurs}|table_valeur{capacite}|oui)erreur]">
+				<label for="capacite"><:marly:champ_capacite:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{capacite})</span>]
+				<input type="number" class="text" name="capacite" id="capacite" value="[(#ENV{capacite}|attribut_html)]">
+				<small><:marly:capacite_aide:></small>
+			</li>
+			<li class="editer editer_tarif_commune[ (#ENV**{erreurs}|table_valeur{tarif_commune}|oui)erreur]">
+				<label for="tarif_commune"><:marly:champ_tarif_commune:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{tarif_commune})</span>]
+				<input type="text" class="text" name="tarif_commune" id="tarif_commune" value="[(#ENV{tarif_commune}|attribut_html)]">
+				<small><:marly:tarif_aide:></small>
+			</li>
+			<li class="editer editer_tarif_hors_commune[ (#ENV**{erreurs}|table_valeur{tarif_hors_commune}|oui)erreur]">
+				<label for="tarif_hors_commune"><:marly:champ_tarif_hors_commune:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{tarif_hors_commune})</span>]
+				<input type="text" class="text" name="tarif_hors_commune" id="tarif_hors_commune" value="[(#ENV{tarif_hors_commune}|attribut_html)]">
+			</li>
+			<li class="editer editer_caution[ (#ENV**{erreurs}|table_valeur{caution}|oui)erreur]">
+				<label for="caution"><:marly:champ_caution:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{caution})</span>]
+				<input type="text" class="text" name="caution" id="caution" value="[(#ENV{caution}|attribut_html)]">
+			</li>
+			<li class="editer editer_delai_min[ (#ENV**{erreurs}|table_valeur{delai_min}|oui)erreur]">
+				<label for="delai_min"><:marly:champ_delai_min:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{delai_min})</span>]
+				<input type="number" class="text" name="delai_min" id="delai_min" value="[(#ENV{delai_min}|attribut_html)]">
+				<small><:marly:delai_min_aide:></small>
+			</li>
+			<li class="editer editer_delai_max[ (#ENV**{erreurs}|table_valeur{delai_max}|oui)erreur]">
+				<label for="delai_max"><:marly:champ_delai_max:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{delai_max})</span>]
+				<input type="number" class="text" name="delai_max" id="delai_max" value="[(#ENV{delai_max}|attribut_html)]">
+				<small><:marly:delai_max_aide:></small>
+			</li>
+			<li class="editer editer_descriptif">
+				<label for="descriptif"><:marly:champ_descriptif:></label>
+				<textarea name="descriptif" id="descriptif" rows="6">[(#ENV{descriptif}|textebrut)]</textarea>
+				<small><:marly:descriptif_aide:></small>
+			</li>
+			<li class="editer editer_statut">
+				<label for="statut"><:marly:champ_statut:></label>
+				<select name="statut" id="statut">
+					<option value="prepa"[(#ENV{statut}|=={prepa}|oui) selected]><:marly:statut_prepa:></option>
+					<option value="publie"[(#ENV{statut}|=={publie}|oui) selected]><:marly:statut_publie:></option>
+				</select>
+				<small><:marly:statut_aide:></small>
+			</li>
+		</ul>
+		<p class="boutons">
+			<input type="submit" class="submit" value="<:marly:enregistrer:>">
+		</p>
+	</form>
+	]
+
+</div>

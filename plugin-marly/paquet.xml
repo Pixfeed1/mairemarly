@@ -1,18 +1,32 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="1.0.2"
+	version="2.0.0"
 	etat="test"
-	compatibilite="[4.2.0;4.4.*]">
+	compatibilite="[4.2.0;4.4.*]"
+	schema="2.0.0">
 
-	<nom>Réglages de Marly-Gomont</nom>
+	<nom>Réglages et réservations de Marly-Gomont</nom>
 	<licence>GNU/GPL v3</licence>
 
 	<necessite nom="SPIP" compatibilite="[4.2.0;4.4.*]" />
+
+	<pipeline nom="declarer_tables_principales" inclure="base/marly.php" />
+	<pipeline nom="declarer_tables_interfaces"  inclure="base/marly.php" />
 
 	<menu
 		nom="configurer_marly"
 		titre="marly:titre_reglages"
 		parent="menu_configuration" />
+
+	<menu
+		nom="reservations"
+		titre="marly:titre_reservations"
+		parent="menu_edition" />
+
+	<menu
+		nom="salles"
+		titre="marly:titre_salles"
+		parent="menu_edition" />
 
 </paquet>
