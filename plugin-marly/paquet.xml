@@ -1,0 +1,28 @@
+<paquet
+	prefix="marly"
+	categorie="outil"
+	version="1.0.0"
+	etat="test"
+	compatibilite="[4.2.0;4.4.*]"
+	logo="images/marly-64.png"
+	documentation="">
+
+	<nom>Réglages de Marly-Gomont</nom>
+	<slogan>Coordonnées, horaires et réseaux sociaux de la commune</slogan>
+	<licence>GNU/GPL v3</licence>
+
+	<necessite nom="SPIP" compatibilite="[4.2.0;4.4.*]" />
+
+	<!--
+		Ce menu ajoute « Réglages de la commune » dans Configuration. C'est
+		toute la raison d'être de ce plugin : un écran avec des champs
+		étiquetés, là où il fallait auparavant créer un article et écrire
+		une adresse dans un champ appelé « chapeau ».
+	-->
+	<menu
+		nom="configurer_marly"
+		titre="marly:titre_reglages"
+		parent="menu_configuration"
+		icone="images/marly-16.png" />
+
+</paquet>

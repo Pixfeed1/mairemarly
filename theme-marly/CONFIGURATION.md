@@ -48,7 +48,6 @@ Il contient trois mots-clés :
 | `Menu` | l'article devient une entrée du menu principal |
 | `Démarches` | l'article entre dans la liste déroulante « Je souhaite… » et dans le pied de page |
 | `Bannière` | le logo de l'article devient la photographie de la bannière d'accueil |
-| `Réseaux sociaux` | l'article devient un pictogramme en haut de l'en-tête |
 
 ---
 
@@ -101,25 +100,6 @@ récemment publiée qui s'affiche.
 > y déposer un logo donnerait un logo étiré sur 1920 px en travers de la
 > bannière. Il reste libre pour ce que son nom annonce.
 
-### Les réseaux sociaux
-
-Un **article portant le mot-clé `Réseaux sociaux`** par compte :
-
-| Ce qu'on veut | Où on le met |
-|---|---|
-| Le nom du réseau | le titre de l'article (`10. Facebook`) — non affiché, mais lu par les lecteurs d'écran |
-| Le pictogramme | un mot-clé du groupe `Icônes` |
-| L'adresse | le chapo : `=https://www.facebook.com/…` |
-
-Tant qu'aucun article ne porte le mot-clé, **rien ne s'affiche**. C'est voulu :
-une commune qui n'a pas de Facebook n'a pas à en afficher l'icône, et trois
-pictogrammes qui ne mènent nulle part valent moins que pas de pictogramme.
-
-La palette couvre Facebook, Instagram, YouTube, X, LinkedIn, TikTok, Snapchat,
-Threads, Bluesky, Mastodon, WhatsApp, Telegram, les flux RSS, et un
-pictogramme de téléphone pour les applications d'alerte type PanneauPocket ou
-IntraMuros, qui n'ont pas de logo dans la bibliothèque.
-
 ### La liste « Je souhaite… »
 
 Un **article portant le mot-clé `Démarches`**. Le titre devient la ligne de la
@@ -146,15 +126,29 @@ mention « (site extérieur) », lue par les lecteurs d'écran.
 
 ---
 
-## 4. Ce qui n'est PAS pilotable ainsi
+## 4. Les réglages : un écran, des champs étiquetés
 
-Il faut le dire clairement plutôt que de le laisser découvrir :
+Tout ce qui n'est pas du contenu — coordonnées, horaires, réseaux sociaux —
+se saisit au même endroit :
 
-| Élément | Aujourd'hui | Pour le rendre pilotable |
-|---|---|---|
-| Téléphone, adresse, horaires | valeurs de repli dans le gabarit, lues par `#CONFIG{marly/...}` | il faut un écran de configuration, donc un plugin — ou les traiter comme du contenu |
-| Photographie de la bannière | article portant le mot-clé `Bannière` | déjà pilotable |
-| Crédit photographique | le descriptif de ce même article | déjà pilotable |
+**Configuration ▸ Réglages de la commune**
+
+| Bloc | Champs |
+|---|---|
+| Coordonnées de la mairie | téléphone, courriel, adresse, code postal, commune, horaires |
+| Réseaux sociaux | Facebook, Instagram, YouTube, X, LinkedIn, TikTok, WhatsApp, Mastodon, Bluesky |
+| Application d'alerte | nom et adresse (PanneauPocket, IntraMuros…) |
+
+**Un champ laissé vide n'affiche rien.** Une commune qui n'a pas de TikTok
+n'a pas d'icône TikTok, sans avoir eu quoi que ce soit à désactiver.
+
+Les adresses web sont vérifiées à l'enregistrement : une adresse qui ne
+commence pas par `https://` est refusée sur-le-champ, plutôt qu'enregistrée
+et découverte morte des mois plus tard.
+
+Cet écran vient du plugin `plugin-marly/`, livré dans le même dépôt. Il
+n'ajoute rien d'autre : ni table, ni champ, ni traitement. Il existe pour que
+déclarer un Facebook ne demande pas de créer un article.
 
 ---
 

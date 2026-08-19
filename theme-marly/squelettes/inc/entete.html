@@ -16,34 +16,60 @@
 
 		<div class="rang-outils">
 
-			[(#REM) Les reseaux sociaux sont des articles portant le mot-cle
-			        << Reseaux sociaux >>, exactement comme les raccourcis :
+			[(#REM) Les reseaux sociaux viennent des reglages de la commune,
+			        saisis dans Configuration > Reglages de la commune. Un
+			        champ vide n'affiche rien : les crochets de SPIP suppriment
+			        tout le bloc quand la valeur est absente.
 
-			          - le TITRE nomme le reseau (Facebook), il n'est pas
-			            affiche mais lu par les lecteurs d'ecran ;
-			          - l'ICONE vient d'un mot-cle du groupe << Icones >> ;
-			          - l'ADRESSE vient du chapo : << = >> suivi de l'adresse
-			            de la page de la commune.
+			        Une commune qui n'a pas de TikTok n'a donc pas d'icone
+			        TikTok, sans avoir eu quoi que ce soit a desactiver.
 
-			        Tant que la mairie n'en a declare aucun, RIEN ne s'affiche.
-			        C'est voulu : trois pictogrammes qui ne menent nulle part
-			        valent moins que pas de pictogrammes du tout, et une mairie
-			        qui n'a pas de Facebook n'a pas a en afficher l'icone.
+			        Le pictogramme de chaque reseau est fixe ici, et c'est
+			        normal : l'icone de Facebook n'est pas un choix editorial.
 
-			        rel="noopener" sur des liens sortants : sans lui, la page
-			        ouverte garde une reference vers la notre. ]
-			<BOUCLE_reseaux(ARTICLES){titre_mot=Réseaux sociaux}{par num titre, titre}{0,8}>
-			<a class="rond-social" href="[(#VIRTUEL|sinon{#URL_ARTICLE})]" rel="noopener">
-				<B_ico_res>
-				<BOUCLE_ico_res(MOTS){id_article}{type=Icônes}{0,1}>
-				<svg class="ico" aria-hidden="true"><use href="#[(#DESCRIPTIF|supprimer_tags|trim)]"/></svg>
-				</BOUCLE_ico_res>
-				</B_ico_res>
-				<svg class="ico" aria-hidden="true"><use href="#ri-links-line"/></svg>
-				<//B_ico_res>
-				<span class="sr">#TITRE</span>
-			</a>
-			</BOUCLE_reseaux>
+			        rel="noopener" sur ces liens sortants : sans lui, la page
+			        ouverte conserve une reference vers la notre. ]
+			[<a class="rond-social" href="(#CONFIG{marly/facebook}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-facebook-circle-fill"/></svg>
+				<span class="sr">Facebook</span>
+			</a>]
+			[<a class="rond-social" href="(#CONFIG{marly/instagram}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-instagram-line"/></svg>
+				<span class="sr">Instagram</span>
+			</a>]
+			[<a class="rond-social" href="(#CONFIG{marly/youtube}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-youtube-fill"/></svg>
+				<span class="sr">YouTube</span>
+			</a>]
+			[<a class="rond-social" href="(#CONFIG{marly/x}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-twitter-x-fill"/></svg>
+				<span class="sr">X</span>
+			</a>]
+			[<a class="rond-social" href="(#CONFIG{marly/linkedin}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-linkedin-box-fill"/></svg>
+				<span class="sr">LinkedIn</span>
+			</a>]
+			[<a class="rond-social" href="(#CONFIG{marly/tiktok}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-tiktok-fill"/></svg>
+				<span class="sr">TikTok</span>
+			</a>]
+			[<a class="rond-social" href="(#CONFIG{marly/whatsapp}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-whatsapp-line"/></svg>
+				<span class="sr">WhatsApp</span>
+			</a>]
+			[<a class="rond-social" href="(#CONFIG{marly/mastodon}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-mastodon-fill"/></svg>
+				<span class="sr">Mastodon</span>
+			</a>]
+			[<a class="rond-social" href="(#CONFIG{marly/bluesky}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-bluesky-fill"/></svg>
+				<span class="sr">Bluesky</span>
+			</a>]
+
+			[<a class="rond-social" href="(#CONFIG{marly/appli_url}|attribut_html)" rel="noopener">
+				<svg class="ico" aria-hidden="true"><use href="#ri-smartphone-line"/></svg>
+				<span class="sr">[(#CONFIG{marly/appli_nom}|sinon{'Application mobile'})]</span>
+			</a>]
 
 			<a class="pilule plein" href="#URL_PAGE{login}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:connexion:>

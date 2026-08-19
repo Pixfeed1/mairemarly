@@ -75,11 +75,19 @@ git clone -b claude/refonte-spip-mairie-marly-o47sn4 \
   https://github.com/Pixfeed1/mairemarly.git depot-marly
 ```
 
-Puis on relie **le seul dossier des squelettes** dans la racine web :
+Puis on relie **le dossier des squelettes** dans la racine web, et **le
+plugin** dans le dossier des plugins :
 
 ```bash
 ln -s ~/depot-marly/theme-marly/squelettes ~/marlygomont.pixfeed.net/squelettes
+
+mkdir -p ~/marlygomont.pixfeed.net/plugins
+ln -s ~/depot-marly/plugin-marly ~/marlygomont.pixfeed.net/plugins/marly
 ```
+
+Le plugin doit ensuite être **activé** dans l'espace privé :
+`Configuration ▸ Gestion des plugins ▸ Réglages de Marly-Gomont`. Il ajoute
+alors l'entrée `Réglages de la commune` au menu Configuration.
 
 > **Pourquoi un lien, et pas simplement `dossier_squelettes` vers l'extérieur.**
 > C'est l'erreur que j'ai faite au premier déploiement, et elle ne se voit

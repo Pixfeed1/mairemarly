@@ -1,0 +1,133 @@
+[(#REM)
+  L'ecran de reglages. Trois blocs, chacun avec sa legende : coordonnees,
+  reseaux sociaux, application d'alerte. Un champ vide n'affiche rien sur le
+  site — c'est dit en toutes lettres en haut, pour qu'on n'aille pas chercher
+  comment << desactiver >> un reseau que la commune n'a pas.
+
+  Les champs sont ecrits un par un plutot que produits par une boucle : neuf
+  lignes repetitives se lisent mieux qu'une boucle qu'il faut derouler dans sa
+  tete, et chacune peut recevoir son aide propre le jour ou c'est utile.
+]
+<div class="formulaire_spip formulaire_configurer formulaire_configurer_marly">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	<p class="explication"><:marly:intro_reglages:></p>
+
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<fieldset>
+			<legend><:marly:legende_contact:></legend>
+			<ul>
+				<li class="editer editer_telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
+					<label for="telephone"><:marly:telephone:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
+					<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]">
+					<small><:marly:telephone_aide:></small>
+				</li>
+				<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
+					<label for="courriel"><:marly:courriel:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+					<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]">
+				</li>
+				<li class="editer editer_adresse[ (#ENV**{erreurs}|table_valeur{adresse}|oui)erreur]">
+					<label for="adresse"><:marly:adresse:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{adresse})</span>]
+					<input type="text" class="text" name="adresse" id="adresse" value="[(#ENV{adresse}|attribut_html)]">
+					<small><:marly:adresse_aide:></small>
+				</li>
+				<li class="editer editer_code_postal[ (#ENV**{erreurs}|table_valeur{code_postal}|oui)erreur]">
+					<label for="code_postal"><:marly:code_postal:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{code_postal})</span>]
+					<input type="text" class="text" name="code_postal" id="code_postal" value="[(#ENV{code_postal}|attribut_html)]">
+				</li>
+				<li class="editer editer_ville[ (#ENV**{erreurs}|table_valeur{ville}|oui)erreur]">
+					<label for="ville"><:marly:ville:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ville})</span>]
+					<input type="text" class="text" name="ville" id="ville" value="[(#ENV{ville}|attribut_html)]">
+				</li>
+				<li class="editer editer_horaires">
+					<label for="horaires"><:marly:horaires:></label>
+					<textarea name="horaires" id="horaires" rows="4">[(#ENV{horaires}|textebrut)]</textarea>
+					<small><:marly:horaires_aide:></small>
+				</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<legend><:marly:legende_reseaux:></legend>
+			<p class="explication"><:marly:reseaux_aide:></p>
+			<ul>
+				<li class="editer editer_facebook[ (#ENV**{erreurs}|table_valeur{facebook}|oui)erreur]">
+					<label for="facebook"><:marly:facebook:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{facebook})</span>]
+					<input type="url" class="text" name="facebook" id="facebook" value="[(#ENV{facebook}|attribut_html)]" placeholder="https://">
+				</li>
+				<li class="editer editer_instagram[ (#ENV**{erreurs}|table_valeur{instagram}|oui)erreur]">
+					<label for="instagram"><:marly:instagram:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{instagram})</span>]
+					<input type="url" class="text" name="instagram" id="instagram" value="[(#ENV{instagram}|attribut_html)]" placeholder="https://">
+				</li>
+				<li class="editer editer_youtube[ (#ENV**{erreurs}|table_valeur{youtube}|oui)erreur]">
+					<label for="youtube"><:marly:youtube:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{youtube})</span>]
+					<input type="url" class="text" name="youtube" id="youtube" value="[(#ENV{youtube}|attribut_html)]" placeholder="https://">
+				</li>
+				<li class="editer editer_x[ (#ENV**{erreurs}|table_valeur{x}|oui)erreur]">
+					<label for="x"><:marly:x:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{x})</span>]
+					<input type="url" class="text" name="x" id="x" value="[(#ENV{x}|attribut_html)]" placeholder="https://">
+				</li>
+				<li class="editer editer_linkedin[ (#ENV**{erreurs}|table_valeur{linkedin}|oui)erreur]">
+					<label for="linkedin"><:marly:linkedin:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{linkedin})</span>]
+					<input type="url" class="text" name="linkedin" id="linkedin" value="[(#ENV{linkedin}|attribut_html)]" placeholder="https://">
+				</li>
+				<li class="editer editer_tiktok[ (#ENV**{erreurs}|table_valeur{tiktok}|oui)erreur]">
+					<label for="tiktok"><:marly:tiktok:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{tiktok})</span>]
+					<input type="url" class="text" name="tiktok" id="tiktok" value="[(#ENV{tiktok}|attribut_html)]" placeholder="https://">
+				</li>
+				<li class="editer editer_whatsapp[ (#ENV**{erreurs}|table_valeur{whatsapp}|oui)erreur]">
+					<label for="whatsapp"><:marly:whatsapp:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{whatsapp})</span>]
+					<input type="url" class="text" name="whatsapp" id="whatsapp" value="[(#ENV{whatsapp}|attribut_html)]" placeholder="https://">
+				</li>
+				<li class="editer editer_mastodon[ (#ENV**{erreurs}|table_valeur{mastodon}|oui)erreur]">
+					<label for="mastodon"><:marly:mastodon:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{mastodon})</span>]
+					<input type="url" class="text" name="mastodon" id="mastodon" value="[(#ENV{mastodon}|attribut_html)]" placeholder="https://">
+				</li>
+				<li class="editer editer_bluesky[ (#ENV**{erreurs}|table_valeur{bluesky}|oui)erreur]">
+					<label for="bluesky"><:marly:bluesky:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{bluesky})</span>]
+					<input type="url" class="text" name="bluesky" id="bluesky" value="[(#ENV{bluesky}|attribut_html)]" placeholder="https://">
+				</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<legend><:marly:legende_appli:></legend>
+			<ul>
+				<li class="editer editer_appli_nom[ (#ENV**{erreurs}|table_valeur{appli_nom}|oui)erreur]">
+					<label for="appli_nom"><:marly:appli_nom:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{appli_nom})</span>]
+					<input type="text" class="text" name="appli_nom" id="appli_nom" value="[(#ENV{appli_nom}|attribut_html)]">
+					<small><:marly:appli_nom_aide:></small>
+				</li>
+				<li class="editer editer_appli_url[ (#ENV**{erreurs}|table_valeur{appli_url}|oui)erreur]">
+					<label for="appli_url"><:marly:appli_url:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{appli_url})</span>]
+					<input type="url" class="text" name="appli_url" id="appli_url" value="[(#ENV{appli_url}|attribut_html)]" placeholder="https://">
+				</li>
+			</ul>
+		</fieldset>
+
+		<p class="boutons">
+			<input type="submit" class="submit" value="<:marly:enregistrer:>">
+		</p>
+	</form>
+
+</div>
