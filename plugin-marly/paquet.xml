@@ -1,17 +1,11 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="1.0.1"
+	version="1.0.2"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]">
 
 	<nom>Réglages de Marly-Gomont</nom>
-	<description>
-		Ajoute un écran unique dans Configuration pour saisir les coordonnées
-		de la mairie, ses horaires et ses réseaux sociaux. Rien d'autre :
-		ni table, ni champ, ni traitement. Il existe pour que déclarer un
-		compte Facebook ne demande pas de créer un article.
-	</description>
 	<licence>GNU/GPL v3</licence>
 
 	<necessite nom="SPIP" compatibilite="[4.2.0;4.4.*]" />
