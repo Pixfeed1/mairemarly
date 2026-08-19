@@ -77,9 +77,32 @@
 			<a class="pilule" href="#URL_PAGE{newsletter}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:newsletter:>
 			</a>
+			[(#REM) Le bouton << Reserver >> n'apparait QUE s'il y a quelque chose
+			        a reserver : une salle ouverte, ou un evenement a venir dont
+			        les inscriptions sont publiees.
+
+			        Un bouton permanent qui mene a une page vide use la confiance
+			        plus vite qu'il ne rend service. Hors saison, il disparait de
+			        lui-meme, sans que personne ait a le desactiver.
+
+			        Deux boucles et non une : SPIP ne sait pas interroger deux
+			        tables a la fois. La seconde ne s'evalue que si la premiere
+			        n'a rien trouve, ce qui evite d'afficher deux boutons. ]
+			<B_a_reserver>
+			<BOUCLE_a_reserver(SALLES){statut=publie}{0,1}></BOUCLE_a_reserver>
 			<a class="pilule" href="#URL_PAGE{reservation}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg> <:marly:reserver:>
 			</a>
+			</B_a_reserver>
+
+			<B_a_inscrire>
+			<BOUCLE_a_inscrire(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{0,1}></BOUCLE_a_inscrire>
+			<a class="pilule" href="#URL_PAGE{reservation}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg> <:marly:reserver:>
+			</a>
+			</B_a_inscrire>
+			<//B_a_inscrire>
+			<//B_a_reserver>
 		</div>
 
 		<div class="rang-nav">

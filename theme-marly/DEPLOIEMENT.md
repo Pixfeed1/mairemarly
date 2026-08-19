@@ -85,6 +85,16 @@ mkdir -p ~/marlygomont.pixfeed.net/plugins
 ln -s ~/depot-marly/plugin-marly ~/marlygomont.pixfeed.net/plugins/marly
 ```
 
+> **Le plugin doit être actif AVANT que le thème ne serve une page.** Les
+> gabarits interrogent les tables `SALLES` et `MANIFESTATIONS` — pour savoir
+> s'il y a quelque chose à réserver, et n'afficher le bouton que dans ce cas.
+> SPIP compile ces boucles à la première visite : sans le plugin, la table
+> n'existe pas et l'en-tête part en erreur sur toutes les pages.
+>
+> Ce n'est pas une fragilité qu'on peut contourner par un test : SPIP vérifie
+> l'existence des tables à la compilation, pas à l'exécution. Le thème et le
+> plugin se livrent ensemble.
+
 Le plugin doit ensuite être **activé** dans l'espace privé :
 `Configuration ▸ Gestion des plugins ▸ Réglages de Marly-Gomont`. Il ajoute
 alors l'entrée `Réglages de la commune` au menu Configuration.
