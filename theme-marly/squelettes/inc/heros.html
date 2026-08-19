@@ -9,15 +9,37 @@
   L'en-tête garde une loupe, mais seulement sous 1200px, là où la barre
   n'aurait plus la place de s'afficher correctement.
 
-  Le crédit photographique n'est pas un détail : une photo a un auteur, et
-  la mairie doit pouvoir le citer sans intervention technique.
+  LA PHOTOGRAPHIE vient d'un article portant le mot-clé « Bannière », et
+  non du logo du site. Le champ « Logo du site » de SPIP porte un nom qui
+  promet un logo : quiconque y dépose un logo se retrouverait avec un
+  logo étiré sur 1920 px en travers de la bannière, sans comprendre
+  pourquoi. Un champ doit faire ce que son nom annonce.
+
+  Le montage par article apporte deux choses que le logo ne permettait pas :
+   - le CRÉDIT photographique vit dans le descriptif de l'article. Une photo
+     a un auteur, et la mairie doit pouvoir le citer sans intervention
+     technique ;
+   - on peut préparer plusieurs bannières et changer au fil des saisons :
+     c'est la plus récemment publiée qui s'affiche.
+
+  Faute d'article, l'illustration provisoire prend le relais. Le site n'est
+  jamais sans bannière.
 ]
 <div class="heros">
-	[(#REM) Image de bannière : logo du site à défaut d'une photographie ]
-	<div class="heros-image">
-		[(#LOGO_SITE_SPIP|image_reduire{1920,0})]
-	</div>
+
+	<B_banniere>
+	<BOUCLE_banniere(ARTICLES){titre_mot=Bannière}{par date}{inverse}{0,1}>
+	<div class="heros-image">[(#LOGO_ARTICLE|image_reduire{1920,0})]</div>
+	[(#REM) Le credit vient du descriptif de l'article : une photo a un auteur,
+	        et la mairie doit pouvoir le citer sans intervention technique. ]
+	[<p class="heros-credit">(#DESCRIPTIF|textebrut|couper{120})</p>]
+	</BOUCLE_banniere>
+	</B_banniere>
+
+	[(#REM) Illustration provisoire, tant qu'aucune photographie n'est publiee. ]
 	<img class="heros-paysage" src="#CHEMIN{img/paysage.svg}" width="1440" height="260" alt="" aria-hidden="true">
+	<//B_banniere>
+
 	<div class="heros-voile" aria-hidden="true"></div>
 
 	<div class="heros-dedans">
@@ -30,5 +52,5 @@
 		</form>
 	</div>
 
-	[<p class="heros-credit">(#CONFIG{marly/credit_photo})</p>]
+
 </div>

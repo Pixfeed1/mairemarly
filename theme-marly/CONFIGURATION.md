@@ -47,6 +47,7 @@ Il contient trois mots-clés :
 | `Raccourcis` | l'article devient un des six ronds « Accès rapides » |
 | `Menu` | l'article devient une entrée du menu principal |
 | `Démarches` | l'article entre dans la liste déroulante « Je souhaite… » et dans le pied de page |
+| `Bannière` | le logo de l'article devient la photographie de la bannière d'accueil |
 
 ---
 
@@ -83,6 +84,22 @@ Un **article portant le mot-clé `Raccourcis`**, et trois choses :
 Tant qu'aucun article ne porte le mot-clé, ce sont six destinations par
 défaut qui s'affichent. Le site n'est jamais vide.
 
+### La photographie de la bannière
+
+Un **article portant le mot-clé `Bannière`** :
+
+| Ce qu'on veut | Où on le met |
+|---|---|
+| La photographie | le **logo de l'article** (colonne de droite, « Ajouter un logo ») |
+| Le crédit photographique | le **descriptif** de l'article |
+
+On peut en préparer plusieurs et changer au fil des saisons : c'est la plus
+récemment publiée qui s'affiche.
+
+> **Pas dans « Logo du site ».** Ce champ porte un nom qui promet un logo ;
+> y déposer un logo donnerait un logo étiré sur 1920 px en travers de la
+> bannière. Il reste libre pour ce que son nom annonce.
+
 ### La liste « Je souhaite… »
 
 Un **article portant le mot-clé `Démarches`**. Le titre devient la ligne de la
@@ -117,8 +134,8 @@ Il faut le dire clairement plutôt que de le laisser découvrir :
 |---|---|---|
 | Téléphone, adresse, horaires | valeurs de repli dans le gabarit, lues par `#CONFIG{marly/...}` | il faut un écran de configuration, donc un plugin — ou les traiter comme du contenu |
 | Réseaux sociaux de l'en-tête | adresses en dur | même chose |
-| Photographie de la bannière | le logo du site (`Configuration ▸ Identité du site`) | déjà pilotable |
-| Crédit photographique | `#CONFIG{marly/credit_photo}` | même remarque que le téléphone |
+| Photographie de la bannière | article portant le mot-clé `Bannière` | déjà pilotable |
+| Crédit photographique | le descriptif de ce même article | déjà pilotable |
 
 ---
 
