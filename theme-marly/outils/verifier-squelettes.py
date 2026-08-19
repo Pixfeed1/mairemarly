@@ -69,12 +69,24 @@ if os.path.exists(paquet):
             signaler('plugin-marly/paquet.xml', 1,
                      f"menu {m.group(1)} declare, mais prive/squelettes/contenu/{m.group(1)}.html manque")
 
-    # Une tache periodique declaree doit exister elle aussi.
+    # Une tache periodique declaree doit exister elle aussi. ATTENTION : SPIP
+    # PREFIXE le nom avec celui du plugin. Declarer nom="lettres" cherche
+    # genie_marly_lettres_dist dans genie/marly_lettres.php. Declarer
+    # nom="marly_lettres" chercherait marly_marly_lettres — erreur vecue.
+    prefixe = re.search(r'prefix="([a-z_]+)"', src)
+    prefixe = prefixe.group(1) if prefixe else 'marly'
     for m in re.finditer(r'<genie\s+nom="([a-z_]+)"', src):
-        tache = os.path.join(RACINE, '..', 'plugin-marly', 'genie', m.group(1) + '.php')
+        attendu = prefixe + '_' + m.group(1)
+        tache = os.path.join(RACINE, '..', 'plugin-marly', 'genie', attendu + '.php')
         if not os.path.exists(tache):
             signaler('plugin-marly/paquet.xml', 1,
-                     f"tache {m.group(1)} declaree, mais genie/{m.group(1)}.php manque")
+                     f"tache {m.group(1)} declaree : SPIP cherchera genie/{attendu}.php, absent")
+        elif f'function genie_{attendu}_dist' not in open(tache, encoding='utf-8').read():
+            signaler(f'plugin-marly/genie/{attendu}.php', 1,
+                     f"la fonction doit s'appeler genie_{attendu}_dist")
+        if m.group(1).startswith(prefixe + '_'):
+            signaler('plugin-marly/paquet.xml', 1,
+                     f"genie nom=\"{m.group(1)}\" : SPIP ajoutera deja le prefixe, retirer \"{prefixe}_\"")
 
 # 8. Un formulaire appele doit avoir ses deux fichiers.
 for f in sorted(glob.glob('squelettes/**/*.html', recursive=True)):

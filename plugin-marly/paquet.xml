@@ -1,7 +1,7 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.7.0"
+	version="3.7.1"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
 	schema="3.6.0">
@@ -15,7 +15,13 @@
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/marly.php" />
 	<pipeline nom="declarer_tables_interfaces"  inclure="base/marly.php" />
 
-	<genie nom="marly_lettres" periode="60" />
+	<!--
+		SPIP prefixe le nom de la tache avec celui du plugin : << lettres >>
+		devient << marly_lettres >>, et il cherche alors genie_marly_lettres_dist
+		dans genie/marly_lettres.php. Declarer << marly_lettres >> ici donnait
+		marly_marly_lettres, introuvable.
+	-->
+	<genie nom="lettres" periode="60" />
 
 	<menu
 		nom="configurer_marly"
