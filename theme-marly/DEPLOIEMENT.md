@@ -22,15 +22,38 @@ la régler avant d'installer, pas après.
 
 ## 2. Installer SPIP
 
+L'installeur officiel s'appelle `spip_loader.php`. Il télécharge et
+décompresse la bonne version en créant les dossiers avec les bons droits —
+plus fiable que déposer une archive à la main.
+
+**Vérifier l'adresse avant de télécharger.** Elle a changé au fil des
+versions, et une adresse morte rend un fichier de 16 octets contenant
+« File not found. » qu'on installe ensuite sans comprendre pourquoi rien ne
+marche. Le test tient en une commande :
+
+```bash
+for u in https://www.spip.net/spip-dev/INSTALL/spip_loader.php \
+         https://get.spip.net/spip_loader.php ; do
+  printf '%-56s ' "$u"
+  curl -sIL -m 15 "$u" | awk 'BEGIN{IGNORECASE=1}
+    /^HTTP/{c=$2} /^content-length/{l=$2} END{print c, l+0 " octets"}'
+done
+```
+
+On garde celle qui rend `200` et **plus de 50 000 octets**. Un loader fait
+plus de 100 Ko : tout ce qui est en dessous est une page d'erreur.
+
 ```bash
 cd ~/marlygomont.pixfeed.net
-curl -O https://www.spip.net/spip_loader.php
+curl -fL -o spip_loader.php <ADRESSE_RETENUE>
+ls -l spip_loader.php          # controle : la taille doit correspondre
 ```
 
 Puis ouvrir `https://marlygomont.pixfeed.net/spip_loader.php` dans le
-navigateur. Ce script officiel télécharge et décompresse la bonne version, en
-créant les dossiers avec les bons droits — c'est plus fiable que déposer une
-archive à la main.
+navigateur.
+
+Si les deux adresses échouent, la page officielle <https://get.spip.net/>
+donne le lien à jour.
 
 Il faudra une base de données MySQL (à créer dans le panneau de
 l'hébergement) et ses identifiants. **Supprimer `spip_loader.php` une fois
@@ -47,14 +70,16 @@ git clone -b claude/refonte-spip-mairie-marly-o47sn4 \
   https://github.com/Pixfeed1/mairemarly.git depot-marly
 ```
 
-Puis on dit à SPIP où chercher ses gabarits. Dans
-`~/marlygomont.pixfeed.net/config/mes_options.php` (à créer s'il n'existe
-pas) :
+Puis on dit à SPIP où chercher ses gabarits. **Après l'installation**, pas
+avant : ce fichier est lu à chaque requête, y compris par l'installeur.
 
-```php
+```bash
+mkdir -p ~/marlygomont.pixfeed.net/config
+cat > ~/marlygomont.pixfeed.net/config/mes_options.php <<'EOF'
 <?php
-// Les gabarits vivent dans le dépôt Git, hors de la racine web.
+// Les gabarits vivent dans le depot Git, hors de la racine web.
 $GLOBALS['dossier_squelettes'] = '../depot-marly/theme-marly/squelettes';
+EOF
 ```
 
 Si l'hébergement refuse de sortir de la racine web, on rapatrie le dépôt
