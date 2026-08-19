@@ -27,8 +27,12 @@
 	<link rel="canonical" href="[(#SELF|url_absolue)]">
 	<link rel="icon" href="#CHEMIN{img/favicon.svg}" type="image/svg+xml">
 
-	[(#REM) Le CSS d'abord, les polices ensuite : le texte s'affiche plus tôt. ]
+	[(#REM) Les @font-face d'abord, la mise en forme ensuite : le navigateur
+	        connaît les polices dès qu'il commence à mettre en page.
+
+	        Il n'y a PAS de feuille pour les icônes : elles sont un sprite SVG
+	        inséré dans la page par inc/icones.html. Rien à télécharger. ]
+	<link rel="stylesheet" href="#CHEMIN{css/polices.css}">
 	<link rel="stylesheet" href="#CHEMIN{css/theme.css}">
-	<link rel="stylesheet" href="#CHEMIN{css/remixicon.css}">
 
 	#INSERT_HEAD

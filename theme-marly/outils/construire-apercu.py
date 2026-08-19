@@ -13,7 +13,18 @@ import base64, os, re
 R = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 lire = lambda *p: open(os.path.join(R, *p), encoding='utf-8').read()
 
-css = lire('squelettes', 'css', 'theme.css')
+# Les polices sont EMBARQUÉES, pas appelées chez Google : l'aperçu doit se
+# comporter comme le site — un CDN transmettrait l'adresse IP du visiteur à
+# un tiers, ce qu'une collectivité ne peut pas faire sans base légale.
+polices = lire('squelettes', 'css', 'polices.css')
+def _incorporer(m):
+    nom = m.group(1)
+    with open(os.path.join(R, 'squelettes', 'fonts', nom), 'rb') as f:
+        b64 = base64.b64encode(f.read()).decode()
+    return f'url("data:font/woff2;base64,{b64}")'
+polices = re.sub(r'url\("\.\./fonts/([^"]+)"\)', _incorporer, polices)
+
+css = polices + '\n' + lire('squelettes', 'css', 'theme.css')
 js = lire('squelettes', 'js', 'menu.js')
 sprite = lire('apercu', 'icones-sprite.html')
 
@@ -37,9 +48,6 @@ page = f'''<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Marly-Gomont</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;700&family=Alegreya+Sans:wght@400;500;700;800&family=Caveat:wght@700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 <style>
 {css}
 .faux-contenu{{ padding:56px 24px 140px; font-family:var(--texte); color:var(--encre-doux); }}

@@ -22,10 +22,15 @@ docker/data/
 *.sql
 *.sql.gz
 
-# --- Ressources téléchargées (se régénèrent) -------------------------------
-squelettes/css/remixicon.css
-squelettes/fonts/
+# --- Photographies fournies par la mairie -----------------------------------
+# Elles appartiennent à la commune, pas au thème, et pèsent lourd. Elles
+# vivent dans IMG/ via l'espace privé, comme tout contenu.
 squelettes/img/photos/
+
+# NOTE — les polices de squelettes/fonts/ SONT versionnées, volontairement.
+# Elles sont sous licence libre (SIL OFL), pèsent 200 Ko à elles toutes, et
+# aucun script ne les régénère : les ignorer rendait le dépôt inutilisable
+# tel quel, un clone sur le serveur n'aurait eu aucune police.
 
 # --- Système ----------------------------------------------------------------
 .DS_Store

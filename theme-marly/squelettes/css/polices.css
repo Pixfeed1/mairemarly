@@ -5,7 +5,7 @@
    l'adresse IP de chaque visiteur à un tiers, ce qu'une collectivité ne peut
    pas faire sans base légale (RGPD). Les fichiers vivent dans ../fonts/.
 
-   Licences : Alegreya Sans — SIL Open Font License
+   Licences : Alegreya, Alegreya Sans et Caveat — SIL Open Font License
               Open Sans    — Apache License 2.0
    Toutes deux librement utilisables, y compris commercialement.
 
@@ -47,5 +47,27 @@
 @font-face{
 	font-family:"Open Sans";
 	src:url("../fonts/opensans-bold.woff2") format("woff2");
+	font-weight:700; font-style:normal; font-display:swap;
+}
+
+/* Alegreya — la serif des titres et du corps éditorial.
+   Instance statique tirée de la fonte variable, sous-ensemble latin :
+   20 Ko par graisse au lieu de 300 Ko pour la fonte complète. */
+@font-face{
+	font-family:"Alegreya";
+	src:url("../fonts/alegreya-regular.woff2") format("woff2");
+	font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+	font-family:"Alegreya";
+	src:url("../fonts/alegreya-bold.woff2") format("woff2");
+	font-weight:700; font-style:normal; font-display:swap;
+}
+
+/* Caveat — la manuscrite des amorces de titre (« Accès », « Je »). Une seule
+   graisse : elle ne sert qu'à ça, en gras, et jamais pour du texte courant. */
+@font-face{
+	font-family:"Caveat";
+	src:url("../fonts/caveat-bold.woff2") format("woff2");
 	font-weight:700; font-style:normal; font-display:swap;
 }
