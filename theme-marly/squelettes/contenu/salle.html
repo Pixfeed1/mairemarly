@@ -1,0 +1,56 @@
+[(#REM)
+  contenu/salle.html — la fiche d'une salle.
+  ---------------------------------------------------------------------------
+  Les conditions d'abord, les dates deja retenues ensuite, le formulaire en
+  dernier. Quelqu'un qui decouvre le tarif apres avoir rempli le formulaire a
+  perdu son temps, et la mairie recoit une demande qui sera annulee.
+]
+<BOUCLE_salle(SALLES){id_salle}{statut=publie}>
+<div class="large fiche-evt">
+
+	<p class="fil"><a href="#URL_PAGE{reservation}"><:marly:retour_catalogue:></a></p>
+
+	<div class="fiche-grille">
+
+		<div class="fiche-gauche">
+			[<div class="fiche-photo">(#LOGO_SALLE||image_reduire{960,540})</div>]
+
+			<p class="fiche-quand"><:marly:location:></p>
+			<h1 class="fiche-titre">#TITRE</h1>
+
+			[<div class="fiche-texte">(#DESCRIPTIF|propre)</div>]
+
+			<dl class="fiche-cles">
+				[<dt><:marly:champ_capacite:></dt><dd>(#CAPACITE) <:marly:personnes:></dd>]
+				[<dt><:marly:champ_tarif_commune:></dt><dd>(#TARIF_COMMUNE)</dd>]
+				[<dt><:marly:champ_tarif_hors_commune:></dt><dd>(#TARIF_HORS_COMMUNE)</dd>]
+				[<dt><:marly:champ_caution:></dt><dd>(#CAUTION)</dd>]
+			</dl>
+
+			[(#REM) Les dates prises, sans les noms : une reservation est un acte
+			        administratif, pas une information publique sur la vie privee
+			        des gens. ]
+			<B_prises>
+			<div class="salle-occupe">
+				<h2><:marly:dates_prises:></h2>
+				<ul>
+					<BOUCLE_prises(RESERVATIONS){id_salle}{statut=acceptee}{date_debut>#DATE}{par date_debut}{0,25}>
+					<li>
+						<strong>[(#DATE_DEBUT|affdate{'l j F Y'})]</strong>
+						<span>[(#DATE_DEBUT|affdate{'H\hi'})] – [(#DATE_FIN|affdate{'H\hi'})]</span>
+					</li>
+					</BOUCLE_prises>
+				</ul>
+			</div>
+			</B_prises>
+			<p class="salle-libre"><:marly:aucune_date_prise:></p>
+			<//B_prises>
+		</div>
+
+		<div class="fiche-droite">
+			[(#FORMULAIRE_RESERVER_SALLE{#ID_SALLE})]
+		</div>
+
+	</div>
+</div>
+</BOUCLE_salle>

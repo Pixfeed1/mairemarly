@@ -1,118 +1,144 @@
 [(#REM)
-  contenu/reservation.html — la page publique de reservation.
+  contenu/reservation.html — le catalogue de ce qu'on peut reserver.
   ---------------------------------------------------------------------------
-  Trois choses dans cet ordre, et l'ordre compte :
+  Structure reprise du modele : une colonne de filtres a gauche, une grille
+  de cartes a droite. On ne remplit pas un formulaire depuis cette page : on
+  choisit d'abord, on s'inscrit ensuite, sur la fiche.
 
-   1. LES CONDITIONS. Tarif, capacite, caution, ce qui est fourni. Quelqu'un
-      qui decouvre le tarif apres avoir rempli le formulaire a perdu son
-      temps, et la mairie recoit une demande qui sera annulee.
-   2. LES DATES DEJA PRISES. C'est ce qui evite le plus de demandes inutiles.
-      On n'affiche que les dates et les creneaux : qui a reserve et pourquoi
-      ne regardent personne.
-   3. LE FORMULAIRE.
+  C'est la difference entre un catalogue et un formulaire. Poser tous les
+  formulaires a plat oblige a faire defiler pour comparer, et rend la page
+  illisible des qu'il y a plus de trois evenements.
 
-  La page fonctionne sans salle enregistree : elle dit alors de telephoner,
-  plutot que d'afficher un formulaire vide.
+  Les filtres se cumulent et vivent dans l'adresse : jour, q, type. Une recherche filtree peut donc etre partagee ou mise en
+  favori, et le bouton Precedent du navigateur fonctionne.
 ]
-<div class="large page-reservation">
+<div class="large catalogue">
 
+	<div class="catalogue-grille">
 
-	[(#REM) LES MANIFESTATIONS, avant les salles : on s'inscrit au repas des
-	        aines cent fois plus souvent qu'on ne loue la salle des fetes.
-	        L'ordre d'une page dit ce qui est frequent. ]
-	<B_manifs>
-	<section class="manifs">
-		<h1 class="titre-bloc"><:marly:sinscrire:> <span><:marly:a_une_sortie:></span></h1>
+		<aside class="filtres-cote">
 
-		<div class="manifs-grille">
-			<BOUCLE_manifs(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{par date_debut}{0,12}>
-			<article class="manif">
-				[(#REM) La photographie est le logo de l'evenement, depose dans
-				        l'espace prive comme sur un article. Sans photo, la carte
-				        reste propre : on ne montre pas un cadre vide. ]
-				[<div class="manif-photo">(#LOGO_MANIFESTATION||image_reduire{640,360})</div>]
-				<p class="manif-quand">[(#DATE_DEBUT|affdate{'l j F'})] · [(#DATE_DEBUT|affdate{'H\hi'})]</p>
-				<h2 class="manif-titre">#TITRE</h2>
-				[<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> (#LIEU)</p>]
-				[<div class="manif-texte">(#DESCRIPTIF|propre)</div>]
-				[<p class="manif-tarif">(#TARIF)</p>]
+			[(#REM) La recherche. Un simple GET : pas de JavaScript, la page
+			        fonctionne sans, et le resultat est une adresse partageable. ]
+			<form class="filtre-recherche" method="get" action="#URL_PAGE{reservation}">
+				<label for="q" class="sr"><:marly:rechercher_evenement:></label>
+				<svg class="ico" aria-hidden="true"><use href="#ri-search-line"/></svg>
+				<input type="search" name="q" id="q" value="[(#ENV{q}|attribut_html)]"
+				       placeholder="<:marly:rechercher_evenement:>">
+			</form>
 
-				[(#REM) Les places restantes AVANT le formulaire : remplir dix
-				        champs pour apprendre a la fin qu'il ne reste rien, c'est
-				        le meilleur moyen de faire telephoner la personne a la
-				        mairie — ce que le formulaire etait cense eviter. ]
-				[(#PLACES|>{0})
-					<p class="manif-places">
-						<:marly:places_restantes:>
-						<strong>[(#ID_MANIFESTATION|marly_places_restantes)]</strong>
-						<:marly:sur:> #PLACES
-					</p>
+			<nav class="filtre-types" aria-label="<:marly:filtrer_par_type:>">
+				<a href="#URL_PAGE{reservation}"
+				   class="[(#ENV{type}|non|?{'actif'})][(#ENV{jour}|oui|?{''})]"><:marly:tout_voir:></a>
+				<a href="[(#URL_PAGE{reservation}|parametre_url{type,evenements})]"
+				   class="[(#ENV{type}|=={evenements}|?{'actif'})]"><:marly:les_evenements:></a>
+				<a href="[(#URL_PAGE{reservation}|parametre_url{type,salles})]"
+				   class="[(#ENV{type}|=={salles}|?{'actif'})]"><:marly:les_salles:></a>
+			</nav>
+
+			[(#REM) Le calendrier. Les jours sans evenement ne sont pas
+			        cliquables : proposer un filtre qui ne rendra rien est une
+			        promesse en l'air. Six semaines toujours affichees, sinon la
+			        page saute sous le curseur quand on change de mois. ]
+			<div class="filtre-calendrier">
+				#SET{mois,#ENV{mois,[(#VAL|date_format{Y-m})]}}
+				<div class="cal-tete">
+					<a class="cal-nav" rel="nofollow"
+					   href="[(#URL_PAGE{reservation}|parametre_url{mois,[(#GET{mois}|marly_mois_decale{-1})]})]"
+					   aria-label="<:marly:mois_precedent:>">
+						<svg class="ico" aria-hidden="true"><use href="#ri-arrow-left-s-line"/></svg>
+					</a>
+					<strong>[(#GET{mois}|marly_nom_mois)]</strong>
+					<a class="cal-nav" rel="nofollow"
+					   href="[(#URL_PAGE{reservation}|parametre_url{mois,[(#GET{mois}|marly_mois_decale{1})]})]"
+					   aria-label="<:marly:mois_suivant:>">
+						<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-s-line"/></svg>
+					</a>
+				</div>
+
+				<div class="cal-jours" role="grid">
+					<span class="cal-nom">L</span><span class="cal-nom">M</span><span class="cal-nom">M</span>
+					<span class="cal-nom">J</span><span class="cal-nom">V</span><span class="cal-nom">S</span>
+					<span class="cal-nom">D</span>
+
+					<BOUCLE_cal(DATA){source tableau,#GET{mois}|marly_jours_mois}>
+					[(#VALEUR|table_valeur{actif}|oui)
+						<a class="cal-jour actif[ (#VALEUR|table_valeur{hors}|oui)hors][ (#VALEUR|table_valeur{aujourdhui}|oui)auj][ (#ENV{jour}|=={[(#VALEUR|table_valeur{date})]}|oui)choisi]"
+						   href="[(#URL_PAGE{reservation}|parametre_url{jour,[(#VALEUR|table_valeur{date})]})]">[(#VALEUR|table_valeur{jour})]</a>
+					]
+					[(#VALEUR|table_valeur{actif}|non)
+						<span class="cal-jour[ (#VALEUR|table_valeur{hors}|oui)hors][ (#VALEUR|table_valeur{aujourdhui}|oui)auj]">[(#VALEUR|table_valeur{jour})]</span>
+					]
+					</BOUCLE_cal>
+				</div>
+
+				[(#ENV{jour}|oui)
+				<p class="cal-filtre-actif">
+					<:marly:filtre_du_jour:> <strong>[(#ENV{jour}|affdate{'j F Y'})]</strong>
+					<a href="#URL_PAGE{reservation}"><:marly:retirer_le_filtre:></a>
+				</p>
 				]
-
-				<div class="manif-formulaire">
-					[(#FORMULAIRE_INSCRIPTION_MANIFESTATION{#ID_MANIFESTATION})]
-				</div>
-			</article>
-			</BOUCLE_manifs>
-		</div>
-	</section>
-	</B_manifs>
-	<//B_manifs>
-
-	<B_salles>
-	<BOUCLE_salles(SALLES){statut=publie}{par titre}>
-
-	<section class="salle" id="salle-#ID_SALLE">
-		<h1 class="titre-bloc"><:marly:reserver:> <span>#TITRE</span></h1>
-
-		<div class="salle-grille">
-
-			<div class="salle-conditions">
-				[<div class="salle-texte">(#DESCRIPTIF|propre)</div>]
-
-				<dl class="fiche">
-					[<dt><:marly:champ_capacite:></dt><dd>(#CAPACITE) <:marly:personnes:></dd>]
-					[<dt><:marly:champ_tarif_commune:></dt><dd>(#TARIF_COMMUNE)</dd>]
-					[<dt><:marly:champ_tarif_hors_commune:></dt><dd>(#TARIF_HORS_COMMUNE)</dd>]
-					[<dt><:marly:champ_caution:></dt><dd>(#CAUTION)</dd>]
-				</dl>
-
-				[(#REM) Les dates prises. Aucun nom : une reservation est un
-				        acte administratif, pas une information publique sur
-				        la vie privee des gens. ]
-				<B_prises>
-				<div class="salle-occupe">
-					<h2><:marly:dates_prises:></h2>
-					<ul>
-						<BOUCLE_prises(RESERVATIONS){id_salle}{statut=acceptee}{date_debut>#DATE}{par date_debut}{0,25}>
-						<li>
-							<strong>[(#DATE_DEBUT|affdate{'l j F Y'})]</strong>
-							<span>[(#DATE_DEBUT|affdate{'H\hi'})] – [(#DATE_FIN|affdate{'H\hi'})]</span>
-						</li>
-						</BOUCLE_prises>
-					</ul>
-				</div>
-				</B_prises>
-				<p class="salle-libre"><:marly:aucune_date_prise:></p>
-				<//B_prises>
 			</div>
 
-			<div class="salle-formulaire">
-				[(#FORMULAIRE_RESERVER_SALLE{#ID_SALLE})]
+		</aside>
+
+		<div class="catalogue-liste">
+
+			[(#REM) LES EVENEMENTS. Filtres cumulables : le jour choisi dans le
+			        calendrier, la recherche, le type. ]
+			[(#ENV{type}|=={salles}|non)
+			<B_evenements>
+			<h2 class="titre-bloc"><:marly:sinscrire:> <span><:marly:a_un_evenement:></span></h2>
+			<div class="cartes">
+				<BOUCLE_evenements(MANIFESTATIONS){statut=publie}
+					{date_debut>#DATE}
+					{si #ENV{jour}}{date_debut>[(#ENV{jour}) 00:00:00]}{date_debut<[(#ENV{jour}) 23:59:59]}
+					{recherche?}
+					{par date_debut}{0,24}>
+				<a class="carte" href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
+					[<span class="carte-photo">(#LOGO_MANIFESTATION||image_reduire{560,315})</span>]
+					<span class="carte-corps">
+						<span class="carte-quand">[(#DATE_DEBUT|affdate{'l j F'})] · [(#DATE_DEBUT|affdate{'H\hi'})]</span>
+						<span class="carte-titre">#TITRE</span>
+						[<span class="carte-lieu">(#LIEU)</span>]
+						[<span class="carte-places">(#ID_MANIFESTATION|marly_places_restantes) <:marly:places_libres:></span>]
+					</span>
+				</a>
+				</BOUCLE_evenements>
 			</div>
+			</B_evenements>
+			]
+
+			[(#REM) LES SALLES. Elles n'ont pas de date : le filtre calendrier
+			        ne les concerne pas, et on les masque quand il est actif
+			        plutot que de les afficher a contretemps. ]
+			[(#ENV{type}|=={evenements}|non)[(#ENV{jour}|non)
+			<B_salles>
+			<h2 class="titre-bloc"><:marly:reserver:> <span><:marly:une_salle:></span></h2>
+			<div class="cartes">
+				<BOUCLE_salles(SALLES){statut=publie}{recherche?}{par titre}>
+				<a class="carte" href="[(#URL_PAGE{salle}|parametre_url{id_salle,#ID_SALLE})]">
+					[<span class="carte-photo">(#LOGO_SALLE||image_reduire{560,315})</span>]
+					<span class="carte-corps">
+						<span class="carte-quand"><:marly:location:></span>
+						<span class="carte-titre">#TITRE</span>
+						[<span class="carte-lieu">(#CAPACITE) <:marly:personnes:></span>]
+						[<span class="carte-places">(#TARIF_COMMUNE)</span>]
+					</span>
+				</a>
+				</BOUCLE_salles>
+			</div>
+			</B_salles>
+			]]
+
+			[(#REM) Rien ne correspond : on le dit, et on propose de revenir. ]
+			<B_rien>
+			<BOUCLE_rien(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{0,1}></BOUCLE_rien>
+			</B_rien>
+			<p class="catalogue-vide"><:marly:rien_a_reserver:></p>
+			<//B_rien>
 
 		</div>
-	</section>
 
-	</BOUCLE_salles>
-	</B_salles>
-
-	[(#REM) Aucune salle ouverte : on ne montre pas un formulaire sans objet. ]
-	<section class="salle">
-		<h1 class="titre-bloc"><:marly:reserver:> <span><:marly:une_salle:></span></h1>
-		<p class="salle-texte"><:marly:aucune_salle_publique:></p>
-		[<p class="salle-texte"><strong>(#CONFIG{marly/telephone})</strong></p>]
-	</section>
-	<//B_salles>
-
+	</div>
 </div>

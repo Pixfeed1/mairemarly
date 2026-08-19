@@ -675,22 +675,100 @@ section{ padding-block:70px; position:relative; }
 }
 
 /* ===========================================================================
-   RÉSERVATION DE SALLE
+   RÉSERVER — le catalogue, puis les fiches
    ---------------------------------------------------------------------------
-   Deux colonnes : les conditions à gauche, le formulaire à droite. Les
-   conditions viennent en premier dans le HTML, donc en premier au clavier et
-   au lecteur d'écran — on lit les tarifs avant de remplir, jamais l'inverse.
+   Deux pages, deux rôles. Le catalogue sert à CHOISIR : filtres à gauche,
+   cartes à droite, rien à remplir. La fiche sert à S'INSCRIRE : tout ce qui
+   décide vient avant le formulaire.
    =========================================================================== */
 
-.page-reservation{ padding-block:56px; }
-.salle + .salle{ margin-top:72px; padding-top:56px; border-top:1px solid var(--trait); }
-.salle-grille{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
-.salle-texte{ font-family:var(--texte); line-height:1.65; max-width:62ch; }
+.catalogue{ padding-block:48px 72px; }
+.catalogue-grille{ display:grid; grid-template-columns:270px 1fr; gap:48px; align-items:start; }
 
-.fiche{ margin:26px 0 0; display:grid; grid-template-columns:auto 1fr; gap:10px 20px; }
-.fiche dt{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.04em;
-           text-transform:uppercase; color:var(--encre-doux); }
-.fiche dd{ margin:0; font-family:var(--texte); font-weight:600; }
+/* --- la colonne de filtres ------------------------------------------------ */
+.filtres-cote{ position:sticky; top:calc(var(--h-entete,90px) + 20px); }
+
+.filtre-recherche{ display:flex; align-items:center; gap:9px; border:1px solid var(--trait);
+                   border-radius:40px; background:#fff; padding:10px 18px; margin-bottom:26px; }
+.filtre-recherche .ico{ width:17px; height:17px; color:var(--accent); flex-shrink:0; }
+.filtre-recherche input{ flex:1; min-width:0; border:0; background:none; font-family:var(--texte);
+                         font-size:14.5px; color:var(--encre); }
+
+.filtre-types{ display:flex; flex-direction:column; margin-bottom:30px; }
+.filtre-types a{ font-family:var(--titre); font-size:16px; font-weight:600; color:var(--encre);
+                 text-decoration:none; padding:9px 0; border-bottom:1px solid var(--trait); }
+.filtre-types a:last-child{ border-bottom:0; }
+.filtre-types a:hover{ color:var(--accent); }
+.filtre-types a.actif{ color:var(--accent); }
+
+/* --- le calendrier -------------------------------------------------------- */
+.filtre-calendrier{ border-top:3px solid var(--accent); padding-top:18px; }
+.cal-tete{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.cal-tete strong{ font-family:var(--titre); font-size:16px; text-transform:capitalize; }
+.cal-nav{ display:flex; align-items:center; justify-content:center; width:30px; height:30px;
+          border-radius:50%; color:var(--accent); text-decoration:none; }
+.cal-nav:hover{ background:var(--creme); }
+.cal-nav .ico{ width:18px; height:18px; }
+
+.cal-jours{ display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+.cal-nom{ font-family:var(--texte); font-size:11px; font-weight:700; color:var(--encre-doux);
+          text-align:center; padding-bottom:6px; }
+.cal-jour{ display:flex; align-items:center; justify-content:center; aspect-ratio:1;
+           font-family:var(--texte); font-size:13.5px; color:var(--encre-doux); border-radius:50%; }
+
+/* Un jour sans événement n'est pas cliquable : proposer un filtre qui ne
+   rendra rien est une promesse en l'air. Le barré le dit sans un mot. */
+.cal-jour:not(.actif){ text-decoration:line-through; opacity:.45; }
+.cal-jour.hors{ opacity:.25; }
+.cal-jour.auj{ box-shadow:inset 0 0 0 1px var(--trait); }
+
+a.cal-jour.actif{ color:var(--accent); font-weight:700; text-decoration:none; }
+a.cal-jour.actif:hover{ background:var(--creme); }
+a.cal-jour.choisi{ background:var(--accent); color:#fff; }
+
+.cal-filtre-actif{ margin:16px 0 0; font-family:var(--texte); font-size:13.5px; color:var(--encre-doux); }
+.cal-filtre-actif a{ color:var(--accent); }
+
+/* --- les cartes ----------------------------------------------------------- */
+.catalogue-liste .titre-bloc{ font-size:clamp(28px,3.2vw,40px); margin-bottom:24px; }
+.catalogue-liste .titre-bloc:not(:first-child){ margin-top:60px; }
+.cartes{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:26px; }
+
+.carte{ display:flex; flex-direction:column; background:#fff; border:1px solid var(--trait);
+        border-top:4px solid var(--accent); text-decoration:none; color:var(--encre);
+        transition:transform .15s ease, box-shadow .15s ease; }
+.carte:hover{ transform:translateY(-3px); box-shadow:0 14px 32px rgba(29,26,26,.12); }
+.carte-photo img{ display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; }
+.carte-corps{ padding:18px 20px 22px; display:flex; flex-direction:column; gap:6px; }
+.carte-quand{ font-family:var(--texte); font-size:12px; font-weight:700; letter-spacing:.07em;
+              text-transform:uppercase; color:var(--accent); }
+.carte-titre{ font-family:var(--serif); font-size:21px; line-height:1.2; }
+.carte-lieu{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); }
+.carte-places{ font-family:var(--texte); font-size:13.5px; font-weight:700; margin-top:6px; }
+
+.catalogue-vide{ font-family:var(--texte); color:var(--encre-doux); padding:40px 0; }
+
+/* --- la fiche ------------------------------------------------------------- */
+.fiche-evt{ padding-block:40px 76px; }
+.fil{ font-family:var(--texte); font-size:14px; margin:0 0 26px; }
+.fil a{ color:var(--accent); text-decoration:none; }
+.fiche-grille{ display:grid; grid-template-columns:1fr 420px; gap:56px; align-items:start; }
+.fiche-photo img{ display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; margin-bottom:26px; }
+.fiche-quand{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.07em;
+              text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
+.fiche-titre{ font-family:var(--serif); font-size:clamp(30px,4vw,46px); line-height:1.1; margin:0 0 12px; }
+.fiche-lieu{ display:flex; align-items:center; gap:8px; font-family:var(--texte);
+             color:var(--encre-doux); margin:0 0 24px; }
+.fiche-lieu .ico{ width:16px; height:16px; color:var(--accent); }
+.fiche-texte{ font-family:var(--texte); line-height:1.68; max-width:62ch; }
+.fiche-cles{ margin:28px 0 0; display:grid; grid-template-columns:auto 1fr; gap:10px 22px; }
+.fiche-cles dt{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.04em;
+                text-transform:uppercase; color:var(--encre-doux); }
+.fiche-cles dd{ margin:0; font-family:var(--texte); font-weight:600; }
+
+.fiche-places{ font-family:var(--texte); background:var(--creme); border-left:4px solid var(--jaune);
+               padding:14px 18px; margin:0 0 20px; }
+.fiche-places strong{ font-size:24px; font-family:var(--titre); }
 
 .salle-occupe{ margin-top:34px; background:var(--creme); border-left:3px solid var(--accent); padding:20px 24px; }
 .salle-occupe h2{ font-family:var(--titre); font-size:17px; margin:0 0 12px; }
@@ -700,69 +778,37 @@ section{ padding-block:70px; position:relative; }
 .salle-occupe span{ color:var(--encre-doux); white-space:nowrap; }
 .salle-libre{ margin-top:34px; font-family:var(--texte); color:var(--encre-doux); }
 
-/* Le formulaire. On reprend la structure des formulaires SPIP telle quelle
-   pour que les plugins qui les décorent continuent de fonctionner. */
-.salle-formulaire .formulaire_spip{ background:var(--creme); padding:28px 30px 34px; border-top:4px solid var(--accent); }
-.salle-formulaire fieldset{ border:0; margin:0 0 26px; padding:0; }
-.salle-formulaire legend{ font-family:var(--titre); font-weight:700; font-size:18px; padding:0 0 12px; }
-.salle-formulaire ul{ list-style:none; margin:0; padding:0; }
-.salle-formulaire li{ margin-bottom:16px; }
-.salle-formulaire label{ display:block; font-family:var(--texte); font-size:14px; font-weight:700; margin-bottom:5px; }
-.salle-formulaire input, .salle-formulaire textarea{
+/* --- les formulaires ------------------------------------------------------ */
+.fiche-droite .formulaire_spip{ background:var(--creme); padding:26px 28px 32px; border-top:4px solid var(--accent); }
+.fiche-droite fieldset{ border:0; margin:0 0 22px; padding:0; }
+.fiche-droite legend{ font-family:var(--titre); font-weight:700; font-size:17px; padding:0 0 10px; }
+.fiche-droite ul{ list-style:none; margin:0; padding:0; }
+.fiche-droite li{ margin-bottom:15px; }
+.fiche-droite label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:5px; }
+.fiche-droite input, .fiche-droite textarea{
   width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
   padding:11px 13px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
-.salle-formulaire small{ display:block; margin-top:5px; font-family:var(--texte); font-size:13px; color:var(--encre-doux); }
-.salle-formulaire .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; color:#A32020; margin-bottom:5px; }
-.salle-formulaire .erreur input, .salle-formulaire .erreur textarea{ border-color:#A32020; }
-.salle-formulaire .explication{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); margin:0 0 22px; }
-.salle-formulaire .submit{
-  border:0; background:var(--accent); color:#fff; border-radius:4px;
-  padding:14px 30px; font-family:var(--texte); font-weight:700; font-size:15px; cursor:pointer;
+.fiche-droite small{ display:block; margin-top:5px; font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
+.fiche-droite .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px;
+                               font-weight:700; color:#A32020; margin-bottom:5px; }
+.fiche-droite .erreur input, .fiche-droite .erreur textarea{ border-color:#A32020; }
+.fiche-droite .explication{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); margin:0 0 20px; }
+.fiche-droite .submit{
+  border:0; background:var(--accent); color:#fff; border-radius:4px; width:100%;
+  padding:14px 26px; font-family:var(--texte); font-weight:700; font-size:15px; cursor:pointer;
 }
-.salle-formulaire .submit:hover{ background:var(--accent-sombre); }
+.fiche-droite .submit:hover{ background:var(--accent-sombre); }
 .reponse_formulaire{ font-family:var(--texte); padding:14px 18px; border-radius:4px; margin:0 0 20px; }
 .reponse_formulaire_ok{ background:#E7F2EC; border-left:4px solid var(--accent); }
 .reponse_formulaire_erreur{ background:#FBEAEA; border-left:4px solid #A32020; }
 
-@media (max-width:900px){
-  .salle-grille{ grid-template-columns:1fr; gap:38px; }
+@media (max-width:1000px){
+  .catalogue-grille{ grid-template-columns:1fr; gap:34px; }
+  .filtres-cote{ position:static; }
+  .fiche-grille{ grid-template-columns:1fr; gap:36px; }
 }
-
-/* --- Manifestations, sur la page de réservation --------------------------- */
-.manifs{ padding-block:0 64px; }
-.manifs-grille{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:34px; }
-.manif{ background:#fff; border:1px solid var(--trait); border-top:4px solid var(--accent); overflow:hidden; }
-.manif > *:not(.manif-photo){ margin-left:28px; margin-right:28px; }
-.manif > *:first-child:not(.manif-photo){ margin-top:26px; }
-.manif > *:last-child{ margin-bottom:30px; }
-/* La photo mord sur toute la largeur de la carte : une image encadrée de
-   blanc de tous côtés fait vignette, pas illustration. */
-.manif-photo{ margin:0 0 20px; }
-.manif-photo img, .manif-photo svg{ display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; }
-.manif-quand{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.06em;
-              text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
-.manif-titre{ font-family:var(--serif); font-size:26px; line-height:1.15; margin:0 0 10px; }
-.manif-lieu{ display:flex; align-items:center; gap:7px; font-family:var(--texte); font-size:14px;
-             color:var(--encre-doux); margin:0 0 14px; }
-.manif-lieu .ico{ width:15px; height:15px; color:var(--accent); }
-.manif-texte{ font-family:var(--texte); font-size:15px; line-height:1.6; }
-.manif-tarif{ font-family:var(--texte); font-weight:700; margin:14px 0 0; }
-.manif-places{ font-family:var(--texte); font-size:14px; margin:14px 0 0;
-               background:var(--creme); padding:9px 13px; border-left:3px solid var(--jaune); }
-.manif-places strong{ font-size:17px; }
-.manif-formulaire{ margin-top:20px; padding-top:20px; border-top:1px solid var(--trait); }
-.manif-formulaire .formulaire_spip{ background:none; padding:0; border-top:0; }
-.manif-formulaire ul{ list-style:none; margin:0; padding:0; }
-.manif-formulaire li{ margin-bottom:13px; }
-.manif-formulaire label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:4px; }
-.manif-formulaire input, .manif-formulaire textarea{
-  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
-  padding:10px 12px; font-family:var(--texte); font-size:15px; color:var(--encre);
+@media (prefers-reduced-motion:reduce){
+  .carte{ transition:none; }
+  .carte:hover{ transform:none; }
 }
-.manif-formulaire small{ display:block; margin-top:4px; font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
-.manif-formulaire .submit{
-  border:0; background:var(--accent); color:#fff; border-radius:4px;
-  padding:12px 26px; font-family:var(--texte); font-weight:700; cursor:pointer;
-}
-.manif-formulaire .submit:hover{ background:var(--accent-sombre); }

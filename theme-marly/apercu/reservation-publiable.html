@@ -757,22 +757,100 @@ section{ padding-block:70px; position:relative; }
 }
 
 /* ===========================================================================
-   RÉSERVATION DE SALLE
+   RÉSERVER — le catalogue, puis les fiches
    ---------------------------------------------------------------------------
-   Deux colonnes : les conditions à gauche, le formulaire à droite. Les
-   conditions viennent en premier dans le HTML, donc en premier au clavier et
-   au lecteur d'écran — on lit les tarifs avant de remplir, jamais l'inverse.
+   Deux pages, deux rôles. Le catalogue sert à CHOISIR : filtres à gauche,
+   cartes à droite, rien à remplir. La fiche sert à S'INSCRIRE : tout ce qui
+   décide vient avant le formulaire.
    =========================================================================== */
 
-.page-reservation{ padding-block:56px; }
-.salle + .salle{ margin-top:72px; padding-top:56px; border-top:1px solid var(--trait); }
-.salle-grille{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
-.salle-texte{ font-family:var(--texte); line-height:1.65; max-width:62ch; }
+.catalogue{ padding-block:48px 72px; }
+.catalogue-grille{ display:grid; grid-template-columns:270px 1fr; gap:48px; align-items:start; }
 
-.fiche{ margin:26px 0 0; display:grid; grid-template-columns:auto 1fr; gap:10px 20px; }
-.fiche dt{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.04em;
-           text-transform:uppercase; color:var(--encre-doux); }
-.fiche dd{ margin:0; font-family:var(--texte); font-weight:600; }
+/* --- la colonne de filtres ------------------------------------------------ */
+.filtres-cote{ position:sticky; top:calc(var(--h-entete,90px) + 20px); }
+
+.filtre-recherche{ display:flex; align-items:center; gap:9px; border:1px solid var(--trait);
+                   border-radius:40px; background:#fff; padding:10px 18px; margin-bottom:26px; }
+.filtre-recherche .ico{ width:17px; height:17px; color:var(--accent); flex-shrink:0; }
+.filtre-recherche input{ flex:1; min-width:0; border:0; background:none; font-family:var(--texte);
+                         font-size:14.5px; color:var(--encre); }
+
+.filtre-types{ display:flex; flex-direction:column; margin-bottom:30px; }
+.filtre-types a{ font-family:var(--titre); font-size:16px; font-weight:600; color:var(--encre);
+                 text-decoration:none; padding:9px 0; border-bottom:1px solid var(--trait); }
+.filtre-types a:last-child{ border-bottom:0; }
+.filtre-types a:hover{ color:var(--accent); }
+.filtre-types a.actif{ color:var(--accent); }
+
+/* --- le calendrier -------------------------------------------------------- */
+.filtre-calendrier{ border-top:3px solid var(--accent); padding-top:18px; }
+.cal-tete{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.cal-tete strong{ font-family:var(--titre); font-size:16px; text-transform:capitalize; }
+.cal-nav{ display:flex; align-items:center; justify-content:center; width:30px; height:30px;
+          border-radius:50%; color:var(--accent); text-decoration:none; }
+.cal-nav:hover{ background:var(--creme); }
+.cal-nav .ico{ width:18px; height:18px; }
+
+.cal-jours{ display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+.cal-nom{ font-family:var(--texte); font-size:11px; font-weight:700; color:var(--encre-doux);
+          text-align:center; padding-bottom:6px; }
+.cal-jour{ display:flex; align-items:center; justify-content:center; aspect-ratio:1;
+           font-family:var(--texte); font-size:13.5px; color:var(--encre-doux); border-radius:50%; }
+
+/* Un jour sans événement n'est pas cliquable : proposer un filtre qui ne
+   rendra rien est une promesse en l'air. Le barré le dit sans un mot. */
+.cal-jour:not(.actif){ text-decoration:line-through; opacity:.45; }
+.cal-jour.hors{ opacity:.25; }
+.cal-jour.auj{ box-shadow:inset 0 0 0 1px var(--trait); }
+
+a.cal-jour.actif{ color:var(--accent); font-weight:700; text-decoration:none; }
+a.cal-jour.actif:hover{ background:var(--creme); }
+a.cal-jour.choisi{ background:var(--accent); color:#fff; }
+
+.cal-filtre-actif{ margin:16px 0 0; font-family:var(--texte); font-size:13.5px; color:var(--encre-doux); }
+.cal-filtre-actif a{ color:var(--accent); }
+
+/* --- les cartes ----------------------------------------------------------- */
+.catalogue-liste .titre-bloc{ font-size:clamp(28px,3.2vw,40px); margin-bottom:24px; }
+.catalogue-liste .titre-bloc:not(:first-child){ margin-top:60px; }
+.cartes{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:26px; }
+
+.carte{ display:flex; flex-direction:column; background:#fff; border:1px solid var(--trait);
+        border-top:4px solid var(--accent); text-decoration:none; color:var(--encre);
+        transition:transform .15s ease, box-shadow .15s ease; }
+.carte:hover{ transform:translateY(-3px); box-shadow:0 14px 32px rgba(29,26,26,.12); }
+.carte-photo img{ display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; }
+.carte-corps{ padding:18px 20px 22px; display:flex; flex-direction:column; gap:6px; }
+.carte-quand{ font-family:var(--texte); font-size:12px; font-weight:700; letter-spacing:.07em;
+              text-transform:uppercase; color:var(--accent); }
+.carte-titre{ font-family:var(--serif); font-size:21px; line-height:1.2; }
+.carte-lieu{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); }
+.carte-places{ font-family:var(--texte); font-size:13.5px; font-weight:700; margin-top:6px; }
+
+.catalogue-vide{ font-family:var(--texte); color:var(--encre-doux); padding:40px 0; }
+
+/* --- la fiche ------------------------------------------------------------- */
+.fiche-evt{ padding-block:40px 76px; }
+.fil{ font-family:var(--texte); font-size:14px; margin:0 0 26px; }
+.fil a{ color:var(--accent); text-decoration:none; }
+.fiche-grille{ display:grid; grid-template-columns:1fr 420px; gap:56px; align-items:start; }
+.fiche-photo img{ display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; margin-bottom:26px; }
+.fiche-quand{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.07em;
+              text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
+.fiche-titre{ font-family:var(--serif); font-size:clamp(30px,4vw,46px); line-height:1.1; margin:0 0 12px; }
+.fiche-lieu{ display:flex; align-items:center; gap:8px; font-family:var(--texte);
+             color:var(--encre-doux); margin:0 0 24px; }
+.fiche-lieu .ico{ width:16px; height:16px; color:var(--accent); }
+.fiche-texte{ font-family:var(--texte); line-height:1.68; max-width:62ch; }
+.fiche-cles{ margin:28px 0 0; display:grid; grid-template-columns:auto 1fr; gap:10px 22px; }
+.fiche-cles dt{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.04em;
+                text-transform:uppercase; color:var(--encre-doux); }
+.fiche-cles dd{ margin:0; font-family:var(--texte); font-weight:600; }
+
+.fiche-places{ font-family:var(--texte); background:var(--creme); border-left:4px solid var(--jaune);
+               padding:14px 18px; margin:0 0 20px; }
+.fiche-places strong{ font-size:24px; font-family:var(--titre); }
 
 .salle-occupe{ margin-top:34px; background:var(--creme); border-left:3px solid var(--accent); padding:20px 24px; }
 .salle-occupe h2{ font-family:var(--titre); font-size:17px; margin:0 0 12px; }
@@ -782,72 +860,40 @@ section{ padding-block:70px; position:relative; }
 .salle-occupe span{ color:var(--encre-doux); white-space:nowrap; }
 .salle-libre{ margin-top:34px; font-family:var(--texte); color:var(--encre-doux); }
 
-/* Le formulaire. On reprend la structure des formulaires SPIP telle quelle
-   pour que les plugins qui les décorent continuent de fonctionner. */
-.salle-formulaire .formulaire_spip{ background:var(--creme); padding:28px 30px 34px; border-top:4px solid var(--accent); }
-.salle-formulaire fieldset{ border:0; margin:0 0 26px; padding:0; }
-.salle-formulaire legend{ font-family:var(--titre); font-weight:700; font-size:18px; padding:0 0 12px; }
-.salle-formulaire ul{ list-style:none; margin:0; padding:0; }
-.salle-formulaire li{ margin-bottom:16px; }
-.salle-formulaire label{ display:block; font-family:var(--texte); font-size:14px; font-weight:700; margin-bottom:5px; }
-.salle-formulaire input, .salle-formulaire textarea{
+/* --- les formulaires ------------------------------------------------------ */
+.fiche-droite .formulaire_spip{ background:var(--creme); padding:26px 28px 32px; border-top:4px solid var(--accent); }
+.fiche-droite fieldset{ border:0; margin:0 0 22px; padding:0; }
+.fiche-droite legend{ font-family:var(--titre); font-weight:700; font-size:17px; padding:0 0 10px; }
+.fiche-droite ul{ list-style:none; margin:0; padding:0; }
+.fiche-droite li{ margin-bottom:15px; }
+.fiche-droite label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:5px; }
+.fiche-droite input, .fiche-droite textarea{
   width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
   padding:11px 13px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
-.salle-formulaire small{ display:block; margin-top:5px; font-family:var(--texte); font-size:13px; color:var(--encre-doux); }
-.salle-formulaire .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; color:#A32020; margin-bottom:5px; }
-.salle-formulaire .erreur input, .salle-formulaire .erreur textarea{ border-color:#A32020; }
-.salle-formulaire .explication{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); margin:0 0 22px; }
-.salle-formulaire .submit{
-  border:0; background:var(--accent); color:#fff; border-radius:4px;
-  padding:14px 30px; font-family:var(--texte); font-weight:700; font-size:15px; cursor:pointer;
+.fiche-droite small{ display:block; margin-top:5px; font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
+.fiche-droite .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px;
+                               font-weight:700; color:#A32020; margin-bottom:5px; }
+.fiche-droite .erreur input, .fiche-droite .erreur textarea{ border-color:#A32020; }
+.fiche-droite .explication{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); margin:0 0 20px; }
+.fiche-droite .submit{
+  border:0; background:var(--accent); color:#fff; border-radius:4px; width:100%;
+  padding:14px 26px; font-family:var(--texte); font-weight:700; font-size:15px; cursor:pointer;
 }
-.salle-formulaire .submit:hover{ background:var(--accent-sombre); }
+.fiche-droite .submit:hover{ background:var(--accent-sombre); }
 .reponse_formulaire{ font-family:var(--texte); padding:14px 18px; border-radius:4px; margin:0 0 20px; }
 .reponse_formulaire_ok{ background:#E7F2EC; border-left:4px solid var(--accent); }
 .reponse_formulaire_erreur{ background:#FBEAEA; border-left:4px solid #A32020; }
 
-@media (max-width:900px){
-  .salle-grille{ grid-template-columns:1fr; gap:38px; }
+@media (max-width:1000px){
+  .catalogue-grille{ grid-template-columns:1fr; gap:34px; }
+  .filtres-cote{ position:static; }
+  .fiche-grille{ grid-template-columns:1fr; gap:36px; }
 }
-
-/* --- Manifestations, sur la page de réservation --------------------------- */
-.manifs{ padding-block:0 64px; }
-.manifs-grille{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:34px; }
-.manif{ background:#fff; border:1px solid var(--trait); border-top:4px solid var(--accent); overflow:hidden; }
-.manif > *:not(.manif-photo){ margin-left:28px; margin-right:28px; }
-.manif > *:first-child:not(.manif-photo){ margin-top:26px; }
-.manif > *:last-child{ margin-bottom:30px; }
-/* La photo mord sur toute la largeur de la carte : une image encadrée de
-   blanc de tous côtés fait vignette, pas illustration. */
-.manif-photo{ margin:0 0 20px; }
-.manif-photo img, .manif-photo svg{ display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; }
-.manif-quand{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.06em;
-              text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
-.manif-titre{ font-family:var(--serif); font-size:26px; line-height:1.15; margin:0 0 10px; }
-.manif-lieu{ display:flex; align-items:center; gap:7px; font-family:var(--texte); font-size:14px;
-             color:var(--encre-doux); margin:0 0 14px; }
-.manif-lieu .ico{ width:15px; height:15px; color:var(--accent); }
-.manif-texte{ font-family:var(--texte); font-size:15px; line-height:1.6; }
-.manif-tarif{ font-family:var(--texte); font-weight:700; margin:14px 0 0; }
-.manif-places{ font-family:var(--texte); font-size:14px; margin:14px 0 0;
-               background:var(--creme); padding:9px 13px; border-left:3px solid var(--jaune); }
-.manif-places strong{ font-size:17px; }
-.manif-formulaire{ margin-top:20px; padding-top:20px; border-top:1px solid var(--trait); }
-.manif-formulaire .formulaire_spip{ background:none; padding:0; border-top:0; }
-.manif-formulaire ul{ list-style:none; margin:0; padding:0; }
-.manif-formulaire li{ margin-bottom:13px; }
-.manif-formulaire label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:4px; }
-.manif-formulaire input, .manif-formulaire textarea{
-  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
-  padding:10px 12px; font-family:var(--texte); font-size:15px; color:var(--encre);
+@media (prefers-reduced-motion:reduce){
+  .carte{ transition:none; }
+  .carte:hover{ transform:none; }
 }
-.manif-formulaire small{ display:block; margin-top:4px; font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
-.manif-formulaire .submit{
-  border:0; background:var(--accent); color:#fff; border-radius:4px;
-  padding:12px 26px; font-family:var(--texte); font-weight:700; cursor:pointer;
-}
-.manif-formulaire .submit:hover{ background:var(--accent-sombre); }
 
 </style>
 </head>
@@ -855,7 +901,9 @@ section{ padding-block:70px; position:relative; }
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
 	<symbol id="ri-account-circle-line" viewBox="0 0 24 24"><path d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM12.1597 16C10.1243 16 8.29182 16.8687 7.01276 18.2556C8.38039 19.3474 10.114 20 12 20C13.9695 20 15.7727 19.2883 17.1666 18.1081C15.8956 16.8074 14.1219 16 12.1597 16ZM12 4C7.58172 4 4 7.58172 4 12C4 13.8106 4.6015 15.4807 5.61557 16.8214C7.25639 15.0841 9.58144 14 12.1597 14C14.6441 14 16.8933 15.0066 18.5218 16.6342C19.4526 15.3267 20 13.7273 20 12C20 7.58172 16.4183 4 12 4ZM12 5C14.2091 5 16 6.79086 16 9C16 11.2091 14.2091 13 12 13C9.79086 13 8 11.2091 8 9C8 6.79086 9.79086 5 12 5ZM12 7C10.8954 7 10 7.89543 10 9C10 10.1046 10.8954 11 12 11C13.1046 11 14 10.1046 14 9C14 7.89543 13.1046 7 12 7Z"/></symbol>
 	<symbol id="ri-apps-2-line" viewBox="0 0 24 24"><path d="M7 11.5C4.51472 11.5 2.5 9.48528 2.5 7C2.5 4.51472 4.51472 2.5 7 2.5C9.48528 2.5 11.5 4.51472 11.5 7C11.5 9.48528 9.48528 11.5 7 11.5ZM7 21.5C4.51472 21.5 2.5 19.4853 2.5 17C2.5 14.5147 4.51472 12.5 7 12.5C9.48528 12.5 11.5 14.5147 11.5 17C11.5 19.4853 9.48528 21.5 7 21.5ZM17 11.5C14.5147 11.5 12.5 9.48528 12.5 7C12.5 4.51472 14.5147 2.5 17 2.5C19.4853 2.5 21.5 4.51472 21.5 7C21.5 9.48528 19.4853 11.5 17 11.5ZM17 21.5C14.5147 21.5 12.5 19.4853 12.5 17C12.5 14.5147 14.5147 12.5 17 12.5C19.4853 12.5 21.5 14.5147 21.5 17C21.5 19.4853 19.4853 21.5 17 21.5ZM7 9.5C8.38071 9.5 9.5 8.38071 9.5 7C9.5 5.61929 8.38071 4.5 7 4.5C5.61929 4.5 4.5 5.61929 4.5 7C4.5 8.38071 5.61929 9.5 7 9.5ZM7 19.5C8.38071 19.5 9.5 18.3807 9.5 17C9.5 15.6193 8.38071 14.5 7 14.5C5.61929 14.5 4.5 15.6193 4.5 17C4.5 18.3807 5.61929 19.5 7 19.5ZM17 9.5C18.3807 9.5 19.5 8.38071 19.5 7C19.5 5.61929 18.3807 4.5 17 4.5C15.6193 4.5 14.5 5.61929 14.5 7C14.5 8.38071 15.6193 9.5 17 9.5ZM17 19.5C18.3807 19.5 19.5 18.3807 19.5 17C19.5 15.6193 18.3807 14.5 17 14.5C15.6193 14.5 14.5 15.6193 14.5 17C14.5 18.3807 15.6193 19.5 17 19.5Z"/></symbol>
+	<symbol id="ri-arrow-left-s-line" viewBox="0 0 24 24"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"/></symbol>
 	<symbol id="ri-arrow-right-line" viewBox="0 0 24 24"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></symbol>
+	<symbol id="ri-arrow-right-s-line" viewBox="0 0 24 24"><path d="M13.1717 12.0007L8.22192 7.05093L9.63614 5.63672L16.0001 12.0007L9.63614 18.3646L8.22192 16.9504L13.1717 12.0007Z"/></symbol>
 	<symbol id="ri-bluesky-fill" viewBox="0 0 24 24"><path d="M12 11.3884C11.0942 9.62673 8.62833 6.34423 6.335 4.7259C4.13833 3.17506 3.30083 3.4434 2.75167 3.69256C2.11583 3.9784 2 4.95506 2 5.52839C2 6.10339 2.315 10.2367 2.52 10.9276C3.19917 13.2076 5.61417 13.9776 7.83917 13.7309C4.57917 14.2142 1.68333 15.4017 5.48083 19.6292C9.65833 23.9542 11.2058 18.7017 12 16.0392C12.7942 18.7017 13.7083 23.7651 18.4442 19.6292C22 16.0392 19.4208 14.2142 16.1608 13.7309C18.3858 13.9784 20.8008 13.2076 21.48 10.9276C21.685 10.2376 22 6.10256 22 5.52923C22 4.95423 21.8842 3.97839 21.2483 3.6909C20.6992 3.44256 19.8617 3.17423 17.665 4.72423C15.3717 6.34506 12.9058 9.62756 12 11.3884Z"/></symbol>
 	<symbol id="ri-book-open-line" viewBox="0 0 24 24"><path d="M13 21V23H11V21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H9C10.1947 3 11.2671 3.52375 12 4.35418C12.7329 3.52375 13.8053 3 15 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H13ZM20 19V5H15C13.8954 5 13 5.89543 13 7V19H20ZM11 19V7C11 5.89543 10.1046 5 9 5H4V19H11Z"/></symbol>
 	<symbol id="ri-bus-2-line" viewBox="0 0 24 24"><path d="M17 20H7V21C7 21.5523 6.55228 22 6 22H4C3.44772 22 3 21.5523 3 21V12H2V8H3V5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V8H22V12H21V21C21 21.5523 20.5523 22 20 22H18C17.4477 22 17 21.5523 17 21V20ZM5 5V11H19V5H5ZM19 13H5V18H19V13ZM7.5 17C6.67157 17 6 16.3284 6 15.5C6 14.6716 6.67157 14 7.5 14C8.32843 14 9 14.6716 9 15.5C9 16.3284 8.32843 17 7.5 17ZM16.5 17C15.6716 17 15 16.3284 15 15.5C15 14.6716 15.6716 14 16.5 14C17.3284 14 18 14.6716 18 15.5C18 16.3284 17.3284 17 16.5 17Z"/></symbol>
@@ -1010,143 +1058,99 @@ section{ padding-block:70px; position:relative; }
 </header>
 
 <main id="contenu-principal">
-<div class="large page-reservation">
+<div class="large catalogue">
+	<div class="catalogue-grille">
 
-<section class="manifs">
-	<h1 class="titre-bloc">S’inscrire <span>à un événement</span></h1>
+		<aside class="filtres-cote">
+			<form class="filtre-recherche" method="get" action="#">
+				<svg class="ico" aria-hidden="true"><use href="#ri-search-line"/></svg>
+				<input type="search" placeholder="Rechercher">
+			</form>
 
-	<div class="manifs-grille">
+			<nav class="filtre-types">
+				<a href="#" class="actif">Tout voir</a>
+				<a href="#">Les événements</a>
+				<a href="#">Les salles</a>
+			</nav>
 
-		<article class="manif">
-			<div class="manif-photo"><svg viewBox="0 0 640 360" width="640" height="360" role="img" aria-label="Photographie de l’événement"><rect width="640" height="360" fill="#DED6C6"/><path d="M0 250 Q160 210 320 245 T640 235 V360 H0 Z" fill="#C9BCA3"/><circle cx="530" cy="80" r="34" fill="#E5A93C" opacity=".8"/><rect x="180" y="150" width="120" height="100" fill="#8B7B63"/><path d="M170 150 L240 105 L310 150 Z" fill="#6E6050"/></svg></div>
-			<p class="manif-quand">dimanche 11 octobre · 12h00</p>
-			<h2 class="manif-titre">Repas des aînés</h2>
-			<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> Salle des fêtes</p>
-			<div class="manif-texte"><p>Le repas annuel offert par la commune aux habitants de 65 ans et plus. Inscription obligatoire avant le 3 octobre, le temps de commander les couverts.</p></div>
-			<p class="manif-tarif">Gratuit pour les Marlygomontois de plus de 65 ans · 22 € pour les accompagnants</p>
-			<p class="manif-places">Places restantes : <strong>17</strong> sur 90</p>
-			<div class="manif-formulaire">
-				<div class="formulaire_spip">
-					<form method="post" action="#">
-						<ul>
-							<li><label for="p1">Nombre de places</label><input type="number" id="p1" value="1" min="1" max="4"></li>
-							<li><label for="n1">Nom et prénom</label><input type="text" id="n1"></li>
-							<li><label for="c1">Adresse électronique</label><input type="email" id="c1"></li>
-							<li><label for="t1">Téléphone</label><input type="tel" id="t1"></li>
-							<li><label for="m1">Précision</label><textarea id="m1" rows="2"></textarea>
-								<small>Régime alimentaire, personne à mobilité réduite…</small></li>
-						</ul>
-						<p class="boutons"><input type="submit" class="submit" value="Je m’inscris"></p>
-					</form>
+			<div class="filtre-calendrier">
+				<div class="cal-tete">
+					<a class="cal-nav" href="#"><svg class="ico" aria-hidden="true"><use href="#ri-arrow-left-s-line"/></svg></a>
+					<strong>Août 2026</strong>
+					<a class="cal-nav" href="#"><svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-s-line"/></svg></a>
+				</div>
+				<div class="cal-jours">
+					<span class="cal-nom">L</span><span class="cal-nom">M</span><span class="cal-nom">M</span><span class="cal-nom">J</span><span class="cal-nom">V</span><span class="cal-nom">S</span><span class="cal-nom">D</span>
+					<span class="cal-jour hors">27</span><span class="cal-jour hors">28</span><span class="cal-jour hors">29</span><span class="cal-jour hors">30</span><span class="cal-jour hors">31</span><span class="cal-jour">1</span><span class="cal-jour">2</span><span class="cal-jour">3</span><span class="cal-jour">4</span><span class="cal-jour">5</span><span class="cal-jour">6</span><span class="cal-jour">7</span><span class="cal-jour">8</span><span class="cal-jour">9</span><span class="cal-jour">10</span><span class="cal-jour">11</span><span class="cal-jour">12</span><span class="cal-jour">13</span><span class="cal-jour">14</span><span class="cal-jour">15</span><span class="cal-jour">16</span><span class="cal-jour">17</span><span class="cal-jour">18</span><a class="cal-jour actif" href="#">19</a><span class="cal-jour">20</span><span class="cal-jour">21</span><span class="cal-jour">22</span><a class="cal-jour actif" href="#">23</a><span class="cal-jour">24</span><span class="cal-jour">25</span><span class="cal-jour">26</span><span class="cal-jour">27</span><span class="cal-jour">28</span><span class="cal-jour">29</span><a class="cal-jour actif" href="#">30</a><span class="cal-jour">31</span><span class="cal-jour hors">1</span><span class="cal-jour hors">2</span><span class="cal-jour hors">3</span><span class="cal-jour hors">4</span><span class="cal-jour hors">5</span><span class="cal-jour hors">6</span>
 				</div>
 			</div>
-		</article>
+		</aside>
 
-		<article class="manif">
-			<div class="manif-photo"><svg viewBox="0 0 640 360" width="640" height="360" role="img" aria-label="Photographie de l’événement"><rect width="640" height="360" fill="#CFD9CB"/><path d="M0 270 H640 V360 H0 Z" fill="#A8B6A0"/><rect x="60" y="170" width="150" height="100" fill="#B04A3A" opacity=".85"/><rect x="240" y="150" width="150" height="120" fill="#3F6B8A" opacity=".85"/><rect x="420" y="185" width="150" height="85" fill="#E5A93C" opacity=".85"/></svg></div>
-			<p class="manif-quand">dimanche 7 juin · 06h00</p>
-			<h2 class="manif-titre">Brocante du village — emplacements</h2>
-			<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> Rue de l’Église et place de la Mairie</p>
-			<div class="manif-texte"><p>Réservez votre emplacement pour la brocante annuelle. Un emplacement fait 4 mètres linéaires. Les demandes sont validées par la mairie dans l’ordre d’arrivée.</p></div>
-			<p class="manif-tarif">6 € l’emplacement · gratuit pour les habitants de la commune</p>
-			<p class="manif-places">Places restantes : <strong>34</strong> sur 60</p>
-			<div class="manif-formulaire">
-				<div class="formulaire_spip">
-					<form method="post" action="#">
-						<ul>
-							<li><label for="p2">Nombre de places</label><input type="number" id="p2" value="1" min="1" max="3"></li>
-							<li><label for="n2">Nom et prénom</label><input type="text" id="n2"></li>
-							<li><label for="c2">Adresse électronique</label><input type="email" id="c2"></li>
-							<li><label for="t2">Téléphone</label><input type="tel" id="t2"></li>
-							<li><label for="m2">Précision</label><textarea id="m2" rows="2"></textarea>
-								<small>Mètres d’emplacement souhaités, véhicule à garer…</small></li>
-						</ul>
-						<p class="boutons"><input type="submit" class="submit" value="Je m’inscris"></p>
-					</form>
-				</div>
+		<div class="catalogue-liste">
+			<h2 class="titre-bloc">S’inscrire <span>à un événement</span></h2>
+			<div class="cartes">
+				<a class="carte" href="#">
+	<span class="carte-photo"><svg viewBox="0 0 560 315" role="img" aria-label=""><rect width="560" height="315" fill="#E8DFCE"/><path d="M0 230 Q140 195 280 225 T560 215 V315 H0 Z" fill="#C9BCA3"/><circle cx="460" cy="70" r="30" fill="#E5A93C" opacity=".8"/><rect x="150" y="130" width="110" height="95" fill="#8B7B63"/></svg></span>
+	<span class="carte-corps">
+		<span class="carte-quand">mercredi 19 août · 20h30</span>
+		<span class="carte-titre">Cinéma en plein air</span>
+		<span class="carte-lieu">Place de la Mairie</span>
+		<span class="carte-places">120 places libres</span>
+	</span>
+</a>
+				<a class="carte" href="#">
+	<span class="carte-photo"><svg viewBox="0 0 560 315" role="img" aria-label=""><rect width="560" height="315" fill="#D9E2D5"/><path d="M0 230 Q140 195 280 225 T560 215 V315 H0 Z" fill="#A8B6A0"/><circle cx="460" cy="70" r="30" fill="#E5A93C" opacity=".8"/><rect x="150" y="130" width="110" height="95" fill="#6E6050"/></svg></span>
+	<span class="carte-corps">
+		<span class="carte-quand">dimanche 23 août · 09h00</span>
+		<span class="carte-titre">Sortie en car à Laon</span>
+		<span class="carte-lieu">Départ devant l’école</span>
+		<span class="carte-places">12 places libres</span>
+	</span>
+</a>
+				<a class="carte" href="#">
+	<span class="carte-photo"><svg viewBox="0 0 560 315" role="img" aria-label=""><rect width="560" height="315" fill="#E3DCE8"/><path d="M0 230 Q140 195 280 225 T560 215 V315 H0 Z" fill="#BFB2C9"/><circle cx="460" cy="70" r="30" fill="#E5A93C" opacity=".8"/><rect x="150" y="130" width="110" height="95" fill="#7A6E85"/></svg></span>
+	<span class="carte-corps">
+		<span class="carte-quand">dimanche 30 août · 06h00</span>
+		<span class="carte-titre">Brocante du village</span>
+		<span class="carte-lieu">Rue de l’Église</span>
+		<span class="carte-places">34 places libres</span>
+	</span>
+</a>
+				<a class="carte" href="#">
+	<span class="carte-photo"><svg viewBox="0 0 560 315" role="img" aria-label=""><rect width="560" height="315" fill="#EAE0D6"/><path d="M0 230 Q140 195 280 225 T560 215 V315 H0 Z" fill="#CDBBA6"/><circle cx="460" cy="70" r="30" fill="#E5A93C" opacity=".8"/><rect x="150" y="130" width="110" height="95" fill="#96805F"/></svg></span>
+	<span class="carte-corps">
+		<span class="carte-quand">dimanche 11 octobre · 12h00</span>
+		<span class="carte-titre">Repas des aînés</span>
+		<span class="carte-lieu">Salle des fêtes</span>
+		<span class="carte-places">17 places libres</span>
+	</span>
+</a>
 			</div>
-		</article>
+
+			<h2 class="titre-bloc">Réserver <span>une salle</span></h2>
+			<div class="cartes">
+				<a class="carte" href="#">
+	<span class="carte-photo"><svg viewBox="0 0 560 315" role="img" aria-label=""><rect width="560" height="315" fill="#DDE4E8"/><path d="M0 230 Q140 195 280 225 T560 215 V315 H0 Z" fill="#B3C2CB"/><circle cx="460" cy="70" r="30" fill="#E5A93C" opacity=".8"/><rect x="150" y="130" width="110" height="95" fill="#7C8A94"/></svg></span>
+	<span class="carte-corps">
+		<span class="carte-quand">Location</span>
+		<span class="carte-titre">Salle des fêtes</span>
+		<span class="carte-lieu">120 personnes</span>
+		<span class="carte-places">80 € la journée</span>
+	</span>
+</a>
+				<a class="carte" href="#">
+	<span class="carte-photo"><svg viewBox="0 0 560 315" role="img" aria-label=""><rect width="560" height="315" fill="#E8E2D6"/><path d="M0 230 Q140 195 280 225 T560 215 V315 H0 Z" fill="#C6BBA6"/><circle cx="460" cy="70" r="30" fill="#E5A93C" opacity=".8"/><rect x="150" y="130" width="110" height="95" fill="#8A7C66"/></svg></span>
+	<span class="carte-corps">
+		<span class="carte-quand">Location</span>
+		<span class="carte-titre">Salle du conseil</span>
+		<span class="carte-lieu">30 personnes</span>
+		<span class="carte-places">Gratuit pour les associations</span>
+	</span>
+</a>
+			</div>
+		</div>
 
 	</div>
-</section>
-
-	<section class="salle">
-		<h1 class="titre-bloc">Réserver <span>la salle des fêtes</span></h1>
-
-		<div class="salle-grille">
-
-			<div class="salle-conditions">
-				<div class="salle-texte">
-					<p>La salle des fêtes accueille les repas de famille, les
-					assemblées générales et les manifestations associatives. Elle
-					dispose d’une cuisine équipée, de vaisselle pour 120 couverts,
-					de tables et de chaises, et d’une sonorisation.</p>
-					<p>Les associations de la commune sont prioritaires. La remise
-					des clés se fait en mairie, aux heures d’ouverture.</p>
-				</div>
-
-				<dl class="fiche">
-					<dt>Capacité</dt><dd>120 personnes assises</dd>
-					<dt>Tarif habitants de la commune</dt><dd>80 € la journée</dd>
-					<dt>Tarif hors commune</dt><dd>150 € la journée</dd>
-					<dt>Caution</dt><dd>300 €</dd>
-				</dl>
-
-				<div class="salle-occupe">
-					<h2>Dates déjà retenues</h2>
-					<ul>
-						<li><strong>samedi 12 septembre 2026</strong><span>10h00 – 23h59</span></li>
-						<li><strong>dimanche 4 octobre 2026</strong><span>09h00 – 18h00</span></li>
-						<li><strong>samedi 21 novembre 2026</strong><span>14h00 – 23h59</span></li>
-					</ul>
-				</div>
-			</div>
-
-			<div class="salle-formulaire">
-				<div class="formulaire_spip formulaire_reserver_salle">
-					<form method="post" action="#">
-						<p class="explication">Ce formulaire enregistre une <strong>demande</strong> :
-						il ne réserve pas la salle. La mairie vous répondra par courriel.
-						Les associations de la commune sont prioritaires.</p>
-
-						<fieldset>
-							<legend>Quand</legend>
-							<ul>
-								<li class="editer"><label for="d">Date souhaitée</label>
-									<input type="date" id="d" value="2026-10-17"></li>
-								<li class="editer"><label for="h1">De</label>
-									<input type="time" id="h1" value="09:00"></li>
-								<li class="editer"><label for="h2">À</label>
-									<input type="time" id="h2" value="23:00"></li>
-							</ul>
-						</fieldset>
-
-						<fieldset>
-							<legend>Qui</legend>
-							<ul>
-								<li class="editer"><label for="n">Nom et prénom</label>
-									<input type="text" id="n"></li>
-								<li class="editer"><label for="o">Association ou organisme</label>
-									<input type="text" id="o">
-									<small>Laissez vide s’il s’agit d’une demande personnelle.</small></li>
-								<li class="editer"><label for="c">Adresse électronique</label>
-									<input type="email" id="c"></li>
-								<li class="editer"><label for="t">Téléphone</label>
-									<input type="tel" id="t"></li>
-								<li class="editer"><label for="m">Motif de la demande</label>
-									<textarea id="m" rows="3"></textarea>
-									<small>Exemple : repas de famille, assemblée générale, loto de l’association.</small></li>
-							</ul>
-						</fieldset>
-
-						<p class="boutons"><input type="submit" class="submit" value="Envoyer ma demande"></p>
-					</form>
-				</div>
-			</div>
-
-		</div>
-	</section>
-
 </div>
 </main>
 

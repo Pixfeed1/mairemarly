@@ -58,3 +58,5 @@ ri-telegram-fill         Telegram
 ri-smartphone-line       Application mobile (PanneauPocket, IntraMuros)
 ri-rss-line              Flux RSS
 ri-links-line  Lien generique
+ri-arrow-left-s-line     Flèche gauche
+ri-arrow-right-s-line    Flèche droite

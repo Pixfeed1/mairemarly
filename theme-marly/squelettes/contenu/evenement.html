@@ -1,0 +1,45 @@
+[(#REM)
+  contenu/evenement.html — la fiche d'un evenement.
+  ---------------------------------------------------------------------------
+  Tout ce qui decide vient AVANT le formulaire : la date, le lieu, le tarif,
+  et surtout le nombre de places restantes. Remplir cinq champs pour
+  apprendre a la fin qu'il n'y a plus rien, c'est le meilleur moyen de faire
+  telephoner la personne a la mairie.
+]
+<BOUCLE_evt(MANIFESTATIONS){id_manifestation}{statut=publie}>
+<div class="large fiche-evt">
+
+	<p class="fil"><a href="#URL_PAGE{reservation}"><:marly:retour_catalogue:></a></p>
+
+	<div class="fiche-grille">
+
+		<div class="fiche-gauche">
+			[<div class="fiche-photo">(#LOGO_MANIFESTATION||image_reduire{960,540})</div>]
+
+			<p class="fiche-quand">[(#DATE_DEBUT|affdate{'l j F Y'})] · [(#DATE_DEBUT|affdate{'H\hi'})][ – (#DATE_FIN|affdate{'H\hi'})]</p>
+			<h1 class="fiche-titre">#TITRE</h1>
+			[<p class="fiche-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> (#LIEU)</p>]
+
+			[<div class="fiche-texte">(#DESCRIPTIF|propre)</div>]
+
+			<dl class="fiche-cles">
+				[<dt><:marly:tarif:></dt><dd>(#TARIF)</dd>]
+				[<dt><:marly:cloture_le:></dt><dd>(#CLOTURE|affdate{'j F Y'})</dd>]
+			</dl>
+		</div>
+
+		<div class="fiche-droite">
+			[(#REM) Le compteur AVANT le formulaire, et en evidence. ]
+			[(#PLACES|>{0})
+			<p class="fiche-places">
+				<strong>[(#ID_MANIFESTATION|marly_places_restantes)]</strong>
+				<:marly:places_restantes_sur:> #PLACES
+			</p>
+			]
+
+			[(#FORMULAIRE_INSCRIPTION_MANIFESTATION{#ID_MANIFESTATION})]
+		</div>
+
+	</div>
+</div>
+</BOUCLE_evt>
