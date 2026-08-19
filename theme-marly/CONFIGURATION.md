@@ -243,3 +243,34 @@ En revanche il n'y a **pas de paiement en ligne**. Une commune ne peut pas
 brancher Stripe ou PayPal : les encaissements publics passent par PayFiP, un
 service de la DGFiP qui demande une démarche administrative. À traiter
 séparément si la mairie le souhaite.
+
+
+---
+
+## 7. Où trouver quoi dans l'espace privé
+
+| Menu | Écran | Ce qu'on y fait |
+|---|---|---|
+| **Édition** | Réservations de salles | accepter ou refuser les demandes |
+| | Lettres d'information | rédiger, s'envoyer un essai, envoyer, suivre |
+| | Abonnés à la lettre d'information | la liste, et l'export CSV |
+| | Événements et inscriptions | créer un événement, voir les inscrits |
+| | Salles à louer | créer une salle, ses tarifs, ses délais |
+| **Configuration** | Réglages de la commune | téléphone, adresse, horaires, réseaux sociaux |
+
+### Envoyer une lettre, dans l'ordre
+
+1. `Lettres d'information ▸ Rédiger une lettre` — objet, accroche, texte.
+2. **`M'envoyer un essai`** — et relire dans sa propre boîte. C'est le dernier
+   moment où une coquille se rattrape.
+3. `Envoyer maintenant` — le nombre d'abonnés est annoncé, une confirmation
+   est demandée.
+4. Le compteur avance tout seul, par lots de 25. **On peut fermer la page.**
+
+Une lettre partie ne se modifie plus : le formulaire se ferme dès l'envoi
+lancé. Laisser modifier ferait croire qu'on peut corriger ce que les gens ont
+déjà reçu.
+
+En cas d'erreur, `Arrêter l'envoi` stoppe les envois restants — mais les
+courriels déjà partis sont partis. L'écran le dit en toutes lettres plutôt que
+de le laisser espérer.

@@ -301,6 +301,8 @@ adresse ne sera pas utilisée et sera effacée sous sept jours.
 	'abonnes_confirmes'     => 'Abonnés confirmés',
 	'abonnes_attente'       => 'En attente de confirmation',
 	'aucun_abonne'          => 'Aucun abonné pour le moment.',
+	'champ_ville'           => 'Commune',
+	'attente_explication'   => 'Ces adresses n’ont pas encore été confirmées : elles ne recevront rien. Si cette liste s’allonge sans jamais se vider, c’est que le courriel de confirmation n’arrive pas — vérifiez les réglages d’envoi du serveur.',
 	'exporter_csv'          => 'Exporter la liste (CSV)',
 
 	'votre_nom_seul'        => 'Nom',

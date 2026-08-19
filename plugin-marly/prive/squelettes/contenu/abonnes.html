@@ -1,0 +1,58 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+
+<h1 class="grostitre"><:marly:titre_abonnes:></h1>
+
+[(#REM) Les confirmes d'abord : ce sont eux qui recevront. Les autres sont
+        des inscriptions inachevees, et leur nombre dit quelque chose — s'il
+        est eleve, c'est que le courriel de confirmation n'arrive pas. ]
+<B_confirmes>
+<h2><:marly:abonnes_confirmes:> <span class="petit">(#TOTAL_BOUCLE)</span></h2>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:col_courriel:></th>
+			<th><:marly:col_demandeur:></th>
+			<th><:marly:champ_ville:></th>
+			<th><:marly:col_inscrit_le:></th>
+		</tr>
+	</thead>
+	<tbody>
+	<BOUCLE_confirmes(ABONNES){statut=confirme}{par date}{inverse}{pagination 50}>
+		<tr>
+			<td><a href="mailto:#COURRIEL">#COURRIEL</a></td>
+			<td>[(#PRENOM)] [(#NOM)]</td>
+			<td>[(#CODE_POSTAL)] [(#VILLE)]</td>
+			<td>[(#DATE_CONFIRMATION|affdate{'j F Y'})]</td>
+		</tr>
+	</BOUCLE_confirmes>
+	</tbody>
+</table>
+</B_confirmes>
+<p class="rien"><:marly:aucun_abonne:></p>
+<//B_confirmes>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ACTION_AUTEUR{exporter_abonnes,export,#SELF})]"><:marly:exporter_csv:></a>
+</p>
+
+<B_attente>
+<h2><:marly:abonnes_attente:> <span class="petit">(#TOTAL_BOUCLE)</span></h2>
+<p class="explication"><:marly:attente_explication:></p>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:col_courriel:></th>
+			<th><:marly:col_inscrit_le:></th>
+		</tr>
+	</thead>
+	<tbody>
+	<BOUCLE_attente(ABONNES){statut=attente}{par date}{inverse}{0,50}>
+		<tr>
+			<td>#COURRIEL</td>
+			<td>[(#DATE|affdate{'j F Y'})]</td>
+		</tr>
+	</BOUCLE_attente>
+	</tbody>
+</table>
+</B_attente>
+<//B_attente>

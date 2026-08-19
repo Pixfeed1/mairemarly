@@ -56,6 +56,36 @@ for f in sorted(glob.glob('squelettes/**/*.html', recursive=True)):
         if f'id="{m.group(1)}"' not in sprite:
             signaler(f, lignes(m.start()), f'icone absente du sprite : {m.group(1)}')
 
+# 7. Une entree de menu declaree dans le plugin doit avoir son ecran.
+#    Sans ce controle, l'entree apparait, on clique, et on obtient une page
+#    vide — l'erreur ne se voit qu'a l'usage, jamais a la lecture.
+paquet = os.path.join(RACINE, '..', 'plugin-marly', 'paquet.xml')
+if os.path.exists(paquet):
+    src = open(paquet, encoding='utf-8').read()
+    for m in re.finditer(r'<menu\s+nom="([a-z_]+)"', src):
+        ecran = os.path.join(RACINE, '..', 'plugin-marly',
+                             'prive/squelettes/contenu', m.group(1) + '.html')
+        if not os.path.exists(ecran):
+            signaler('plugin-marly/paquet.xml', 1,
+                     f"menu {m.group(1)} declare, mais prive/squelettes/contenu/{m.group(1)}.html manque")
+
+    # Une tache periodique declaree doit exister elle aussi.
+    for m in re.finditer(r'<genie\s+nom="([a-z_]+)"', src):
+        tache = os.path.join(RACINE, '..', 'plugin-marly', 'genie', m.group(1) + '.php')
+        if not os.path.exists(tache):
+            signaler('plugin-marly/paquet.xml', 1,
+                     f"tache {m.group(1)} declaree, mais genie/{m.group(1)}.php manque")
+
+# 8. Un formulaire appele doit avoir ses deux fichiers.
+for f in sorted(glob.glob('squelettes/**/*.html', recursive=True)):
+    s = open(f, encoding='utf-8').read()
+    for m in re.finditer(r'#FORMULAIRE_([A-Z_]+)', s):
+        nom = m.group(1).lower()
+        base = os.path.join(RACINE, '..', 'plugin-marly', 'formulaires', nom)
+        if not os.path.exists(base + '.php') and not os.path.exists(base + '.html'):
+            signaler(f, s[:m.start()].count(chr(10)) + 1,
+                     f"formulaire {nom} appele, mais formulaires/{nom}.php et .html manquent")
+
 # 6. Accolades CSS. Une accolade orpheline ferme la feuille en avance et
 #    toutes les regles suivantes sont ignorees, sans le moindre message.
 for f in sorted(glob.glob('squelettes/css/*.css')):
