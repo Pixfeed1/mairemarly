@@ -66,7 +66,7 @@ l'installation finie.**
 
 ## 3. Poser le thème
 
-On clone **hors de la racine web** : le dépôt contient aussi `refonte/` et
+Le dépôt reste **hors de la racine web** : il contient aussi `refonte/` et
 `pentest/`, qui n'ont rien à faire sur le web.
 
 ```bash
@@ -75,21 +75,31 @@ git clone -b claude/refonte-spip-mairie-marly-o47sn4 \
   https://github.com/Pixfeed1/mairemarly.git depot-marly
 ```
 
-Puis on dit à SPIP où chercher ses gabarits. **Après l'installation**, pas
-avant : ce fichier est lu à chaque requête, y compris par l'installeur.
+Puis on relie **le seul dossier des squelettes** dans la racine web :
 
 ```bash
-mkdir -p ~/marlygomont.pixfeed.net/config
-cat > ~/marlygomont.pixfeed.net/config/mes_options.php <<'EOF'
-<?php
-// Les gabarits vivent dans le depot Git, hors de la racine web.
-$GLOBALS['dossier_squelettes'] = '../depot-marly/theme-marly/squelettes';
-EOF
+ln -s ~/depot-marly/theme-marly/squelettes ~/marlygomont.pixfeed.net/squelettes
 ```
 
-Si l'hébergement refuse de sortir de la racine web, on rapatrie le dépôt
-dedans et on pointe `'theme-marly/squelettes'` — en ajoutant alors un
-`.htaccess` qui interdit l'accès au dossier du dépôt.
+> **Pourquoi un lien, et pas simplement `dossier_squelettes` vers l'extérieur.**
+> C'est l'erreur que j'ai faite au premier déploiement, et elle ne se voit
+> qu'au premier chargement. PHP sait lire des gabarits hors de la racine web,
+> et les pages sortaient donc correctement — mais le NAVIGATEUR ne peut pas
+> aller chercher un fichier hors de la racine web. La feuille de style, les
+> scripts et les polices ne se chargeaient pas, et le site s'affichait en HTML
+> brut. Les gabarits passent par PHP, les fichiers statiques passent par HTTP :
+> les deux doivent être joignables, chacun à sa manière.
+>
+> Le lien n'expose que le thème. Le reste du dépôt, `.git` compris, demeure
+> hors d'atteinte. Et un `.htaccess` dans `squelettes/` interdit de servir les
+> `.html` : ce sont des gabarits, pas des pages.
+
+`squelettes/` étant le dossier que SPIP consulte par défaut, **aucun réglage
+n'est nécessaire** — pas de `mes_options.php`.
+
+Si l'hébergement refuse de suivre les liens symboliques, on rapatrie le dépôt
+dans la racine web et on interdit l'accès à `refonte/`, `pentest/` et `.git`
+par un `.htaccess`.
 
 ## 4. Interdire l'indexation
 

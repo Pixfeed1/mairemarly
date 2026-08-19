@@ -1,0 +1,9 @@
+# Les gabarits sont lus par PHP, jamais servis par HTTP.
+# ---------------------------------------------------------------------------
+# Ce dossier doit être accessible au navigateur — c'est de là que viennent la
+# feuille de style, les scripts, les polices et les images. Mais les .html
+# qu'il contient sont du code, pas des pages : les servir tels quels
+# exposerait la structure du site sans rien apporter à personne.
+<FilesMatch "\.(html|php|py)$">
+	Require all denied
+</FilesMatch>
