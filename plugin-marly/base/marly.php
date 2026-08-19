@@ -92,6 +92,13 @@ function marly_declarer_tables_objets_sql($tables) {
 
 			'tarif'            => 'varchar(60) NOT NULL DEFAULT ""',
 
+			/* L'adresse d'une video : YouTube, Vimeo, Dailymotion, PeerTube.
+			   On garde l'adresse telle que la mairie l'a collee, et on la
+			   traduit a l'affichage. Stocker un identifiant extrait
+			   obligerait a refaire le travail le jour ou une plateforme
+			   change ses adresses. */
+			'video'            => 'varchar(255) NOT NULL DEFAULT ""',
+
 			/* auto   : l'inscription est confirmée tout de suite. C'est ce
 			            qu'attend quelqu'un qui s'inscrit au repas des aînés.
 			   mairie : la mairie arbitre, comme pour une salle. */
@@ -122,8 +129,8 @@ function marly_declarer_tables_objets_sql($tables) {
 		   existe et les boucles marchent, mais il n'y a nulle part ou
 		   deposer la photo. */
 		'champs_editables'  => array('titre', 'descriptif', 'lieu', 'date_debut', 'date_fin',
-		                             'places', 'places_par_personne', 'tarif', 'validation',
-		                             'ouverture', 'cloture'),
+		                             'places', 'places_par_personne', 'tarif', 'video',
+		                             'validation', 'ouverture', 'cloture'),
 		'rechercher_champs' => array('titre' => 8, 'descriptif' => 3, 'lieu' => 2),
 		'statut' => array(
 			array(

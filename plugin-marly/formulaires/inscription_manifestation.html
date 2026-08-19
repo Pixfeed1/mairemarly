@@ -18,25 +18,28 @@
 
 		<ul>
 			<li class="editer editer_places[ (#ENV**{erreurs}|table_valeur{places}|oui)erreur]">
-				<label for="places"><:marly:champ_places_demandees:></label>
+				<label for="places"><:marly:champ_places_demandees:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{places})</span>]
 				<input type="number" class="text" name="places" id="places" min="1"
 				       max="[(#ENV{_manif}|table_valeur{places_par_personne})]"
 				       value="[(#ENV{places}|attribut_html)]" required>
 			</li>
 			<li class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
-				<label for="nom"><:marly:votre_nom:></label>
+				<label for="nom"><:marly:votre_nom:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
-				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]" required>
+				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]"
+				       autocomplete="name" required aria-required="true">
 			</li>
 			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
-				<label for="courriel"><:marly:votre_courriel:></label>
+				<label for="courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
-				<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]" required>
+				<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]"
+				       autocomplete="email" required aria-required="true">
 			</li>
 			<li class="editer editer_telephone">
 				<label for="telephone"><:marly:votre_telephone:></label>
-				<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]">
+				<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]"
+				       autocomplete="tel">
 			</li>
 			<li class="editer editer_motif">
 				<label for="motif"><:marly:precision:></label>
@@ -48,6 +51,20 @@
 		<p class="boutons">
 			<input type="submit" class="submit" value="<:marly:je_minscris:>">
 		</p>
+
+		[(#REM) La mention d'information RGPD. Elle n'est pas facultative : un
+		        formulaire qui collecte un nom, un courriel et un telephone
+		        constitue un traitement de donnees personnelles, et l'article 13
+		        du reglement impose d'informer AU MOMENT DE LA COLLECTE. Un
+		        renvoi vers une page de confidentialite ne suffit pas seul.
+
+		        Elle est en <details> : presente pour qui la cherche, sans
+		        noyer un formulaire de cinq champs sous un paragraphe juridique. ]
+		<details class="mention-rgpd">
+			<summary><:marly:rgpd_titre:></summary>
+			<p><:marly:rgpd_texte:></p>
+			<p><a href="#URL_PAGE{confidentialite}"><:marly:rgpd_lien:></a></p>
+		</details>
 	</form>
 	]
 

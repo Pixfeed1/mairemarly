@@ -44,6 +44,12 @@
 					<small><:marly:logo_aide:></small>
 				</li>
 				]
+				<li class="editer editer_video[ (#ENV**{erreurs}|table_valeur{video}|oui)erreur]">
+					<label for="video"><:marly:champ_video:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{video})</span>]
+					<input type="url" class="text" name="video" id="video" value="[(#ENV{video}|attribut_html)]" placeholder="https://">
+					<small><:marly:video_aide:></small>
+				</li>
 				<li class="editer editer_descriptif">
 					<label for="descriptif"><:marly:champ_descriptif:></label>
 					<textarea name="descriptif" id="descriptif" rows="6">[(#ENV{descriptif}|textebrut)]</textarea>

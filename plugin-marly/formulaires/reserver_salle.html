@@ -19,17 +19,17 @@
 			<legend><:marly:legende_creneau:></legend>
 			<ul>
 				<li class="editer editer_date_jour[ (#ENV**{erreurs}|table_valeur{date_jour}|oui)erreur]">
-					<label for="date_jour"><:marly:date_souhaitee:></label>
+					<label for="date_jour"><:marly:date_souhaitee:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{date_jour})</span>]
 					<input type="date" class="text" name="date_jour" id="date_jour" value="[(#ENV{date_jour}|attribut_html)]" required>
 				</li>
 				<li class="editer editer_heure_debut[ (#ENV**{erreurs}|table_valeur{heure_debut}|oui)erreur]">
-					<label for="heure_debut"><:marly:heure_debut:></label>
+					<label for="heure_debut"><:marly:heure_debut:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{heure_debut})</span>]
 					<input type="time" class="text" name="heure_debut" id="heure_debut" value="[(#ENV{heure_debut}|attribut_html)]" required>
 				</li>
 				<li class="editer editer_heure_fin[ (#ENV**{erreurs}|table_valeur{heure_fin}|oui)erreur]">
-					<label for="heure_fin"><:marly:heure_fin:></label>
+					<label for="heure_fin"><:marly:heure_fin:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{heure_fin})</span>]
 					<input type="time" class="text" name="heure_fin" id="heure_fin" value="[(#ENV{heure_fin}|attribut_html)]" required>
 				</li>
@@ -40,27 +40,31 @@
 			<legend><:marly:legende_demandeur:></legend>
 			<ul>
 				<li class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
-					<label for="nom"><:marly:votre_nom:></label>
+					<label for="nom"><:marly:votre_nom:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
-					<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]" required>
+					<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]"
+					       autocomplete="name" required aria-required="true">
 				</li>
 				<li class="editer editer_organisme">
 					<label for="organisme"><:marly:organisme:></label>
-					<input type="text" class="text" name="organisme" id="organisme" value="[(#ENV{organisme}|attribut_html)]">
+					<input type="text" class="text" name="organisme" id="organisme" value="[(#ENV{organisme}|attribut_html)]"
+					       autocomplete="organization">
 					<small><:marly:organisme_aide:></small>
 				</li>
 				<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
-					<label for="courriel"><:marly:votre_courriel:></label>
+					<label for="courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
-					<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]" required>
+					<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]"
+					       autocomplete="email" required aria-required="true">
 				</li>
 				<li class="editer editer_telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
-					<label for="telephone"><:marly:votre_telephone:></label>
+					<label for="telephone"><:marly:votre_telephone:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
-					<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]" required>
+					<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]"
+					       autocomplete="tel" required aria-required="true">
 				</li>
 				<li class="editer editer_motif[ (#ENV**{erreurs}|table_valeur{motif}|oui)erreur]">
-					<label for="motif"><:marly:motif:></label>
+					<label for="motif"><:marly:motif:> <span class="obligatoire"><:marly:obligatoire:></span></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{motif})</span>]
 					<textarea name="motif" id="motif" rows="3" required>[(#ENV{motif}|textebrut)]</textarea>
 					<small><:marly:motif_aide:></small>
@@ -71,6 +75,12 @@
 		<p class="boutons">
 			<input type="submit" class="submit" value="<:marly:envoyer_demande:>">
 		</p>
+
+		<details class="mention-rgpd">
+			<summary><:marly:rgpd_titre:></summary>
+			<p><:marly:rgpd_texte:></p>
+			<p><a href="#URL_PAGE{confidentialite}"><:marly:rgpd_lien:></a></p>
+		</details>
 	</form>
 	]
 

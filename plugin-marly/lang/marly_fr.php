@@ -165,6 +165,11 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'delai_min_aide'           => 'En jours. Une demande faite plus tard est refusée automatiquement.',
 	'champ_delai_max'          => 'Délai maximum',
 	'delai_max_aide'           => 'En jours. Évite les réservations posées deux ans à l’avance.',
+	'champ_video'              => 'Vidéo',
+	'video_aide'               => 'Collez l’adresse de la page de la vidéo, telle qu’elle apparaît dans votre navigateur. YouTube, Vimeo, Dailymotion et PeerTube sont reconnus.',
+	'erreur_video'             => 'Adresse non reconnue. Collez l’adresse complète d’une vidéo YouTube, Vimeo, Dailymotion ou PeerTube.',
+	'voir_la_video'            => 'Voir la vidéo',
+	'video_avertissement'      => 'La lecture est hébergée par @plateforme@, qui déposera des traceurs sur votre appareil. Rien n’est chargé tant que vous ne cliquez pas.',
 	'champ_descriptif'         => 'Description',
 	'descriptif_aide'          => 'Ce qui est fourni : tables, chaises, cuisine, vaisselle, sonorisation…',
 	'champ_statut'             => 'Ouverte à la réservation',
@@ -219,6 +224,15 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'precision'                 => 'Précision',
 	'precision_aide'            => 'Régime alimentaire, personne à mobilité réduite, mètres d’emplacement souhaités…',
 	'je_minscris'               => 'Je m’inscris',
+	'obligatoire'               => '(obligatoire)',
+
+	'rgpd_titre'                => 'Que devient ce que vous saisissez ?',
+	'rgpd_texte'                => 'Les informations recueillies sont enregistrées par la mairie
+		dans le seul but de traiter votre demande. Elles sont conservées trois ans, ne sont
+		transmises à aucun tiers, et ne servent à aucun envoi commercial. Vous pouvez à tout
+		moment demander à les consulter, les corriger ou les faire effacer en écrivant à la
+		mairie.',
+	'rgpd_lien'                 => 'Politique de confidentialité du site',
 	'inscription_confirmee'     => 'Votre inscription est confirmée. Vous allez recevoir un courriel.',
 	'places_restantes'          => 'Places restantes :',
 	'complet'                   => 'Complet',

@@ -812,3 +812,40 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   .carte{ transition:none; }
   .carte:hover{ transform:none; }
 }
+
+/* --- Vidéo en façade ------------------------------------------------------ */
+/* Rien de la plateforme n'est chargé tant que l'usager n'a pas cliqué : ni
+   iframe, ni script, ni même la vignette — une vignette YouTube transmet
+   déjà l'adresse IP du visiteur à Google. On se sert de la photo de
+   l'événement comme fond. */
+.video-facade{ position:relative; margin:28px 0; background:var(--encre); }
+.video-fond img{ display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; opacity:.55; }
+.video-facade:not(:has(.video-fond))::before{ content:''; display:block; aspect-ratio:16/9; }
+.video-lire{
+  position:absolute; inset:0; margin:0; width:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  border:0; background:none; color:#fff; cursor:pointer;
+  font-family:var(--titre); font-size:17px; font-weight:700;
+}
+.video-lire .ico{ width:64px; height:64px; }
+.video-lire:hover .ico{ transform:scale(1.06); }
+.video-note{ margin:0; padding:11px 16px; background:var(--creme);
+             font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
+.video-facade iframe{ display:block; width:100%; aspect-ratio:16/9; border:0; }
+
+/* --- Galerie -------------------------------------------------------------- */
+.galerie{ display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; margin:30px 0 0; }
+.galerie figure{ margin:0; }
+.galerie img{ display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:cover; }
+.galerie figcaption{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin-top:6px; }
+
+/* --- Conformité des formulaires ------------------------------------------- */
+/* Un champ obligatoire se signale EN TEXTE. L'astérisque seul et la couleur
+   seule ne sont pas perçus par tout le monde — RGAA 11.10. */
+.obligatoire{ font-weight:400; font-size:12.5px; color:var(--encre-doux); }
+
+.mention-rgpd{ margin-top:24px; border-top:1px solid var(--trait); padding-top:16px;
+               font-family:var(--texte); font-size:13px; color:var(--encre-doux); }
+.mention-rgpd summary{ cursor:pointer; font-weight:700; color:var(--encre); }
+.mention-rgpd p{ margin:12px 0 0; line-height:1.6; }
+.mention-rgpd a{ color:var(--accent); }

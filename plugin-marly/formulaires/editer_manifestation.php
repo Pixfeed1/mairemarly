@@ -11,7 +11,7 @@ function marly_champs_manifestation() {
 	return array(
 		'titre', 'descriptif', 'lieu',
 		'date_debut', 'date_fin',
-		'places', 'places_par_personne', 'tarif',
+		'places', 'places_par_personne', 'tarif', 'video',
 		'validation', 'ouverture', 'cloture', 'statut',
 	);
 }
@@ -73,6 +73,17 @@ function formulaires_editer_manifestation_verifier_dist($id_manifestation = 'new
 		$v = _request($champ);
 		if ($v !== '' && !ctype_digit((string) $v)) {
 			$erreurs[$champ] = _T('marly:erreur_nombre');
+		}
+	}
+
+	/* Une adresse video qu'on ne sait pas traduire donnerait un cadre vide
+	   sur le site. On refuse tout de suite, en nommant les plateformes
+	   reconnues plutot qu'en disant << adresse invalide >>. */
+	$video = trim((string) _request('video'));
+	if ($video) {
+		include_spip('marly_fonctions');
+		if (!filtre_marly_video_embed_dist($video)) {
+			$erreurs['video'] = _T('marly:erreur_video');
 		}
 	}
 

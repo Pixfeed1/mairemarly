@@ -234,3 +234,44 @@
 		battre();
 	}
 })();
+
+/**
+ * Vidéo au clic.
+ * ---------------------------------------------------------------------------
+ * Tant que personne n'a cliqué, la page ne contient AUCUN élément de la
+ * plateforme : pas d'iframe, pas de script, pas de vignette distante. Une
+ * vignette YouTube suffirait à transmettre l'adresse IP du visiteur à
+ * Google, ce qu'une collectivité ne peut pas faire sans consentement.
+ *
+ * Le consentement, ici, c'est le clic — et il est éclairé : la plateforme
+ * est nommée juste en dessous du bouton, avant qu'on n'appuie.
+ *
+ * Sans JavaScript, le bouton ne fait rien et l'avertissement reste lisible.
+ * Aucune vidéo n'est perdue : l'adresse d'origine reste dans l'espace privé,
+ * et la mairie peut la mettre dans le texte si elle y tient.
+ */
+(function () {
+	'use strict';
+
+	var facades = document.querySelectorAll('.video-facade[data-video]');
+	if (!facades.length) { return; }
+
+	Array.prototype.forEach.call(facades, function (facade) {
+		var bouton = facade.querySelector('.video-lire');
+		if (!bouton) { return; }
+
+		bouton.addEventListener('click', function () {
+			var cadre = document.createElement('iframe');
+			cadre.setAttribute('src', facade.getAttribute('data-video') + '&autoplay=1');
+			cadre.setAttribute('title', facade.getAttribute('data-titre') || '');
+			cadre.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; picture-in-picture');
+			cadre.setAttribute('allowfullscreen', '');
+			cadre.setAttribute('loading', 'lazy');
+
+			var fond = facade.querySelector('.video-fond');
+			if (fond) { fond.remove(); }
+			bouton.remove();
+			facade.insertBefore(cadre, facade.firstChild);
+		});
+	});
+})();

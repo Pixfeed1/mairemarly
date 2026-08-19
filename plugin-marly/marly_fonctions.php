@@ -98,3 +98,53 @@ function filtre_marly_nom_mois_dist($mois) {
 	return affdate(date('Y-m-d', mktime(0, 0, 0, intval($r[2]), 1, intval($r[1]))), 'nom_mois')
 		. ' ' . $r[1];
 }
+
+/**
+ * Traduit l'adresse d'une video en adresse d'incorporation.
+ * ---------------------------------------------------------------------------
+ * La mairie colle l'adresse qu'elle voit dans son navigateur. Lui demander
+ * un « code d'intégration » reviendrait à lui demander de lire du HTML.
+ *
+ * Les variantes sans traceur sont préférées quand la plateforme en propose
+ * une : youtube-nocookie pour YouTube, dnt=1 pour Vimeo. Elles ne dispensent
+ * PAS du consentement — d'où la façade au clic — mais elles réduisent ce qui
+ * part une fois la vidéo lancée.
+ *
+ * Rend une chaîne vide si l'adresse n'est pas reconnue : mieux vaut ne rien
+ * afficher qu'un cadre vide.
+ */
+function filtre_marly_video_embed_dist($url) {
+	$url = trim((string) $url);
+	if (!$url) {
+		return '';
+	}
+
+	if (preg_match(',(?:youtube\.com/watch\?(?:.*&)?v=|youtu\.be/|youtube\.com/embed/)([A-Za-z0-9_-]{6,}),i', $url, $r)) {
+		return 'https://www.youtube-nocookie.com/embed/' . $r[1] . '?rel=0';
+	}
+	if (preg_match(',vimeo\.com/(?:video/)?(\d+),i', $url, $r)) {
+		return 'https://player.vimeo.com/video/' . $r[1] . '?dnt=1';
+	}
+	if (preg_match(',dailymotion\.com/(?:video/|embed/video/)([A-Za-z0-9]+),i', $url, $r)) {
+		return 'https://www.dailymotion.com/embed/video/' . $r[1];
+	}
+	/* PeerTube : instances multiples, on ne peut pas lister les domaines.
+	   On reconnait la forme de l'adresse d'une video et on la convertit. */
+	if (preg_match(',^(https://[^/]+)/w/([A-Za-z0-9_-]+),i', $url, $r)) {
+		return $r[1] . '/videos/embed/' . $r[2];
+	}
+	if (preg_match(',^(https://[^/]+)/videos/watch/([A-Za-z0-9-]+),i', $url, $r)) {
+		return $r[1] . '/videos/embed/' . $r[2];
+	}
+
+	return '';
+}
+
+/** Le nom de la plateforme, pour le dire à l'usager avant qu'il ne clique. */
+function filtre_marly_video_plateforme_dist($url) {
+	$url = strtolower(trim((string) $url));
+	if (strpos($url, 'youtu') !== false)       { return 'YouTube'; }
+	if (strpos($url, 'vimeo') !== false)       { return 'Vimeo'; }
+	if (strpos($url, 'dailymotion') !== false) { return 'Dailymotion'; }
+	return 'PeerTube';
+}

@@ -22,6 +22,42 @@
 
 			[<div class="fiche-texte">(#DESCRIPTIF|propre)</div>]
 
+			[(#REM) LA VIDEO, en facade. Rien de la plateforme n'est charge tant
+			        que l'usager n'a pas clique : ni iframe, ni script, ni
+			        vignette. Une vignette YouTube transmet deja l'adresse IP du
+			        visiteur a Google — la charger reviendrait a manquer le but.
+
+			        On se sert donc de la photo de l'evenement comme fond, et
+			        l'avertissement nomme la plateforme AVANT le clic. C'est ce
+			        que demande la CNIL pour un site public : le consentement se
+			        donne, il ne se presume pas. ]
+			[(#VIDEO|marly_video_embed|oui)
+			<div class="video-facade" data-video="[(#VIDEO|marly_video_embed|attribut_html)]"
+			     data-titre="[(#TITRE|attribut_html)]">
+				[<div class="video-fond">(#LOGO_MANIFESTATION||image_reduire{960,540})</div>]
+				<button type="button" class="video-lire">
+					<svg class="ico" aria-hidden="true"><use href="#ri-play-circle-line"/></svg>
+					<span><:marly:voir_la_video:></span>
+				</button>
+				<p class="video-note">[(#VIDEO|marly_video_plateforme|video_avertissement)]</p>
+			</div>
+			]
+
+			[(#REM) LA GALERIE. Les images jointes a l'evenement dans l'espace
+			        prive s'affichent ici. La mairie en depose autant qu'elle
+			        veut, sans toucher au gabarit. ]
+			<B_photos>
+			<div class="galerie">
+				<BOUCLE_photos(DOCUMENTS){id_manifestation}{extension IN jpg,jpeg,png,webp}{par num titre, titre}>
+				<figure>
+					[(#FICHIER|image_reduire{480,320})]
+					[<figcaption>(#TITRE)</figcaption>]
+				</figure>
+				</BOUCLE_photos>
+			</div>
+			</B_photos>
+			<//B_photos>
+
 			<dl class="fiche-cles">
 				[<dt><:marly:tarif:></dt><dd>(#TARIF)</dd>]
 				[<dt><:marly:cloture_le:></dt><dd>(#CLOTURE|affdate{'j F Y'})</dd>]

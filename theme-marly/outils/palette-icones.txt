@@ -60,3 +60,4 @@ ri-rss-line              Flux RSS
 ri-links-line  Lien generique
 ri-arrow-left-s-line     Flèche gauche
 ri-arrow-right-s-line    Flèche droite
+ri-play-circle-line      Lecture vidéo

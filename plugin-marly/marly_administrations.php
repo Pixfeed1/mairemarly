@@ -40,6 +40,11 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_manifestations', 'spip_salles', 'spip_reservations')),
 	);
 
+	/* 3.2.0 — une colonne video sur les evenements. */
+	$maj['3.2.0'] = array(
+		array('maj_tables', array('spip_manifestations')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
