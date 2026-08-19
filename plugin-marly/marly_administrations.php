@@ -32,6 +32,14 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_manifestations', 'spip_reservations')),
 	);
 
+	/* 3.1.0 — les tables passent en objets editoriaux declares (l'API de
+	   SPIP 4). Aucune colonne ne change : c'est la declaration qui evolue,
+	   pour ouvrir les logos et la recherche. maj_tables est rejoue par
+	   securite, il ne fera rien si tout est deja en place. */
+	$maj['3.1.0'] = array(
+		array('maj_tables', array('spip_manifestations', 'spip_salles', 'spip_reservations')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }

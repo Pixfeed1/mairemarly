@@ -176,22 +176,22 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'erreur_delais_croises'    => 'Le délai maximum doit être supérieur au délai minimum.',
 
 	// --- Manifestations --------------------------------------------------------
-	'titre_manifestations'  => 'Manifestations et inscriptions',
-	'creer_manifestation'   => 'Créer une manifestation',
-	'modifier_manifestation' => 'Modifier la manifestation',
-	'manifestation_enregistree' => 'La manifestation a été enregistrée.',
-	'aucune_manifestation'  => 'Aucune manifestation. Créez-en une pour ouvrir les inscriptions.',
+	'titre_manifestations'  => 'Événements et inscriptions',
+	'creer_manifestation'   => 'Créer un événement',
+	'modifier_manifestation' => 'Modifier l’événement',
+	'manifestation_enregistree' => 'L’événement a été enregistré.',
+	'aucune_manifestation'  => 'Aucun événement. Créez-en un pour ouvrir les inscriptions.',
 	'les_inscrits'          => 'Les inscrits',
 	'inscrits'              => 'inscrits',
 	'inscrite'              => 'Inscrit',
 	'en_attente_courte'     => 'En attente',
 	'sans_limite'           => 'sans limite',
-	'col_manifestation'     => 'Manifestation',
+	'col_manifestation'     => 'Événement',
 	'col_quand'             => 'Quand',
 	'col_places'            => 'Places',
 	'col_inscriptions'      => 'Inscriptions',
 
-	'legende_evenement'     => 'La manifestation',
+	'legende_evenement'     => 'L’événement',
 	'legende_places'        => 'Places et tarif',
 	'legende_fenetre'       => 'Fenêtre d’inscription',
 
@@ -199,9 +199,11 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'lieu_aide'                 => 'Exemple : salle des fêtes, place de la mairie, départ devant l’école.',
 	'champ_date_debut'          => 'Date et heure',
 	'champ_date_fin'            => 'Fin',
-	'date_fin_aide'             => 'Laissez vide pour une manifestation ponctuelle.',
+	'date_fin_aide'             => 'Laissez vide pour un événement ponctuel.',
 	'champ_places'              => 'Nombre de places',
 	'places_aide'               => '0 pour ne pas limiter — une kermesse en plein air n’a pas de jauge.',
+	'champ_logo'                => 'Photographie',
+	'logo_aide'                 => 'Elle s’ajoute après l’enregistrement, dans la colonne de droite : « Ajouter un logo ». C’est elle qui s’affiche sur la carte du site.',
 	'champ_places_par_personne' => 'Places maximum par inscription',
 	'places_par_personne_aide'  => 'Évite qu’une personne réserve la moitié de la salle.',
 	'champ_validation'          => 'Validation',
@@ -230,16 +232,16 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'erreur_inscriptions_ferme' => 'Les inscriptions ne sont pas ouvertes.',
 	'erreur_inscriptions_pas_encore' => 'Les inscriptions ne sont pas encore ouvertes.',
 	'erreur_inscriptions_clos'  => 'Les inscriptions sont closes.',
-	'erreur_inscriptions_passe' => 'Cette manifestation a déjà eu lieu.',
+	'erreur_inscriptions_passe' => 'Cet événement a déjà eu lieu.',
 	'erreur_cloture_avant'      => 'La clôture doit venir après l’ouverture.',
-	'erreur_cloture_apres_evenement' => 'La clôture doit venir avant la manifestation.',
+	'erreur_cloture_apres_evenement' => 'La clôture doit venir avant l’événement.',
 
 	'courriel_sujet_inscrit'    => '@site@ — votre inscription est confirmée',
 	'courriel_corps_inscrit'    => 'Bonjour @nom@,
 
 Votre inscription est confirmée :
 
-  Manifestation : @salle@
+  Événement : @salle@
   Date          : @date_debut@
   Places        : @places@
 

@@ -21,7 +21,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-function marly_declarer_tables_principales($tables) {
+function marly_declarer_tables_objets_sql($tables) {
 
 	$tables['spip_salles'] = array(
 		'field' => array(
@@ -45,8 +45,21 @@ function marly_declarer_tables_principales($tables) {
 			'PRIMARY KEY'  => 'id_salle',
 			'KEY statut'   => 'statut',
 		),
-		'titre'     => 'titre AS titre, "" AS lang',
+		'titre'      => 'titre AS titre, "" AS lang',
 		'principale' => 'oui',
+		'type'       => 'salle',
+		'editable'   => 'oui',
+		'champs_editables'  => array('titre', 'descriptif', 'capacite', 'tarif_commune',
+		                             'tarif_hors_commune', 'caution', 'delai_min', 'delai_max'),
+		'rechercher_champs' => array('titre' => 8, 'descriptif' => 3),
+		'statut' => array(
+			array(
+				'champ'     => 'statut',
+				'publie'    => 'publie',
+				'previsu'   => 'publie,prepa',
+				'exception' => 'statut',
+			),
+		),
 	);
 
 
@@ -101,6 +114,28 @@ function marly_declarer_tables_principales($tables) {
 		'titre'      => 'titre AS titre, "" AS lang',
 		'date'       => 'date_debut',
 		'principale' => 'oui',
+		'type'       => 'manifestation',
+		'editable'   => 'oui',
+
+		/* C'est cette declaration qui ouvre les LOGOS : SPIP autorise une
+		   image sur tout objet editorial declare ici. Sans elle, la table
+		   existe et les boucles marchent, mais il n'y a nulle part ou
+		   deposer la photo. */
+		'champs_editables'  => array('titre', 'descriptif', 'lieu', 'date_debut', 'date_fin',
+		                             'places', 'places_par_personne', 'tarif', 'validation',
+		                             'ouverture', 'cloture'),
+		'rechercher_champs' => array('titre' => 8, 'descriptif' => 3, 'lieu' => 2),
+		'statut' => array(
+			array(
+				'champ'     => 'statut',
+				'publie'    => 'publie',
+				'previsu'   => 'publie,prepa',
+				'exception' => 'statut',
+			),
+		),
+		'texte_modifier'    => 'marly:modifier_manifestation',
+		'texte_creer'       => 'marly:creer_manifestation',
+		'info_aucun_objet'  => 'marly:aucune_manifestation',
 	);
 
 	$tables['spip_reservations'] = array(
@@ -151,6 +186,8 @@ function marly_declarer_tables_principales($tables) {
 		'titre'      => 'nom AS titre, "" AS lang',
 		'date'       => 'date',
 		'principale' => 'oui',
+		'type'       => 'reservation',
+		'editable'   => 'non',
 	);
 
 	return $tables;

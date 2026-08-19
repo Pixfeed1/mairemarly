@@ -38,6 +38,12 @@
 				<input type="datetime-local" class="text" name="date_fin" id="date_fin" value="[(#ENV{date_fin}|attribut_html)]">
 				<small><:marly:date_fin_aide:></small>
 			</li>
+				[(#ENV{id_manifestation}|=={new}|oui)
+				<li class="editer editer_logo">
+					<label><:marly:champ_logo:></label>
+					<small><:marly:logo_aide:></small>
+				</li>
+				]
 				<li class="editer editer_descriptif">
 					<label for="descriptif"><:marly:champ_descriptif:></label>
 					<textarea name="descriptif" id="descriptif" rows="6">[(#ENV{descriptif}|textebrut)]</textarea>

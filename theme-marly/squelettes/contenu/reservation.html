@@ -27,6 +27,10 @@
 		<div class="manifs-grille">
 			<BOUCLE_manifs(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{par date_debut}{0,12}>
 			<article class="manif">
+				[(#REM) La photographie est le logo de l'evenement, depose dans
+				        l'espace prive comme sur un article. Sans photo, la carte
+				        reste propre : on ne montre pas un cadre vide. ]
+				[<div class="manif-photo">(#LOGO_MANIFESTATION||image_reduire{640,360})</div>]
 				<p class="manif-quand">[(#DATE_DEBUT|affdate{'l j F'})] · [(#DATE_DEBUT|affdate{'H\hi'})]</p>
 				<h2 class="manif-titre">#TITRE</h2>
 				[<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> (#LIEU)</p>]

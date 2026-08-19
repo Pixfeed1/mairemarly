@@ -33,11 +33,12 @@ corps = '''
 <div class="large page-reservation">
 
 <section class="manifs">
-	<h1 class="titre-bloc">S’inscrire <span>à une sortie, un repas, une manifestation</span></h1>
+	<h1 class="titre-bloc">S’inscrire <span>à un événement</span></h1>
 
 	<div class="manifs-grille">
 
 		<article class="manif">
+			<div class="manif-photo"><svg viewBox="0 0 640 360" width="640" height="360" role="img" aria-label="Photographie de l\u2019\u00e9v\u00e9nement"><rect width="640" height="360" fill="#DED6C6"/><path d="M0 250 Q160 210 320 245 T640 235 V360 H0 Z" fill="#C9BCA3"/><circle cx="530" cy="80" r="34" fill="#E5A93C" opacity=".8"/><rect x="180" y="150" width="120" height="100" fill="#8B7B63"/><path d="M170 150 L240 105 L310 150 Z" fill="#6E6050"/></svg></div>
 			<p class="manif-quand">dimanche 11 octobre · 12h00</p>
 			<h2 class="manif-titre">Repas des aînés</h2>
 			<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> Salle des fêtes</p>
@@ -62,6 +63,7 @@ corps = '''
 		</article>
 
 		<article class="manif">
+			<div class="manif-photo"><svg viewBox="0 0 640 360" width="640" height="360" role="img" aria-label="Photographie de l\u2019\u00e9v\u00e9nement"><rect width="640" height="360" fill="#CFD9CB"/><path d="M0 270 H640 V360 H0 Z" fill="#A8B6A0"/><rect x="60" y="170" width="150" height="100" fill="#B04A3A" opacity=".85"/><rect x="240" y="150" width="150" height="120" fill="#3F6B8A" opacity=".85"/><rect x="420" y="185" width="150" height="85" fill="#E5A93C" opacity=".85"/></svg></div>
 			<p class="manif-quand">dimanche 7 juin · 06h00</p>
 			<h2 class="manif-titre">Brocante du village — emplacements</h2>
 			<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> Rue de l’Église et place de la Mairie</p>

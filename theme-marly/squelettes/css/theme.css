@@ -732,7 +732,14 @@ section{ padding-block:70px; position:relative; }
 /* --- Manifestations, sur la page de réservation --------------------------- */
 .manifs{ padding-block:0 64px; }
 .manifs-grille{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:34px; }
-.manif{ background:#fff; border:1px solid var(--trait); border-top:4px solid var(--accent); padding:26px 28px 30px; }
+.manif{ background:#fff; border:1px solid var(--trait); border-top:4px solid var(--accent); overflow:hidden; }
+.manif > *:not(.manif-photo){ margin-left:28px; margin-right:28px; }
+.manif > *:first-child:not(.manif-photo){ margin-top:26px; }
+.manif > *:last-child{ margin-bottom:30px; }
+/* La photo mord sur toute la largeur de la carte : une image encadrée de
+   blanc de tous côtés fait vignette, pas illustration. */
+.manif-photo{ margin:0 0 20px; }
+.manif-photo img, .manif-photo svg{ display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; }
 .manif-quand{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.06em;
               text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
 .manif-titre{ font-family:var(--serif); font-size:26px; line-height:1.15; margin:0 0 10px; }

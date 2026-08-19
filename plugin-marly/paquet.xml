@@ -1,17 +1,17 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.0.0"
+	version="3.1.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
-	schema="3.0.0">
+	schema="3.1.0">
 
 	<nom>Réglages et réservations de Marly-Gomont</nom>
 	<licence>GNU/GPL v3</licence>
 
 	<necessite nom="SPIP" compatibilite="[4.2.0;4.4.*]" />
 
-	<pipeline nom="declarer_tables_principales" inclure="base/marly.php" />
+	<pipeline nom="declarer_tables_objets_sql" inclure="base/marly.php" />
 	<pipeline nom="declarer_tables_interfaces"  inclure="base/marly.php" />
 
 	<menu
