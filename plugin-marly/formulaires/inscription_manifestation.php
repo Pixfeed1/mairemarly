@@ -12,6 +12,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 include_spip('inc/marly_reservations');
+include_spip('inc/marly_antispam');
 
 function formulaires_inscription_manifestation_charger_dist($id_manifestation = 0) {
 	$manif = sql_fetsel('*', 'spip_manifestations',
@@ -20,7 +21,7 @@ function formulaires_inscription_manifestation_charger_dist($id_manifestation = 
 		return false;
 	}
 
-	return array(
+	return array_merge(marly_antispam_charger(), array(
 		'id_manifestation' => $id_manifestation,
 		'_manif'           => $manif,
 		'_restantes'       => marly_places_restantes($id_manifestation),
@@ -29,11 +30,16 @@ function formulaires_inscription_manifestation_charger_dist($id_manifestation = 
 		'courriel'         => '',
 		'telephone'        => '',
 		'motif'            => '',
-	);
+	));
 }
 
 function formulaires_inscription_manifestation_verifier_dist($id_manifestation = 0) {
 	$erreurs = array();
+
+	/* L'antispam d'abord : inutile de valider le contenu d'un robot. */
+	if ($message = marly_antispam_verifier()) {
+		return array('message_erreur' => $message);
+	}
 
 	foreach (array('nom', 'courriel') as $obligatoire) {
 		if (!trim((string) _request($obligatoire))) {

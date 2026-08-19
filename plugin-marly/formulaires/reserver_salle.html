@@ -13,6 +13,21 @@
 	<form method="post" action="#ENV{action}">
 		#ACTION_FORMULAIRE{#ENV{action}}
 
+		[(#REM) Le champ-piege. Il est sorti de l'ecran et retire de l'ordre de
+		        tabulation : un humain ne le voit ni ne l'atteint jamais. Un
+		        robot remplit tous les champs qu'il trouve dans le HTML.
+
+		        L'etiquette existe quand meme, et elle dit quoi faire : un
+		        lecteur d'ecran qui l'annoncerait malgre aria-hidden ne doit
+		        pas laisser son usager perplexe. ]
+		<div class="piege" aria-hidden="true">
+			<label for="_piege">Laissez ce champ vide</label>
+			<input type="text" name="_piege" id="_piege" value="[(#ENV{_piege}|attribut_html)]"
+			       tabindex="-1" autocomplete="off">
+		</div>
+		<input type="hidden" name="_pose" value="[(#ENV{_pose}|attribut_html)]">
+
+
 		<p class="explication"><:marly:reserver_explication:></p>
 
 		<fieldset>

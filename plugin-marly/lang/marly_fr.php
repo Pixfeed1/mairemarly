@@ -226,6 +226,11 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'je_minscris'               => 'Je m’inscris',
 	'obligatoire'               => '(obligatoire)',
 
+	'erreur_robot'              => 'Votre envoi n’a pas pu être accepté. Si vous êtes bien une personne, réessayez, ou appelez la mairie — nous prendrons votre demande par téléphone.',
+	'erreur_trop_vite'          => 'Le formulaire a été envoyé trop vite. Réessayez : le bouton fonctionne à nouveau.',
+	'erreur_formulaire_expire'  => 'Cette page est restée ouverte trop longtemps. Rechargez-la et recommencez, vos informations n’ont pas été perdues.',
+	'erreur_trop_de_demandes'   => 'Plusieurs demandes sont déjà en attente à cette adresse. Attendez notre réponse, ou appelez la mairie.',
+
 	'rgpd_titre'                => 'Que devient ce que vous saisissez ?',
 	'rgpd_texte'                => 'Les informations recueillies sont enregistrées par la mairie
 		dans le seul but de traiter votre demande. Elles sont conservées trois ans, ne sont

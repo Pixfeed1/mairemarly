@@ -16,6 +16,7 @@ pas**. Il sert à ne pas promettre au maire une conformité qui n'existe pas.
 | Polices auto-hébergées | tout le site | aucun appel à Google Fonts : un CDN transmet l'IP de chaque visiteur à un tiers |
 | Vidéos sans traceur avant consentement | fiches d'événement | façade au clic. Rien de la plateforme n'est chargé — pas même la vignette, qui suffirait à transmettre l'IP |
 | Lien d'évitement | toutes les pages | premier élément focusable |
+| Protection contre le spam | formulaires publics | jeton CSRF, champ-piège, délai minimum, refus des adresses web dans les champs d'identité, limite de demandes par adresse. **Pas de reCAPTCHA** : service de Google appelé sur chaque visiteur, et barrière pour les usagers déficients visuels ou âgés |
 | Navigation au clavier | menu, recherche | `aria-expanded`, piège à focus, Échap ferme, le focus revient au déclencheur |
 
 ## Pas fait

@@ -849,3 +849,9 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .mention-rgpd summary{ cursor:pointer; font-weight:700; color:var(--encre); }
 .mention-rgpd p{ margin:12px 0 0; line-height:1.6; }
 .mention-rgpd a{ color:var(--accent); }
+
+/* Le champ-piege de l'antispam. Sorti de l'ecran plutot que display:none :
+   certains robots ignorent les champs masques par display, aucun ne calcule
+   une position hors cadre. Il reste dans le flux pour eux, invisible pour
+   nous. */
+.piege{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }

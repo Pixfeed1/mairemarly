@@ -18,6 +18,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 include_spip('inc/marly_reservations');
+include_spip('inc/marly_antispam');
 
 function formulaires_reserver_salle_charger_dist($id_salle = 0) {
 	$salle = sql_fetsel('*', 'spip_salles',
@@ -26,7 +27,7 @@ function formulaires_reserver_salle_charger_dist($id_salle = 0) {
 		return false;   /* pas de salle, pas de formulaire */
 	}
 
-	return array(
+	return array_merge(marly_antispam_charger(), array(
 		'id_salle'   => $id_salle,
 		'_salle'     => $salle,
 		'date_jour'  => '',
@@ -37,11 +38,16 @@ function formulaires_reserver_salle_charger_dist($id_salle = 0) {
 		'courriel'   => '',
 		'telephone'  => '',
 		'motif'      => '',
-	);
+	));
 }
 
 function formulaires_reserver_salle_verifier_dist($id_salle = 0) {
 	$erreurs = array();
+
+	/* L'antispam d'abord : inutile de valider le contenu d'un robot. */
+	if ($message = marly_antispam_verifier()) {
+		return array('message_erreur' => $message);
+	}
 
 	foreach (array('nom', 'courriel', 'telephone', 'date_jour', 'motif') as $obligatoire) {
 		if (!trim((string) _request($obligatoire))) {
