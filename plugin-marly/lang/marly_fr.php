@@ -175,6 +175,76 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'erreur_nombre'            => 'Indiquez un nombre entier de jours.',
 	'erreur_delais_croises'    => 'Le délai maximum doit être supérieur au délai minimum.',
 
+	// --- Manifestations --------------------------------------------------------
+	'titre_manifestations'  => 'Manifestations et inscriptions',
+	'creer_manifestation'   => 'Créer une manifestation',
+	'modifier_manifestation' => 'Modifier la manifestation',
+	'manifestation_enregistree' => 'La manifestation a été enregistrée.',
+	'aucune_manifestation'  => 'Aucune manifestation. Créez-en une pour ouvrir les inscriptions.',
+	'les_inscrits'          => 'Les inscrits',
+	'inscrits'              => 'inscrits',
+	'inscrite'              => 'Inscrit',
+	'en_attente_courte'     => 'En attente',
+	'sans_limite'           => 'sans limite',
+	'col_manifestation'     => 'Manifestation',
+	'col_quand'             => 'Quand',
+	'col_places'            => 'Places',
+	'col_inscriptions'      => 'Inscriptions',
+
+	'legende_evenement'     => 'La manifestation',
+	'legende_places'        => 'Places et tarif',
+	'legende_fenetre'       => 'Fenêtre d’inscription',
+
+	'champ_lieu'                => 'Lieu',
+	'lieu_aide'                 => 'Exemple : salle des fêtes, place de la mairie, départ devant l’école.',
+	'champ_date_debut'          => 'Date et heure',
+	'champ_date_fin'            => 'Fin',
+	'date_fin_aide'             => 'Laissez vide pour une manifestation ponctuelle.',
+	'champ_places'              => 'Nombre de places',
+	'places_aide'               => '0 pour ne pas limiter — une kermesse en plein air n’a pas de jauge.',
+	'champ_places_par_personne' => 'Places maximum par inscription',
+	'places_par_personne_aide'  => 'Évite qu’une personne réserve la moitié de la salle.',
+	'champ_validation'          => 'Validation',
+	'validation_auto'           => 'Automatique — l’inscription est confirmée aussitôt',
+	'validation_mairie'         => 'Par la mairie — vous validez chaque inscription',
+	'validation_aide'           => 'Automatique pour un repas ou une sortie ; par la mairie quand il faut arbitrer, comme les emplacements de brocante.',
+	'champ_ouverture'           => 'Ouverture des inscriptions',
+	'ouverture_aide'            => 'Laissez vide pour ouvrir tout de suite.',
+	'champ_cloture'             => 'Clôture des inscriptions',
+	'cloture_aide'              => 'Exemple : huit jours avant, le temps de commander les couverts.',
+
+	'champ_places_demandees'    => 'Nombre de places',
+	'precision'                 => 'Précision',
+	'precision_aide'            => 'Régime alimentaire, personne à mobilité réduite, mètres d’emplacement souhaités…',
+	'je_minscris'               => 'Je m’inscris',
+	'inscription_confirmee'     => 'Votre inscription est confirmée. Vous allez recevoir un courriel.',
+	'places_restantes'          => 'Places restantes :',
+	'complet'                   => 'Complet',
+	'inscriptions_closes'       => 'Les inscriptions sont closes.',
+	'inscriptions_a_venir'      => 'Les inscriptions ouvriront le',
+
+	'erreur_places'             => 'Indiquez un nombre de places d’au moins 1.',
+	'erreur_trop_de_places'     => 'Vous ne pouvez pas prendre plus de @n@ places en une fois.',
+	'erreur_reste_seulement'    => 'Il ne reste que @n@ place(s).',
+	'erreur_complet'            => 'Il ne reste plus de place.',
+	'erreur_inscriptions_ferme' => 'Les inscriptions ne sont pas ouvertes.',
+	'erreur_inscriptions_pas_encore' => 'Les inscriptions ne sont pas encore ouvertes.',
+	'erreur_inscriptions_clos'  => 'Les inscriptions sont closes.',
+	'erreur_inscriptions_passe' => 'Cette manifestation a déjà eu lieu.',
+	'erreur_cloture_avant'      => 'La clôture doit venir après l’ouverture.',
+	'erreur_cloture_apres_evenement' => 'La clôture doit venir avant la manifestation.',
+
+	'courriel_sujet_inscrit'    => '@site@ — votre inscription est confirmée',
+	'courriel_corps_inscrit'    => 'Bonjour @nom@,
+
+Votre inscription est confirmée :
+
+  Manifestation : @salle@
+  Date          : @date_debut@
+  Places        : @places@
+
+@site@',
+
 	'enregistrer'      => 'Enregistrer',
 	'reglages_ok'      => 'Les réglages ont été enregistrés.',
 	'erreur_adresse'   => 'L’adresse doit commencer par https:// — copiez-la depuis la barre du navigateur.',

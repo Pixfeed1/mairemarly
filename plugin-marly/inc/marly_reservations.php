@@ -171,10 +171,18 @@ function marly_notifier($id_reservation, $evenement) {
 	if (!$reservation) {
 		return;
 	}
-	$salle = sql_fetsel('titre', 'spip_salles', 'id_salle = ' . intval($reservation['id_salle']));
+	/* Le courriel doit nommer ce qui est réservé, salle ou manifestation. */
+	if (intval($reservation['id_manifestation'])) {
+		$objet = sql_fetsel('titre', 'spip_manifestations',
+			'id_manifestation = ' . intval($reservation['id_manifestation']));
+	} else {
+		$objet = sql_fetsel('titre', 'spip_salles',
+			'id_salle = ' . intval($reservation['id_salle']));
+	}
 
 	$contexte = array(
-		'salle'      => $salle['titre'] ?? '',
+		'salle'      => $objet['titre'] ?? '',
+		'places'     => intval($reservation['places']),
 		'date_debut' => $reservation['date_debut'],
 		'date_fin'   => $reservation['date_fin'],
 		'nom'        => $reservation['nom'],
@@ -203,4 +211,119 @@ function marly_notifier($id_reservation, $evenement) {
 			$envoyer($mairie, _T('marly:courriel_sujet_mairie', $contexte), $corps);
 		}
 	}
+}
+
+/* ===========================================================================
+   MANIFESTATIONS — la mécanique du stock
+   ---------------------------------------------------------------------------
+   Rien à voir avec les salles. Une salle se verrouille, une manifestation se
+   décompte. Vingt personnes peuvent s'inscrire au même repas ; la question
+   n'est jamais « est-ce libre ? » mais « en reste-t-il assez ? ».
+   =========================================================================== */
+
+/**
+ * Places restantes. Rend PHP_INT_MAX si la manifestation n'a pas de jauge —
+ * une kermesse en plein air n'en a pas, et lui en inventer une reviendrait à
+ * refuser des gens sans raison.
+ */
+function marly_places_restantes($id_manifestation) {
+	$manif = sql_fetsel('places', 'spip_manifestations',
+		'id_manifestation = ' . intval($id_manifestation));
+	if (!$manif) {
+		return 0;
+	}
+	if (!intval($manif['places'])) {
+		return PHP_INT_MAX;
+	}
+
+	$prises = sql_getfetsel('SUM(places)', 'spip_reservations', array(
+		'id_manifestation = ' . intval($id_manifestation),
+		"statut IN ('demande','acceptee')",
+	));
+
+	return max(0, intval($manif['places']) - intval($prises));
+}
+
+/** Les inscriptions sont-elles ouvertes en ce moment ? */
+function marly_inscriptions_ouvertes($manif) {
+	if ($manif['statut'] !== 'publie') {
+		return 'ferme';
+	}
+	$maintenant = date('Y-m-d H:i:s');
+	if ($manif['ouverture'] > '0000-00-00 00:00:00' && $maintenant < $manif['ouverture']) {
+		return 'pas_encore';
+	}
+	if ($manif['cloture'] > '0000-00-00 00:00:00' && $maintenant > $manif['cloture']) {
+		return 'clos';
+	}
+	if ($manif['date_debut'] > '0000-00-00 00:00:00' && $maintenant > $manif['date_debut']) {
+		return 'passe';
+	}
+	return 'ouvert';
+}
+
+/**
+ * Inscrit quelqu'un à une manifestation.
+ *
+ * LE POINT DÉLICAT. Deux personnes qui prennent les deux dernières places à
+ * la même seconde doivent être départagées : sans transaction, les deux
+ * lisent « 2 restantes » et les deux s'inscrivent, et la mairie découvre 62
+ * inscrits pour 60 couverts le jour du repas.
+ *
+ * On recompte donc À L'INTÉRIEUR de la transaction, juste avant d'écrire.
+ *
+ * @return array  array('erreur' => '...') ou array('id_reservation' => n)
+ */
+function marly_inscrire($id_manifestation, $places, $donnees) {
+	$places = max(1, intval($places));
+
+	$manif = sql_fetsel('*', 'spip_manifestations',
+		'id_manifestation = ' . intval($id_manifestation));
+	if (!$manif) {
+		return array('erreur' => _T('marly:erreur_introuvable'));
+	}
+
+	if (($etat = marly_inscriptions_ouvertes($manif)) !== 'ouvert') {
+		return array('erreur' => _T('marly:erreur_inscriptions_' . $etat));
+	}
+
+	$max = max(1, intval($manif['places_par_personne']));
+	if ($places > $max) {
+		return array('erreur' => _T('marly:erreur_trop_de_places', array('n' => $max)));
+	}
+
+	sql_demarrer_transaction();
+
+	$restantes = marly_places_restantes($id_manifestation);
+	if ($restantes < $places) {
+		sql_terminer_transaction();
+		return array('erreur' => $restantes
+			? _T('marly:erreur_reste_seulement', array('n' => $restantes))
+			: _T('marly:erreur_complet'));
+	}
+
+	/* Une manifestation en validation automatique confirme tout de suite :
+	   c'est ce qu'attend quelqu'un qui s'inscrit au repas des aînés. Une
+	   manifestation à arbitrage laisse la mairie décider, comme une salle. */
+	$statut = ($manif['validation'] === 'auto') ? 'acceptee' : 'demande';
+
+	$id = sql_insertq('spip_reservations', array_merge($donnees, array(
+		'id_manifestation' => intval($id_manifestation),
+		'id_salle'         => 0,
+		'places'           => $places,
+		'statut'           => $statut,
+		'date_debut'       => $manif['date_debut'],
+		'date_fin'         => $manif['date_fin'],
+		'jeton'            => md5(uniqid((string) mt_rand(), true)),
+		'date'             => date('Y-m-d H:i:s'),
+	)));
+
+	sql_terminer_transaction();
+
+	if (!$id) {
+		return array('erreur' => _T('marly:erreur_enregistrement'));
+	}
+
+	marly_notifier($id, $statut === 'acceptee' ? 'inscrit' : 'demande');
+	return array('id_reservation' => $id);
 }

@@ -25,6 +25,13 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_salles', 'spip_reservations')),
 	);
 
+	/* 3.0.0 — les manifestations, et deux colonnes de plus sur les
+	   réservations. maj_tables ajoute les colonnes manquantes sans toucher
+	   aux données : les réservations de salles déjà saisies survivent. */
+	$maj['3.0.0'] = array(
+		array('maj_tables', array('spip_manifestations', 'spip_reservations')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
@@ -34,6 +41,7 @@ function marly_vider_tables($nom_meta_base_version) {
 	   lit. Les réglages, eux, restent — désactiver le plugin ne doit pas
 	   faire perdre le numéro de téléphone de la mairie. Ils seront effacés
 	   avec la meta ci-dessous seulement si l'on désinstalle vraiment. */
+	sql_drop_table('spip_manifestations');
 	sql_drop_table('spip_reservations');
 	sql_drop_table('spip_salles');
 

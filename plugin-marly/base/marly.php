@@ -49,10 +49,70 @@ function marly_declarer_tables_principales($tables) {
 		'principale' => 'oui',
 	);
 
+
+	/*
+	 * MANIFESTATIONS — tout ce à quoi on s'inscrit : repas des aînés, sortie
+	 * en car, emplacement de brocante, atelier, séance de cinéma itinérant.
+	 *
+	 * La différence avec une salle n'est pas de nature mais de comptage.
+	 * Une salle, c'est « ce créneau est-il libre ? » — une exclusivité.
+	 * Une manifestation, c'est « combien reste-t-il de places ? » — un stock.
+	 * Deux questions différentes, donc deux tables.
+	 *
+	 * Le nom : PAS spip_evenements. Le plugin Agenda de SPIP utilise déjà ce
+	 * nom, et le jour où la mairie l'installerait pour son calendrier, les
+	 * deux se marcheraient dessus.
+	 */
+	$tables['spip_manifestations'] = array(
+		'field' => array(
+			'id_manifestation' => 'bigint(21) NOT NULL',
+			'titre'            => 'text NOT NULL DEFAULT ""',
+			'descriptif'       => 'text NOT NULL DEFAULT ""',
+			'lieu'             => 'varchar(255) NOT NULL DEFAULT ""',
+			'date_debut'       => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+			'date_fin'         => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+
+			/* Le stock. 0 signifie « sans limite » : une kermesse en plein air
+			   n'a pas de jauge, et forcer un nombre obligerait à en inventer un. */
+			'places'           => 'int(11) NOT NULL DEFAULT 0',
+			'places_par_personne' => 'int(11) NOT NULL DEFAULT 1',
+
+			'tarif'            => 'varchar(60) NOT NULL DEFAULT ""',
+
+			/* auto   : l'inscription est confirmée tout de suite. C'est ce
+			            qu'attend quelqu'un qui s'inscrit au repas des aînés.
+			   mairie : la mairie arbitre, comme pour une salle. */
+			'validation'       => 'varchar(10) NOT NULL DEFAULT "auto"',
+
+			/* La fenêtre d'inscription, distincte de la date de l'événement :
+			   on ouvre les inscriptions au repas six semaines avant, et on les
+			   ferme huit jours avant pour commander les couverts. */
+			'ouverture'        => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+			'cloture'          => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+
+			'statut'           => 'varchar(20) NOT NULL DEFAULT "prepa"',
+			'maj'              => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY'   => 'id_manifestation',
+			'KEY statut'    => 'statut',
+			'KEY date_debut' => 'date_debut',
+		),
+		'titre'      => 'titre AS titre, "" AS lang',
+		'date'       => 'date_debut',
+		'principale' => 'oui',
+	);
+
 	$tables['spip_reservations'] = array(
 		'field' => array(
 			'id_reservation'   => 'bigint(21) NOT NULL',
+			/* Une réservation porte SOIT sur une salle, SOIT sur une
+			   manifestation. L'autre colonne reste à zéro. Une seule table
+			   pour les deux : même cycle de statuts, même écran de gestion,
+			   mêmes courriels — les séparer aurait tout dupliqué. */
 			'id_salle'         => 'bigint(21) NOT NULL DEFAULT 0',
+			'id_manifestation' => 'bigint(21) NOT NULL DEFAULT 0',
+			'places'           => 'int(11) NOT NULL DEFAULT 1',
 			'date_debut'       => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
 			'date_fin'         => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
 			'statut'           => 'varchar(20) NOT NULL DEFAULT "demande"',
@@ -81,6 +141,7 @@ function marly_declarer_tables_principales($tables) {
 		'key' => array(
 			'PRIMARY KEY'      => 'id_reservation',
 			'KEY id_salle'     => 'id_salle',
+			'KEY id_manifestation' => 'id_manifestation',
 			'KEY statut'       => 'statut',
 			/* L'index qui porte la recherche de conflit : on interroge
 			   toujours par salle et par date. */
@@ -98,5 +159,6 @@ function marly_declarer_tables_principales($tables) {
 function marly_declarer_tables_interfaces($interfaces) {
 	$interfaces['table_des_tables']['salles']       = 'salles';
 	$interfaces['table_des_tables']['reservations'] = 'reservations';
+	$interfaces['table_des_tables']['manifestations'] = 'manifestations';
 	return $interfaces;
 }

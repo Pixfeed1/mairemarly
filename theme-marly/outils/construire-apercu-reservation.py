@@ -32,6 +32,62 @@ corps = '''
 <main id="contenu-principal">
 <div class="large page-reservation">
 
+<section class="manifs">
+	<h1 class="titre-bloc">S’inscrire <span>à une sortie, un repas, une manifestation</span></h1>
+
+	<div class="manifs-grille">
+
+		<article class="manif">
+			<p class="manif-quand">dimanche 11 octobre · 12h00</p>
+			<h2 class="manif-titre">Repas des aînés</h2>
+			<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> Salle des fêtes</p>
+			<div class="manif-texte"><p>Le repas annuel offert par la commune aux habitants de 65 ans et plus. Inscription obligatoire avant le 3 octobre, le temps de commander les couverts.</p></div>
+			<p class="manif-tarif">Gratuit pour les Marlygomontois de plus de 65 ans · 22 € pour les accompagnants</p>
+			<p class="manif-places">Places restantes : <strong>17</strong> sur 90</p>
+			<div class="manif-formulaire">
+				<div class="formulaire_spip">
+					<form method="post" action="#">
+						<ul>
+							<li><label for="p1">Nombre de places</label><input type="number" id="p1" value="1" min="1" max="4"></li>
+							<li><label for="n1">Nom et prénom</label><input type="text" id="n1"></li>
+							<li><label for="c1">Adresse électronique</label><input type="email" id="c1"></li>
+							<li><label for="t1">Téléphone</label><input type="tel" id="t1"></li>
+							<li><label for="m1">Précision</label><textarea id="m1" rows="2"></textarea>
+								<small>Régime alimentaire, personne à mobilité réduite…</small></li>
+						</ul>
+						<p class="boutons"><input type="submit" class="submit" value="Je m’inscris"></p>
+					</form>
+				</div>
+			</div>
+		</article>
+
+		<article class="manif">
+			<p class="manif-quand">dimanche 7 juin · 06h00</p>
+			<h2 class="manif-titre">Brocante du village — emplacements</h2>
+			<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> Rue de l’Église et place de la Mairie</p>
+			<div class="manif-texte"><p>Réservez votre emplacement pour la brocante annuelle. Un emplacement fait 4 mètres linéaires. Les demandes sont validées par la mairie dans l’ordre d’arrivée.</p></div>
+			<p class="manif-tarif">6 € l’emplacement · gratuit pour les habitants de la commune</p>
+			<p class="manif-places">Places restantes : <strong>34</strong> sur 60</p>
+			<div class="manif-formulaire">
+				<div class="formulaire_spip">
+					<form method="post" action="#">
+						<ul>
+							<li><label for="p2">Nombre de places</label><input type="number" id="p2" value="1" min="1" max="3"></li>
+							<li><label for="n2">Nom et prénom</label><input type="text" id="n2"></li>
+							<li><label for="c2">Adresse électronique</label><input type="email" id="c2"></li>
+							<li><label for="t2">Téléphone</label><input type="tel" id="t2"></li>
+							<li><label for="m2">Précision</label><textarea id="m2" rows="2"></textarea>
+								<small>Mètres d’emplacement souhaités, véhicule à garer…</small></li>
+						</ul>
+						<p class="boutons"><input type="submit" class="submit" value="Je m’inscris"></p>
+					</form>
+				</div>
+			</div>
+		</article>
+
+	</div>
+</section>
+
 	<section class="salle">
 		<h1 class="titre-bloc">Réserver <span>la salle des fêtes</span></h1>
 
@@ -118,7 +174,7 @@ page = f'''<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Réserver une salle — Marly-Gomont</title>
+<title>Réserver et s’inscrire — Marly-Gomont</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
 {css}

@@ -1,0 +1,34 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+
+<h1 class="grostitre">[(#ENV{id_manifestation}|=={new}|?{'<:marly:creer_manifestation:>','<:marly:modifier_manifestation:>'})]</h1>
+
+[(#FORMULAIRE_EDITER_MANIFESTATION{#ENV{id_manifestation,new}})]
+
+[(#ENV{id_manifestation}|=={new}|non)
+<BOUCLE_inscrits(RESERVATIONS){id_manifestation=#ENV{id_manifestation}}{par date}{statut IN demande,acceptee}>
+<B_inscrits>
+<h2><:marly:les_inscrits:></h2>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:col_demandeur:></th>
+			<th><:marly:col_places:></th>
+			<th><:marly:col_etat:></th>
+		</tr>
+	</thead>
+	<tbody>
+</B_inscrits>
+		<tr>
+			<td>
+				#NOM[ — <em>(#ORGANISME)</em>]<br>
+				<a href="mailto:#COURRIEL">#COURRIEL</a>[ · (#TELEPHONE)]
+				[<br><small>(#MOTIF)</small>]
+			</td>
+			<td>#PLACES</td>
+			<td>[(#STATUT|=={acceptee}|?{'<:marly:inscrite:>','<:marly:en_attente_courte:>'})]</td>
+		</tr>
+</BOUCLE_inscrits>
+	</tbody>
+</table>
+<//B_inscrits>
+]

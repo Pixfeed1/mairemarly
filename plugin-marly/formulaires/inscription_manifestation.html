@@ -1,0 +1,54 @@
+[(#REM)
+  Le formulaire d'inscription. Court par principe : quelqu'un qui s'inscrit
+  au repas des aines ne doit pas remplir un dossier.
+
+  Le nombre de places restantes est affiche AVANT les champs. Remplir un
+  formulaire pour apprendre a la fin qu'il ne reste rien, c'est le meilleur
+  moyen de faire telephoner la personne a la mairie — ce que le formulaire
+  etait cense eviter.
+]
+<div class="formulaire_spip formulaire_inscription">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<ul>
+			<li class="editer editer_places[ (#ENV**{erreurs}|table_valeur{places}|oui)erreur]">
+				<label for="places"><:marly:champ_places_demandees:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{places})</span>]
+				<input type="number" class="text" name="places" id="places" min="1"
+				       max="[(#ENV{_manif}|table_valeur{places_par_personne})]"
+				       value="[(#ENV{places}|attribut_html)]" required>
+			</li>
+			<li class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
+				<label for="nom"><:marly:votre_nom:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]" required>
+			</li>
+			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
+				<label for="courriel"><:marly:votre_courriel:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]" required>
+			</li>
+			<li class="editer editer_telephone">
+				<label for="telephone"><:marly:votre_telephone:></label>
+				<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]">
+			</li>
+			<li class="editer editer_motif">
+				<label for="motif"><:marly:precision:></label>
+				<textarea name="motif" id="motif" rows="2">[(#ENV{motif}|textebrut)]</textarea>
+				<small><:marly:precision_aide:></small>
+			</li>
+		</ul>
+
+		<p class="boutons">
+			<input type="submit" class="submit" value="<:marly:je_minscris:>">
+		</p>
+	</form>
+	]
+
+</div>

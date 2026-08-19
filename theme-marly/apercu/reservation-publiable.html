@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Réserver une salle — Marly-Gomont</title>
+<title>Réserver et s’inscrire — Marly-Gomont</title>
 <meta name="robots" content="noindex, nofollow">
 <style>
 /* ===========================================================================
@@ -811,6 +811,37 @@ section{ padding-block:70px; position:relative; }
   .salle-grille{ grid-template-columns:1fr; gap:38px; }
 }
 
+/* --- Manifestations, sur la page de réservation --------------------------- */
+.manifs{ padding-block:0 64px; }
+.manifs-grille{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:34px; }
+.manif{ background:#fff; border:1px solid var(--trait); border-top:4px solid var(--accent); padding:26px 28px 30px; }
+.manif-quand{ font-family:var(--texte); font-size:13px; font-weight:700; letter-spacing:.06em;
+              text-transform:uppercase; color:var(--accent); margin:0 0 8px; }
+.manif-titre{ font-family:var(--serif); font-size:26px; line-height:1.15; margin:0 0 10px; }
+.manif-lieu{ display:flex; align-items:center; gap:7px; font-family:var(--texte); font-size:14px;
+             color:var(--encre-doux); margin:0 0 14px; }
+.manif-lieu .ico{ width:15px; height:15px; color:var(--accent); }
+.manif-texte{ font-family:var(--texte); font-size:15px; line-height:1.6; }
+.manif-tarif{ font-family:var(--texte); font-weight:700; margin:14px 0 0; }
+.manif-places{ font-family:var(--texte); font-size:14px; margin:14px 0 0;
+               background:var(--creme); padding:9px 13px; border-left:3px solid var(--jaune); }
+.manif-places strong{ font-size:17px; }
+.manif-formulaire{ margin-top:20px; padding-top:20px; border-top:1px solid var(--trait); }
+.manif-formulaire .formulaire_spip{ background:none; padding:0; border-top:0; }
+.manif-formulaire ul{ list-style:none; margin:0; padding:0; }
+.manif-formulaire li{ margin-bottom:13px; }
+.manif-formulaire label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:4px; }
+.manif-formulaire input, .manif-formulaire textarea{
+  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+  padding:10px 12px; font-family:var(--texte); font-size:15px; color:var(--encre);
+}
+.manif-formulaire small{ display:block; margin-top:4px; font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
+.manif-formulaire .submit{
+  border:0; background:var(--accent); color:#fff; border-radius:4px;
+  padding:12px 26px; font-family:var(--texte); font-weight:700; cursor:pointer;
+}
+.manif-formulaire .submit:hover{ background:var(--accent-sombre); }
+
 </style>
 </head>
 <body class="page-reservation">
@@ -973,6 +1004,62 @@ section{ padding-block:70px; position:relative; }
 
 <main id="contenu-principal">
 <div class="large page-reservation">
+
+<section class="manifs">
+	<h1 class="titre-bloc">S’inscrire <span>à une sortie, un repas, une manifestation</span></h1>
+
+	<div class="manifs-grille">
+
+		<article class="manif">
+			<p class="manif-quand">dimanche 11 octobre · 12h00</p>
+			<h2 class="manif-titre">Repas des aînés</h2>
+			<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> Salle des fêtes</p>
+			<div class="manif-texte"><p>Le repas annuel offert par la commune aux habitants de 65 ans et plus. Inscription obligatoire avant le 3 octobre, le temps de commander les couverts.</p></div>
+			<p class="manif-tarif">Gratuit pour les Marlygomontois de plus de 65 ans · 22 € pour les accompagnants</p>
+			<p class="manif-places">Places restantes : <strong>17</strong> sur 90</p>
+			<div class="manif-formulaire">
+				<div class="formulaire_spip">
+					<form method="post" action="#">
+						<ul>
+							<li><label for="p1">Nombre de places</label><input type="number" id="p1" value="1" min="1" max="4"></li>
+							<li><label for="n1">Nom et prénom</label><input type="text" id="n1"></li>
+							<li><label for="c1">Adresse électronique</label><input type="email" id="c1"></li>
+							<li><label for="t1">Téléphone</label><input type="tel" id="t1"></li>
+							<li><label for="m1">Précision</label><textarea id="m1" rows="2"></textarea>
+								<small>Régime alimentaire, personne à mobilité réduite…</small></li>
+						</ul>
+						<p class="boutons"><input type="submit" class="submit" value="Je m’inscris"></p>
+					</form>
+				</div>
+			</div>
+		</article>
+
+		<article class="manif">
+			<p class="manif-quand">dimanche 7 juin · 06h00</p>
+			<h2 class="manif-titre">Brocante du village — emplacements</h2>
+			<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> Rue de l’Église et place de la Mairie</p>
+			<div class="manif-texte"><p>Réservez votre emplacement pour la brocante annuelle. Un emplacement fait 4 mètres linéaires. Les demandes sont validées par la mairie dans l’ordre d’arrivée.</p></div>
+			<p class="manif-tarif">6 € l’emplacement · gratuit pour les habitants de la commune</p>
+			<p class="manif-places">Places restantes : <strong>34</strong> sur 60</p>
+			<div class="manif-formulaire">
+				<div class="formulaire_spip">
+					<form method="post" action="#">
+						<ul>
+							<li><label for="p2">Nombre de places</label><input type="number" id="p2" value="1" min="1" max="3"></li>
+							<li><label for="n2">Nom et prénom</label><input type="text" id="n2"></li>
+							<li><label for="c2">Adresse électronique</label><input type="email" id="c2"></li>
+							<li><label for="t2">Téléphone</label><input type="tel" id="t2"></li>
+							<li><label for="m2">Précision</label><textarea id="m2" rows="2"></textarea>
+								<small>Mètres d’emplacement souhaités, véhicule à garer…</small></li>
+						</ul>
+						<p class="boutons"><input type="submit" class="submit" value="Je m’inscris"></p>
+					</form>
+				</div>
+			</div>
+		</article>
+
+	</div>
+</section>
 
 	<section class="salle">
 		<h1 class="titre-bloc">Réserver <span>la salle des fêtes</span></h1>

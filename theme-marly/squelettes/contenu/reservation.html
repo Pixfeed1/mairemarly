@@ -16,6 +16,45 @@
 ]
 <div class="large page-reservation">
 
+
+	[(#REM) LES MANIFESTATIONS, avant les salles : on s'inscrit au repas des
+	        aines cent fois plus souvent qu'on ne loue la salle des fetes.
+	        L'ordre d'une page dit ce qui est frequent. ]
+	<B_manifs>
+	<section class="manifs">
+		<h1 class="titre-bloc"><:marly:sinscrire:> <span><:marly:a_une_sortie:></span></h1>
+
+		<div class="manifs-grille">
+			<BOUCLE_manifs(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{par date_debut}{0,12}>
+			<article class="manif">
+				<p class="manif-quand">[(#DATE_DEBUT|affdate{'l j F'})] · [(#DATE_DEBUT|affdate{'H\hi'})]</p>
+				<h2 class="manif-titre">#TITRE</h2>
+				[<p class="manif-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> (#LIEU)</p>]
+				[<div class="manif-texte">(#DESCRIPTIF|propre)</div>]
+				[<p class="manif-tarif">(#TARIF)</p>]
+
+				[(#REM) Les places restantes AVANT le formulaire : remplir dix
+				        champs pour apprendre a la fin qu'il ne reste rien, c'est
+				        le meilleur moyen de faire telephoner la personne a la
+				        mairie — ce que le formulaire etait cense eviter. ]
+				[(#PLACES|>{0})
+					<p class="manif-places">
+						<:marly:places_restantes:>
+						<strong>[(#ID_MANIFESTATION|marly_places_restantes)]</strong>
+						<:marly:sur:> #PLACES
+					</p>
+				]
+
+				<div class="manif-formulaire">
+					[(#FORMULAIRE_INSCRIPTION_MANIFESTATION{#ID_MANIFESTATION})]
+				</div>
+			</article>
+			</BOUCLE_manifs>
+		</div>
+	</section>
+	</B_manifs>
+	<//B_manifs>
+
 	<B_salles>
 	<BOUCLE_salles(SALLES){statut=publie}{par titre}>
 

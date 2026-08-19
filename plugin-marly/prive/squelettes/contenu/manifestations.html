@@ -1,0 +1,45 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+
+<h1 class="grostitre"><:marly:titre_manifestations:></h1>
+
+<B_manifs>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:col_manifestation:></th>
+			<th><:marly:col_quand:></th>
+			<th><:marly:col_places:></th>
+			<th><:marly:col_inscriptions:></th>
+			<th><:marly:col_etat:></th>
+		</tr>
+	</thead>
+	<tbody>
+	<BOUCLE_manifs(MANIFESTATIONS){par date_debut}{inverse}>
+		<tr>
+			<td>
+				<a href="[(#URL_ECRIRE{manifestation,id_manifestation=#ID_MANIFESTATION})]">#TITRE</a>
+				[<br><small>(#LIEU)</small>]
+			</td>
+			<td>[(#DATE_DEBUT|affdate{'l j F Y à H\hi'})]</td>
+			<td>
+				[(#PLACES|=={0}|?{'<:marly:sans_limite:>',#PLACES})]
+			</td>
+			<td>
+				[(#REM) Le compte des inscrits, qui est la seule chose que la
+				        mairie regarde vraiment dans cette liste. ]
+				<BOUCLE_compte(RESERVATIONS){id_manifestation}{statut IN demande,acceptee}>
+				</BOUCLE_compte>
+				[(#TOTAL_BOUCLE)] <:marly:inscrits:>
+			</td>
+			<td>[(#STATUT|=={publie}|?{'<:marly:statut_publie:>','<:marly:statut_prepa:>'})]</td>
+		</tr>
+	</BOUCLE_manifs>
+	</tbody>
+</table>
+</B_manifs>
+<p class="rien"><:marly:aucune_manifestation:></p>
+<//B_manifs>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ECRIRE{manifestation,id_manifestation=new})]"><:marly:creer_manifestation:></a>
+</p>
