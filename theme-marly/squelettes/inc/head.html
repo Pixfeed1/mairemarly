@@ -13,9 +13,18 @@
 	<meta charset="#CHARSET">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>[(#ENV{titre_page}|textebrut) — ]#NOM_SITE_SPIP</title>
+	[(#REM) Sur les pages intérieures : « Urbanisme — Marly-Gomont ». Sur
+	        l'accueil, où il n'y a pas de titre de page, on ajoute la mention
+	        « Site officiel de la commune » : c'est elle qui, dans une liste de
+	        résultats Google, distingue le vrai site de l'ancien
+	        marlygomont.free.fr et des pages non officielles. On ne la met PAS
+	        partout — elle mangerait la place du titre utile. ]
+	<title>[(#ENV{titre_page}|textebrut) — ]#NOM_SITE_SPIP[(#ENV{titre_page}|non) — <:marly:site_officiel:>]</title>
 
-	[<meta name="description" content="(#ENV{description}|textebrut|attribut_html)">]
+	[(#REM) Faute de description propre à la page, on retombe sur celle du
+	        site : une page sans description laisse Google composer la sienne
+	        à partir du premier texte venu. ]
+	[<meta name="description" content="(#ENV{description}|sinon{#DESCRIPTIF_SITE_SPIP}|textebrut|attribut_html)">]
 	<meta name="theme-color" content="#1E5B41">
 
 	[(#REM) Partage sur les réseaux et messageries ]

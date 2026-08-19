@@ -21,6 +21,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// --- En-tête et navigation ---------------------------------------------
 	'aller_contenu'        => 'Aller au contenu principal',
+	'site_officiel'        => 'Site officiel de la commune',
 	'menu_principal'       => 'Navigation principale',
 	'menu'                 => 'Menu',
 	'ouvrir_menu'          => 'Ouvrir le menu',
