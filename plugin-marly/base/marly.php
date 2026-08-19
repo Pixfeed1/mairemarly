@@ -76,6 +76,52 @@ function marly_declarer_tables_objets_sql($tables) {
 	 * nom, et le jour où la mairie l'installerait pour son calendrier, les
 	 * deux se marcheraient dessus.
 	 */
+
+	/*
+	 * ABONNÉS à la lettre d'information.
+	 *
+	 * DOUBLE CONFIRMATION obligatoire, et ce n'est pas un raffinement : sans
+	 * elle, n'importe qui inscrit l'adresse d'un voisin, et la commune se
+	 * retrouve à envoyer des courriels non sollicités en son nom. Une adresse
+	 * ne devient active qu'après un clic dans un courriel reçu à cette
+	 * adresse-là — c'est la seule preuve qu'elle appartient bien au
+	 * demandeur.
+	 *
+	 * Les adresses en attente depuis plus de sept jours sont effacees : une
+	 * adresse jamais confirmee est une donnee qu'on n'a pas le droit de
+	 * garder.
+	 */
+	$tables['spip_abonnes'] = array(
+		'field' => array(
+			'id_abonne'    => 'bigint(21) NOT NULL',
+			'courriel'     => 'varchar(255) NOT NULL DEFAULT ""',
+			'nom'          => 'varchar(255) NOT NULL DEFAULT ""',
+
+			/* attente -> confirme -> desinscrit */
+			'statut'       => 'varchar(20) NOT NULL DEFAULT "attente"',
+
+			/* Le meme jeton sert a confirmer puis a se desinscrire : le lien
+			   de desinscription doit figurer dans CHAQUE envoi, sans que le
+			   destinataire ait a se souvenir de quoi que ce soit. */
+			'jeton'        => 'varchar(32) NOT NULL DEFAULT ""',
+
+			'date'         => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+			'date_confirmation' => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+			'maj'          => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY'      => 'id_abonne',
+			'UNIQUE KEY courriel' => 'courriel',
+			'KEY statut'       => 'statut',
+			'KEY jeton'        => 'jeton',
+		),
+		'titre'      => 'courriel AS titre, "" AS lang',
+		'date'       => 'date',
+		'principale' => 'oui',
+		'type'       => 'abonne',
+		'editable'   => 'non',
+	);
+
 	$tables['spip_manifestations'] = array(
 		'field' => array(
 			'id_manifestation' => 'bigint(21) NOT NULL',
@@ -204,5 +250,6 @@ function marly_declarer_tables_interfaces($interfaces) {
 	$interfaces['table_des_tables']['salles']       = 'salles';
 	$interfaces['table_des_tables']['reservations'] = 'reservations';
 	$interfaces['table_des_tables']['manifestations'] = 'manifestations';
+	$interfaces['table_des_tables']['abonnes'] = 'abonnes';
 	return $interfaces;
 }

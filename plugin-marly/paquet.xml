@@ -1,10 +1,10 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.3.0"
+	version="3.4.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
-	schema="3.2.0">
+	schema="3.4.0">
 
 	<nom>Réglages et réservations de Marly-Gomont</nom>
 	<licence>GNU/GPL v3</licence>
@@ -22,6 +22,11 @@
 	<menu
 		nom="reservations"
 		titre="marly:titre_reservations"
+		parent="menu_edition" />
+
+	<menu
+		nom="abonnes"
+		titre="marly:titre_abonnes"
 		parent="menu_edition" />
 
 	<menu

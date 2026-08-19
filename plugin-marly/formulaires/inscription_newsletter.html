@@ -1,0 +1,54 @@
+[(#REM)
+  Le formulaire d'inscription, tel qu'il apparait dans la fenetre.
+  Court par principe : une adresse suffit, le prenom est facultatif.
+]
+<div class="formulaire_spip formulaire_newsletter">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<div class="piege" aria-hidden="true">
+			<label for="_piege_nl">Laissez ce champ vide</label>
+			<input type="text" name="_piege" id="_piege_nl" value="" tabindex="-1" autocomplete="off">
+		</div>
+		<input type="hidden" name="_pose" value="[(#ENV{_pose}|attribut_html)]">
+
+		<ul>
+			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
+				<label for="nl-courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				<input type="email" class="text" name="courriel" id="nl-courriel"
+				       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true">
+			</li>
+			<li class="editer editer_nom">
+				<label for="nl-nom"><:marly:votre_prenom:></label>
+				<input type="text" class="text" name="nom" id="nl-nom"
+				       value="[(#ENV{nom}|attribut_html)]" autocomplete="given-name">
+			</li>
+
+			[(#REM) La case de consentement. Elle part DECOCHEE : une case
+			        pre-cochee n'est pas un consentement, le RGPD le dit et la
+			        CNIL sanctionne. Elle est aussi un champ obligatoire, et le
+			        formulaire est refuse tant qu'elle ne l'est pas. ]
+			<li class="editer editer_consent[ (#ENV**{erreurs}|table_valeur{consent}|oui)erreur]">
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{consent})</span>]
+				<label class="case" for="nl-consent">
+					<input type="checkbox" name="consent" id="nl-consent" value="oui" required aria-required="true">
+					<span><:marly:consentement_newsletter:></span>
+				</label>
+			</li>
+		</ul>
+
+		<p class="boutons">
+			<input type="submit" class="submit" value="<:marly:je_mabonne:>">
+		</p>
+
+		<p class="nl-note"><:marly:newsletter_note:></p>
+	</form>
+	]
+
+</div>

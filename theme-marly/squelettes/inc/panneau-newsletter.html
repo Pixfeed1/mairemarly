@@ -1,0 +1,27 @@
+[(#REM)
+  inc/panneau-newsletter.html — la fenetre d'inscription.
+  ---------------------------------------------------------------------------
+  Meme mecanique que le panneau de recherche : le bouton de l'en-tete est un
+  vrai lien vers une page. Sans JavaScript il y mene et rien n'est perdu ;
+  avec, la fenetre s'ouvre par-dessus la page courante — s'abonner ne doit
+  pas faire perdre l'endroit ou l'on se trouvait.
+
+  RGAA : role dialog, aria-modal, piege a focus, Echap ferme, le focus
+  revient au bouton, et le panneau ferme sort de l'ordre de tabulation.
+]
+<div class="panneau-nl" id="panneau-newsletter" data-ouvert="non" aria-hidden="true"
+     role="dialog" aria-modal="true" aria-labelledby="titre-newsletter">
+	<div class="nl-dedans">
+
+		<button class="fermer" type="button" data-ferme-newsletter>
+			<svg class="ico" aria-hidden="true"><use href="#ri-close-line"/></svg>
+			<span class="sr"><:marly:fermer_newsletter:></span>
+		</button>
+
+		<h2 class="titre-bloc" id="titre-newsletter"><:marly:lettre:> <span><:marly:dinformation:></span></h2>
+		<p class="nl-intro"><:marly:newsletter_intro:></p>
+
+		[(#FORMULAIRE_INSCRIPTION_NEWSLETTER)]
+
+	</div>
+</div>

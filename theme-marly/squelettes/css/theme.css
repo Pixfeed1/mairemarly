@@ -855,3 +855,71 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    une position hors cadre. Il reste dans le flux pour eux, invisible pour
    nous. */
 .piege{ position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden; }
+
+/* ===========================================================================
+   LETTRE D'INFORMATION — la fenêtre d'inscription
+   ---------------------------------------------------------------------------
+   Une fenêtre modale, pas une page : s'abonner ne doit pas faire perdre
+   l'endroit où l'on se trouvait. Elle reprend le voile et l'animation du
+   panneau de recherche, pour que les deux se ressemblent.
+   =========================================================================== */
+
+.panneau-nl{
+  position:fixed; inset:0; z-index:90;
+  display:flex; align-items:center; justify-content:center; padding:24px;
+  background:rgba(29,26,26,.55);
+  opacity:0; visibility:hidden; transition:opacity .25s ease, visibility .25s ease;
+}
+.panneau-nl[data-ouvert="oui"]{ opacity:1; visibility:visible; }
+
+.nl-dedans{
+  position:relative; width:min(520px,100%); max-height:90vh; overflow-y:auto;
+  background:var(--creme); border-top:5px solid var(--accent);
+  padding:38px 40px 34px;
+  transform:translateY(14px); transition:transform .25s ease;
+}
+.panneau-nl[data-ouvert="oui"] .nl-dedans{ transform:translateY(0); }
+
+.nl-dedans .fermer{
+  position:absolute; top:14px; right:14px;
+  width:42px; height:42px; border-radius:50%;
+  border:1px solid var(--trait); background:#fff; color:var(--encre);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.nl-dedans .fermer:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.nl-dedans .fermer .ico{ width:20px; height:20px; }
+
+.nl-dedans .titre-bloc{ font-size:clamp(30px,4.4vw,42px); margin:0 0 14px; }
+.nl-intro{ font-family:var(--texte); font-size:15px; line-height:1.6; color:var(--encre-doux); margin:0 0 26px; }
+
+.formulaire_newsletter ul{ list-style:none; margin:0; padding:0; }
+.formulaire_newsletter li{ margin-bottom:16px; }
+.formulaire_newsletter label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:5px; }
+.formulaire_newsletter input[type="email"],
+.formulaire_newsletter input[type="text"]{
+  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+  padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
+}
+
+/* La case de consentement : cliquable sur toute sa ligne, et la cible fait
+   plus de 24 px de haut — un doigt n'atteint pas une case de 13 px. */
+.formulaire_newsletter .case{
+  display:flex; align-items:flex-start; gap:11px; cursor:pointer;
+  font-weight:400; font-size:14px; line-height:1.5; margin:0; padding:4px 0;
+}
+.formulaire_newsletter .case input{ width:20px; height:20px; margin:1px 0 0; flex-shrink:0; accent-color:var(--accent); }
+
+.formulaire_newsletter .submit{
+  border:0; background:var(--accent); color:#fff; border-radius:4px; width:100%;
+  padding:15px 26px; font-family:var(--texte); font-weight:700; font-size:16px; cursor:pointer;
+}
+.formulaire_newsletter .submit:hover{ background:var(--accent-sombre); }
+.nl-note{ font-family:var(--texte); font-size:12.5px; line-height:1.55; color:var(--encre-doux); margin:16px 0 0; }
+.formulaire_newsletter .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px;
+                                        font-weight:700; color:#A32020; margin-bottom:5px; }
+.formulaire_newsletter .erreur input{ border-color:#A32020; }
+
+@media (prefers-reduced-motion:reduce){
+  .panneau-nl, .nl-dedans{ transition:none; }
+  .nl-dedans{ transform:none; }
+}

@@ -266,6 +266,43 @@ Votre inscription est confirmée :
 
 @site@',
 
+	// --- Lettre d'information --------------------------------------------------
+	'titre_abonnes'         => 'Abonnés à la lettre d’information',
+	'titre_newsletter'      => 'Lettre d’information',
+	'newsletter_intro'      => 'Travaux, coupures d’eau, alertes météo, conseil municipal, manifestations : recevez l’essentiel par courriel. Quelques envois par an, jamais plus.',
+	'votre_prenom'          => 'Prénom',
+	'je_mabonne'            => 'Je m’abonne',
+	'consentement_newsletter' => 'J’accepte que la mairie utilise mon adresse pour m’envoyer sa lettre d’information.',
+	'newsletter_note'       => 'Votre adresse ne sert qu’à cela. Elle n’est transmise à personne et vous pouvez vous désinscrire en un clic, depuis n’importe quel envoi.',
+	'newsletter_verifiez'   => 'Presque fini. Ouvrez votre boîte : un courriel vous attend, avec un lien à cliquer pour confirmer. Sans ce clic, vous ne recevrez rien.',
+	'erreur_consentement'   => 'Cochez la case pour que la mairie puisse vous écrire.',
+
+	'newsletter_confirme'   => 'Votre abonnement est confirmé. Merci.',
+	'newsletter_desinscrit' => 'Vous êtes désinscrit. Vous ne recevrez plus rien.',
+	'newsletter_jeton_inconnu' => 'Ce lien n’est plus valable. Il a peut-être déjà servi, ou il a expiré.',
+
+	'courriel_sujet_confirmation' => '@site@ — confirmez votre abonnement',
+	'courriel_corps_confirmation' => 'Bonjour @nom@,
+
+Quelqu’un — vous, sans doute — a demandé à recevoir la lettre d’information
+de @site@.
+
+Pour confirmer, cliquez sur ce lien :
+
+@lien@
+
+Si vous n’êtes à l’origine de rien, ignorez ce message : sans ce clic, votre
+adresse ne sera pas utilisée et sera effacée sous sept jours.
+
+@site@',
+
+	'col_courriel'          => 'Adresse',
+	'col_inscrit_le'        => 'Inscrit le',
+	'abonnes_confirmes'     => 'Abonnés confirmés',
+	'abonnes_attente'       => 'En attente de confirmation',
+	'aucun_abonne'          => 'Aucun abonné pour le moment.',
+	'exporter_csv'          => 'Exporter la liste (CSV)',
+
 	'enregistrer'      => 'Enregistrer',
 	'reglages_ok'      => 'Les réglages ont été enregistrés.',
 	'erreur_adresse'   => 'L’adresse doit commencer par https:// — copiez-la depuis la barre du navigateur.',

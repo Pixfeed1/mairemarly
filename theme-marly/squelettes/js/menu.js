@@ -275,3 +275,80 @@
 		});
 	});
 })();
+
+/**
+ * Fenêtre d'inscription à la lettre d'information.
+ * ---------------------------------------------------------------------------
+ * Le bouton de l'en-tête est un vrai lien vers une page. Sans JavaScript il
+ * y mène et rien n'est perdu ; avec, on intercepte et la fenêtre s'ouvre
+ * par-dessus la page courante — s'abonner ne doit pas faire perdre l'endroit
+ * où l'on se trouvait.
+ */
+(function () {
+	'use strict';
+
+	var declencheurs = document.querySelectorAll('[data-ouvre-newsletter]');
+	var panneau = document.getElementById('panneau-newsletter');
+	if (!declencheurs.length || !panneau) { return; }
+
+	var champ     = panneau.querySelector('input[type="email"]');
+	var fermeture = panneau.querySelector('[data-ferme-newsletter]');
+	var ouvert    = false;
+	var appelant  = null;
+
+	function basculer(vers, origine) {
+		ouvert = (typeof vers === 'boolean') ? vers : !ouvert;
+
+		panneau.setAttribute('data-ouvert', ouvert ? 'oui' : 'non');
+		panneau.setAttribute('aria-hidden', ouvert ? 'false' : 'true');
+		if ('inert' in HTMLElement.prototype) { panneau.inert = !ouvert; }
+		document.documentElement.style.overflow = ouvert ? 'hidden' : '';
+
+		if (ouvert) {
+			appelant = origine || null;
+			if (champ) { champ.focus(); }
+		} else if (appelant) {
+			appelant.focus();
+			appelant = null;
+		}
+	}
+
+	Array.prototype.forEach.call(declencheurs, function (el) {
+		el.addEventListener('click', function (e) {
+			e.preventDefault();          /* le lien reste le repli sans JS */
+			basculer(true, el);
+		});
+	});
+
+	if (fermeture) {
+		fermeture.addEventListener('click', function () { basculer(false); });
+	}
+
+	/* Cliquer sur le fond ferme : ce n'est pas une zone morte. */
+	panneau.addEventListener('click', function (e) {
+		if (e.target === panneau) { basculer(false); }
+	});
+
+	document.addEventListener('keydown', function (e) {
+		if (!ouvert) { return; }
+		if (e.key === 'Escape') { basculer(false); return; }
+
+		if (e.key !== 'Tab') { return; }
+		var cibles = panneau.querySelectorAll('a[href], button:not([disabled]), input');
+		if (!cibles.length) { return; }
+		var premier = cibles[0], dernier = cibles[cibles.length - 1];
+		if (e.shiftKey && document.activeElement === premier) {
+			e.preventDefault(); dernier.focus();
+		} else if (!e.shiftKey && document.activeElement === dernier) {
+			e.preventDefault(); premier.focus();
+		}
+	});
+
+	/* Un formulaire qui vient de repondre doit rester visible : sinon
+	   l'usager voit la fenetre se fermer et croit avoir echoue. */
+	if (panneau.querySelector('.reponse_formulaire')) {
+		basculer(true, declencheurs[0]);
+	}
+
+	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
+})();
