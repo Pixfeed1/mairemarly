@@ -43,6 +43,11 @@ done
 On garde celle qui rend `200` et **plus de 50 000 octets**. Un loader fait
 plus de 100 Ko : tout ce qui est en dessous est une page d'erreur.
 
+> Vérifié le 19 août 2026 depuis `serveur2` : les deux adresses rendent
+> `200` et **190 156 octets** — c'est le même fichier. Le test reste dans
+> cette procédure : ce qui est vrai aujourd'hui ne l'était pas hier, et
+> une adresse morte coûte une heure à diagnostiquer.
+
 ```bash
 cd ~/marlygomont.pixfeed.net
 curl -fL -o spip_loader.php <ADRESSE_RETENUE>
