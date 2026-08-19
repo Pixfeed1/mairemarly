@@ -8,7 +8,7 @@
      (Configuration > Identité du site), pas du gabarit.
    - les libellés viennent de squelettes/lang/marly_fr.php, pas du HTML.
 
-  #EXPOSE marque l'entrée correspondant à la page courante : une fois pour la
+  EXPOSE marque l'entrée correspondant à la page courante : une fois pour la
   classe CSS, une fois pour aria-current que les lecteurs d'écran annoncent.
 ]
 <header class="entete">
@@ -52,7 +52,7 @@
 					        numérotation du titre (« 10. Ma mairie »), que SPIP masque
 					        à l'affichage.
 
-					        #EXPOSE marque l'entrée de la page courante : une fois pour
+					        EXPOSE marque l'entrée de la page courante : une fois pour
 					        la classe CSS, une fois pour aria-current que les lecteurs
 					        d'écran annoncent. ]
 					<BOUCLE_menu(RUBRIQUES){racine}{par num titre, titre}>

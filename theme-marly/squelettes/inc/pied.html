@@ -2,7 +2,7 @@
   inc/pied.html — pied de page commun.
   ---------------------------------------------------------------------------
   Les coordonnées de la mairie sont des PARAMÈTRES DU SITE, pas du contenu et
-  pas des libellés. Elles sont donc lues en configuration via #CONFIG, et non
+  pas des libellés. Elles sont donc lues en configuration via CONFIG, et non
   écrites dans ce gabarit : le jour où la mairie change de numéro, personne
   n'ouvre un fichier.
 
@@ -48,8 +48,11 @@
 					<BOUCLE_demarches(ARTICLES){titre_mot=Démarches}{par num titre, titre}{0,6}>
 					<li><a href="#URL_ARTICLE">#TITRE</a></li>
 					</BOUCLE_demarches>
+					[(#REM) Toujours affiche, quel que soit le nombre de demarches
+					        publiees : ce n'est pas un repli, c'est la reference
+					        vers laquelle renvoyer quand la commune ne traite pas
+					        elle-meme la demarche. ]
 					<li><a href="https://www.service-public.fr" rel="noopener">service-public.fr</a></li>
-					<//B_demarches>
 				</ul>
 			</div>
 
