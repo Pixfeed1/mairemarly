@@ -1,10 +1,10 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.5.0"
+	version="3.6.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
-	schema="3.5.0">
+	schema="3.6.0">
 
 	<nom>Réglages et réservations de Marly-Gomont</nom>
 	<licence>GNU/GPL v3</licence>
@@ -14,6 +14,8 @@
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/marly.php" />
 	<pipeline nom="declarer_tables_interfaces"  inclure="base/marly.php" />
 
+	<genie nom="marly_lettres" periode="60" />
+
 	<menu
 		nom="configurer_marly"
 		titre="marly:titre_reglages"
@@ -22,6 +24,11 @@
 	<menu
 		nom="reservations"
 		titre="marly:titre_reservations"
+		parent="menu_edition" />
+
+	<menu
+		nom="lettres"
+		titre="marly:titre_lettres"
 		parent="menu_edition" />
 
 	<menu

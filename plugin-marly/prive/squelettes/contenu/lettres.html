@@ -1,0 +1,36 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+
+<h1 class="grostitre"><:marly:titre_lettres:></h1>
+
+<p class="explication">
+	<:marly:abonnes_actifs:> <strong>[(#VAL|marly_nb_destinataires)]</strong>
+</p>
+
+<B_lettres>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:champ_objet:></th>
+			<th><:marly:col_etat:></th>
+			<th><:marly:col_envoyes:></th>
+			<th><:marly:col_quand:></th>
+		</tr>
+	</thead>
+	<tbody>
+	<BOUCLE_lettres(LETTRES){par date}{inverse}>
+		<tr>
+			<td><a href="[(#URL_ECRIRE{lettre,id_lettre=#ID_LETTRE})]">#TITRE</a></td>
+			<td>[(#STATUT|=={redaction}|?{'<:marly:etat_redaction:>'})][(#STATUT|=={envoi}|?{'<:marly:etat_envoi:>'})][(#STATUT|=={envoyee}|?{'<:marly:etat_envoyee:>'})][(#STATUT|=={arretee}|?{'<:marly:etat_arretee:>'})]</td>
+			<td>[(#NB_ENVOYES)][ <small>(#NB_ERREURS|=={0}|non) — (#NB_ERREURS) <:marly:erreurs:></small>]</td>
+			<td>[(#DATE_ENVOI|affdate{'j F Y'})]</td>
+		</tr>
+	</BOUCLE_lettres>
+	</tbody>
+</table>
+</B_lettres>
+<p class="rien"><:marly:aucune_lettre:></p>
+<//B_lettres>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ECRIRE{lettre,id_lettre=new})]"><:marly:creer_lettre:></a>
+</p>

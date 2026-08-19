@@ -91,6 +91,46 @@ function marly_declarer_tables_objets_sql($tables) {
 	 * adresse jamais confirmee est une donnee qu'on n'a pas le droit de
 	 * garder.
 	 */
+
+	/*
+	 * LETTRES envoyées.
+	 *
+	 * Le CURSEUR est ce qui rend l'envoi reprenable. On n'envoie pas deux
+	 * cents courriels dans une requête HTTP : le serveur coupe au bout de
+	 * trente secondes, et l'expéditeur ne sait pas où il s'est arrêté — la
+	 * moitié des abonnés reçoit deux fois, l'autre rien. On envoie par lots,
+	 * et le curseur retient le dernier abonné servi.
+	 */
+	$tables['spip_lettres'] = array(
+		'field' => array(
+			'id_lettre'    => 'bigint(21) NOT NULL',
+			'titre'        => 'text NOT NULL DEFAULT ""',
+			'chapo'        => 'text NOT NULL DEFAULT ""',
+			'texte'        => 'longtext NOT NULL DEFAULT ""',
+
+			/* redaction -> envoi -> envoyee, ou arretee */
+			'statut'       => 'varchar(20) NOT NULL DEFAULT "redaction"',
+
+			'curseur'      => 'bigint(21) NOT NULL DEFAULT 0',
+			'nb_envoyes'   => 'int(11) NOT NULL DEFAULT 0',
+			'nb_erreurs'   => 'int(11) NOT NULL DEFAULT 0',
+
+			'date'         => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+			'date_envoi'   => "datetime NOT NULL DEFAULT '0000-00-00 00:00:00'",
+			'maj'          => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY' => 'id_lettre',
+			'KEY statut'  => 'statut',
+		),
+		'titre'      => 'titre AS titre, "" AS lang',
+		'date'       => 'date',
+		'principale' => 'oui',
+		'type'       => 'lettre',
+		'editable'   => 'oui',
+		'champs_editables' => array('titre', 'chapo', 'texte'),
+	);
+
 	$tables['spip_abonnes'] = array(
 		'field' => array(
 			'id_abonne'    => 'bigint(21) NOT NULL',
@@ -260,5 +300,6 @@ function marly_declarer_tables_interfaces($interfaces) {
 	$interfaces['table_des_tables']['reservations'] = 'reservations';
 	$interfaces['table_des_tables']['manifestations'] = 'manifestations';
 	$interfaces['table_des_tables']['abonnes'] = 'abonnes';
+	$interfaces['table_des_tables']['lettres'] = 'lettres';
 	return $interfaces;
 }

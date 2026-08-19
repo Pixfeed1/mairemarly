@@ -1,0 +1,62 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+
+[(#ENV{id_lettre}|=={new}|oui)
+<h1 class="grostitre"><:marly:creer_lettre:></h1>
+[(#FORMULAIRE_EDITER_LETTRE{new})]
+]
+
+[(#ENV{id_lettre}|=={new}|non)
+<BOUCLE_lettre(LETTRES){id_lettre=#ENV{id_lettre}}>
+<h1 class="grostitre">#TITRE</h1>
+
+[(#REM) L'etat de l'envoi, en tete : c'est la seule chose que quelqu'un
+        vient regarder deux fois. ]
+[(#STATUT|=={redaction}|non)
+<div class="marly-envoi">
+	<p>
+		<strong>[(#NB_ENVOYES)]</strong> <:marly:envois_effectues:>
+		[ · <strong>(#NB_ERREURS|=={0}|non)(#NB_ERREURS)</strong> <:marly:erreurs:>]
+	</p>
+	[(#STATUT|=={envoi})
+	<p class="attente"><:marly:envoi_en_cours:></p>
+	<p><a class="btn" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-arreter,#SELF})]"><:marly:arreter_envoi:></a></p>
+	]
+	[(#STATUT|=={arretee})
+	<p class="alerte"><:marly:envoi_arrete:></p>
+	<p><a class="btn" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-reprendre,#SELF})]"><:marly:reprendre_envoi:></a></p>
+	]
+	[(#STATUT|=={envoyee})
+	<p><:marly:envoi_termine:> [(#DATE_ENVOI|affdate{'j F Y à H\hi'})]</p>
+	]
+</div>
+]
+
+[(#STATUT|=={redaction})
+[(#FORMULAIRE_EDITER_LETTRE{#ID_LETTRE})]
+
+<div class="marly-envoi">
+	<h2><:marly:avant_envoi:></h2>
+	<p><:marly:avant_envoi_texte:></p>
+	<p>
+		<a class="btn" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-essai,#SELF})]"><:marly:envoyer_essai:></a>
+	</p>
+	<p class="alerte">
+		<:marly:pret_a_envoyer:> <strong>[(#VAL|marly_nb_destinataires)]</strong> <:marly:abonnes:>
+	</p>
+	<p>
+		<a class="btn envoyer" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-envoyer,#SELF})]"
+		   onclick="return confirm('<:marly:confirmer_envoi:>')"><:marly:envoyer_maintenant:></a>
+	</p>
+</div>
+]
+
+[(#REM) L'apercu, tel que le verront les abonnes. ]
+<h2><:marly:apercu_lettre:></h2>
+<div class="marly-apercu">
+	<h3>#TITRE</h3>
+	[<p class="chapo">(#CHAPO)</p>]
+	[(#TEXTE|propre)]
+</div>
+
+</BOUCLE_lettre>
+]

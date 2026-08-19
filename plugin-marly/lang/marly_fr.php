@@ -342,6 +342,43 @@ resterez abonné.
 
 @site@',
 
+	// --- Lettres envoyees ------------------------------------------------------
+	'titre_lettres'         => 'Lettres d’information',
+	'creer_lettre'          => 'Rédiger une lettre',
+	'lettre_enregistree'    => 'La lettre a été enregistrée.',
+	'aucune_lettre'         => 'Aucune lettre. Rédigez-en une pour l’envoyer aux abonnés.',
+	'abonnes_actifs'        => 'Abonnés confirmés, qui recevront les envois :',
+	'abonnes'               => 'abonnés',
+
+	'champ_objet'           => 'Objet du courriel',
+	'objet_aide'            => 'C’est ce que les gens liront dans leur boîte avant de décider d’ouvrir. Soyez concret : « Coupure d’eau jeudi 12 » vaut mieux que « Lettre d’information n° 3 ».',
+	'champ_accroche'        => 'Accroche',
+	'accroche_aide'         => 'Une ou deux phrases en tête de la lettre. Facultatif.',
+	'champ_texte'           => 'Texte',
+	'texte_aide'            => 'Les raccourcis de SPIP fonctionnent : {{gras}}, {italique}, [lien->https://…].',
+
+	'col_envoyes'           => 'Envoyés',
+	'erreurs'               => 'en échec',
+	'etat_redaction'        => 'En rédaction',
+	'etat_envoi'            => 'Envoi en cours',
+	'etat_envoyee'          => 'Envoyée',
+	'etat_arretee'          => 'Arrêtée',
+
+	'avant_envoi'           => 'Avant d’envoyer',
+	'avant_envoi_texte'     => 'Envoyez-vous la lettre à vous-même et relisez-la dans votre boîte. C’est le dernier moment où une coquille se rattrape : une fois partie, elle est partie.',
+	'envoyer_essai'         => 'M’envoyer un essai',
+	'pret_a_envoyer'        => 'Cette lettre partira à',
+	'envoyer_maintenant'    => 'Envoyer maintenant',
+	'confirmer_envoi'       => 'La lettre va partir à tous les abonnés. On ne peut pas la rattraper. Continuer ?',
+
+	'envois_effectues'      => 'envois effectués',
+	'envoi_en_cours'        => 'L’envoi se poursuit tout seul, par petits lots. Vous pouvez fermer cette page.',
+	'envoi_arrete'          => 'Envoi arrêté. Les courriels déjà partis ne peuvent pas être rattrapés.',
+	'envoi_termine'         => 'Envoi terminé le',
+	'arreter_envoi'         => 'Arrêter l’envoi',
+	'reprendre_envoi'       => 'Reprendre l’envoi',
+	'apercu_lettre'         => 'Aperçu',
+
 	'enregistrer'      => 'Enregistrer',
 	'reglages_ok'      => 'Les réglages ont été enregistrés.',
 	'erreur_adresse'   => 'L’adresse doit commencer par https:// — copiez-la depuis la barre du navigateur.',

@@ -1,0 +1,37 @@
+[(#REM)
+  La redaction d'une lettre. Trois champs : un titre, une accroche, un texte.
+  Le titre devient l'objet du courriel — c'est ce que les gens liront dans
+  leur boite avant de decider d'ouvrir, donc il compte plus que le reste.
+]
+<div class="formulaire_spip formulaire_editer_lettre">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<ul>
+			<li class="editer editer_titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
+				<label for="titre"><:marly:champ_objet:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
+				<small><:marly:objet_aide:></small>
+			</li>
+			<li class="editer editer_chapo">
+				<label for="chapo"><:marly:champ_accroche:></label>
+				<textarea name="chapo" id="chapo" rows="2">[(#ENV{chapo}|textebrut)]</textarea>
+				<small><:marly:accroche_aide:></small>
+			</li>
+			<li class="editer editer_texte[ (#ENV**{erreurs}|table_valeur{texte}|oui)erreur]">
+				<label for="texte"><:marly:champ_texte:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{texte})</span>]
+				<textarea name="texte" id="texte" rows="16" class="inserer_barre_edition">[(#ENV{texte}|textebrut)]</textarea>
+				<small><:marly:texte_aide:></small>
+			</li>
+		</ul>
+		<p class="boutons"><input type="submit" class="submit" value="<:marly:enregistrer:>"></p>
+	</form>
+	]
+
+</div>

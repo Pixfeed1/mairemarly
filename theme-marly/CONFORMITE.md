@@ -16,6 +16,8 @@ pas**. Il sert à ne pas promettre au maire une conformité qui n'existe pas.
 | Polices auto-hébergées | tout le site | aucun appel à Google Fonts : un CDN transmet l'IP de chaque visiteur à un tiers |
 | Vidéos sans traceur avant consentement | fiches d'événement | façade au clic. Rien de la plateforme n'est chargé — pas même la vignette, qui suffirait à transmettre l'IP |
 | Lien d'évitement | toutes les pages | premier élément focusable |
+| Désinscription en un clic | envois de la lettre | en-têtes `List-Unsubscribe` et `List-Unsubscribe-Post: One-Click`. Depuis novembre 2025, Gmail et Yahoo exigent une désinscription **sans page de confirmation** ; Microsoft a suivi en mai 2025. Le lien reçu dans un envoi désinscrit donc immédiatement — contrairement au formulaire public, où l'on vérifie par courriel pour empêcher qu'on désabonne son voisin |
+| Version texte des courriels | envois de la lettre | un courriel uniquement HTML est un signal de spam pour la plupart des filtres, et illisible pour qui lit en texte brut |
 | Protection contre le spam | formulaires publics | jeton CSRF, champ-piège, délai minimum, refus des adresses web dans les champs d'identité, limite de demandes par adresse. **Pas de reCAPTCHA** : service de Google appelé sur chaque visiteur, et barrière pour les usagers déficients visuels ou âgés |
 | Navigation au clavier | menu, recherche | `aria-expanded`, piège à focus, Échap ferme, le focus revient au déclencheur |
 
@@ -29,6 +31,7 @@ pas**. Il sert à ne pas promettre au maire une conformité qui n'existe pas.
 | **Politique de confidentialité** | la page vers laquelle pointe la mention des formulaires |
 | **Audit RGAA** | les 106 critères. Le thème est écrit pour les respecter, mais **écrit pour** n'est pas **vérifié contre** |
 | **Registre des traitements** | côté mairie, pas côté site |
+| **SPF, DKIM et DMARC** | trois enregistrements DNS sur le domaine expéditeur. Sans eux, la lettre part en indésirables — voire est rejetée. Ce n'est pas du code : c'est une configuration chez l'hébergeur du nom de domaine, à faire avant le premier envoi réel |
 | **Délégué à la protection des données** | obligatoire pour un organisme public. Peut être mutualisé au niveau de l'intercommunalité — c'est le cas le plus fréquent pour une petite commune |
 
 ## Ce que ça veut dire concrètement

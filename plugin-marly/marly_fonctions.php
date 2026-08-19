@@ -148,3 +148,9 @@ function filtre_marly_video_plateforme_dist($url) {
 	if (strpos($url, 'dailymotion') !== false) { return 'Dailymotion'; }
 	return 'PeerTube';
 }
+
+/** Le nombre d'abonnes confirmes, expose aux gabarits de l'espace prive. */
+function filtre_marly_nb_destinataires_dist($rien = '') {
+	include_spip('inc/marly_lettres');
+	return marly_nb_destinataires();
+}
