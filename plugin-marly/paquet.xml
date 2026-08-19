@@ -1,7 +1,7 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.6.0"
+	version="3.7.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
 	schema="3.6.0">
@@ -11,6 +11,7 @@
 
 	<necessite nom="SPIP" compatibilite="[4.2.0;4.4.*]" />
 
+	<pipeline nom="header_prive" inclure="marly_pipelines.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/marly.php" />
 	<pipeline nom="declarer_tables_interfaces"  inclure="base/marly.php" />
 
@@ -23,27 +24,11 @@
 
 	<menu
 		nom="reservations"
-		titre="marly:titre_reservations"
+		titre="marly:titre_espace"
 		parent="menu_edition" />
 
-	<menu
-		nom="lettres"
-		titre="marly:titre_lettres"
-		parent="menu_edition" />
 
-	<menu
-		nom="abonnes"
-		titre="marly:titre_abonnes"
-		parent="menu_edition" />
 
-	<menu
-		nom="manifestations"
-		titre="marly:titre_manifestations"
-		parent="menu_edition" />
 
-	<menu
-		nom="salles"
-		titre="marly:titre_salles"
-		parent="menu_edition" />
 
 </paquet>

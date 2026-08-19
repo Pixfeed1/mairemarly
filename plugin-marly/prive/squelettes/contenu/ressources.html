@@ -1,0 +1,43 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+
+<h1 class="grostitre"><:marly:titre_ressources:></h1>
+
+<nav class="marly-onglets" aria-label="<:marly:titre_espace:>">
+	<a href="[(#URL_ECRIRE{reservations})]"><:marly:onglet_demandes:></a>
+	<a class="actif" href="[(#URL_ECRIRE{ressources})]"><:marly:onglet_ressources:></a>
+	<a href="[(#URL_ECRIRE{manifestations})]"><:marly:onglet_evenements:></a>
+	<a href="[(#URL_ECRIRE{lettres})]"><:marly:onglet_lettres:></a>
+	<a href="[(#URL_ECRIRE{abonnes})]"><:marly:onglet_abonnes:></a>
+</nav>
+
+
+<B_salles>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:col_ressource:></th>
+			<th><:marly:champ_capacite:></th>
+			<th><:marly:champ_tarif_commune:></th>
+			<th><:marly:col_delais:></th>
+			<th><:marly:col_etat:></th>
+		</tr>
+	</thead>
+	<tbody>
+	<BOUCLE_salles(SALLES){par titre}>
+		<tr>
+			<td><a href="[(#URL_ECRIRE{ressource,id_salle=#ID_SALLE})]">#TITRE</a></td>
+			<td>[(#CAPACITE)]</td>
+			<td>[(#TARIF_COMMUNE)]</td>
+			<td>[(#DELAI_MIN)] – [(#DELAI_MAX)] <:marly:jours:></td>
+			<td>[(#STATUT|=={publie}|?{'<:marly:statut_publie:>','<:marly:statut_prepa:>'})]</td>
+		</tr>
+	</BOUCLE_salles>
+	</tbody>
+</table>
+</B_salles>
+<p class="rien"><:marly:aucune_ressource:></p>
+<//B_salles>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ECRIRE{ressource,id_salle=new})]"><:marly:creer_ressource:></a>
+</p>

@@ -93,8 +93,8 @@ function formulaires_editer_salle_traiter_dist($id_salle = 'new') {
 	}
 
 	return array(
-		'message_ok'    => _T('marly:salle_enregistree'),
+		'message_ok'    => _T('marly:ressource_enregistree'),
 		'id_salle'      => $id_salle,
-		'redirect'      => generer_url_ecrire('salles'),
+		'redirect'      => generer_url_ecrire('ressources'),
 	);
 }

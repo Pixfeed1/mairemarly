@@ -1,0 +1,29 @@
+/*
+ * Habillage des ecrans du plugin dans l'espace prive.
+ * ---------------------------------------------------------------------------
+ * On reste tres sobre : l'espace prive a son propre habillage, et un plugin
+ * qui impose le sien depareille des que SPIP change de theme. Ici, seulement
+ * ce que SPIP ne fournit pas — les onglets et les blocs d'envoi.
+ */
+
+.marly-onglets{ display:flex; flex-wrap:wrap; gap:2px; margin:0 0 24px; border-bottom:2px solid #ccc; }
+.marly-onglets a{
+	padding:9px 16px; text-decoration:none; font-weight:600;
+	border:1px solid #ccc; border-bottom:0; background:#f4f4f4; color:#333;
+	border-radius:4px 4px 0 0;
+}
+.marly-onglets a:hover{ background:#e9e9e9; }
+.marly-onglets a.actif{ background:#fff; border-bottom:2px solid #fff; margin-bottom:-2px; color:#1E5B41; }
+
+.marly-envoi{ border:1px solid #ccc; border-left:4px solid #1E5B41; padding:16px 20px; margin:24px 0; background:#fafafa; }
+.marly-envoi h2{ margin-top:0; }
+.marly-envoi .alerte{ font-weight:700; }
+.marly-envoi .attente{ font-style:italic; color:#555; }
+.marly-envoi .btn.envoyer{ background:#1E5B41; color:#fff; }
+
+.marly-apercu{ border:1px solid #ddd; padding:22px 26px; background:#fff; max-width:660px; }
+.marly-apercu h3{ margin-top:0; }
+.marly-apercu .chapo{ font-size:1.05em; color:#555; }
+
+td.actions .btn + .btn{ margin-left:6px; }
+p.alerte{ color:#A32020; }

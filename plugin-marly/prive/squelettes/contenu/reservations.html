@@ -1,8 +1,19 @@
 [(#AUTORISER{voir,reservation}|sinon_interdire_acces)]
 
-<h1 class="grostitre"><:marly:titre_reservations:></h1>
+<h1 class="grostitre"><:marly:titre_espace:></h1>
 
-[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+[(#REM) Un seul point d'entree dans Edition, et les sous-ecrans en onglets.
+        Cinq entrees de menu pour un meme sujet obligeaient a chercher : la
+        secretaire ne sait pas si << ce qu'on peut reserver >> est range sous
+        Salles, sous Evenements ou sous Reservations. Ici elle ouvre
+        Reservations, et tout est la. ]
+<nav class="marly-onglets" aria-label="<:marly:titre_espace:>">
+	<a class="actif" href="[(#URL_ECRIRE{reservations})]"><:marly:onglet_demandes:></a>
+	<a href="[(#URL_ECRIRE{ressources})]"><:marly:onglet_ressources:></a>
+	<a href="[(#URL_ECRIRE{manifestations})]"><:marly:onglet_evenements:></a>
+	<a href="[(#URL_ECRIRE{lettres})]"><:marly:onglet_lettres:></a>
+	<a href="[(#URL_ECRIRE{abonnes})]"><:marly:onglet_abonnes:></a>
+</nav>
 
 [(#REM) Les demandes en attente d'abord : c'est la seule liste sur laquelle
         quelqu'un doit agir. Les autres sont de la consultation. ]
@@ -49,12 +60,14 @@
 			</td>
 			<td>[(#MOTIF|couper{140})]</td>
 			<td class="actions">
-				[(#AUTORISER{modifier,reservation,#ID_RESERVATION})
-				<a class="btn accepter"
-				   href="[(#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-acceptee,#SELF})]"><:marly:accepter:></a>
-				<a class="btn refuser"
-				   href="[(#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-refusee,#SELF})]"><:marly:refuser:></a>
-				]
+				[(#REM) Les adresses sont calculees AVANT le bloc conditionnel :
+				        un bloc conditionnel dans un autre n'est pas fiable en
+				        SPIP, le premier crochet fermant ferme les deux. ]
+				#SET{ok,#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-acceptee,#SELF}}
+				#SET{non,#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-refusee,#SELF}}
+				[(#AUTORISER{modifier,reservation,#ID_RESERVATION}|oui)
+				<a class="btn accepter" href="#GET{ok}"><:marly:accepter:></a>
+				<a class="btn refuser" href="#GET{non}"><:marly:refuser:></a>]
 			</td>
 		</tr>
 	</BOUCLE_attente>
@@ -87,10 +100,9 @@
 			<td><BOUCLE_s2(SALLES){id_salle}>#TITRE</BOUCLE_s2></td>
 			<td>[<strong>(#ORGANISME)</strong> — ]#NOM</td>
 			<td class="actions">
-				[(#AUTORISER{modifier,reservation,#ID_RESERVATION})
-				<a class="btn annuler"
-				   href="[(#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-annulee,#SELF})]"><:marly:annuler:></a>
-				]
+				#SET{annuler,#URL_ACTION_AUTEUR{traiter_reservation,#ID_RESERVATION-annulee,#SELF}}
+				[(#AUTORISER{modifier,reservation,#ID_RESERVATION}|oui)
+				<a class="btn annuler" href="#GET{annuler}"><:marly:annuler:></a>]
 			</td>
 		</tr>
 	</BOUCLE_prises>

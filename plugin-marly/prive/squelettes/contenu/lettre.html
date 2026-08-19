@@ -1,62 +1,89 @@
-[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+[(#REM)
+  Ecran d'une lettre.
+  ---------------------------------------------------------------------------
+  Les etats sont traites par des BOUCLES et non par des blocs conditionnels
+  imbriques les uns dans les autres. SPIP ne les imbrique pas de facon fiable :
+  le premier crochet fermant rencontre ferme le bloc exterieur, et tout ce qui
+  suit part en vrille. C'est ce qui rendait cet ecran inutilisable.
 
-[(#ENV{id_lettre}|=={new}|oui)
-<h1 class="grostitre"><:marly:creer_lettre:></h1>
-[(#FORMULAIRE_EDITER_LETTRE{new})]
+  Une boucle par etat coute une requete de plus. Elle rend le gabarit lisible
+  et, surtout, elle marche.
 ]
 
-[(#ENV{id_lettre}|=={new}|non)
-<BOUCLE_lettre(LETTRES){id_lettre=#ENV{id_lettre}}>
+[(#REM) Aucune lettre trouvee : on est en creation. id_lettre=new donne 0
+        a l'entier, donc la boucle ne rend rien, donc on tombe ici. ]
+<B_lettre>
+<BOUCLE_lettre(LETTRES){id_lettre}>
 <h1 class="grostitre">#TITRE</h1>
+</BOUCLE_lettre>
+</B_lettre>
 
-[(#REM) L'etat de l'envoi, en tete : c'est la seule chose que quelqu'un
-        vient regarder deux fois. ]
-[(#STATUT|=={redaction}|non)
+<h1 class="grostitre"><:marly:creer_lettre:></h1>
+#FORMULAIRE_EDITER_LETTRE{new}
+<//B_lettre>
+
+
+[(#REM) EN REDACTION — le formulaire, puis le bloc d'envoi. ]
+<BOUCLE_redaction(LETTRES){id_lettre}{statut=redaction}>
+
+	#FORMULAIRE_EDITER_LETTRE{#ID_LETTRE}
+
+	<div class="marly-envoi">
+		<h2><:marly:avant_envoi:></h2>
+		<p><:marly:avant_envoi_texte:></p>
+		<p>
+			<a class="btn" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-essai,#SELF})]"><:marly:envoyer_essai:></a>
+		</p>
+
+		<p class="alerte">
+			<:marly:pret_a_envoyer:>
+			<strong>[(#VAL|marly_nb_destinataires)]</strong>
+			<:marly:abonnes:>
+		</p>
+		<p>
+			<a class="btn envoyer" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-envoyer,#SELF})]"
+			   onclick="return confirm('<:marly:confirmer_envoi:>')"><:marly:envoyer_maintenant:></a>
+		</p>
+	</div>
+
+</BOUCLE_redaction>
+
+
+[(#REM) ENVOI EN COURS. ]
+<BOUCLE_encours(LETTRES){id_lettre}{statut=envoi}>
 <div class="marly-envoi">
-	<p>
-		<strong>[(#NB_ENVOYES)]</strong> <:marly:envois_effectues:>
-		[ · <strong>(#NB_ERREURS|=={0}|non)(#NB_ERREURS)</strong> <:marly:erreurs:>]
-	</p>
-	[(#STATUT|=={envoi})
+	<p><strong>#NB_ENVOYES</strong> <:marly:envois_effectues:></p>
 	<p class="attente"><:marly:envoi_en_cours:></p>
 	<p><a class="btn" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-arreter,#SELF})]"><:marly:arreter_envoi:></a></p>
-	]
-	[(#STATUT|=={arretee})
+</div>
+</BOUCLE_encours>
+
+
+[(#REM) ENVOI ARRETE. ]
+<BOUCLE_arretee(LETTRES){id_lettre}{statut=arretee}>
+<div class="marly-envoi">
+	<p><strong>#NB_ENVOYES</strong> <:marly:envois_effectues:></p>
 	<p class="alerte"><:marly:envoi_arrete:></p>
 	<p><a class="btn" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-reprendre,#SELF})]"><:marly:reprendre_envoi:></a></p>
-	]
-	[(#STATUT|=={envoyee})
-	<p><:marly:envoi_termine:> [(#DATE_ENVOI|affdate{'j F Y à H\hi'})]</p>
-	]
 </div>
-]
+</BOUCLE_arretee>
 
-[(#STATUT|=={redaction})
-[(#FORMULAIRE_EDITER_LETTRE{#ID_LETTRE})]
 
+[(#REM) ENVOI TERMINE. ]
+<BOUCLE_faite(LETTRES){id_lettre}{statut=envoyee}>
 <div class="marly-envoi">
-	<h2><:marly:avant_envoi:></h2>
-	<p><:marly:avant_envoi_texte:></p>
-	<p>
-		<a class="btn" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-essai,#SELF})]"><:marly:envoyer_essai:></a>
-	</p>
-	<p class="alerte">
-		<:marly:pret_a_envoyer:> <strong>[(#VAL|marly_nb_destinataires)]</strong> <:marly:abonnes:>
-	</p>
-	<p>
-		<a class="btn envoyer" href="[(#URL_ACTION_AUTEUR{lettre,#ID_LETTRE-envoyer,#SELF})]"
-		   onclick="return confirm('<:marly:confirmer_envoi:>')"><:marly:envoyer_maintenant:></a>
-	</p>
+	<p><strong>#NB_ENVOYES</strong> <:marly:envois_effectues:></p>
+	<p><:marly:envoi_termine:> [(#DATE_ENVOI|affdate{'j F Y à H\hi'})]</p>
 </div>
-]
+</BOUCLE_faite>
 
-[(#REM) L'apercu, tel que le verront les abonnes. ]
+
+[(#REM) L'apercu, quel que soit l'etat : c'est ce que les abonnes verront. ]
+<BOUCLE_apercu(LETTRES){id_lettre}>
 <h2><:marly:apercu_lettre:></h2>
 <div class="marly-apercu">
 	<h3>#TITRE</h3>
 	[<p class="chapo">(#CHAPO)</p>]
 	[(#TEXTE|propre)]
 </div>
-
-</BOUCLE_lettre>
-]
+</BOUCLE_apercu>
