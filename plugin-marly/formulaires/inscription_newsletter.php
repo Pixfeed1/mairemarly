@@ -69,12 +69,12 @@ function formulaires_inscription_newsletter_verifier_dist($mode = 'abonnement') 
 		$erreurs['courriel_bis'] = _T('marly:erreur_courriels_differents');
 	}
 
-	foreach (array('code_postal', 'ville') as $champ) {
-		if (!trim((string) _request($champ))) {
-			$erreurs[$champ] = _T('marly:erreur_obligatoire');
-		}
-	}
-
+	/* Le code postal et la commune sont FACULTATIFS. Le RGPD impose de ne
+	   collecter que ce qui sert : tant que la mairie n'a qu'une lettre pour
+	   tout le monde, distinguer les habitants des voisins ne sert a rien.
+	   Le jour ou elle voudra cibler, on les rendra obligatoires — dans ce
+	   sens-la c'est possible, l'inverse ne l'est pas : on ne peut pas
+	   effacer une collecte deja faite. */
 	$cp = trim((string) _request('code_postal'));
 	if ($cp && !preg_match(',^\d{5}$,', $cp)) {
 		$erreurs['code_postal'] = _T('marly:erreur_code_postal');

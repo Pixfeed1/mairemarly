@@ -12,6 +12,7 @@ pas**. Il sert à ne pas promettre au maire une conformité qui n'existe pas.
 | Champs obligatoires signalés | idem | mention **texte** « (obligatoire) » — l'astérisque seul et la couleur seule ne sont pas perçus par tout le monde (RGAA 11.10) |
 | Nature des champs annoncée | idem | `autocomplete="name"`, `"email"`, `"tel"`, `"organization"` — WCAG 1.3.5, niveau AA. Cela remplit aussi le formulaire tout seul pour qui a enregistré ses coordonnées, ce qui compte pour une personne âgée |
 | Erreurs identifiées en texte | idem | message écrit sous l'étiquette, jamais un simple encadrement rouge |
+| Minimisation des données | inscription à la lettre | seule l'adresse électronique est obligatoire. Code postal et commune sont facultatifs : tant que la mairie n'a qu'une lettre pour tout le monde, distinguer les habitants des voisins ne sert à rien. On peut toujours les rendre obligatoires plus tard ; on ne peut pas effacer une collecte déjà faite |
 | Information RGPD à la collecte | idem | mention dépliable sous chaque formulaire : finalité, durée, absence de transmission, droits. L'article 13 impose d'informer **au moment de la collecte** — un renvoi vers une page de confidentialité ne suffit pas seul |
 | Polices auto-hébergées | tout le site | aucun appel à Google Fonts : un CDN transmet l'IP de chaque visiteur à un tiers |
 | Vidéos sans traceur avant consentement | fiches d'événement | façade au clic. Rien de la plateforme n'est chargé — pas même la vignette, qui suffirait à transmettre l'IP |

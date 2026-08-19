@@ -308,6 +308,7 @@ adresse ne sera pas utilisée et sera effacée sous sept jours.
 	'code_postal'           => 'Code postal',
 	'ville'                 => 'Commune',
 	'requis_explication'    => 'Les champs marqués « obligatoire » doivent être remplis.',
+	'lieu_facultatif'       => 'Facultatif : si vous l’indiquez, la mairie saura distinguer les habitants de la commune des personnes des environs.',
 	'me_desabonner'         => 'Me désabonner',
 	'plutot_mabonner'       => 'Plutôt m’abonner',
 	'desabonnement_intro'   => 'Indiquez l’adresse à retirer de la liste. Nous vous enverrons un lien de confirmation — ainsi personne ne peut désabonner quelqu’un d’autre.',

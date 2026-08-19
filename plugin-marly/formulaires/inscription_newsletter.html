@@ -71,21 +71,23 @@
 				</li>
 			</ul>
 
+			<p class="nl-facultatif"><:marly:lieu_facultatif:></p>
+
 			<div class="rang-lieu">
 				<ul>
 				<li class="editer editer_code_postal[ (#ENV**{erreurs}|table_valeur{code_postal}|oui)erreur]">
-					<label for="nl-code_postal"><:marly:code_postal:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+					<label for="nl-code_postal"><:marly:code_postal:></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{code_postal})</span>]
 					<input type="text" class="text" name="code_postal" id="nl-code_postal"
-					       value="[(#ENV{code_postal}|attribut_html)]" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required aria-required="true">
+					       value="[(#ENV{code_postal}|attribut_html)]" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5">
 				</li>
 								</ul>
 				<ul>
 				<li class="editer editer_ville[ (#ENV**{erreurs}|table_valeur{ville}|oui)erreur]">
-					<label for="nl-ville"><:marly:ville:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+					<label for="nl-ville"><:marly:ville:></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ville})</span>]
 					<input type="text" class="text" name="ville" id="nl-ville"
-					       value="[(#ENV{ville}|attribut_html)]" autocomplete="address-level2" required aria-required="true">
+					       value="[(#ENV{ville}|attribut_html)]" autocomplete="address-level2">
 				</li>
 				</ul>
 			</div>
