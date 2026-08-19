@@ -15,15 +15,35 @@
 	<div class="large">
 
 		<div class="rang-outils">
-			<a class="rond-social" href="#" aria-label="Facebook">
-				<svg class="ico" aria-hidden="true"><use href="#ri-facebook-fill"/></svg>
+
+			[(#REM) Les reseaux sociaux sont des articles portant le mot-cle
+			        << Reseaux sociaux >>, exactement comme les raccourcis :
+
+			          - le TITRE nomme le reseau (Facebook), il n'est pas
+			            affiche mais lu par les lecteurs d'ecran ;
+			          - l'ICONE vient d'un mot-cle du groupe << Icones >> ;
+			          - l'ADRESSE vient du chapo : << = >> suivi de l'adresse
+			            de la page de la commune.
+
+			        Tant que la mairie n'en a declare aucun, RIEN ne s'affiche.
+			        C'est voulu : trois pictogrammes qui ne menent nulle part
+			        valent moins que pas de pictogrammes du tout, et une mairie
+			        qui n'a pas de Facebook n'a pas a en afficher l'icone.
+
+			        rel="noopener" sur des liens sortants : sans lui, la page
+			        ouverte garde une reference vers la notre. ]
+			<BOUCLE_reseaux(ARTICLES){titre_mot=Réseaux sociaux}{par num titre, titre}{0,8}>
+			<a class="rond-social" href="[(#VIRTUEL|sinon{#URL_ARTICLE})]" rel="noopener">
+				<B_ico_res>
+				<BOUCLE_ico_res(MOTS){id_article}{type=Icônes}{0,1}>
+				<svg class="ico" aria-hidden="true"><use href="#[(#DESCRIPTIF|supprimer_tags|trim)]"/></svg>
+				</BOUCLE_ico_res>
+				</B_ico_res>
+				<svg class="ico" aria-hidden="true"><use href="#ri-links-line"/></svg>
+				<//B_ico_res>
+				<span class="sr">#TITRE</span>
 			</a>
-			<a class="rond-social" href="#" aria-label="Instagram">
-				<svg class="ico" aria-hidden="true"><use href="#ri-instagram-line"/></svg>
-			</a>
-			<a class="rond-social" href="#" aria-label="YouTube">
-				<svg class="ico" aria-hidden="true"><use href="#ri-youtube-fill"/></svg>
-			</a>
+			</BOUCLE_reseaux>
 
 			<a class="pilule plein" href="#URL_PAGE{login}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:connexion:>

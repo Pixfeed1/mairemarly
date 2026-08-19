@@ -35,3 +35,26 @@ ri-tools-line            Travaux, voirie
 ri-government-line       Mairie, administration
 ri-scales-3-line         Élections, démocratie
 ri-water-flash-line      Eau, énergie
+
+# --- Réseaux sociaux ---------------------------------------------------------
+# Mêmes règles : un mot-clé par ligne dans le groupe « Icônes ».
+# La liste couvre ce qu'une commune française peut réellement avoir. Facebook
+# est quasi universel ; Instagram et YouTube se répandent ; PanneauPocket et
+# IntraMuros sont les applications d'alerte que beaucoup de petites communes
+# utilisent — elles n'ont pas de logo dans la bibliothèque, d'où le
+# pictogramme de téléphone.
+ri-facebook-circle-fill  Facebook
+ri-instagram-line        Instagram
+ri-youtube-fill          YouTube
+ri-twitter-x-fill        X (ex-Twitter)
+ri-linkedin-box-fill     LinkedIn
+ri-tiktok-fill           TikTok
+ri-snapchat-fill         Snapchat
+ri-threads-fill          Threads
+ri-bluesky-fill          Bluesky
+ri-mastodon-fill         Mastodon
+ri-whatsapp-line         WhatsApp
+ri-telegram-fill         Telegram
+ri-smartphone-line       Application mobile (PanneauPocket, IntraMuros)
+ri-rss-line              Flux RSS
+ri-links-line  Lien generique
