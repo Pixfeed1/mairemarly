@@ -41,7 +41,12 @@
 				<INCLURE{fond=inc/embleme}>
 				<span>
 					<b>#NOM_SITE_SPIP</b>
-					[<small>(#DESCRIPTIF_SITE_SPIP|couper{60})</small>]
+					[(#REM) Le SLOGAN, pas le descriptif. SPIP distingue les deux :
+					        le slogan est la formule courte, le descriptif est le
+					        paragraphe de presentation qui nourrit la balise meta
+					        et les fils de syndication. Ici on veut la formule
+					        courte — un sous-titre, pas une notice. ]
+					[<small>(#SLOGAN_SITE_SPIP|couper{60})</small>]
 				</span>
 			</a>
 

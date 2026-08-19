@@ -24,13 +24,14 @@
 	[(#REM) Faute de description propre à la page, on retombe sur celle du
 	        site : une page sans description laisse Google composer la sienne
 	        à partir du premier texte venu. ]
-	[<meta name="description" content="(#ENV{description}|sinon{#DESCRIPTIF_SITE_SPIP}|textebrut|attribut_html)">]
+	[<meta name="description" content="(#ENV{description}|sinon{#DESCRIPTIF_SITE_SPIP}|textebrut|couper{160}|attribut_html)">]
 	<meta name="theme-color" content="#1E5B41">
 
 	[(#REM) Partage sur les réseaux et messageries ]
 	<meta property="og:site_name" content="#NOM_SITE_SPIP">
 	<meta property="og:title" content="[(#ENV{titre_page}|textebrut|sinon{#NOM_SITE_SPIP})]">
 	<meta property="og:type" content="website">
+	[<meta property="og:description" content="(#ENV{description}|sinon{#DESCRIPTIF_SITE_SPIP}|textebrut|couper{200}|attribut_html)">]
 	<meta property="og:url" content="#SELF|url_absolue">
 
 	<link rel="canonical" href="[(#SELF|url_absolue)]">
