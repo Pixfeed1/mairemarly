@@ -288,6 +288,18 @@ if os.path.exists(_FONCTIONS):
             signaler('plugin-marly/marly_fonctions.php', 1,
                      f'filtre {_nom} appele dans un gabarit mais absent de ce fichier')
 
+# 20. Tout fichier PHP du plugin doit contenir au moins une fonction.
+#     Une modification automatique mal cadrée peut vider un fichier de tout
+#     son contenu sans que rien ne s'en plaigne : php -l trouve << <?php >>
+#     parfaitement valide, et l'erreur n'apparait qu'a l'execution, sous la
+#     forme d'une fonction introuvable appelee depuis ailleurs. C'est arrive
+#     a inc/marly_associations.php, reduit a sa premiere ligne.
+for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.php'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    if 'function ' not in _src and 'lang/' not in _f and 'paquet' not in _f:
+        signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'), 1,
+                 'fichier PHP sans aucune fonction : contenu perdu ?')
+
 # 14. Le schema declare doit valoir la derniere etape de mise a jour.
 #     paquet.xml porte DEUX numeros : << version >>, celle du plugin, et
 #     << schema >>, celle de la base. SPIP ne compare que la seconde a ce
