@@ -93,6 +93,20 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 		$champs['statut'] = 'publie';
 	}
 
+	/* Les coordonnées se cherchent toutes seules à partir de l'adresse. On ne
+	   le fait QUE si elles sont vides : une correction faite à la main ne doit
+	   jamais être écrasée par un service automatique. */
+	$trouvees = false;
+	if ($champs['latitude'] === '' and $champs['longitude'] === '' and $champs['adresse'] !== '') {
+		include_spip('inc/marly_geocodage');
+		$point = marly_geocoder($champs['adresse']);
+		if ($point) {
+			$champs['latitude']  = $point['latitude'];
+			$champs['longitude'] = $point['longitude'];
+			$trouvees = true;
+		}
+	}
+
 	if ($id_lieu === 'new' or !intval($id_lieu)) {
 		$id_lieu = sql_insertq('spip_lieux', $champs);
 		if (!$id_lieu) {
@@ -102,6 +116,17 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 		sql_updateq('spip_lieux', $champs, 'id_lieu = ' . intval($id_lieu));
 	}
 
-	return array('message_ok' => _T('marly:lieu_enregistre'),
+	/* On dit ce qui s'est passé. Un enregistrement muet laisse croire que les
+	   coordonnées ont été trouvées alors qu'elles ne l'ont peut-être pas été,
+	   et le lieu manquerait sur la carte sans que personne le sache. */
+	if ($trouvees) {
+		$message = _T('marly:lieu_enregistre_localise');
+	} elseif ($champs['latitude'] === '' and $champs['adresse'] !== '') {
+		$message = _T('marly:lieu_enregistre_non_localise');
+	} else {
+		$message = _T('marly:lieu_enregistre');
+	}
+
+	return array('message_ok' => $message,
 	             'redirect' => generer_url_ecrire('lieux'));
 }

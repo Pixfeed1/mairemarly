@@ -35,6 +35,11 @@
 				<label for="descriptif"><:marly:champ_descriptif:></label>
 				<textarea name="descriptif" id="descriptif" rows="3">[(#ENV{descriptif}|textebrut)]</textarea>
 			</li>
+			[(#REM) Les deux champs qui suivent se remplissent tout seuls a
+			        partir de l'adresse. On les laisse visibles pour corriger
+			        quand le service se trompe — ce qui arrive en campagne, ou
+			        un batiment sans numero de rue est situe au centre du
+			        village. ]
 			<li class="marly-champ marly-latitude[ (#ENV**{erreurs}|table_valeur{latitude}|oui)erreur]">
 				<label for="latitude"><:marly:champ_latitude:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{latitude})</span>]
