@@ -1,11 +1,19 @@
-/*
- * Habillage des ecrans du plugin dans l'espace prive.
- * ---------------------------------------------------------------------------
- * On reste tres sobre : l'espace prive a son propre habillage, et un plugin
- * qui impose le sien depareille des que SPIP change de theme. Ici, seulement
- * ce que SPIP ne fournit pas — les onglets et les blocs d'envoi.
- */
+#CACHE{0}
+[(#REM)
+  Habillage des ecrans du plugin dans l'espace prive.
+  ---------------------------------------------------------------------------
+  Ce fichier porte un nom impose : SPIP compile automatiquement
+  prive/style_prive_plugin_<prefixe>.html dans la feuille de style de
+  l'espace prive.
 
+  C'est plus sur que le pipeline header_prive, qui demandait de nommer
+  correctement une fonction ET de purger le cache des plugins. Ici, le
+  fichier existe : il est pris.
+
+  On reste tres sobre : l'espace prive a son propre habillage, et un plugin
+  qui impose le sien depareille des que SPIP change de theme. Seulement ce
+  que SPIP ne fournit pas.
+]
 .marly-onglets{ display:flex; flex-wrap:wrap; gap:2px; margin:0 0 24px; border-bottom:2px solid #ccc; }
 .marly-onglets a{
 	padding:9px 16px; text-decoration:none; font-weight:600;

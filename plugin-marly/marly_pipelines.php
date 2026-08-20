@@ -1,33 +1,17 @@
 <?php
 /**
  * Branchements du plugin sur SPIP.
+ * ---------------------------------------------------------------------------
+ * L'habillage de l'espace privé ne passe PAS par ici. Il vit dans
+ * prive/style_prive_plugin_marly.html, un nom que SPIP reconnaît et compile
+ * tout seul dans sa feuille de style.
+ *
+ * Le pipeline header_prive faisait la même chose, mais il demandait de nommer
+ * correctement une fonction, de la déclarer dans paquet.xml, et de purger le
+ * cache des plugins pour que SPIP la voie. Trois occasions de se tromper
+ * silencieusement — et c'est ce qui s'est produit.
  */
 
 if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
-}
-
-/**
- * Ajoute notre feuille de style aux écrans de l'espace privé.
- *
- * On charge inc/filtres explicitement : ce pipeline s'exécute tôt, et rien
- * ne garantit que direction_css() soit déjà défini. Un appel à une fonction
- * absente ici casserait tout l'espace privé, pas seulement le style.
- */
-function marly_header_prive($flux) {
-	$css = find_in_path('prive/themes/spip/css/marly.css');
-	if (!$css) {
-		spip_log('marly : prive/themes/spip/css/marly.css introuvable', 'marly' . _LOG_ERREUR);
-		return $flux;
-	}
-
-	include_spip('inc/filtres');
-	$href = function_exists('direction_css') ? direction_css($css) : $css;
-
-	/* Un paramètre de version force le navigateur à recharger la feuille
-	   après chaque modification. Sans lui, on corrige un style et on croit
-	   que ça n'a rien changé. */
-	$href .= (strpos($href, '?') === false ? '?' : '&') . 'v=' . filemtime($css);
-
-	return $flux . "\n<link rel=\"stylesheet\" href=\"" . $href . "\" type=\"text/css\" />";
 }
