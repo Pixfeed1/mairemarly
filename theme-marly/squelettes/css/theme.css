@@ -1230,6 +1230,30 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    Elle s'affiche directement : choix arrete avec la mairie. Le cadre garde
    une hauteur fixe pour que la page ne saute pas pendant le chargement.
    =========================================================================== */
+/* --- les etapes numerotees d'une demarche --------------------------------- */
+/* SPIP rend -# en liste ordonnee : chaque etape porte son numero dans une
+   pastille, facon parcours. C'est la lecture qu'attendent les usagers des
+   grands sites publics, ramenee a notre charte. */
+.fiche-demarche .texte ol,
+.fiche-demarche ol{
+  list-style:none; margin:14px 0; padding:0; counter-reset:etape;
+}
+.fiche-demarche ol > li{
+  position:relative; padding:2px 0 16px 46px; counter-increment:etape;
+}
+.fiche-demarche ol > li::before{
+  content:counter(etape);
+  position:absolute; left:0; top:0;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--accent); color:#fff;
+  font-family:var(--texte); font-weight:700; font-size:15px;
+  display:flex; align-items:center; justify-content:center;
+}
+.fiche-demarche ol > li:not(:last-child)::after{
+  content:""; position:absolute; left:14px; top:34px; bottom:2px;
+  width:2px; background:var(--trait);
+}
+
 /* --- les outils d'une fiche : signaler, imprimer, partager ---------------- */
 .fil-rangee{ display:flex; align-items:center; justify-content:space-between; gap:14px; }
 .fil-rangee .fil{ margin:0; }

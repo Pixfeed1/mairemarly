@@ -4,7 +4,7 @@
 	version="3.36.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
-	schema="3.21.0">
+	schema="3.36.0">
 
 	<!--
 		schema = la version de la BASE, et c'est ELLE que SPIP compare a la meta

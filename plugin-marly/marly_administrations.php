@@ -114,8 +114,60 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('marly_rubriques_associations_manquantes'),
 	);
 
+	/* 3.36.0 — quatre demarches de plus au socle (livret de famille,
+	   changement de prenom, concession au cimetiere, buvette), et le
+	   parcours en etapes de la carte d'identite. */
+	$maj['3.36.0'] = array(
+		array('marly_completer_socle_2026'),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
+}
+
+/**
+ * Complète le socle des démarches, sans jamais faire revenir une fiche
+ * que la mairie aurait supprimée : seules les QUATRE fiches nouvelles de
+ * cette version sont concernées, chacune uniquement si son titre est
+ * absent. Et le parcours en étapes de la carte d'identité ne remplace le
+ * texte existant que s'il est resté celui d'origine : une fiche retouchée
+ * par la mairie ne se fait pas écraser.
+ */
+function marly_completer_socle_2026() {
+	include_spip('inc/marly_demarches');
+
+	$nouvelles = array(
+		'Demander un second livret de famille',
+		'Changer de prénom',
+		'Acheter ou renouveler une concession au cimetière',
+		'Ouvrir une buvette pour une fête (débit de boissons temporaire)',
+	);
+	$ajoutees = 0;
+	foreach (marly_socle_demarches() as $fiche) {
+		if (!in_array($fiche['titre'], $nouvelles, true)) {
+			continue;
+		}
+		if (sql_countsel('spip_demarches', 'titre = ' . sql_quote($fiche['titre']))) {
+			continue;
+		}
+		$fiche['socle']  = 1;
+		$fiche['statut'] = 'publie';
+		if (sql_insertq('spip_demarches', $fiche)) {
+			$ajoutees++;
+		}
+	}
+
+	$ancien = 'Faites d’abord la pré-demande en ligne sur le site de l’ANTS, puis prenez rendez-vous dans une mairie équipée. Vous pouvez vous rendre dans n’importe laquelle, quel que soit votre domicile.';
+	foreach (marly_socle_demarches() as $fiche) {
+		if ($fiche['titre'] === 'Carte d’identité ou passeport') {
+			sql_updateq('spip_demarches',
+				array('comment' => $fiche['comment'], 'a_savoir' => $fiche['a_savoir']),
+				'titre = ' . sql_quote($fiche['titre'])
+				. ' AND comment = ' . sql_quote($ancien));
+		}
+	}
+
+	spip_log("marly : socle complete, $ajoutees fiche(s) ajoutee(s)", 'marly.' . _LOG_INFO_IMPORTANTE);
 }
 
 /**
