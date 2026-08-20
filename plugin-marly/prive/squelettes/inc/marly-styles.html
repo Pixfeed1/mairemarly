@@ -200,6 +200,10 @@ ul.marly-propositions button {
 	cursor: pointer;
 	font: inherit;
 	line-height: 1.35;
+	/* L'espace prive de SPIP peint ses boutons en texte blanc. Retirer le
+	   fond sans reprendre la couleur donnait du blanc sur blanc : la liste
+	   semblait vide alors que la recherche avait abouti. */
+	color: #1F1F1F;
 }
 ul.marly-propositions button:hover,
 ul.marly-propositions button:focus { background: #EEF4F0; }
