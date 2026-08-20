@@ -74,10 +74,25 @@ done
 
 echo
 echo "=== 5. Le plugin est-il vu comme actif"
-$SQL -e "SELECT LEFT(valeur,400) FROM spip_meta WHERE nom='plugin'" 2>&1 | tr ',' '\n' | grep -i marly || echo "  marly n'apparait pas dans la meta plugin"
+$SQL -e "SELECT nom, IF(valeur LIKE '%marly%','marly present','marly ABSENT') FROM spip_meta
+         WHERE nom IN ('plugin','plugin_installes','plugin_attente_installation')" 2>&1
 
 echo
 echo "=== 6. PHP peut-il lire le fichier de mise a jour"
 php -l "$SITE/plugins/marly/marly_administrations.php" 2>&1
 php -l "$SITE/plugins/marly/base/marly.php" 2>&1
 ls -l "$SITE/plugins/marly/marly_administrations.php"
+
+echo
+echo "=== RESUME (c'est cette partie qui decide)"
+SCHEMA=$(grep -o 'schema="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1 | sed 's/schema="//; s/"//')
+ENBASE=$($SQL -e "SELECT valeur FROM spip_meta WHERE nom='marly_base_version'" 2>/dev/null)
+ACTIF=$($SQL  -e "SELECT IF(valeur LIKE '%marly%','oui','NON') FROM spip_meta WHERE nom='plugin'" 2>/dev/null)
+LIEUX=$($SQL  -e "SELECT COUNT(*) FROM information_schema.tables
+                  WHERE table_schema='$BASE' AND table_name='spip_lieux'" 2>/dev/null)
+MAJLOG=$(grep -c . "$SITE/tmp/log/maj.log" 2>/dev/null || echo 0)
+echo "  schema declare par le plugin  : ${SCHEMA:-?}"
+echo "  version enregistree en base   : ${ENBASE:-aucune}"
+echo "  plugin marly actif pour SPIP  : ${ACTIF:-?}"
+echo "  table spip_lieux presente     : $LIEUX (1 = oui, 0 = non)"
+echo "  lignes dans tmp/log/maj.log   : $MAJLOG (0 = la mise a jour n'a JAMAIS tourne)"
