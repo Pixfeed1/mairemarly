@@ -22,13 +22,13 @@
 			<legend><:marly:legende_contact:></legend>
 			<ul>
 				<li class="marly-champ marly-telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
-					<label for="telephone"><:marly:telephone:></label>
+					<label for="telephone"><:marly:champ_telephone:></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
 					<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]">
 					<small><:marly:telephone_aide:></small>
 				</li>
 				<li class="marly-champ marly-courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
-					<label for="courriel"><:marly:courriel:></label>
+					<label for="courriel"><:marly:champ_courriel:></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
 					<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]">
 				</li>

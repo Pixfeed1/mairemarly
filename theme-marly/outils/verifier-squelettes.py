@@ -300,6 +300,42 @@ for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.p
         signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'), 1,
                  'fichier PHP sans aucune fonction : contenu perdu ?')
 
+# 21. Un meme champ doit se presenter pareil sur tous les ecrans.
+#     C'est la regle qui manquait le jour ou j'ai corrige l'ordre d'affichage
+#     sur un ecran en oubliant les autres : deux facons de poser la meme
+#     question dans le meme back office, et rien pour le signaler.
+#
+#     Certaines divergences sont VOULUES : les horaires de la mairie ne sont
+#     pas ceux d'une association, l'objet d'un courriel n'est pas le titre
+#     d'une salle. Elles sont donc declarees ici, une par une, avec leur
+#     raison. Toute divergence non declaree est une erreur.
+DIVERGENCES_VOULUES = {
+    'horaires': "horaires d'ouverture de la mairie / creneaux d'activite d'une association",
+    'lieu':     "lieu d'un evenement / ou se pratique l'activite d'une association",
+    'nom':      "nom d'une association / nom d'une personne",
+    'rang':     "rang protocolaire d'un elu / place parmi six raccourcis",
+    'statut':   "publication d'une fiche / ouverture d'une salle a la reservation",
+    'titre':    "intitule d'une fiche / nom d'une salle / objet d'un courriel",
+    'video':    "video annoncee dans une lettre / video d'un evenement",
+}
+_FORMS = os.path.join(RACINE, '..', 'plugin-marly', 'formulaires')
+if os.path.isdir(_FORMS):
+    _champs = {}
+    for _f in sorted(glob.glob(os.path.join(_FORMS, '*.html'))):
+        _ecran = os.path.basename(_f)
+        _src = open(_f, encoding='utf-8').read()
+        for _li in re.findall(r'<li class="marly-champ[^"]*">(.*?)</li>', _src, re.S):
+            _n = re.search(r'name="([a-z_]+)"', _li)
+            _l = re.search(r'<label[^>]*>\s*<:marly:([a-z0-9_]+):>', _li)
+            if _n and _l:
+                _champs.setdefault(_n.group(1), {})[_ecran] = _l.group(1)
+    for _nom, _par_ecran in sorted(_champs.items()):
+        if len(set(_par_ecran.values())) > 1 and _nom not in DIVERGENCES_VOULUES:
+            _detail = ', '.join(f'{e}={c}' for e, c in sorted(_par_ecran.items()))
+            signaler('plugin-marly/formulaires', 1,
+                     f'le champ {_nom} porte des etiquettes differentes selon l\'ecran ({_detail}) : '
+                     f'unifier, ou declarer la divergence dans DIVERGENCES_VOULUES')
+
 # 14. Le schema declare doit valoir la derniere etape de mise a jour.
 #     paquet.xml porte DEUX numeros : << version >>, celle du plugin, et
 #     << schema >>, celle de la base. SPIP ne compare que la seconde a ce
