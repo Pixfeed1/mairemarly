@@ -1141,3 +1141,56 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 	.fiche-grille{ grid-template-columns:1fr; gap:34px; }
 	.page-large{ padding:20px 18px 60px; }
 }
+
+/* ===========================================================================
+   ANNUAIRE DES ASSOCIATIONS
+   ---------------------------------------------------------------------------
+   Pas de filtres : a une dizaine d'associations, les intertitres de theme
+   font le travail qu'une grande ville confie a un moteur de recherche. Le
+   champ de recherche viendra le jour ou le nombre le justifiera.
+   =========================================================================== */
+.annuaire{ list-style:none; margin:0 0 44px; padding:0; }
+.annuaire li{ border-bottom:1px solid var(--trait); }
+.annuaire li:last-child{ border-bottom:0; }
+.annuaire a{
+	display:flex;
+	align-items:center;
+	gap:20px;
+	padding:18px 4px;
+	text-decoration:none;
+	color:inherit;
+}
+.annuaire a:hover b{ text-decoration:underline; }
+
+/* La tuile coloree tient lieu d'image tant qu'il n'y en a pas. C'est le seul
+   endroit du site ou une image d'attente se justifie : elle maintient la
+   regularite de la liste, alors qu'un trou la casse. */
+.asso-tuile{
+	flex:0 0 auto;
+	width:76px; height:76px;
+	display:flex; align-items:center; justify-content:center;
+	background:var(--accent);
+	border-radius:3px;
+}
+.asso-tuile .ico{ width:34px; height:34px; fill:#fff; opacity:.85; }
+
+.asso-texte{ display:block; min-width:0; }
+.asso-texte b{ display:block; font-size:1.08em; margin-bottom:3px; }
+.asso-activite{ display:block; color:var(--encre-doux); line-height:1.5; }
+.asso-contact{ display:block; margin-top:5px; font-size:.9em; color:var(--accent); font-weight:600; }
+
+/* Sur la fiche : le theme au-dessus du nom, comme une rubrique. */
+.asso-theme{
+	font-family:var(--titre);
+	font-size:.82em;
+	letter-spacing:.09em;
+	text-transform:uppercase;
+	color:var(--accent);
+	margin:0 0 6px;
+}
+
+@media (max-width:600px){
+	.asso-tuile{ width:60px; height:60px; }
+	.asso-tuile .ico{ width:26px; height:26px; }
+	.annuaire a{ gap:14px; }
+}

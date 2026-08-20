@@ -1,0 +1,6 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre">[(#ENV{id_association}|=={new}|?{'<:marly:creer_association:>','<:marly:modifier_association:>'})]</h1>
+
+[(#FORMULAIRE_EDITER_ASSOCIATION{#ENV{id_association,new}})]

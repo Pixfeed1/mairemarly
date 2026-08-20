@@ -1,0 +1,94 @@
+<div class="formulaire_spip formulaire_editer_association">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<fieldset>
+			<legend><:marly:champ_nom_asso:></legend>
+			<ul>
+			<li class="marly-champ marly-nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
+				<label for="nom"><:marly:champ_nom_asso:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]" required>
+			</li>
+			<li class="marly-champ marly-theme[ (#ENV**{erreurs}|table_valeur{theme}|oui)erreur]">
+				<label for="theme"><:marly:champ_theme:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{theme})</span>]
+				<select name="theme" id="theme">
+					<BOUCLE_themes(DATA){source tableau,#ENV{_themes}}>
+					<option value="#CLE"[(#ENV{theme}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_themes>
+				</select>
+				<small><:marly:theme_aide:></small>
+			</li>
+			<li class="marly-champ marly-activite[ (#ENV**{erreurs}|table_valeur{activite}|oui)erreur]">
+				<label for="activite"><:marly:champ_activite:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{activite})</span>]
+				<textarea name="activite" id="activite" rows="3" required>[(#ENV{activite}|textebrut)]</textarea>
+				<small><:marly:activite_aide:></small>
+			</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<legend><:marly:contact_titre:></legend>
+			<ul>
+			<li class="marly-champ marly-president">
+				<label for="president"><:marly:champ_president:></label>
+				<input type="text" class="text" name="president" id="president" value="[(#ENV{president}|attribut_html)]">
+				<small><:marly:president_aide:></small>
+			</li>
+			<li class="marly-champ marly-telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
+				<label for="telephone"><:marly:champ_telephone:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
+				<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]">
+			</li>
+			<li class="marly-champ marly-courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
+				<label for="courriel"><:marly:champ_courriel:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]">
+			</li>
+			<li class="marly-champ marly-site[ (#ENV**{erreurs}|table_valeur{site}|oui)erreur]">
+				<label for="site"><:marly:champ_site:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{site})</span>]
+				<input type="url" class="text" name="site" id="site" value="[(#ENV{site}|attribut_html)]" placeholder="https://">
+			</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<legend><:marly:asso_quand:></legend>
+			<ul>
+			<li class="marly-champ marly-lieu">
+				<label for="lieu"><:marly:champ_lieu_asso:></label>
+				<input type="text" class="text" name="lieu" id="lieu" value="[(#ENV{lieu}|attribut_html)]">
+			</li>
+			<li class="marly-champ marly-horaires">
+				<label for="horaires"><:marly:champ_horaires:></label>
+				<textarea name="horaires" id="horaires" rows="2">[(#ENV{horaires}|textebrut)]</textarea>
+				<small><:marly:horaires_asso_aide:></small>
+			</li>
+			<li class="marly-champ marly-rang">
+				<label for="rang"><:marly:champ_rang:></label>
+				<input type="number" class="text" name="rang" id="rang" value="[(#ENV{rang}|attribut_html)]" min="1" max="999">
+				<small><:marly:rang_aide:></small>
+			</li>
+			<li class="marly-champ marly-statut">
+				<label for="statut"><:marly:champ_publication:></label>
+				<select name="statut" id="statut">
+					<option value="publie"[(#ENV{statut}|=={publie}|oui) selected]><:marly:publication_oui:></option>
+					<option value="prepa"[(#ENV{statut}|=={prepa}|oui) selected]><:marly:publication_non:></option>
+				</select>
+			</li>
+			</ul>
+		</fieldset>
+
+		<p class="boutons"><input type="submit" class="submit" value="<:marly:enregistrer:>"></p>
+	</form>
+	]
+
+</div>

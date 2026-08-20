@@ -1,10 +1,10 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.13.2"
+	version="3.14.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
-	schema="3.13.0">
+	schema="3.14.0">
 
 	<!--
 		schema = la version de la BASE, et c'est ELLE que SPIP compare a la meta
@@ -50,6 +50,12 @@
 		titre="marly:titre_raccourcis"
 		parent="menu_configuration"
 		icone="images/marly-raccourcis.svg" />
+
+	<menu
+		nom="associations"
+		titre="marly:titre_associations"
+		parent="menu_edition"
+		icone="images/marly-associations.svg" />
 
 	<menu
 		nom="elus"

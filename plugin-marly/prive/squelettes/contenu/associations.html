@@ -1,0 +1,38 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre"><:marly:titre_associations:></h1>
+<p class="explication"><:marly:intro_associations:></p>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ECRIRE{association,id_association=new})]"><:marly:creer_association:></a>
+</p>
+
+<B_assos>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:champ_nom_asso:></th>
+			<th><:marly:col_theme:></th>
+			<th><:marly:col_responsable:></th>
+			<th><:marly:col_etat:></th>
+		</tr>
+	</thead>
+	<tbody>
+</B_assos>
+		<BOUCLE_assos(ASSOCIATIONS){par theme, rang, nom}{statut IN publie,prepa}>
+		<tr>
+			<td>
+				<a href="[(#URL_ECRIRE{association,id_association=#ID_ASSOCIATION})]">#NOM</a>
+				[<br><small>(#ACTIVITE|couper{110})</small>]
+			</td>
+			<td>[(#THEME|marly_theme_association)]</td>
+			<td>[(#PRESIDENT)][<br><small>(#TELEPHONE)</small>]</td>
+			<td>[(#STATUT|=={publie}|?{'<:marly:publication_oui:>','<:marly:publication_non:>'})]</td>
+		</tr>
+		</BOUCLE_assos>
+	</tbody>
+</table>
+<//B_assos>
+<p class="explication"><:marly:aucune_association:></p>
+<//B_assos>

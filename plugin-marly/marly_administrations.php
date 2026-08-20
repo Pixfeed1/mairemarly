@@ -86,6 +86,13 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_raccourcis')),
 	);
 
+	/* 3.14.0 — l'annuaire des associations, et la fiche << creer une
+	   association >> qui manquait au socle. */
+	$maj['3.14.0'] = array(
+		array('maj_tables', array('spip_associations')),
+		array('marly_ajouter_demarche_association'),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
@@ -116,11 +123,45 @@ function marly_poser_socle() {
 	spip_log("marly : socle pose, $posees demarches", 'marly');
 }
 
+/**
+ * Ajoute la fiche « Créer une association », oubliée dans le socle initial.
+ *
+ * Insérée UNE FOIS, et seulement si aucune fiche ne porte déjà ce titre. Une
+ * mairie qui l'aurait supprimée entre-temps ne la verra pas revenir : c'est
+ * la même règle que pour le socle, et elle vaut aussi pour les rattrapages.
+ */
+function marly_ajouter_demarche_association() {
+	if (sql_countsel('spip_demarches', 'titre LIKE ' . sql_quote('%association%'))) {
+		return;
+	}
+
+	sql_insertq('spip_demarches', array(
+		'titre'   => 'Créer une association',
+		'famille' => 'enligne',
+		'icone'   => 'ri-team-line',
+		'rang'    => 90,
+		'socle'   => 1,
+		'statut'  => 'publie',
+		'resume'  => 'La déclaration se fait en ligne ou à la préfecture. La mairie n’intervient pas, mais elle peut vous orienter.',
+		'qui'     => 'Au moins deux personnes majeures souhaitant mener un projet commun sans but lucratif.',
+		'comment' => 'Rédigez les statuts, tenez l’assemblée constitutive, puis déclarez l’association en ligne. La publication au Journal officiel se demande au même moment.',
+		'pieces'  => 'Statuts signés, procès-verbal de l’assemblée constitutive, et liste des dirigeants.',
+		'cout'    => 'Déclaration gratuite. Publication au Journal officiel : 44 €',
+		'delai'   => 'Récépissé sous 5 jours, publication sous un mois environ',
+		'ou'      => 'En ligne, ou au greffe des associations de la préfecture. Le secrétariat de la mairie peut vous aider à constituer le dossier.',
+		'a_savoir' => 'Une fois l’association déclarée, signalez-la à la mairie : elle figurera dans l’annuaire du site et pourra réserver la salle des fêtes.',
+		'lien'      => 'https://www.service-public.gouv.fr/particuliers/vosdroits/F1120',
+		'lien_faire' => 'https://www.service-public.gouv.fr/particuliers/vosdroits/R37933',
+	));
+	spip_log('marly : fiche << creer une association >> ajoutee', 'marly');
+}
+
 function marly_vider_tables($nom_meta_base_version) {
 	/* On supprime les tables : ce sont les nôtres, personne d'autre ne les
 	   lit. Les réglages, eux, restent — désactiver le plugin ne doit pas
 	   faire perdre le numéro de téléphone de la mairie. Ils seront effacés
 	   avec la meta ci-dessous seulement si l'on désinstalle vraiment. */
+	sql_drop_table('spip_associations');
 	sql_drop_table('spip_raccourcis');
 	sql_drop_table('spip_elus');
 	sql_drop_table('spip_demarches');

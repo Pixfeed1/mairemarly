@@ -177,3 +177,16 @@ function marly_alerte_active($alerte, $fin = '') {
 	}
 	return ($fin >= date('Y-m-d')) ? $alerte : '';
 }
+
+/**
+ * Les thèmes d'associations, pour une boucle DATA.
+ *
+ * SPIP ne sait pas grouper une boucle par une colonne en intercalant un
+ * titre. On boucle donc sur les thèmes, et une boucle interne va chercher les
+ * associations de chacun. Sept requêtes sur une table de dix lignes ne se
+ * mesurent pas, et le gabarit reste lisible.
+ */
+function filtre_marly_themes_pour_boucle_dist($rien = '') {
+	include_spip('inc/marly_associations');
+	return marly_themes_traduits();
+}

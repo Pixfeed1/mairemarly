@@ -1,0 +1,30 @@
+[(#REM)
+  La fiche d'une association. Ce qu'on vient y chercher est le contact : il
+  passe donc en premier apres l'activite, et non en bas de page.
+]
+<BOUCLE_asso(ASSOCIATIONS){id_association}>
+<div class="page-simple fiche-demarche">
+
+	<p class="fil"><a class="lien-fleche" href="#URL_PAGE{associations}"><:marly:retour_associations:>
+		<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a></p>
+
+	<p class="asso-theme">[(#THEME|marly_theme_association)]</p>
+	<h1>#NOM</h1>
+	[<p class="chapo">(#ACTIVITE|propre)</p>]
+
+	<dl class="fiche-chiffres">
+		[<div><dt><:marly:asso_responsable:></dt><dd>(#PRESIDENT)</dd></div>]
+		[<div><dt><:marly:champ_telephone:></dt><dd><a href="tel:[(#TELEPHONE|replace{' ',''}|attribut_html)]">(#TELEPHONE)</a></dd></div>]
+		[<div><dt><:marly:champ_courriel:></dt><dd><a href="mailto:[(#COURRIEL|attribut_html)]">(#COURRIEL)</a></dd></div>]
+	</dl>
+
+	[<section><h2><:marly:asso_ou:></h2><p>(#LIEU)</p></section>]
+	[<section><h2><:marly:asso_quand:></h2>(#HORAIRES|propre)</section>]
+
+	[<p class="fiche-liens">
+		<a class="pilule" href="(#SITE|attribut_html)" rel="noopener">
+			<svg class="ico" aria-hidden="true"><use href="#ri-external-link-line"/></svg> <:marly:asso_site:></a>
+	</p>]
+
+</div>
+</BOUCLE_asso>

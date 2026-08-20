@@ -1,0 +1,59 @@
+[(#REM)
+  L'annuaire de la vie associative.
+  ---------------------------------------------------------------------------
+  Groupe par theme, sans moteur de recherche ni filtres. La commune qui nous
+  sert de modele en propose douze, mais elle compte quarante associations :
+  poser douze filtres devant une dizaine de lignes, c'est un appareil de tri
+  plus gros que ce qu'il trie. Les intertitres font ici le meme travail, sans
+  qu'on ait rien a cliquer.
+
+  Le champ de recherche viendra le jour ou le nombre le justifiera — pas
+  avant.
+
+  Une boucle par theme : SPIP ne sait pas grouper une boucle par une colonne
+  en intercalant un titre. Sept boucles courtes coutent sept requetes sur une
+  table de dix lignes, ce qui ne se mesure pas, et le gabarit reste lisible.
+]
+<div class="page-simple">
+
+	<h1><:marly:titre_vie_associative:></h1>
+	<p class="chapo"><:marly:assos_intro:></p>
+
+	<BOUCLE_themes(DATA){source tableau,#VAL|marly_themes_pour_boucle}>
+	<B_assos>
+	<h2 class="titre-bloc">[(#CLE|marly_theme_association)]</h2>
+	<ul class="annuaire">
+		<BOUCLE_assos(ASSOCIATIONS){theme=#CLE}{par rang, nom}>
+		<li>
+			<a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+				[(#REM) La tuile coloree tient lieu d'image tant qu'il n'y en a
+				        pas. C'est le seul cas ou une image d'attente se
+				        justifie : elle maintient la regularite de la liste,
+				        alors qu'un trou la casse. ]
+				<span class="asso-tuile" aria-hidden="true">
+					<svg class="ico"><use href="#ri-team-line"/></svg>
+				</span>
+				<span class="asso-texte">
+					<b>#NOM</b>
+					[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+					[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+				</span>
+			</a>
+		</li>
+		</BOUCLE_assos>
+	</ul>
+	</B_assos>
+	</BOUCLE_themes>
+
+	<B_aucune>
+	<BOUCLE_aucune(ASSOCIATIONS){0,1}></BOUCLE_aucune>
+	</B_aucune>
+	<p class="explication"><:marly:aucune_association_publiee:></p>
+	<//B_aucune>
+
+	<p class="fiche-liens">
+		<a class="pilule" href="#URL_PAGE{demarches}">
+			<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg> <:marly:creer_la_sienne:></a>
+	</p>
+
+</div>

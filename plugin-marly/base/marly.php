@@ -149,6 +149,57 @@ function marly_declarer_tables_objets_sql($tables) {
 		'editable'   => 'non',
 	);
 
+	/* ASSOCIATIONS — l'annuaire de la vie associative.
+	   ------------------------------------------------------------------------
+	   Des champs separes, comme pour les demarches et les elus. Ce qu'on vient
+	   chercher dans un annuaire d'associations n'est pas une presentation :
+	   c'est QUI appeler. Un texte libre laisse ce renseignement se perdre au
+	   milieu d'un paragraphe, ou manquer tout a fait.
+
+	   Le theme n'est pas une etiquette libre : dix associations saisies par
+	   trois personnes donneraient << sport >>, << Sports >> et << sportif >>,
+	   et le regroupement ne marcherait plus. */
+	$tables['spip_associations'] = array(
+		'field' => array(
+			'id_association' => 'bigint(21) NOT NULL',
+			'nom'         => 'varchar(180) NOT NULL DEFAULT ""',
+			'theme'       => 'varchar(40) NOT NULL DEFAULT "autre"',
+			'activite'    => 'text NOT NULL DEFAULT ""',
+			'president'   => 'varchar(180) NOT NULL DEFAULT ""',
+			'telephone'   => 'varchar(60) NOT NULL DEFAULT ""',
+			'courriel'    => 'varchar(255) NOT NULL DEFAULT ""',
+			'site'        => 'varchar(255) NOT NULL DEFAULT ""',
+			'lieu'        => 'varchar(255) NOT NULL DEFAULT ""',
+			'horaires'    => 'text NOT NULL DEFAULT ""',
+			'rang'        => 'int(11) NOT NULL DEFAULT 100',
+			'statut'      => 'varchar(20) NOT NULL DEFAULT "publie"',
+			'maj'         => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY' => 'id_association',
+			'KEY statut'  => 'statut',
+			'KEY theme'   => 'theme',
+		),
+		'titre'      => 'nom AS titre, "" AS lang',
+		'principale' => 'oui',
+		'type'       => 'association',
+		'editable'   => 'oui',
+		'champs_editables'  => array('nom', 'theme', 'activite', 'president', 'telephone',
+		                             'courriel', 'site', 'lieu', 'horaires', 'rang'),
+		'rechercher_champs' => array('nom' => 8, 'activite' => 4, 'president' => 2),
+		'statut' => array(
+			array(
+				'champ'     => 'statut',
+				'publie'    => 'publie',
+				'previsu'   => 'publie,prepa',
+				'exception' => 'statut',
+			),
+		),
+		'texte_modifier'    => 'marly:modifier_association',
+		'texte_creer'       => 'marly:creer_association',
+		'info_aucun_objet'  => 'marly:aucune_association',
+	);
+
 	/* RACCOURCIS — les six ronds de la page d'accueil.
 	   ------------------------------------------------------------------------
 	   Ils venaient de mots-cles poses sur des articles : un groupe pour les
