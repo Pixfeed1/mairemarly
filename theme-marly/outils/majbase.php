@@ -88,7 +88,20 @@ if (!function_exists('plugin_installes_meta')) {
 }
 
 $avant = isset($GLOBALS['meta']['marly_base_version']) ? $GLOBALS['meta']['marly_base_version'] : 'aucune';
+
+/* SPIP ecrit son compte rendu en HTML : son branchement _IS_CLI ne se
+   declenche pas ici, parce qu'on lui a pose un REQUEST_URI pour satisfaire
+   le kernel. Plutot que de deviner sa condition exacte et de dependre
+   d'elle, on ramene la trace au texte nous-memes. */
+ob_start();
 plugin_installes_meta();
+$trace = ob_get_clean();
+include_spip('inc/filtres');
+if (function_exists('textebrut')) {
+	$trace = textebrut($trace);
+}
+$trace = trim(preg_replace("/\n{3,}/", "\n\n", $trace));
+echo $trace === '' ? "Aucun plugin n'avait de retard.\n" : $trace . "\n";
 
 /* On relit les metas depuis la base : la globale date d'avant la mise a
    jour, et se fier a elle donnerait un compte rendu faux. */
