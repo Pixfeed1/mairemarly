@@ -78,15 +78,23 @@ git clone -b claude/refonte-spip-mairie-marly-o47sn4 \
 Le dépôt n'est pas le site : on **recopie** les sources dans la racine web.
 
 ```bash
-cp ~/depot-marly/theme-marly/outils/deployer.sh ~/deployer.sh
-chmod +x ~/deployer.sh
-sh ~/deployer.sh
+cd ~/depot-marly
+git pull origin claude/refonte-spip-mairie-marly-o47sn4
+sh theme-marly/outils/deployer.sh /chemin/vers/racine-web
 ```
 
-Le script tire la branche, recopie `theme-marly/squelettes/` vers
-`~/marlygomont.pixfeed.net/squelettes/` et `plugin-marly/` vers
-`~/marlygomont.pixfeed.net/plugins/marly/`, puis vide le cache. C'est la
-seule commande à relancer à chaque mise à jour.
+Ces trois lignes sont tout le déploiement, et sont à rejouer à chaque mise à
+jour. Le script recopie `theme-marly/squelettes/` vers `<racine>/squelettes/`
+et `plugin-marly/` vers `<racine>/plugins/marly/`, rend les fichiers au
+propriétaire de la racine web si on l'a lancé en `root`, puis vide le cache.
+
+Il ne contient **aucun chemin en dur** : le dépôt est déduit de l'endroit où
+se trouve le script, et la racine web est celle passée en argument — omise,
+elle est cherchée par son seul marqueur fiable, `ecrire/inc_version.php`.
+
+> Le script ne fait pas le `git pull` lui-même, exprès. Le shell lit un
+> script au fur et à mesure de son exécution : un script qui se remplace
+> pendant qu'il tourne reprend sa lecture au milieu du nouveau fichier.
 
 > **Pourquoi une copie et non un lien symbolique.** Cette question a coûté
 > deux déploiements. PHP suit les liens sans rien demander : les squelettes
