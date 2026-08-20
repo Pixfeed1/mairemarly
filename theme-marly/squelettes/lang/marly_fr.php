@@ -6,7 +6,7 @@
  * appelle dans les squelettes par  <:marly:cle:>
  *
  * Intérêt concret : changer « Newsletter » en « Lettre d'information » se fait
- * ici, une fois, sans ouvrir un seul gabarit — et sans risquer d'en oublier un.
+ * ici, une fois, sans ouvrir un seul gabarit, et sans risquer d'en oublier un.
  *
  * Ce qui N'A PAS sa place ici : le contenu (articles, rubriques) qui vit en
  * base, et les paramètres du site (téléphone, adresse) qui vivent en
@@ -35,7 +35,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'dinformation'         => 'd’information',
 	'retour_accueil'       => 'Retour à l’accueil',
 	'accueil'              => 'Accueil',
-	'attention'            => 'Attention —',
+	'attention'            => 'Attention :',
 	'derniere_maj'         => 'Dernière mise à jour :',
 	'page_en_preparation'  => 'Cette page est en cours de rédaction. Elle engage la commune : elle sera publiée dès qu’elle aura été validée par la mairie.',
 	'fermer_newsletter'    => 'Fermer l’inscription à la lettre d’information',

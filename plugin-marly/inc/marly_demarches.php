@@ -4,7 +4,7 @@
  * ---------------------------------------------------------------------------
  * LE SOCLE est la liste des démarches identiques dans les 34 000 communes de
  * France. Il est posé à l'installation, puis il appartient à la mairie : elle
- * modifie, dépublie, supprime. Rien n'est reposé ensuite — une fiche qu'on a
+ * modifie, dépublie, supprime. Rien n'est reposé ensuite : une fiche qu'on a
  * supprimée ne doit pas revenir à la mise à jour suivante.
  *
  * CHAQUE FICHE RENVOIE vers service-public.gouv.fr au lieu de recopier la
@@ -77,7 +77,7 @@ function marly_socle_demarches() {
 		array(
 			'titre'   => 'Demander un acte de naissance, de mariage ou de décès',
 			'famille' => 'mairie', 'icone' => 'ri-file-text-line', 'rang' => 10,
-			'resume'  => 'La copie ou l’extrait d’un acte se demande à la mairie du lieu de l’événement — pas à celle du domicile.',
+			'resume'  => 'La copie ou l’extrait d’un acte se demande à la mairie du lieu de l’événement, pas à celle du domicile.',
 			'qui'     => 'La personne concernée, son conjoint, ses ascendants ou descendants, et son représentant légal. Pour un acte de plus de 75 ans, toute personne peut en obtenir copie.',
 			'comment' => 'Sur place, par courrier, ou en ligne. Précisez la date de l’événement et les noms et prénoms des parents.',
 			'pieces'  => 'Une pièce d’identité, et le livret de famille si vous l’avez.',

@@ -27,7 +27,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'code_postal'      => 'Code postal',
 	'ville'            => 'Commune',
 	'horaires'         => 'Horaires d’ouverture',
-	'horaires_aide'    => 'Une ligne par jour ou par plage. Exemple : Lundi et jeudi, 14 h – 17 h',
+	'horaires_aide'    => 'Une ligne par jour ou par plage. Exemple : Lundi et jeudi, 14 h à 17 h',
 
 	'facebook'         => 'Facebook',
 	'instagram'        => 'Instagram',
@@ -95,7 +95,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'erreur_enregistrement' => 'L’enregistrement a échoué. Réessayez, ou appelez la mairie.',
 
 	// --- Courriels -----------------------------------------------------------
-	'courriel_sujet_demande'   => '@site@ — votre demande de réservation',
+	'courriel_sujet_demande'   => '@site@ : votre demande de réservation',
 	'courriel_corps_demande'   => 'Bonjour @nom@,
 
 Nous avons bien reçu votre demande de réservation :
@@ -109,9 +109,9 @@ vous répondra par courriel.
 
 @site@',
 
-	'courriel_sujet_mairie'    => '@site@ — nouvelle demande de réservation',
+	'courriel_sujet_mairie'    => '@site@ : nouvelle demande de réservation',
 
-	'courriel_sujet_acceptee'  => '@site@ — votre réservation est confirmée',
+	'courriel_sujet_acceptee'  => '@site@ : votre réservation est confirmée',
 	'courriel_corps_acceptee'  => 'Bonjour @nom@,
 
 Votre réservation est confirmée :
@@ -124,7 +124,7 @@ Votre réservation est confirmée :
 
 @site@',
 
-	'courriel_sujet_refusee'   => '@site@ — votre demande n’a pas pu être retenue',
+	'courriel_sujet_refusee'   => '@site@ : votre demande n’a pas pu être retenue',
 	'courriel_corps_refusee'   => 'Bonjour @nom@,
 
 Votre demande de réservation pour @salle@, le @date_debut@, n’a pas pu être
@@ -136,7 +136,7 @@ N’hésitez pas à contacter la mairie pour envisager une autre date.
 
 @site@',
 
-	'courriel_sujet_annulee'   => '@site@ — votre réservation a été annulée',
+	'courriel_sujet_annulee'   => '@site@ : votre réservation a été annulée',
 	'courriel_corps_annulee'   => 'Bonjour @nom@,
 
 Votre réservation de @salle@ le @date_debut@ a été annulée.
@@ -156,7 +156,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'onglet_abonnes'       => 'Abonnés',
 	'creer_ressource'      => 'Ajouter quelque chose à réserver',
 	'modifier_ressource'   => 'Modifier',
-	'aucune_ressource'     => 'Rien à réserver pour l’instant. Ajoutez une salle, un terrain, du matériel — tout ce qui se prête ou se loue.',
+	'aucune_ressource'     => 'Rien à réserver pour l’instant. Ajoutez une salle, un terrain, du matériel, tout ce qui se prête ou se loue.',
 	'ressource_enregistree' => 'Enregistré.',
 	'col_delais'           => 'Délais',
 	'col_etat'             => 'État',
@@ -164,7 +164,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 
 	'champ_titre'              => 'Nom',
 	'champ_capacite'           => 'Capacité (personnes assises)',
-	'capacite_aide'            => 'Pour une salle, le nombre autorisé par la commission de sécurité. Laissez vide si la question ne se pose pas — du matériel n’a pas de capacité.',
+	'capacite_aide'            => 'Pour une salle, le nombre autorisé par la commission de sécurité. Laissez vide si la question ne se pose pas : du matériel n’a pas de capacité.',
 	'champ_tarif_commune'      => 'Tarif habitants de la commune',
 	'tarif_aide'               => 'Texte libre : « 80 € la journée », « gratuit pour les associations ».',
 	'champ_tarif_hors_commune' => 'Tarif hors commune',
@@ -181,8 +181,8 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_descriptif'         => 'Description',
 	'descriptif_aide'          => 'Ce qui est fourni : tables, chaises, cuisine, vaisselle, sonorisation…',
 	'champ_statut'             => 'Ouverte à la réservation',
-	'statut_prepa'             => 'Non — n’apparaît pas sur le site',
-	'statut_publie'            => 'Oui — le formulaire est ouvert',
+	'statut_prepa'             => 'Non, n’apparaît pas sur le site',
+	'statut_publie'            => 'Oui, le formulaire est ouvert',
 	'statut_aide'              => 'Ce qui n’est pas ouvert reste enregistré mais invisible : utile hors saison, ou pendant des travaux.',
 
 	'erreur_nombre'            => 'Indiquez un nombre entier de jours.',
@@ -229,7 +229,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_activite'       => 'Activité',
 	'activite_aide'        => 'Une ou deux phrases : ce qu’on y fait, pour qui. C’est ce qui s’affiche dans la liste.',
 	'champ_president'      => 'Responsable',
-	'president_aide'       => 'La personne à qui l’on s’adresse — présidente, président, ou secrétaire. Avec son accord : ce nom sera public.',
+	'president_aide'       => 'La personne à qui l’on s’adresse : présidente, président ou secrétaire. Avec son accord : ce nom sera public.',
 	'champ_site'           => 'Site ou page internet',
 	'champ_lieu_asso'      => 'Où se déroulent les activités',
 	'champ_horaires'       => 'Jours et horaires',
@@ -273,7 +273,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'cible_url'            => 'Une autre adresse (site extérieur)',
 	'champ_url_exterieure' => 'Adresse du site extérieur',
 	'url_exterieure_aide'  => 'À remplir seulement si vous avez choisi « une autre adresse » ci-dessus.',
-	'destination_perdue'   => 'destination supprimée — ce raccourci ne s’affiche pas',
+	'destination_perdue'   => 'destination supprimée, ce raccourci ne s’affiche pas',
 
 	// --- Élus -----------------------------------------------------------------
 	'titre_elus'           => 'Élus',
@@ -281,7 +281,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'modifier_elu'         => 'Modifier',
 	'aucun_elu'            => 'Aucun élu enregistré.',
 	'elu_enregistre'       => 'Enregistré.',
-	'intro_elus'           => 'Saisis une fois, les élus sont proposés ensuite sur chaque fiche démarche. Le jour où une délégation change, il n’y a qu’un seul endroit à corriger — et non six fiches à retrouver.',
+	'intro_elus'           => 'Saisis une fois, les élus sont proposés ensuite sur chaque fiche démarche. Le jour où une délégation change, il n’y a qu’un seul endroit à corriger, et non six fiches à retrouver.',
 	'champ_nom_elu'        => 'Nom',
 	'champ_telephone'      => 'Téléphone',
 	'champ_courriel'       => 'Courriel',
@@ -308,7 +308,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_alerte'         => 'Avertissement temporaire',
 	'alerte_aide'          => 'Une information passagère : guichet fermé, service indisponible. Elle s’affiche en évidence.',
 	'champ_alerte_fin'     => 'Jusqu’au',
-	'alerte_fin_aide'      => 'L’avertissement disparaît tout seul après cette date. Sans date, il reste affiché — et un message qu’il faut penser à retirer n’est jamais retiré.',
+	'alerte_fin_aide'      => 'L’avertissement disparaît tout seul après cette date. Sans date, il reste affiché, et un message qu’il faut penser à retirer n’est jamais retiré.',
 	'a_savoir_titre'       => 'À savoir',
 	'referent_titre'       => 'Élu référent',
 	'contact_titre'        => 'Contact',
@@ -317,8 +317,8 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	// --- Démarches ------------------------------------------------------------
 	'champ_intitule'       => 'Intitulé',
 	'champ_publication'    => 'Publication',
-	'publication_oui'      => 'Publiée — visible sur le site',
-	'publication_non'      => 'Brouillon — invisible sur le site',
+	'publication_oui'      => 'Publiée, visible sur le site',
+	'publication_non'      => 'Brouillon, invisible sur le site',
 	'modifier'             => 'Modifier',
 	'supprimer'            => 'Supprimer',
 	'confirmer_suppression' => 'Supprimer cette fiche ? Elle ne sera pas remise en place à la prochaine mise à jour.',
@@ -327,7 +327,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'modifier_demarche'    => 'Modifier la démarche',
 	'aucune_demarche'      => 'Aucune démarche enregistrée.',
 	'demarche_enregistree' => 'Enregistré.',
-	'intro_demarches'      => 'Les fiches que les habitants consultent. Celles marquées « socle » ont été fournies avec le site : elles existent dans toutes les communes de France. Vous pouvez les modifier, les dépublier ou les supprimer — elles ne reviendront pas.',
+	'intro_demarches'      => 'Les fiches que les habitants consultent. Celles marquées « socle » ont été fournies avec le site : elles existent dans toutes les communes de France. Vous pouvez les modifier, les dépublier ou les supprimer : elles ne reviendront pas.',
 	'col_famille'          => 'Où ça se passe',
 	'col_socle'            => 'Origine',
 	'origine_socle'        => 'Socle',
@@ -341,7 +341,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'famille_ailleurs_court' => 'Ailleurs',
 
 	'champ_famille'        => 'Où cette démarche se fait-elle ?',
-	'famille_aide'         => '« Ailleurs » sert aux démarches que la mairie ne traite pas — carte grise, impôts. Le seul service à rendre est alors d’éviter un déplacement pour rien.',
+	'famille_aide'         => '« Ailleurs » sert aux démarches que la mairie ne traite pas : carte grise, impôts. Le seul service à rendre est alors d’éviter un déplacement pour rien.',
 	'champ_icone'          => 'Icône',
 	'icone_aide'           => 'Choisissez la plus proche. Elle sert de repère visuel dans la liste, elle ne remplace pas le titre.',
 	'champ_resume'         => 'En une phrase',
@@ -355,7 +355,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_ou'             => 'Où s’adresser',
 	'ou_aide'              => 'L’information que l’État ne peut pas donner à votre place : votre guichet, vos horaires, votre téléphone.',
 	'champ_lien'           => 'Fiche officielle',
-	'lien_aide'            => 'L’adresse de la fiche sur service-public.gouv.fr. C’est elle qui porte la réglementation à jour — le site n’a pas à la recopier.',
+	'lien_aide'            => 'L’adresse de la fiche sur service-public.gouv.fr. C’est elle qui porte la réglementation à jour : le site n’a pas à la recopier.',
 	'champ_lien_faire'     => 'Faire la démarche en ligne',
 	'lien_faire_aide'      => 'Le téléservice, quand il existe : ANTS, impots.gouv.fr, cadastre. Laissez vide si la démarche ne se fait pas en ligne.',
 	'champ_rang'           => 'Ordre d’affichage',
@@ -380,14 +380,14 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'video_lettre_aide'    => 'YouTube, Viméo, ou une vidéo déposée sur le site. Une vidéo ne se lit pas dans un courriel : le message affichera un bouton qui l’ouvre.',
 	'champ_actus'          => 'Reprendre les dernières actualités du site',
 	'actus_aide'           => 'Ajoute en fin de lettre les trois derniers articles publiés, avec leur date et un lien. Rien à choisir : ce sont ceux que vous venez de publier.',
-	'places_aide'               => '0 pour ne pas limiter — une kermesse en plein air n’a pas de jauge.',
+	'places_aide'               => '0 pour ne pas limiter : une kermesse en plein air n’a pas de jauge.',
 	'champ_logo'                => 'Photographie',
 	'logo_aide'                 => 'Elle s’ajoute après l’enregistrement, dans la colonne de droite : « Ajouter un logo ». C’est elle qui s’affiche sur la carte du site.',
 	'champ_places_par_personne' => 'Places maximum par inscription',
 	'places_par_personne_aide'  => 'Évite qu’une personne réserve la moitié de la salle.',
 	'champ_validation'          => 'Validation',
-	'validation_auto'           => 'Automatique — l’inscription est confirmée aussitôt',
-	'validation_mairie'         => 'Par la mairie — vous validez chaque inscription',
+	'validation_auto'           => 'Automatique, l’inscription est confirmée aussitôt',
+	'validation_mairie'         => 'Par la mairie, vous validez chaque inscription',
 	'validation_aide'           => 'Automatique pour un repas ou une sortie ; par la mairie quand il faut arbitrer, comme les emplacements de brocante.',
 	'champ_ouverture'           => 'Ouverture des inscriptions',
 	'ouverture_aide'            => 'Laissez vide pour ouvrir tout de suite.',
@@ -400,7 +400,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'je_minscris'               => 'Je m’inscris',
 	'obligatoire'               => '(obligatoire)',
 
-	'erreur_robot'              => 'Votre envoi n’a pas pu être accepté. Si vous êtes bien une personne, réessayez, ou appelez la mairie — nous prendrons votre demande par téléphone.',
+	'erreur_robot'              => 'Votre envoi n’a pas pu être accepté. Si vous êtes bien une personne, réessayez, ou appelez la mairie : nous prendrons votre demande par téléphone.',
 	'erreur_trop_vite'          => 'Le formulaire a été envoyé trop vite. Réessayez : le bouton fonctionne à nouveau.',
 	'erreur_formulaire_expire'  => 'Cette page est restée ouverte trop longtemps. Rechargez-la et recommencez, vos informations n’ont pas été perdues.',
 	'erreur_trop_de_demandes'   => 'Plusieurs demandes sont déjà en attente à cette adresse. Attendez notre réponse, ou appelez la mairie.',
@@ -429,7 +429,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'erreur_cloture_avant'      => 'La clôture doit venir après l’ouverture.',
 	'erreur_cloture_apres_evenement' => 'La clôture doit venir avant l’événement.',
 
-	'courriel_sujet_inscrit'    => '@site@ — votre inscription est confirmée',
+	'courriel_sujet_inscrit'    => '@site@ : votre inscription est confirmée',
 	'courriel_corps_inscrit'    => 'Bonjour @nom@,
 
 Votre inscription est confirmée :
@@ -455,10 +455,10 @@ Votre inscription est confirmée :
 	'newsletter_desinscrit' => 'Vous êtes désinscrit. Vous ne recevrez plus rien.',
 	'newsletter_jeton_inconnu' => 'Ce lien n’est plus valable. Il a peut-être déjà servi, ou il a expiré.',
 
-	'courriel_sujet_confirmation' => '@site@ — confirmez votre abonnement',
+	'courriel_sujet_confirmation' => '@site@ : confirmez votre abonnement',
 	'courriel_corps_confirmation' => 'Bonjour @nom@,
 
-Quelqu’un — vous, sans doute — a demandé à recevoir la lettre d’information
+Quelqu’un, vous sans doute, a demandé à recevoir la lettre d’information
 de @site@.
 
 Pour confirmer, cliquez sur ce lien :
@@ -476,7 +476,7 @@ adresse ne sera pas utilisée et sera effacée sous sept jours.
 	'abonnes_attente'       => 'En attente de confirmation',
 	'aucun_abonne'          => 'Aucun abonné pour le moment.',
 	'champ_ville'           => 'Commune',
-	'attente_explication'   => 'Ces adresses n’ont pas encore été confirmées : elles ne recevront rien. Si cette liste s’allonge sans jamais se vider, c’est que le courriel de confirmation n’arrive pas — vérifiez les réglages d’envoi du serveur.',
+	'attente_explication'   => 'Ces adresses n’ont pas encore été confirmées : elles ne recevront rien. Si cette liste s’allonge sans jamais se vider, c’est que le courriel de confirmation n’arrive pas : vérifiez les réglages d’envoi du serveur.',
 	'exporter_csv'          => 'Exporter la liste (CSV)',
 
 	'votre_nom_seul'        => 'Nom',
@@ -485,7 +485,7 @@ adresse ne sera pas utilisée et sera effacée sous sept jours.
 	'lieu_facultatif'       => 'Facultatif : si vous l’indiquez, la mairie saura distinguer les habitants de la commune des personnes des environs.',
 	'me_desabonner'         => 'Me désabonner',
 	'plutot_mabonner'       => 'Plutôt m’abonner',
-	'desabonnement_intro'   => 'Indiquez l’adresse à retirer de la liste. Nous vous enverrons un lien de confirmation — ainsi personne ne peut désabonner quelqu’un d’autre.',
+	'desabonnement_intro'   => 'Indiquez l’adresse à retirer de la liste. Nous vous enverrons un lien de confirmation, ainsi personne ne peut désabonner quelqu’un d’autre.',
 	'desabonnement_verifiez' => 'Si cette adresse figure sur la liste, un courriel vient de lui être envoyé avec un lien de désinscription.',
 	'erreur_courriels_differents' => 'Les deux adresses ne correspondent pas. Vérifiez la seconde.',
 	'erreur_code_postal'    => 'Un code postal s’écrit avec cinq chiffres.',
@@ -493,16 +493,16 @@ adresse ne sera pas utilisée et sera effacée sous sept jours.
 	'mention_titre'         => 'Que devient ce que vous saisissez ?',
 	'mention_texte'         => 'La commune de Marly-Gomont est responsable de ce traitement. Votre adresse
 		et vos coordonnées ne servent qu’à vous envoyer la lettre d’information, sur la base de votre
-		consentement. Elles ne sont transmises à personne — ni association, ni prestataire, ni autre
-		administration — et ne servent à aucun envoi commercial. Elles sont conservées jusqu’à votre
+		consentement. Elles ne sont transmises à personne : ni association, ni prestataire, ni autre
+		administration, et elles ne servent à aucun envoi commercial. Elles sont conservées jusqu’à votre
 		désinscription, puis effacées.',
 	'mention_droits'        => 'Vous pouvez à tout moment accéder à vos données, les corriger, les faire
-		effacer, en demander la portabilité, ou retirer votre consentement — le lien de désinscription
+		effacer, en demander la portabilité, ou retirer votre consentement : le lien de désinscription
 		figure dans chaque envoi. Écrivez à la mairie pour exercer ces droits.',
 	'mention_cnil'          => 'Si une réponse ne vous satisfait pas, vous pouvez saisir la CNIL, autorité
 		de contrôle française.',
 
-	'courriel_sujet_desinscription' => '@site@ — confirmez votre désinscription',
+	'courriel_sujet_desinscription' => '@site@ : confirmez votre désinscription',
 	'courriel_corps_desinscription' => 'Bonjour @nom@,
 
 Une désinscription de la lettre d’information de @site@ a été demandée pour
@@ -558,7 +558,7 @@ resterez abonné.
 
 	'enregistrer'      => 'Enregistrer',
 	'reglages_ok'      => 'Les réglages ont été enregistrés.',
-	'erreur_adresse'   => 'L’adresse doit commencer par https:// — copiez-la depuis la barre du navigateur.',
+	'erreur_adresse'   => 'L’adresse doit commencer par https:// Copiez-la depuis la barre du navigateur.',
 	'erreur_courriel'  => 'Cette adresse électronique ne semble pas valide.',
 	'erreur_un_contact' => 'Indiquez au moins un moyen de contact : téléphone, courriel ou site. C’est la seule chose qu’on vient chercher dans un annuaire.',
 );

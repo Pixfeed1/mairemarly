@@ -224,6 +224,22 @@ for _l in [os.path.join(RACINE, 'squelettes', 'lang', 'marly_fr.php'),
                      f"chaine declaree deux fois : {_m.group(1)} (ligne {_vues[_m.group(1)]} ecrasee)")
         _vues[_m.group(1)] = _n
 
+# 17. Pas de tiret cadratin dans les textes lus par les habitants.
+#     Employe comme ponctuation, il donne a un texte francais une tournure
+#     mecanique — c'est la marque d'une redaction automatique, et sur le site
+#     d'une mairie ca s'entend tout de suite. Une virgule, un deux-points ou
+#     une parenthese disent la meme chose sans ce ton-la.
+#     Les commentaires du code n'y sont pas soumis : personne ne les lit sur
+#     le site.
+for _f in [os.path.join(RACINE, 'squelettes', 'lang', 'marly_fr.php'),
+           os.path.join(RACINE, '..', 'plugin-marly', 'lang', 'marly_fr.php')]:
+    if not os.path.exists(_f):
+        continue
+    for _n, _ligne in enumerate(open(_f, encoding='utf-8').read().split('\n'), 1):
+        if re.match(r"\s*'[a-z0-9_]+'\s*=>", _ligne) and ('\u2014' in _ligne or '\u2013' in _ligne):
+            signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'), _n,
+                     'tiret cadratin dans un texte affiche : preferer une virgule ou un deux-points')
+
 # 14. Le schema declare doit valoir la derniere etape de mise a jour.
 #     paquet.xml porte DEUX numeros : << version >>, celle du plugin, et
 #     << schema >>, celle de la base. SPIP ne compare que la seconde a ce
