@@ -892,11 +892,16 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .nl-dedans .titre-bloc{ font-size:clamp(30px,4.4vw,42px); margin:0 0 14px; }
 .nl-intro{ font-family:var(--texte); font-size:15px; line-height:1.6; color:var(--encre-doux); margin:0 0 26px; }
 
-.formulaire_newsletter ul{ list-style:none; margin:0; padding:0; }
-.formulaire_newsletter li{ margin-bottom:16px; }
-.formulaire_newsletter label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:5px; }
+.formulaire_newsletter ul, .formulaire_signaler_association ul{ list-style:none; margin:0; padding:0; }
+.formulaire_newsletter li, .formulaire_signaler_association li{ margin-bottom:16px; }
+.formulaire_newsletter label, .formulaire_signaler_association label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:5px; }
 .formulaire_newsletter input[type="email"],
-.formulaire_newsletter input[type="text"]{
+.formulaire_newsletter input[type="text"],
+.formulaire_signaler_association input[type="email"],
+.formulaire_signaler_association input[type="text"],
+.formulaire_signaler_association input[type="tel"],
+.formulaire_signaler_association select,
+.formulaire_signaler_association textarea{
   width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
   padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
@@ -909,15 +914,15 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 }
 .formulaire_newsletter .case input{ width:20px; height:20px; margin:1px 0 0; flex-shrink:0; accent-color:var(--accent); }
 
-.formulaire_newsletter .submit{
+.formulaire_newsletter .submit, .formulaire_signaler_association .submit{
   border:0; background:var(--accent); color:#fff; border-radius:4px; width:100%;
   padding:15px 26px; font-family:var(--texte); font-weight:700; font-size:16px; cursor:pointer;
 }
-.formulaire_newsletter .submit:hover{ background:var(--accent-sombre); }
+.formulaire_newsletter .submit:hover, .formulaire_signaler_association .submit:hover{ background:var(--accent-sombre); }
 .nl-note{ font-family:var(--texte); font-size:12.5px; line-height:1.55; color:var(--encre-doux); margin:16px 0 0; }
-.formulaire_newsletter .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px;
+.formulaire_newsletter .erreur_message, .formulaire_signaler_association .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px;
                                         font-weight:700; color:#A32020; margin-bottom:5px; }
-.formulaire_newsletter .erreur input{ border-color:#A32020; }
+.formulaire_newsletter .erreur input, .formulaire_signaler_association .erreur input{ border-color:#A32020; }
 
 @media (prefers-reduced-motion:reduce){
   .panneau-nl, .nl-dedans{ transition:none; }
@@ -928,7 +933,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .nl-requis{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin:0 0 18px; }
 .nl-facultatif{ font-family:var(--texte); font-size:12.5px; line-height:1.5; color:var(--encre-doux);
                 margin:0 0 10px; padding-top:4px; border-top:1px solid var(--trait); }
-.formulaire_newsletter .obligatoire{ font-weight:400; font-size:12px; color:var(--encre-doux); }
+.formulaire_newsletter .obligatoire, .formulaire_signaler_association .obligatoire{ font-weight:400; font-size:12px; color:var(--encre-doux); }
 
 /* Deux champs courts côte à côte : code postal et commune vont ensemble,
    les séparer sur deux lignes allonge le formulaire pour rien. */
@@ -938,6 +943,13 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .formulaire_newsletter .rang-lieu{ display:grid; grid-template-columns:36% 1fr; gap:0 14px; }
 
 .nl-bascule{ margin:14px 0 0; text-align:center; font-family:var(--texte); font-size:13.5px; }
+
+/* Les aides sous les champs du signalement, meme voix que nl-note. */
+.formulaire_signaler_association small{
+  display:block; font-family:var(--texte); font-size:12.5px; line-height:1.5;
+  color:var(--encre-doux); margin-top:5px;
+}
+.formulaire_signaler_association textarea{ resize:vertical; min-height:90px; }
 .nl-bascule a{ color:var(--encre-doux); }
 .nl-bascule a:hover{ color:var(--accent); }
 
