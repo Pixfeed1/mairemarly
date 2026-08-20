@@ -60,7 +60,7 @@ function formulaires_editer_raccourci_charger_dist($id_raccourci = 'new') {
 		$r = sql_fetsel('*', 'spip_raccourcis', 'id_raccourci = ' . intval($id_raccourci));
 		if ($r) {
 			foreach (array('titre', 'icone', 'cible', 'rang', 'statut') as $c) {
-				$valeurs[$c] = $r[$c];
+				$valeurs[$c] = $r[$c] ?? $valeurs[$c] ?? '';
 			}
 			/* Une adresse extérieure est rangée dans « cible » sous la forme
 			   url:https://… On la ressort dans son propre champ, sans quoi la

@@ -50,8 +50,13 @@ function formulaires_editer_association_charger_dist($id_association = 'new') {
 	if ($id_association !== 'new' and intval($id_association)) {
 		$a = sql_fetsel('*', 'spip_associations', 'id_association = ' . intval($id_association));
 		if ($a) {
+			/* Une colonne peut manquer : les fichiers sont deployes avant que
+			   la mise a jour de la base n'ait tourne, et entre les deux la
+			   table a une colonne de retard. Le formulaire garde alors sa
+			   valeur par defaut au lieu d'afficher un avertissement PHP en
+			   haut de l'ecran. */
 			foreach (marly_champs_association() as $c) {
-				$valeurs[$c] = $a[$c];
+				$valeurs[$c] = $a[$c] ?? $valeurs[$c] ?? '';
 			}
 		}
 	}

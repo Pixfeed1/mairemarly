@@ -28,7 +28,7 @@ function formulaires_editer_elu_charger_dist($id_elu = 'new') {
 		$elu = sql_fetsel('*', 'spip_elus', 'id_elu = ' . intval($id_elu));
 		if ($elu) {
 			foreach (marly_champs_elu() as $c) {
-				$valeurs[$c] = $elu[$c];
+				$valeurs[$c] = $elu[$c] ?? $valeurs[$c] ?? '';
 			}
 		}
 	}

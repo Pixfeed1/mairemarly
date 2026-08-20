@@ -33,7 +33,7 @@ function formulaires_editer_lettre_charger_dist($id_lettre = 'new') {
 				return false;
 			}
 			foreach (array('titre', 'chapo', 'texte', 'video') as $champ) {
-				$valeurs[$champ] = $lettre[$champ];
+				$valeurs[$champ] = $lettre[$champ] ?? $valeurs[$champ] ?? '';
 			}
 			$valeurs['actus'] = $lettre['actus'] ? 'oui' : '';
 		}

@@ -41,7 +41,7 @@ function formulaires_editer_salle_charger_dist($id_salle = 'new') {
 		$salle = sql_fetsel('*', 'spip_salles', 'id_salle = ' . intval($id_salle));
 		if ($salle) {
 			foreach (marly_champs_salle() as $champ) {
-				$valeurs[$champ] = $salle[$champ];
+				$valeurs[$champ] = $salle[$champ] ?? $valeurs[$champ] ?? '';
 			}
 		}
 	}

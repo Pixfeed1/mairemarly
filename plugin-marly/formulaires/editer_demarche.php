@@ -66,7 +66,7 @@ function formulaires_editer_demarche_charger_dist($id_demarche = 'new') {
 		$fiche = sql_fetsel('*', 'spip_demarches', 'id_demarche = ' . intval($id_demarche));
 		if ($fiche) {
 			foreach (marly_champs_demarche() as $champ) {
-				$valeurs[$champ] = $fiche[$champ];
+				$valeurs[$champ] = $fiche[$champ] ?? $valeurs[$champ] ?? '';
 			}
 			/* Une date vide vaut 0000-00-00 en base : l'afficher telle quelle
 			   dans un champ date donnerait une date invalide, que le
