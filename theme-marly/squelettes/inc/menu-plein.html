@@ -37,7 +37,7 @@
 			        vide, et c'est justement sur telephone qu'on ne pardonne pas
 			        un aller-retour pour rien. ]
 			<B_lettre_menu>
-			<BOUCLE_lettre_menu(LETTRES){0,1}></BOUCLE_lettre_menu>
+			<BOUCLE_lettre_menu(LETTRES){0,1}><!-- boucle non vide --></BOUCLE_lettre_menu>
 			<a class="pilule" href="#URL_PAGE{newsletter}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:newsletter:>
 			</a>
@@ -48,7 +48,7 @@
 			</a>
 
 			<B_menu_salles>
-			<BOUCLE_menu_salles(SALLES){statut=publie}{0,1}></BOUCLE_menu_salles>
+			<BOUCLE_menu_salles(SALLES){statut=publie}{0,1}><!-- boucle non vide --></BOUCLE_menu_salles>
 			<a class="pilule plein" href="#URL_PAGE{reservation}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg> <:marly:reserver:>
 			</a>

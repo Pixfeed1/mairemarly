@@ -82,7 +82,7 @@
 			        La mairie n'a rien a activer : le jour ou elle commence sa
 			        premiere lettre, le bouton apparait. ]
 			<B_lettre_existe>
-			<BOUCLE_lettre_existe(LETTRES){0,1}></BOUCLE_lettre_existe>
+			<BOUCLE_lettre_existe(LETTRES){0,1}><!-- boucle non vide --></BOUCLE_lettre_existe>
 			<a class="pilule" href="#URL_PAGE{newsletter}" data-ouvre-newsletter>
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:newsletter:>
 			</a>
@@ -100,7 +100,7 @@
 			        tables a la fois. La seconde ne s'evalue que si la premiere
 			        n'a rien trouve, ce qui evite d'afficher deux boutons. ]
 			<B_a_reserver>
-			<BOUCLE_a_reserver(SALLES){statut=publie}{0,1}></BOUCLE_a_reserver>
+			<BOUCLE_a_reserver(SALLES){statut=publie}{0,1}><!-- boucle non vide --></BOUCLE_a_reserver>
 			<a class="pilule" href="#URL_PAGE{reservation}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg> <:marly:reserver:>
 			</a>

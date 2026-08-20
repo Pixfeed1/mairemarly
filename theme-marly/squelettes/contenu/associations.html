@@ -209,8 +209,12 @@
 
 	[(#REM) Aucune association publiee : on le dit, plutot que de laisser une
 	        page qui parait cassee. ]
+	[(#REM) Le corps de la boucle DOIT produire un texte : l'alternative d'une
+	        boucle SPIP s'affiche quand la boucle n'a rien PRODUIT, pas quand
+	        elle n'a rien trouve. Un corps vide affichait donc le message
+	        meme avec cinq fiches en ligne. Le commentaire HTML suffit. ]
 	<B_aucune>
-	<BOUCLE_aucune(ASSOCIATIONS){0,1}></BOUCLE_aucune>
+	<BOUCLE_aucune(ASSOCIATIONS){0,1}><!-- annuaire non vide --></BOUCLE_aucune>
 	</B_aucune>
 	<p class="explication"><:marly:aucune_association_publiee:></p>
 	<//B_aucune>

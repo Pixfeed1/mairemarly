@@ -475,6 +475,35 @@ for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
                      _src[:_m.start()].count(chr(10)) + 1,
                      f"filtre inexistant |{_nom} : ecrire |{_juste}")
 
+# 26. Tout script du theme doit etre reference par un gabarit.
+#     menu.js a vecu sans etre charge NULLE PART : chaque panneau retombait
+#     sur son lien de secours, et l'oubli etait invisible. Un script orphelin
+#     est soit un oubli de chargement, soit du code mort — les deux se
+#     corrigent.
+_gabarits = ''
+for _f in glob.glob('squelettes/**/*.html', recursive=True):
+    _gabarits += open(_f, encoding='utf-8').read()
+for _js in sorted(glob.glob('squelettes/js/*.js')):
+    _nom = os.path.basename(_js)
+    if _nom not in _gabarits:
+        signaler(_js, 1, f'script jamais reference par un gabarit : {_nom} ne se charge nulle part')
+
+# 27. Une boucle avec alternative doit produire un texte.
+#     L'alternative <//B_x> s'affiche quand la boucle n'a rien PRODUIT, pas
+#     quand elle n'a rien trouve. Une boucle au corps vide n'affiche donc
+#     JAMAIS sa partie normale et TOUJOURS son alternative — le message
+#     << annuaire en cours de constitution >> est reste au milieu de cinq
+#     fiches en ligne.
+for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
+                 glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _m in re.finditer(r'<BOUCLE_([A-Za-z0-9_]+)\([^)]*\)[^>]*>(\s*)</BOUCLE_\1>', _src):
+        if re.search(r'<//B_' + _m.group(1) + r'>', _src):
+            signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'),
+                     _src[:_m.start()].count(chr(10)) + 1,
+                     f'boucle {_m.group(1)} au corps vide avec alternative : '
+                     "l'alternative s'affichera TOUJOURS. Mettre au moins un commentaire HTML dans le corps")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

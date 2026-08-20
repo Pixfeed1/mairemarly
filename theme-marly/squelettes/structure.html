@@ -36,5 +36,11 @@
 	<INCLURE{fond=inc/panneau-recherche}{env}>
 	<INCLURE{fond=inc/panneau-newsletter}{env}>
 
+	[(#REM) Le script du theme : menus, panneaux, outils de fiche. Il n'etait
+	        reference NULLE PART : chaque panneau retombait sur son lien de
+	        secours (la page, le mailto), si bien que l'oubli ne se voyait
+	        pas. C'est le verificateur qui garde desormais cette porte. ]
+	<script src="#CHEMIN{js/menu.js}" defer></script>
+
 </body>
 </html>
