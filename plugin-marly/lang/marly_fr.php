@@ -369,6 +369,8 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_lien_faire'     => 'Faire la démarche en ligne',
 	'lien_faire_aide'      => 'Le téléservice, quand il existe : ANTS, impots.gouv.fr, cadastre. Laissez vide si la démarche ne se fait pas en ligne.',
 	'champ_rang'           => 'Ordre d’affichage',
+	'champ_ordre_elus'     => 'Rang',
+	'ordre_elus_aide'      => 'Le maire en 1, les adjoints ensuite dans l’ordre de leur élection, les conseillers après. C’est le seul endroit du site où l’ordre a un sens : ailleurs, tout se classe par ordre alphabétique.',
 	'rang_aide'            => 'Sert à ranger les fiches entre elles : la plus petite s’affiche en premier. Si vous n’y touchez pas, elles se classent par ordre alphabétique.',
 
 	'demarche_socle_note'  => 'Cette fiche fait partie du socle fourni avec le site. Vous pouvez la modifier librement : vos modifications ne seront jamais écrasées.',
