@@ -10,11 +10,17 @@
  * Le jour ou il l'oublie, les fichiers avancent et la base reste en arriere,
  * sans que rien ne le dise : les squelettes cassent, les formulaires perdent
  * des colonnes, et on cherche la panne ailleurs. C'est arrive ici sur six
- * versions d'affilee.
+ * versions d'affilee, de 3.14.0 a 3.21.0.
  *
- * Cette fonction est prevue pour la ligne de commande — elle contient un
- * branchement _IS_CLI. On l'appelle donc directement, et le deploiement
- * devient complet a lui seul.
+ * La fonction est prevue pour la ligne de commande, elle contient un
+ * branchement _IS_CLI. Restait a la joindre.
+ *
+ * L'AMORCAGE EST COPIE DE ecrire/index.php, pas invente. SPIP 4.4 demarre par
+ * un kernel Composer : inc_version.php ressort a sa ligne 24 si la fonction
+ * SpipLeague\Component\Kernel\app n'existe pas encore. Et le kernel retient
+ * getcwd() au moment ou on le touche : _ROOT_RESTREINT en decoule. Il faut
+ * donc etre DANS ecrire/, comme l'espace prive quand Apache l'execute. Se
+ * placer a la racine du site fait chercher les fichiers un cran trop haut.
  *
  * A LANCER SOUS L'UTILISATEUR DU SITE, jamais en root : SPIP reecrit ses
  * caches au passage, et un cache appartenant a root est un site casse.
@@ -32,24 +38,35 @@ if (PHP_SAPI !== 'cli') {
 }
 
 $racine = isset($argv[1]) ? rtrim($argv[1], '/') : getcwd();
-if (!is_file($racine . '/ecrire/inc_version.php')) {
+$ecrire = $racine . '/ecrire';
+
+if (!is_file($ecrire . '/inc_version.php')) {
 	fwrite(STDERR, "Racine SPIP introuvable : $racine\n");
 	exit(1);
 }
+if (!is_file($racine . '/vendor/autoload.php')) {
+	fwrite(STDERR, "vendor/autoload.php absent : ce SPIP ne demarre pas par Composer,\n"
+		. "l'amorcage ci-dessous ne lui convient pas.\n");
+	exit(1);
+}
 
-/* SPIP lit ces variables pour se situer. En ligne de commande elles
-   n'existent pas : on les pose telles qu'un appel local les aurait. */
-chdir($racine);
+/* Les trois gestes de ecrire/index.php, dans son ordre et depuis son
+   dossier. Les variables de serveur n'existent pas en ligne de commande :
+   le kernel lit REQUEST_URI et SCRIPT_FILENAME, on les pose telles qu'un
+   appel a l'espace prive les aurait laissees. */
+chdir($ecrire);
 $_SERVER['DOCUMENT_ROOT']   = $racine;
-$_SERVER['SCRIPT_FILENAME'] = $racine . '/index.php';
-$_SERVER['SCRIPT_NAME']     = '/index.php';
-$_SERVER['PHP_SELF']        = '/index.php';
-$_SERVER['REQUEST_URI']     = '/';
+$_SERVER['SCRIPT_FILENAME'] = $ecrire . '/index.php';
+$_SERVER['SCRIPT_NAME']     = '/ecrire/index.php';
+$_SERVER['PHP_SELF']        = '/ecrire/index.php';
+$_SERVER['REQUEST_URI']     = '/ecrire/';
 $_SERVER['REQUEST_METHOD']  = 'GET';
 $_SERVER['REMOTE_ADDR']     = '127.0.0.1';
 $_SERVER['HTTP_HOST']       = basename($racine);
 
-require_once $racine . '/ecrire/inc_version.php';
+require_once $racine . '/vendor/autoload.php';
+define('_ESPACE_PRIVE', true);
+include $ecrire . '/inc_version.php';
 
 if (!function_exists('include_spip')) {
 	fwrite(STDERR, "SPIP n'a pas demarre. Ce qu'il a eu le temps de poser :\n");
@@ -58,9 +75,8 @@ if (!function_exists('include_spip')) {
 		fwrite(STDERR, sprintf("  %-20s %s\n", $c,
 			defined($c) ? (constant($c) === '' ? '(chaine vide)' : constant($c)) : 'NON DEFINI'));
 	}
-	$utils = (defined('_ROOT_RESTREINT') ? _ROOT_RESTREINT : $racine . '/ecrire/') . 'inc/utils.php';
-	fwrite(STDERR, "  inc/utils.php attendu ici : $utils\n");
-	fwrite(STDERR, '  il existe : ' . (is_file($utils) ? 'oui' : 'NON') . "\n");
+	fwrite(STDERR, '  kernel Composer charge : '
+		. (function_exists('SpipLeague\Component\Kernel\app') ? 'oui' : 'NON') . "\n");
 	fwrite(STDERR, '  version de PHP : ' . PHP_VERSION . "\n");
 	exit(1);
 }
