@@ -341,6 +341,9 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'asso_quand'           => 'Quand',
 	'asso_site'            => 'Voir leur site',
 	'retour_associations'  => 'Toutes les associations',
+	'asso_absente' => 'Votre association ne figure pas dans l’annuaire ?',
+	'asso_absente_lien' => 'Signalez-la à la mairie',
+	'asso_absente_objet' => 'Notre association dans l’annuaire du site',
 	'creer_la_sienne'      => 'Créer une association',
 
 	// --- Accès rapides --------------------------------------------------------

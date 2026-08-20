@@ -215,6 +215,14 @@
 	<p class="explication"><:marly:aucune_association_publiee:></p>
 	<//B_aucune>
 
+	[(#REM) Le chemin d'entree dans l'annuaire : tout passe par la mairie,
+	        qui cree la fiche et, si l'association veut ecrire, son compte.
+	        Cette ligne rend ce chemin visible : sans elle, une association
+	        absente ne sait pas comment entrer. L'ancien site faisait pareil,
+	        avec un courriel en tete de rubrique. ]
+	[<p class="explication asso-entree"><:marly:asso_absente:>
+		<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)?subject=[(#VAL{marly:asso_absente_objet}|_T|url_encode)]"><:marly:asso_absente_lien:></a></p>]
+
 	<p class="fiche-liens">
 		<a class="pilule" href="#URL_PAGE{demarches}">
 			<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg> <:marly:creer_la_sienne:></a>
