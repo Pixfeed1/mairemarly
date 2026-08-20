@@ -72,7 +72,11 @@ function marly_carte_fabriquer($genre, $points, $zoom) {
 		$zoom = marly_carte_zoom_pour($points);
 	}
 
-	$dossier = _DIR_VAR . 'cache-marly-cartes/';
+	/* PAS dans un dossier cache-* : le deploiement purge ceux-la, et les
+	   plans seraient refaits a chaque mise a jour du site, au prix d'une
+	   attente pour le premier visiteur. Les images se fabriquent a
+	   l'ENREGISTREMENT de la fiche ; l'affichage ne fait que les servir. */
+	$dossier = _DIR_VAR . 'marly-cartes/';
 	$nom = $genre . '-' . md5($zoom . '|' . serialize($points)
 		. '|' . MARLY_CARTE_LARGEUR . 'x' . MARLY_CARTE_HAUTEUR) . '.png';
 	if (file_exists($dossier . $nom)) {
@@ -86,6 +90,11 @@ function marly_carte_fabriquer($genre, $points, $zoom) {
 
 	if (!is_dir($dossier)) {
 		@mkdir($dossier, 0755, true);
+	}
+	/* Une seule carte de la commune a la fois : chaque lieu ajoute changerait
+	   le nom, et les anciennes resteraient la pour toujours. */
+	foreach (glob($dossier . $genre . '-*.png') ?: array() as $ancienne) {
+		@unlink($ancienne);
 	}
 	imagepng($image, $dossier . $nom);
 	imagedestroy($image);

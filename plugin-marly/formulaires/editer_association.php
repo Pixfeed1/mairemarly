@@ -191,6 +191,14 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		sql_updateq('spip_associations', $champs, 'id_association = ' . intval($id_association));
 	}
 
+	/* Le plan se fabrique MAINTENANT, pendant l'enregistrement : les deux
+	   secondes de tuiles sont pour la mairie, jamais pour l'habitant, qui
+	   recoit une image toute prete. */
+	if ($champs['latitude'] !== '') {
+		include_spip('inc/marly_carte_image');
+		marly_carte_image_point($champs['latitude'], $champs['longitude']);
+	}
+
 	/* On dit ce qui s'est passe. Un enregistrement muet laissait croire que
 	   l'adresse avait ete localisee : la secretaire voyait << Enregistre >>,
 	   aucune carte n'apparaissait sur le site, et rien n'expliquait l'ecart.
