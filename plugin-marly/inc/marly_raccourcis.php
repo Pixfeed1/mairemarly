@@ -35,9 +35,10 @@ function marly_cibles_raccourcis() {
 	/* Les pages du thème, nommées en clair. Elles ne sont pas devinables
 	   depuis la base : c'est la seule liste que le code doit connaître. */
 	$pages = array(
-		'demarches'  => 'marly:toutes_les_demarches',
-		'reservation' => 'marly:reserver',
-		'newsletter' => 'marly:newsletter',
+		'demarches'    => 'marly:toutes_les_demarches',
+		'associations' => 'marly:titre_vie_associative',
+		'reservation'  => 'marly:reserver',
+		'newsletter'   => 'marly:newsletter',
 	);
 	foreach ($pages as $page => $intitule) {
 		$cibles['page:' . $page] = _T('marly:cible_page') . ' — ' . _T($intitule);

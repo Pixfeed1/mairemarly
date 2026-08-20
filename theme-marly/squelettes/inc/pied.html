@@ -42,23 +42,33 @@
 					<BOUCLE_pied_menu(RUBRIQUES){racine}{par num titre, titre}>
 					<li><a href="#URL_RUBRIQUE">#TITRE</a></li>
 					</BOUCLE_pied_menu>
+					[(#REM) L'annuaire des associations n'est pas une rubrique :
+					        c'est une page a lui. Sans ce lien, il n'etait
+					        atteignable que par son adresse. ]
+					<B_assos_pied>
+					<BOUCLE_assos_pied(ASSOCIATIONS){0,1}></BOUCLE_assos_pied>
+					<li><a href="#URL_PAGE{associations}"><:marly:titre_vie_associative:></a></li>
+					</B_assos_pied>
 				</ul>
 			</div>
 
 			<div>
 				<h3><:marly:demarches:></h3>
-				[(#REM) Ces liens sont du contenu : ils vivent dans une rubrique
-				        dédiée, repérée par le mot-clé « Démarches ». La mairie
-				        les ajoute et les retire sans intervention technique. ]
+				[(#REM) Les six premieres fiches, prises dans la table des
+				        demarches. Elles venaient d'articles portant un mot-cle,
+				        du temps ou les demarches etaient des articles. ]
 				<ul>
-					<BOUCLE_demarches(ARTICLES){titre_mot=Démarches}{par num titre, titre}{0,6}>
-					<li><a href="#URL_ARTICLE">#TITRE</a></li>
+					<BOUCLE_demarches(DEMARCHES){par famille, rang, titre}{0,6}>
+					<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">#TITRE</a></li>
 					</BOUCLE_demarches>
+					<li><a href="#URL_PAGE{demarches}"><:marly:toutes_les_demarches:></a></li>
 					[(#REM) Toujours affiche, quel que soit le nombre de demarches
 					        publiees : ce n'est pas un repli, c'est la reference
 					        vers laquelle renvoyer quand la commune ne traite pas
-					        elle-meme la demarche. ]
-					<li><a href="https://www.service-public.fr" rel="noopener">service-public.fr</a></li>
+					        elle-meme la demarche. L'adresse a change en octobre
+					        2025 : service-public.fr est devenu
+					        service-public.gouv.fr. ]
+					<li><a href="https://www.service-public.gouv.fr" rel="noopener">service-public.gouv.fr</a></li>
 				</ul>
 			</div>
 
