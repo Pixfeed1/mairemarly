@@ -286,6 +286,8 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'modifier_association' => 'Modifier',
 	'aucune_association'   => 'Aucune association enregistrée.',
 	'association_enregistree' => 'Enregistré.',
+	'association_enregistree_localisee' => 'Enregistré. L’adresse a été localisée : la carte apparaît sur la fiche du site.',
+	'association_enregistree_non_localisee' => 'Enregistré, mais l’adresse n’a pas pu être localisée : la fiche paraît sans carte. Vérifiez le nom de la rue et de la commune, ou écrivez seulement la rue et le code postal.',
 	'intro_associations'   => 'L’annuaire de la vie associative. Ce que les habitants viennent y chercher n’est pas une présentation : c’est qui appeler. Le nom du responsable et son téléphone comptent plus que le reste.',
 	'champ_nom_asso'       => 'Nom de l’association',
 	'photo_asso'           => 'Photographie',

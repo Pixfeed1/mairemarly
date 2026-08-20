@@ -138,8 +138,10 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		? sql_getfetsel('lieu', 'spip_associations', 'id_association = ' . intval($id_association))
 		: null;
 
+	$cherchees = false;
 	if ($champs['lieu'] !== '' and ($champs['latitude'] === '' or $champs['lieu'] !== $ancien)) {
 		include_spip('inc/marly_geocodage');
+		$cherchees = true;
 		$point = marly_geocoder($champs['lieu']);
 		$champs['latitude']  = $point['latitude'] ?? '';
 		$champs['longitude'] = $point['longitude'] ?? '';
@@ -169,6 +171,18 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		sql_updateq('spip_associations', $champs, 'id_association = ' . intval($id_association));
 	}
 
-	return array('message_ok' => _T('marly:association_enregistree'),
+	/* On dit ce qui s'est passe. Un enregistrement muet laissait croire que
+	   l'adresse avait ete localisee : la secretaire voyait << Enregistre >>,
+	   aucune carte n'apparaissait sur le site, et rien n'expliquait l'ecart.
+	   C'est le meme compte rendu que sur les lieux. */
+	if ($champs['latitude'] !== '') {
+		$message = _T('marly:association_enregistree_localisee');
+	} elseif ($cherchees) {
+		$message = _T('marly:association_enregistree_non_localisee');
+	} else {
+		$message = _T('marly:association_enregistree');
+	}
+
+	return array('message_ok' => $message,
 	             'redirect' => generer_url_ecrire('associations'));
 }
