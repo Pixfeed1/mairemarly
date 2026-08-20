@@ -1,7 +1,7 @@
 [(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
 <INCLURE{fond=prive/squelettes/inc/marly-styles}>
 
-<h1 class="grostitre">[(#ENV{id_manifestation}|=={new}|?{'<:marly:creer_manifestation:>','<:marly:modifier_manifestation:>'})]</h1>
+<h1 class="grostitre">[(#ENV{id_manifestation}|=={new}|?{'marly:creer_manifestation','marly:modifier_manifestation'}|_T)]</h1>
 
 [(#FORMULAIRE_EDITER_MANIFESTATION{#ENV{id_manifestation,new}})]
 
@@ -26,7 +26,7 @@
 				[<br><small>(#MOTIF)</small>]
 			</td>
 			<td>#PLACES</td>
-			<td>[(#STATUT|=={acceptee}|?{'<:marly:inscrite:>','<:marly:en_attente_courte:>'})]</td>
+			<td>[(#STATUT|=={acceptee}|?{'marly:inscrite','marly:en_attente_courte'}|_T)]</td>
 		</tr>
 </BOUCLE_inscrits>
 	</tbody>

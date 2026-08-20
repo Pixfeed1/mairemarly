@@ -1,6 +1,6 @@
 [(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
 <INCLURE{fond=prive/squelettes/inc/marly-styles}>
 
-<h1 class="grostitre">[(#ENV{id_salle}|=={new}|?{'<:marly:creer_ressource:>','<:marly:modifier_ressource:>'})]</h1>
+<h1 class="grostitre">[(#ENV{id_salle}|=={new}|?{'marly:creer_ressource','marly:modifier_ressource'}|_T)]</h1>
 
 [(#FORMULAIRE_EDITER_SALLE{#ENV{id_salle,new}})]

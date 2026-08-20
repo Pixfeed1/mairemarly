@@ -29,7 +29,7 @@
 			        mene a une page vide sur la page d'accueil. ]
 			<td>[(#CIBLE|marly_url_raccourci|sinon{'<em><:marly:destination_perdue:></em>'})]</td>
 			<td>#RANG</td>
-			<td>[(#STATUT|=={publie}|?{'<:marly:publication_oui:>','<:marly:publication_non:>'})]</td>
+			<td>[(#STATUT|=={publie}|?{'marly:publication_oui','marly:publication_non'}|_T)]</td>
 			<td class="actions">
 				<a class="btn" href="[(#URL_ECRIRE{raccourci,id_raccourci=#ID_RACCOURCI})]"><:marly:modifier:></a>
 			</td>

@@ -240,6 +240,22 @@ for _f in [os.path.join(RACINE, 'squelettes', 'lang', 'marly_fr.php'),
             signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'), _n,
                      'tiret cadratin dans un texte affiche : preferer une virgule ou un deux-points')
 
+# 18. Pas de balise de langue dans un argument de filtre.
+#     SPIP n'interprete pas <:marly:cle:> a l'interieur de ?{...} : il le
+#     recopie tel quel, et l'ecran affiche << <:marly:publication_oui:> >>.
+#     Dix-sept occurrences dormaient dans l'espace prive depuis le debut,
+#     invisibles tant qu'aucune liste n'avait de contenu.
+#     La bonne forme passe la CLE au ternaire puis traduit le resultat :
+#     ?{'marly:oui','marly:non'}|_T — ou, quand une seule branche est une
+#     cle, des blocs conditionnels.
+for f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
+                glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'), recursive=True)):
+    s = open(f, encoding='utf-8').read()
+    for m in re.finditer(r"\?\{[^}]*<:[a-z_]+:", s):
+        signaler(f.replace(os.path.join(RACINE, '..'), '').lstrip('/'),
+                 s[:m.start()].count(chr(10)) + 1,
+                 'balise de langue dans un argument de filtre : elle sera affichee telle quelle')
+
 # 14. Le schema declare doit valoir la derniere etape de mise a jour.
 #     paquet.xml porte DEUX numeros : << version >>, celle du plugin, et
 #     << schema >>, celle de la base. SPIP ne compare que la seconde a ce

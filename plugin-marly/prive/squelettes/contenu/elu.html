@@ -1,7 +1,7 @@
 [(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
 <INCLURE{fond=prive/squelettes/inc/marly-styles}>
 
-<h1 class="grostitre">[(#ENV{id_elu}|=={new}|?{'<:marly:creer_elu:>','<:marly:modifier_elu:>'})]</h1>
+<h1 class="grostitre">[(#ENV{id_elu}|=={new}|?{'marly:creer_elu','marly:modifier_elu'}|_T)]</h1>
 
 [(#FORMULAIRE_EDITER_ELU{#ENV{id_elu,new}})]
 

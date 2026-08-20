@@ -28,7 +28,7 @@
 			<td>[(#CAPACITE)]</td>
 			<td>[(#TARIF_COMMUNE)]</td>
 			<td>[(#DELAI_MIN)] – [(#DELAI_MAX)] <:marly:jours:></td>
-			<td>[(#STATUT|=={publie}|?{'<:marly:statut_publie:>','<:marly:statut_prepa:>'})]</td>
+			<td>[(#STATUT|=={publie}|?{'marly:statut_publie','marly:statut_prepa'}|_T)]</td>
 		</tr>
 	</BOUCLE_salles>
 	</tbody>

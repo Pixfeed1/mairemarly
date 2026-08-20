@@ -27,7 +27,7 @@
 	<BOUCLE_lettres(LETTRES){par date}{inverse}>
 		<tr>
 			<td><a href="[(#URL_ECRIRE{lettre,id_lettre=#ID_LETTRE})]">#TITRE</a></td>
-			<td>[(#STATUT|=={redaction}|?{'<:marly:etat_redaction:>'})][(#STATUT|=={envoi}|?{'<:marly:etat_envoi:>'})][(#STATUT|=={envoyee}|?{'<:marly:etat_envoyee:>'})][(#STATUT|=={arretee}|?{'<:marly:etat_arretee:>'})]</td>
+			<td>[(#STATUT|=={redaction}|oui)<:marly:etat_redaction:>][(#STATUT|=={envoi}|oui)<:marly:etat_envoi:>][(#STATUT|=={envoyee}|oui)<:marly:etat_envoyee:>][(#STATUT|=={arretee}|oui)<:marly:etat_arretee:>]</td>
 			<td>[(#NB_ENVOYES)][ <small>(#NB_ERREURS|=={0}|non) — (#NB_ERREURS) <:marly:erreurs:></small>]</td>
 			<td>[(#DATE_ENVOI|affdate{'j F Y'})]</td>
 		</tr>

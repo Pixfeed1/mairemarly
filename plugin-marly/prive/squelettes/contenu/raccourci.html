@@ -1,6 +1,6 @@
 [(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
 <INCLURE{fond=prive/squelettes/inc/marly-styles}>
 
-<h1 class="grostitre">[(#ENV{id_raccourci}|=={new}|?{'<:marly:creer_raccourci:>','<:marly:modifier_raccourci:>'})]</h1>
+<h1 class="grostitre">[(#ENV{id_raccourci}|=={new}|?{'marly:creer_raccourci','marly:modifier_raccourci'}|_T)]</h1>
 
 [(#FORMULAIRE_EDITER_RACCOURCI{#ENV{id_raccourci,new}})]

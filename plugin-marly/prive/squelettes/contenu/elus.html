@@ -27,7 +27,7 @@
 			<td>#FONCTION</td>
 			<td>[(#DELEGATION)]</td>
 			<td>[(#TELEPHONE)]</td>
-			<td>[(#STATUT|=={publie}|?{'<:marly:publication_oui:>','<:marly:publication_non:>'})]</td>
+			<td>[(#STATUT|=={publie}|?{'marly:publication_oui','marly:publication_non'}|_T)]</td>
 		</tr>
 		</BOUCLE_elus>
 	</tbody>
