@@ -61,3 +61,21 @@ function marly_etat_localisation($adresse, $latitude, $longitude) {
 		'lien' => filtre_marly_lien_carte_dist($latitude, $longitude),
 	);
 }
+
+/**
+ * Prévient le cache public qu'un contenu vient de changer.
+ *
+ * Nos formulaires écrivent en base directement (sql_updateq), sans passer
+ * par l'API des objets de SPIP : c'est elle qui, d'habitude, signale la
+ * modification au cache des pages publiques. Sans ce signal, le site
+ * ressert l'ancienne page jusqu'à expiration — ou jusqu'au prochain
+ * déploiement, qui vide tout et masquait le problème. La mairie corrigeait
+ * une fiche, le site ne bougeait pas, et rien n'expliquait pourquoi.
+ *
+ * On pose la meta que SPIP consulte pour dater les contenus : toute page
+ * en cache plus vieille qu'elle est recalculée à la prochaine visite.
+ */
+function marly_invalider_cache() {
+	include_spip('inc/meta');
+	ecrire_meta('derniere_modif', time());
+}

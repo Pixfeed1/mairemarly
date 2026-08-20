@@ -92,6 +92,9 @@ function formulaires_editer_salle_traiter_dist($id_salle = 'new') {
 		sql_updateq('spip_salles', $champs, 'id_salle = ' . intval($id_salle));
 	}
 
+	include_spip('inc/marly_outils');
+	marly_invalider_cache();
+
 	return array(
 		'message_ok'    => _T('marly:ressource_enregistree'),
 		'id_salle'      => $id_salle,

@@ -144,6 +144,9 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 		$message = _T('marly:lieu_enregistre');
 	}
 
+	include_spip('inc/marly_outils');
+	marly_invalider_cache();
+
 	return array('message_ok' => $message,
 	             'redirect' => generer_url_ecrire('lieux'));
 }

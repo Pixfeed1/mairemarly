@@ -229,6 +229,9 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		$message = _T('marly:association_enregistree');
 	}
 
+	include_spip('inc/marly_outils');
+	marly_invalider_cache();
+
 	return array('message_ok' => $message,
 	             'redirect' => generer_url_ecrire('associations'));
 }

@@ -77,6 +77,9 @@ function formulaires_editer_elu_traiter_dist($id_elu = 'new') {
 		sql_updateq('spip_elus', $champs, 'id_elu = ' . intval($id_elu));
 	}
 
+	include_spip('inc/marly_outils');
+	marly_invalider_cache();
+
 	return array('message_ok' => _T('marly:elu_enregistre'),
 	             'redirect' => generer_url_ecrire('elus'));
 }

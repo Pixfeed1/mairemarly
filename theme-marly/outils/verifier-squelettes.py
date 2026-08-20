@@ -504,6 +504,18 @@ for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
                      f'boucle {_m.group(1)} au corps vide avec alternative : '
                      "l'alternative s'affichera TOUJOURS. Mettre au moins un commentaire HTML dans le corps")
 
+# 28. Un ecran d'edition qui ecrit en base doit prevenir le cache public.
+#     Nos formulaires ecrivent par sql_updateq, sans passer par l'API des
+#     objets qui signale d'habitude la modification au cache. Sans le
+#     signal, la mairie corrige une fiche et le site public ne bouge pas —
+#     jusqu'au deploiement suivant, qui vide tout et masque le defaut.
+for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', 'formulaires', 'editer_*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    if ('sql_updateq' in _src or 'sql_insertq' in _src) and 'marly_invalider_cache' not in _src:
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), 1,
+                 'ecrit en base sans appeler marly_invalider_cache() : le site public '
+                 'ressert les anciennes pages jusqu au prochain deploiement')
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

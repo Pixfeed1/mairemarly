@@ -137,6 +137,9 @@ function formulaires_editer_manifestation_traiter_dist($id_manifestation = 'new'
 			'id_manifestation = ' . intval($id_manifestation));
 	}
 
+	include_spip('inc/marly_outils');
+	marly_invalider_cache();
+
 	return array(
 		'message_ok' => _T('marly:manifestation_enregistree'),
 		'redirect'   => generer_url_ecrire('manifestations'),

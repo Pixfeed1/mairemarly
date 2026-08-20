@@ -143,6 +143,9 @@ function formulaires_editer_demarche_traiter_dist($id_demarche = 'new') {
 		sql_updateq('spip_demarches', $champs, 'id_demarche = ' . intval($id_demarche));
 	}
 
+	include_spip('inc/marly_outils');
+	marly_invalider_cache();
+
 	return array(
 		'message_ok' => _T('marly:demarche_enregistree'),
 		'redirect'   => generer_url_ecrire('demarches'),

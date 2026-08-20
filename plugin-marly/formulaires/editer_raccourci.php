@@ -126,6 +126,9 @@ function formulaires_editer_raccourci_traiter_dist($id_raccourci = 'new') {
 		sql_updateq('spip_raccourcis', $champs, 'id_raccourci = ' . intval($id_raccourci));
 	}
 
+	include_spip('inc/marly_outils');
+	marly_invalider_cache();
+
 	return array('message_ok' => _T('marly:raccourci_enregistre'),
 	             'redirect' => generer_url_ecrire('raccourcis'));
 }

@@ -81,6 +81,9 @@ function formulaires_editer_lettre_traiter_dist($id_lettre = 'new') {
 		sql_updateq('spip_lettres', $champs, 'id_lettre = ' . intval($id_lettre));
 	}
 
+	include_spip('inc/marly_outils');
+	marly_invalider_cache();
+
 	return array(
 		'message_ok' => _T('marly:lettre_enregistree'),
 		'redirect'   => generer_url_ecrire('lettre', 'id_lettre=' . $id_lettre),
