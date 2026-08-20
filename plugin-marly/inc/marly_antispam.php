@@ -63,7 +63,7 @@ function marly_antispam_verifier() {
 	      et retiré de l'ordre de tabulation. Un robot remplit tous les
 	      champs qu'il trouve dans le HTML. */
 	if (trim((string) _request('_piege')) !== '') {
-		spip_log('marly : formulaire rejete, champ-piege rempli', 'marly');
+		spip_log('marly : formulaire rejete, champ-piege rempli', 'marly.' . _LOG_INFO_IMPORTANTE);
 		return _T('marly:erreur_robot');
 	}
 
@@ -73,13 +73,13 @@ function marly_antispam_verifier() {
 		return _T('marly:erreur_formulaire_expire');
 	}
 	if (marly_signer($r[1]) !== $pose) {
-		spip_log('marly : formulaire rejete, horodatage falsifie', 'marly');
+		spip_log('marly : formulaire rejete, horodatage falsifie', 'marly.' . _LOG_INFO_IMPORTANTE);
 		return _T('marly:erreur_robot');
 	}
 
 	$ecoule = time() - intval($r[1]);
 	if ($ecoule < _MARLY_DELAI_MINIMUM) {
-		spip_log("marly : formulaire rejete, rempli en {$ecoule}s", 'marly');
+		spip_log("marly : formulaire rejete, rempli en {$ecoule}s", 'marly.' . _LOG_INFO_IMPORTANTE);
 		return _T('marly:erreur_trop_vite');
 	}
 	if ($ecoule > _MARLY_DELAI_MAXIMUM) {
@@ -91,7 +91,7 @@ function marly_antispam_verifier() {
 	foreach (array('nom', 'organisme') as $champ) {
 		$valeur = (string) _request($champ);
 		if (preg_match(',https?://|www\.|\[url,i', $valeur)) {
-			spip_log("marly : formulaire rejete, adresse web dans $champ", 'marly');
+			spip_log("marly : formulaire rejete, adresse web dans $champ", 'marly.' . _LOG_INFO_IMPORTANTE);
 			return _T('marly:erreur_robot');
 		}
 	}

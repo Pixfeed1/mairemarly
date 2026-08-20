@@ -128,7 +128,7 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
  */
 function marly_poser_socle() {
 	if (sql_countsel('spip_demarches')) {
-		spip_log('marly : des demarches existent deja, socle non repose', 'marly');
+		spip_log('marly : des demarches existent deja, socle non repose', 'marly.' . _LOG_INFO_IMPORTANTE);
 		return;
 	}
 
@@ -141,7 +141,7 @@ function marly_poser_socle() {
 			$posees++;
 		}
 	}
-	spip_log("marly : socle pose, $posees demarches", 'marly');
+	spip_log("marly : socle pose, $posees demarches", 'marly.' . _LOG_INFO_IMPORTANTE);
 }
 
 /**
@@ -174,7 +174,7 @@ function marly_ajouter_demarche_association() {
 		'lien'      => 'https://www.service-public.gouv.fr/particuliers/vosdroits/F1120',
 		'lien_faire' => 'https://www.service-public.gouv.fr/particuliers/vosdroits/R37933',
 	));
-	spip_log('marly : fiche << creer une association >> ajoutee', 'marly');
+	spip_log('marly : fiche << creer une association >> ajoutee', 'marly.' . _LOG_INFO_IMPORTANTE);
 }
 
 /**
@@ -204,7 +204,7 @@ function marly_rubriques_associations_manquantes() {
 			$faites++;
 		}
 	}
-	spip_log("marly : $faites rubrique(s) d'association creee(s) en rattrapage", 'marly');
+	spip_log("marly : $faites rubrique(s) d'association creee(s) en rattrapage", 'marly.' . _LOG_INFO_IMPORTANTE);
 }
 
 function marly_vider_tables($nom_meta_base_version) {

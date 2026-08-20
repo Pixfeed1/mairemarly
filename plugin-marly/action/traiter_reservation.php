@@ -38,6 +38,6 @@ function action_traiter_reservation_dist($arg = null) {
 		/* Le message doit remonter à l'agent : un refus silencieux lui
 		   ferait croire que la salle est attribuée. */
 		set_request('message_erreur', $erreur);
-		spip_log("marly : refus de traitement $id_reservation ($quoi) — $erreur", 'marly');
+		spip_log("marly : refus de traitement $id_reservation ($quoi) — $erreur", 'marly.' . _LOG_INFO_IMPORTANTE);
 	}
 }

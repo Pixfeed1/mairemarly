@@ -75,7 +75,7 @@ function action_lettre_dist($arg = null) {
 			if ($lettre['statut'] !== 'envoi') { return; }
 			sql_updateq('spip_lettres', array('statut' => 'arretee'),
 				'id_lettre = ' . $id_lettre);
-			spip_log("marly : envoi de la lettre $id_lettre arrete a {$lettre['nb_envoyes']} envois", 'marly');
+			spip_log("marly : envoi de la lettre $id_lettre arrete a {$lettre['nb_envoyes']} envois", 'marly.' . _LOG_INFO_IMPORTANTE);
 			break;
 
 		/* Poursuivre un envoi arrêté, sans repartir du début. */

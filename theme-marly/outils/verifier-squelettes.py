@@ -357,6 +357,27 @@ if os.path.exists(paquet) and os.path.exists(admin):
                      f'schema="{declare.group(1)}" alors que la derniere etape '
                      f'de mise a jour est {derniere} : marly_upgrade ne sera pas appele')
 
+# 22. Un message de journal doit porter sa gravite, sinon SPIP le jette.
+#     spip_log($msg, 'marly') part en niveau << info >>, et le filtre par
+#     defaut de SPIP s'arrete un cran au-dessus : le message est ecrit puis
+#     abandonne, tmp/log/marly.log n'existe meme pas. On a cherche trois fois
+#     dans un fichier vide une reponse qui n'y serait jamais arrivee. La
+#     gravite s'ecrit en suffixe du nom du journal, apres un point.
+for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.php'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _m in re.finditer(r"spip_log\((?:[^()]|\([^()]*\))*?\)", _src):
+        _appel = _m.group(0)
+        if '_LOG_' in _appel:
+            continue
+        # Un appel sans nom de journal va dans spip.log, ecrit quoi qu'il arrive.
+        if not re.search(r",\s*'[^']+'\s*\)$", _appel):
+            continue
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_m.start()].count('\n') + 1,
+                 'spip_log sans gravite : SPIP filtre le niveau info par defaut '
+                 "et le message n'est jamais ecrit. Suffixer le nom du journal "
+                 "par '.' . _LOG_INFO_IMPORTANTE")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

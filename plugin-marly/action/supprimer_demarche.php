@@ -24,5 +24,5 @@ function action_supprimer_demarche_dist($arg = null) {
 	}
 
 	sql_delete('spip_demarches', 'id_demarche = ' . $id_demarche);
-	spip_log("marly : demarche $id_demarche supprimee", 'marly');
+	spip_log("marly : demarche $id_demarche supprimee", 'marly.' . _LOG_INFO_IMPORTANTE);
 }

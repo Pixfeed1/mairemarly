@@ -50,7 +50,7 @@ function action_marly_abonne_dist() {
 				$fait = 'confirme';
 			}
 		}
-		spip_log("marly : $faire jeton " . substr($jeton, 0, 6) . '... -> ' . $fait, 'marly');
+		spip_log("marly : $faire jeton " . substr($jeton, 0, 6) . '... -> ' . $fait, 'marly.' . _LOG_INFO_IMPORTANTE);
 	}
 
 	if (isset($_SERVER['REQUEST_METHOD']) and $_SERVER['REQUEST_METHOD'] === 'POST') {

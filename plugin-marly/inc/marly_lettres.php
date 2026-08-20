@@ -298,7 +298,7 @@ function marly_envoyer_lot($id_lettre) {
 			'statut'     => 'envoyee',
 			'date_envoi' => date('Y-m-d H:i:s'),
 		), 'id_lettre = ' . intval($id_lettre));
-		spip_log("marly : lettre $id_lettre terminee, {$lettre['nb_envoyes']} envois", 'marly');
+		spip_log("marly : lettre $id_lettre terminee, {$lettre['nb_envoyes']} envois", 'marly.' . _LOG_INFO_IMPORTANTE);
 		return 0;
 	}
 

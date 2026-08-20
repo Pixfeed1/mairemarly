@@ -51,7 +51,7 @@ function marly_geocoder($adresse) {
 
 	include_spip('inc/distant');
 	if (!function_exists('recuperer_url')) {
-		spip_log('marly : recuperer_url indisponible, geocodage impossible', 'marly');
+		spip_log('marly : recuperer_url indisponible, geocodage impossible', 'marly.' . _LOG_INFO_IMPORTANTE);
 		return array();
 	}
 
@@ -73,11 +73,11 @@ function marly_geocoder($adresse) {
 
 	$json = json_decode($reponse['page'] ?? '', true);
 	if (!is_array($json) or !isset($json[0]['lat'], $json[0]['lon'])) {
-		spip_log("marly : adresse non localisee — $requete", 'marly');
+		spip_log("marly : adresse non localisee — $requete", 'marly.' . _LOG_INFO_IMPORTANTE);
 		return array();
 	}
 
-	spip_log("marly : $requete -> {$json[0]['lat']}, {$json[0]['lon']}", 'marly');
+	spip_log("marly : $requete -> {$json[0]['lat']}, {$json[0]['lon']}", 'marly.' . _LOG_INFO_IMPORTANTE);
 
 	return array(
 		'latitude'  => substr((string) $json[0]['lat'], 0, 12),

@@ -66,7 +66,7 @@ function marly_themes_traduits() {
 function marly_rubrique_association($nom) {
 	include_spip('action/editer_objet');
 	if (!function_exists('objet_inserer')) {
-		spip_log('marly : objet_inserer indisponible, rubrique non creee', 'marly');
+		spip_log('marly : objet_inserer indisponible, rubrique non creee', 'marly.' . _LOG_INFO_IMPORTANTE);
 		return 0;
 	}
 
@@ -90,7 +90,7 @@ function marly_rubrique_association($nom) {
 		return 0;
 	}
 	objet_modifier('rubrique', $id, array('titre' => $nom));
-	spip_log("marly : rubrique $id creee pour l'association " . $nom, 'marly');
+	spip_log("marly : rubrique $id creee pour l'association " . $nom, 'marly.' . _LOG_INFO_IMPORTANTE);
 
 	return $id;
 }
