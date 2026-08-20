@@ -20,24 +20,28 @@
 		<div class="acces-demarches">
 			<h2 class="titre-bloc" id="titre-acces"><:marly:je:> <span><:marly:souhaite:></span></h2>
 
-			[(#REM) Les démarches sont les articles portant le mot-clé « Démarches » :
-			        la mairie en ajoute une en publiant un article, sans toucher au
-			        code. Le formulaire pointe sur spip.php?article=NN, l'adresse
-			        native de SPIP — elle fonctionne sans JavaScript et sans page
-			        intermédiaire à écrire.
+			[(#REM) Les démarches viennent de la table des démarches : le socle
+			        national posé à l'installation, plus celles que la mairie
+			        ajoute. La liste n'est donc jamais vide dès le premier jour,
+			        et elle ne propose jamais rien qui n'existe pas.
 
-			        Si aucun article ne porte encore le mot-clé, on n'affiche PAS
-			        une liste déroulante vide ni des exemples qui ne mènent nulle
-			        part : un contrôle qui ne fait rien est pire qu'absent. On
-			        affiche le lien vers la rubrique. ]
+			        Le formulaire part en GET vers la page de la fiche. Pas de
+			        JavaScript, pas de page intermédiaire : le navigateur compose
+			        l'adresse lui-même.
+
+			        RGAA — le formulaire ne part PAS au changement de sélection.
+			        Naviguer dès qu'on déplace le curseur piège l'usager au
+			        clavier, qui traverse la liste pour la lire. Il faut un
+			        bouton, et ce bouton est explicite. ]
 			<B_demarches>
 			<form method="get" action="#URL_SITE_SPIP/spip.php">
+				<input type="hidden" name="page" value="demarche">
 				<label for="choix-demarche" class="sr"><:marly:choisir_demarche:></label>
 				<div class="champ-demarche">
-					<select id="choix-demarche" name="article">
+					<select id="choix-demarche" name="id_demarche">
 						<option value=""><:marly:choisir_demarche:></option>
-						<BOUCLE_demarches(ARTICLES){titre_mot=Démarches}{par num titre, titre}{0,20}>
-						<option value="#ID_ARTICLE">#TITRE</option>
+						<BOUCLE_demarches(DEMARCHES){par famille, rang, titre}{0,30}>
+						<option value="#ID_DEMARCHE">#TITRE</option>
 						</BOUCLE_demarches>
 					</select>
 					<button type="submit"><:marly:valider:></button>
@@ -49,10 +53,9 @@
 			</p>
 			</B_demarches>
 
-			<p class="acces-tout">
-				<a class="lien-fleche" href="#URL_PAGE{demarches}"><:marly:toutes_demarches:>
-					<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a>
-			</p>
+			[(#REM) Rien de publié : on n'affiche pas une liste déroulante vide.
+			        Un contrôle qui ne fait rien est pire qu'absent. ]
+			<p class="explication"><:marly:aucune_demarche_publiee:></p>
 			<//B_demarches>
 		</div>
 
@@ -101,26 +104,23 @@
 			</ul>
 			</B_raccourcis>
 
+			[(#REM) Tant qu'aucun article ne porte le mot-clé, on prend les
+			        rubriques racines du site. Elles existent forcément — c'est
+			        la structure que la mairie vient de créer — donc aucun de ces
+			        six liens ne peut mener à une erreur.
+
+			        La version précédente pointait vers des pages nommées
+			        « conseil », « urbanisme », « bulletin » qui n'ont jamais
+			        existé : la page d'accueil offrait cinq boutons cassés. ]
+			<B_rubriques>
 			<ul>
-				<li><a href="#URL_PAGE{conseil}">
-					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
-					<:marly:comptes_rendus:></a></li>
-				<li><a href="#URL_PAGE{demarches}">
-					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
-					<:marly:demarches:></a></li>
-				<li><a href="#URL_PAGE{urbanisme}">
-					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>
-					<:marly:urbanisme:></a></li>
-				<li><a href="#URL_PAGE{associations}">
-					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>
-					<:marly:associations:></a></li>
-				<li><a href="#URL_PAGE{reservation}">
-					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>
-					<:marly:reserver_salle:></a></li>
-				<li><a href="#URL_PAGE{bulletin}">
-					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-book-open-line"/></svg></span>
-					<:marly:bulletin:></a></li>
+				<BOUCLE_rubriques(RUBRIQUES){racine}{par num titre, titre}{0,6}>
+				<li><a href="#URL_RUBRIQUE">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></span>
+					#TITRE</a></li>
+				</BOUCLE_rubriques>
 			</ul>
+			</B_rubriques>
 			<//B_raccourcis>
 		</div>
 

@@ -1,0 +1,39 @@
+[(#REM)
+  Une fiche demarche.
+  ---------------------------------------------------------------------------
+  L'ordre suit celui des questions : de quoi s'agit-il, suis-je concerne,
+  comment je m'y prends, qu'est-ce que j'emporte, combien, combien de temps,
+  ou. << Ou s'adresser >> est mis en evidence : c'est ce qu'on vient chercher.
+
+  La reglementation n'est PAS recopiee ici : la fiche renvoie a celle de
+  service-public.gouv.fr, qui est tenue a jour par l'Etat. Une commune qui
+  recopie le droit diffuse une information fausse deux ans plus tard.
+]
+<BOUCLE_fiche(DEMARCHES){id_demarche}>
+<div class="page-simple fiche-demarche">
+
+	<p class="fil"><a class="lien-fleche" href="#URL_PAGE{demarches}"><:marly:retour_demarches:></a></p>
+
+	<h1>#TITRE</h1>
+	[<p class="chapo">(#RESUME)</p>]
+
+	[<section><h2><:marly:demarche_qui:></h2>(#QUI|propre)</section>]
+	[<section><h2><:marly:demarche_comment:></h2>(#COMMENT|propre)</section>]
+	[<section><h2><:marly:demarche_pieces:></h2>(#PIECES|propre)</section>]
+
+	<dl class="fiche-chiffres">
+		[<dt><:marly:demarche_cout:></dt><dd>(#COUT)</dd>]
+		[<dt><:marly:demarche_delai:></dt><dd>(#DELAI)</dd>]
+	</dl>
+
+	[<section class="fiche-ou"><h2><:marly:demarche_ou:></h2>(#OU|propre)</section>]
+
+	<p class="fiche-liens">
+		[<a class="pilule plein" href="(#LIEN_FAIRE|attribut_html)" rel="noopener">
+			<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg> <:marly:faire_en_ligne:></a>]
+		[<a class="pilule" href="(#LIEN|attribut_html)" rel="noopener">
+			<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:voir_fiche_officielle:></a>]
+	</p>
+
+</div>
+</BOUCLE_fiche>

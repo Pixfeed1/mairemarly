@@ -149,6 +149,80 @@ function marly_declarer_tables_objets_sql($tables) {
 		'editable'   => 'non',
 	);
 
+	/* DEMARCHES — les fiches pratiques.
+	   ------------------------------------------------------------------------
+	   Une fiche n'est pas un article : elle a toujours la meme structure — qui
+	   est concerne, comment faire, quelles pieces, combien, quel delai, ou
+	   s'adresser. Des champs separes et non un texte libre, pour que toutes les
+	   fiches se ressemblent quel que soit qui les a saisies, et pour qu'aucune
+	   ne parte sans dire ou aller.
+
+	   Le SOCLE (une quinzaine de fiches identiques dans les 34 000 communes)
+	   est pose a l'installation. Il RENVOIE vers la fiche officielle au lieu de
+	   recopier la reglementation : une commune qui recopie le droit diffuse une
+	   information fausse deux ans plus tard, et c'est elle qui en repond. */
+	$tables['spip_demarches'] = array(
+		'field' => array(
+			'id_demarche'  => 'bigint(21) NOT NULL',
+			'titre'        => 'text NOT NULL DEFAULT ""',
+
+			/* mairie : on vient au guichet — enligne : ca se fait depuis chez
+			   soi — ailleurs : ce n'est pas la mairie qui traite, et le seul
+			   service a rendre est d'eviter un deplacement pour rien. */
+			'famille'      => 'varchar(20) NOT NULL DEFAULT "mairie"',
+
+			/* Le nom technique d'une icone du sprite. Choisie dans une liste
+			   fermee cote formulaire : une icone absente du sprite ne provoque
+			   aucune erreur, elle s'affiche vide, en silence. */
+			'icone'        => 'varchar(60) NOT NULL DEFAULT ""',
+
+			'resume'       => 'text NOT NULL DEFAULT ""',
+			'qui'          => 'text NOT NULL DEFAULT ""',
+			'comment'      => 'text NOT NULL DEFAULT ""',
+			'pieces'       => 'text NOT NULL DEFAULT ""',
+			'cout'         => 'varchar(120) NOT NULL DEFAULT ""',
+			'delai'        => 'varchar(120) NOT NULL DEFAULT ""',
+			'ou'           => 'text NOT NULL DEFAULT ""',
+
+			/* La fiche officielle sur service-public.gouv.fr. */
+			'lien'         => 'varchar(255) NOT NULL DEFAULT ""',
+			/* Le teleservice, quand la demarche se fait vraiment en ligne. */
+			'lien_faire'   => 'varchar(255) NOT NULL DEFAULT ""',
+
+			/* Vient du socle national. Sert a distinguer, dans l'espace prive,
+			   ce que la mairie a ecrit de ce qui lui a ete fourni — et a ne
+			   jamais reposer une fiche qu'elle aurait supprimee. */
+			'socle'        => 'tinyint(1) NOT NULL DEFAULT 0',
+
+			'rang'         => 'int(11) NOT NULL DEFAULT 100',
+			'statut'       => 'varchar(20) NOT NULL DEFAULT "publie"',
+			'maj'          => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY'   => 'id_demarche',
+			'KEY statut'    => 'statut',
+			'KEY famille'   => 'famille',
+		),
+		'titre'      => 'titre AS titre, "" AS lang',
+		'principale' => 'oui',
+		'type'       => 'demarche',
+		'editable'   => 'oui',
+		'champs_editables'  => array('titre', 'famille', 'icone', 'resume', 'qui', 'comment',
+		                             'pieces', 'cout', 'delai', 'ou', 'lien', 'lien_faire', 'rang'),
+		'rechercher_champs' => array('titre' => 8, 'resume' => 4, 'qui' => 2, 'comment' => 2),
+		'statut' => array(
+			array(
+				'champ'     => 'statut',
+				'publie'    => 'publie',
+				'previsu'   => 'publie,prepa',
+				'exception' => 'statut',
+			),
+		),
+		'texte_modifier'    => 'marly:modifier_demarche',
+		'texte_creer'       => 'marly:creer_demarche',
+		'info_aucun_objet'  => 'marly:aucune_demarche',
+	);
+
 	$tables['spip_abonnes'] = array(
 		'field' => array(
 			'id_abonne'    => 'bigint(21) NOT NULL',

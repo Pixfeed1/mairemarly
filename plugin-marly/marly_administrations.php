@@ -67,8 +67,43 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_lettres')),
 	);
 
+	/* 3.11.0 — les demarches, et le socle national pose une seule fois.
+	   marly_poser_socle() ne fait rien si la table contient deja quelque
+	   chose : une fiche que la mairie a supprimee ne doit pas revenir a la
+	   mise a jour suivante. */
+	$maj['3.11.0'] = array(
+		array('maj_tables', array('spip_demarches')),
+		array('marly_poser_socle'),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
+}
+
+/**
+ * Pose le socle national des démarches, si et seulement si la table est vide.
+ *
+ * La condition compte plus que l'insertion. Sans elle, une mairie qui aurait
+ * supprimé « Attestation d'accueil » parce qu'elle ne la délivre pas la
+ * verrait réapparaître à chaque mise à jour du plugin, sans comprendre
+ * pourquoi. Le socle est un point de départ, pas une norme imposée.
+ */
+function marly_poser_socle() {
+	if (sql_countsel('spip_demarches')) {
+		spip_log('marly : des demarches existent deja, socle non repose', 'marly');
+		return;
+	}
+
+	include_spip('inc/marly_demarches');
+	$posees = 0;
+	foreach (marly_socle_demarches() as $fiche) {
+		$fiche['socle']  = 1;
+		$fiche['statut'] = 'publie';
+		if (sql_insertq('spip_demarches', $fiche)) {
+			$posees++;
+		}
+	}
+	spip_log("marly : socle pose, $posees demarches", 'marly');
 }
 
 function marly_vider_tables($nom_meta_base_version) {
@@ -76,6 +111,7 @@ function marly_vider_tables($nom_meta_base_version) {
 	   lit. Les réglages, eux, restent — désactiver le plugin ne doit pas
 	   faire perdre le numéro de téléphone de la mairie. Ils seront effacés
 	   avec la meta ci-dessous seulement si l'on désinstalle vraiment. */
+	sql_drop_table('spip_demarches');
 	sql_drop_table('spip_lettres');
 	sql_drop_table('spip_abonnes');
 	sql_drop_table('spip_manifestations');

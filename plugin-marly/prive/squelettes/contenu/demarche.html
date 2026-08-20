@@ -1,0 +1,6 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre">[(#ENV{id_demarche}|=={new}|?{'<:marly:creer_demarche:>','<:marly:modifier_demarche:>'})]</h1>
+
+[(#FORMULAIRE_EDITER_DEMARCHE{#ENV{id_demarche,new}})]

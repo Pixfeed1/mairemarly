@@ -1,0 +1,121 @@
+[(#REM)
+  Une fiche demarche. L'ordre des champs suit l'ordre des questions que se
+  pose la personne qui arrive : de quoi s'agit-il, suis-je concerne, comment
+  je m'y prends, qu'est-ce que j'emporte, combien, combien de temps, ou.
+]
+<div class="formulaire_spip formulaire_editer_demarche">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{socle}|oui)
+	<p class="explication"><:marly:demarche_socle_note:></p>
+	]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<fieldset>
+			<legend><:marly:champ_resume:></legend>
+			<ul>
+			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
+				<label for="titre"><:marly:champ_titre:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
+			</li>
+			<li class="marly-champ marly-resume[ (#ENV**{erreurs}|table_valeur{resume}|oui)erreur]">
+				<label for="resume"><:marly:champ_resume:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{resume})</span>]
+				<textarea name="resume" id="resume" rows="2" required>[(#ENV{resume}|textebrut)]</textarea>
+				<small><:marly:resume_aide:></small>
+			</li>
+			<li class="marly-champ marly-famille">
+				<label for="famille"><:marly:champ_famille:></label>
+				<select name="famille" id="famille">
+					<BOUCLE_familles(DATA){source tableau,#ENV{_familles}}>
+					<option value="#CLE"[(#ENV{famille}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_familles>
+				</select>
+				<small><:marly:famille_aide:></small>
+			</li>
+			<li class="marly-champ marly-icone">
+				<label for="icone"><:marly:champ_icone:></label>
+				<select name="icone" id="icone">
+					<BOUCLE_icones(DATA){source tableau,#ENV{_icones}}>
+					<option value="#CLE"[(#ENV{icone}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_icones>
+				</select>
+				<small><:marly:icone_aide:></small>
+			</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<legend><:marly:demarche_comment:></legend>
+			<ul>
+			<li class="marly-champ marly-qui">
+				<label for="qui"><:marly:champ_qui:></label>
+				<textarea name="qui" id="qui" rows="3">[(#ENV{qui}|textebrut)]</textarea>
+			</li>
+			<li class="marly-champ marly-comment">
+				<label for="comment"><:marly:champ_comment:></label>
+				<textarea name="comment" id="comment" rows="4">[(#ENV{comment}|textebrut)]</textarea>
+			</li>
+			<li class="marly-champ marly-pieces">
+				<label for="pieces"><:marly:champ_pieces:></label>
+				<textarea name="pieces" id="pieces" rows="3">[(#ENV{pieces}|textebrut)]</textarea>
+			</li>
+			<li class="marly-champ marly-cout">
+				<label for="cout"><:marly:champ_cout:></label>
+				<input type="text" class="text" name="cout" id="cout" value="[(#ENV{cout}|attribut_html)]">
+				<small><:marly:cout_aide:></small>
+			</li>
+			<li class="marly-champ marly-delai">
+				<label for="delai"><:marly:champ_delai:></label>
+				<input type="text" class="text" name="delai" id="delai" value="[(#ENV{delai}|attribut_html)]">
+			</li>
+			<li class="marly-champ marly-ou[ (#ENV**{erreurs}|table_valeur{ou}|oui)erreur]">
+				<label for="ou"><:marly:champ_ou:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ou})</span>]
+				<textarea name="ou" id="ou" rows="3" required>[(#ENV{ou}|textebrut)]</textarea>
+				<small><:marly:ou_aide:></small>
+			</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<legend><:marly:voir_fiche_officielle:></legend>
+			<ul>
+			<li class="marly-champ marly-lien[ (#ENV**{erreurs}|table_valeur{lien}|oui)erreur]">
+				<label for="lien"><:marly:champ_lien:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{lien})</span>]
+				<input type="url" class="text" name="lien" id="lien" value="[(#ENV{lien}|attribut_html)]" placeholder="https://www.service-public.gouv.fr/…">
+				<small><:marly:lien_aide:></small>
+			</li>
+			<li class="marly-champ marly-lien_faire[ (#ENV**{erreurs}|table_valeur{lien_faire}|oui)erreur]">
+				<label for="lien_faire"><:marly:champ_lien_faire:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{lien_faire})</span>]
+				<input type="url" class="text" name="lien_faire" id="lien_faire" value="[(#ENV{lien_faire}|attribut_html)]" placeholder="https://">
+				<small><:marly:lien_faire_aide:></small>
+			</li>
+			<li class="marly-champ marly-rang">
+				<label for="rang"><:marly:champ_rang:></label>
+				<input type="number" class="text" name="rang" id="rang" value="[(#ENV{rang}|attribut_html)]" min="1" max="999">
+				<small><:marly:rang_aide:></small>
+			</li>
+			<li class="marly-champ marly-statut">
+				<label for="statut"><:marly:champ_publication:></label>
+				<select name="statut" id="statut">
+					<option value="publie"[(#ENV{statut}|=={publie}|oui) selected]><:marly:publication_oui:></option>
+					<option value="prepa"[(#ENV{statut}|=={prepa}|oui) selected]><:marly:publication_non:></option>
+				</select>
+			</li>
+			</ul>
+		</fieldset>
+
+		<p class="boutons"><input type="submit" class="submit" value="<:marly:enregistrer:>"></p>
+	</form>
+	]
+
+</div>

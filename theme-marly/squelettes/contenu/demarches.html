@@ -1,0 +1,61 @@
+[(#REM)
+  La page des demarches.
+  ---------------------------------------------------------------------------
+  Classee par LIEU et non par theme : la premiere question de quelqu'un qui
+  arrive n'est pas << de quoi releve ma demarche >> mais << est-ce que je dois
+  me deplacer >>. Trois groupes : a la mairie, en ligne, ailleurs.
+
+  Le troisieme groupe est celui auquel on pense le moins et qui rend le plus
+  de service : la carte grise et le passeport ne se font pas ici, et le dire
+  epargne un deplacement inutile.
+]
+<div class="page-simple">
+
+	<h1><:marly:toutes_les_demarches:></h1>
+	<p class="chapo"><:marly:demarches_intro:></p>
+
+	<B_famille_mairie>
+	<h2 class="titre-bloc"><:marly:famille_mairie:></h2>
+	<ul class="fiches">
+		<BOUCLE_famille_mairie(DEMARCHES){famille=mairie}{par rang, titre}>
+		<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#[(#ICONE|trim)]"/></svg></span>
+			<span class="fiche-texte"><b>#TITRE</b>[<span>(#RESUME)</span>]</span>
+		</a></li>
+		</BOUCLE_famille_mairie>
+	</ul>
+	</B_famille_mairie>
+
+	<B_famille_enligne>
+	<h2 class="titre-bloc"><:marly:famille_enligne:></h2>
+	<ul class="fiches">
+		<BOUCLE_famille_enligne(DEMARCHES){famille=enligne}{par rang, titre}>
+		<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#[(#ICONE|trim)]"/></svg></span>
+			<span class="fiche-texte"><b>#TITRE</b>[<span>(#RESUME)</span>]</span>
+		</a></li>
+		</BOUCLE_famille_enligne>
+	</ul>
+	</B_famille_enligne>
+
+	<B_famille_ailleurs>
+	<h2 class="titre-bloc"><:marly:famille_ailleurs:></h2>
+	<ul class="fiches">
+		<BOUCLE_famille_ailleurs(DEMARCHES){famille=ailleurs}{par rang, titre}>
+		<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#[(#ICONE|trim)]"/></svg></span>
+			<span class="fiche-texte"><b>#TITRE</b>[<span>(#RESUME)</span>]</span>
+		</a></li>
+		</BOUCLE_famille_ailleurs>
+	</ul>
+	</B_famille_ailleurs>
+
+	[(#REM) Si rien n'est publie, on le dit plutot que de laisser une page qui
+	        parait cassee. ]
+	<B_aucune>
+	<BOUCLE_aucune(DEMARCHES){0,1}></BOUCLE_aucune>
+	</B_aucune>
+	<p class="explication"><:marly:aucune_demarche_publiee:></p>
+	<//B_aucune>
+
+</div>

@@ -1,7 +1,7 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.10.0"
+	version="3.11.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
 	schema="3.6.0">
@@ -40,6 +40,11 @@
 		l'endroit ou une chose est rangee est la premiere explication de ce
 		qu'elle est.
 	-->
+	<menu
+		nom="demarches"
+		titre="marly:titre_demarches"
+		parent="menu_edition" />
+
 	<menu
 		nom="lettres"
 		titre="marly:titre_lettre_info"

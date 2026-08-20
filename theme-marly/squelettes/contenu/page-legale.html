@@ -1,0 +1,27 @@
+[(#REM)
+  Le gabarit commun aux trois pages legales.
+  ---------------------------------------------------------------------------
+  Mentions legales, politique de confidentialite, declaration d'accessibilite :
+  meme structure, meme source. Chacune est un ARTICLE portant le mot-cle
+  correspondant, ecrit par la mairie — parce que ces textes engagent la
+  commune et ne peuvent pas etre poses par un prestataire a sa place.
+
+  Tant que l'article n'existe pas, la page dit franchement qu'elle est en
+  cours de redaction plutot que d'afficher un texte inventé. Une mention
+  legale approximative est pire qu'absente : elle a l'air d'engager la
+  commune sur des informations fausses.
+]
+<div class="page-simple">
+	<B_page>
+	<BOUCLE_page(ARTICLES){titre_mot=#ENV{mot}}{0,1}>
+	<h1>#TITRE</h1>
+	[<p class="chapo">(#CHAPO|propre)</p>]
+	#TEXTE
+	[<p class="maj"><:marly:derniere_maj:> (#DATE_MODIF|affdate)</p>]
+	</BOUCLE_page>
+	</B_page>
+
+	<h1>[(#ENV{titre})]</h1>
+	<p class="explication"><:marly:page_en_preparation:></p>
+	<//B_page>
+</div>

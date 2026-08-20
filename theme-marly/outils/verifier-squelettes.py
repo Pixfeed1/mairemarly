@@ -153,12 +153,43 @@ if LANGS:
         for c in sorted({c for c in cles - connues if not c.endswith('_')}):
             signaler(court, 1, f'chaine de langue absente : marly:{c}')
 
+# 12. Toute page appelee doit exister.
+#     #URL_PAGE{x} fabrique une adresse sans jamais verifier que x existe :
+#     le lien s'affiche, on clique, et SPIP repond une page vide. C'est ainsi
+#     que la page d'accueil a offert pendant des semaines cinq raccourcis
+#     casses, et que le lien de desinscription de chaque lettre ne menait
+#     nulle part.
+#     Les pages ci-dessous sont fournies par SPIP lui-meme, pas par le theme.
+FOURNIES_PAR_SPIP = {'login', 'recherche', 'plan', 'sommaire', 'article',
+                     'rubrique', 'auteur', 'mot', 'site', 'backend'}
+for f in sorted(glob.glob('squelettes/**/*.html', recursive=True)):
+    s = open(f, encoding='utf-8').read()
+    for m in re.finditer(r'#URL_PAGE\{([a-z0-9_-]+)', s):
+        page = m.group(1)
+        if page in FOURNIES_PAR_SPIP:
+            continue
+        if not os.path.exists(os.path.join('squelettes', page + '.html')):
+            signaler(f, s[:m.start()].count(chr(10)) + 1,
+                     f'page appelee mais absente : {page} (squelettes/{page}.html)')
+
 # 6. Accolades CSS. Une accolade orpheline ferme la feuille en avance et
 #    toutes les regles suivantes sont ignorees, sans le moindre message.
 for f in sorted(glob.glob('squelettes/css/*.css')):
     s = open(f, encoding='utf-8').read()
     if s.count('{') != s.count('}'):
         signaler(f, 1, f"accolades desequilibrees : {s.count('{')} ouvrantes, {s.count('}')} fermantes")
+
+# 13. Toute variable CSS employee doit etre definie.
+#     var(--inconnue) ne provoque aucune erreur : la propriete est ignoree,
+#     et la couleur tombe silencieusement sur celle du parent. On ne s'en
+#     apercoit qu'en regardant la page — si on la regarde.
+for f in sorted(glob.glob('squelettes/css/*.css')):
+    s = open(f, encoding='utf-8').read()
+    definies = set(re.findall(r'(--[a-z0-9-]+)\s*:', s))
+    for m in re.finditer(r'var\((--[a-z0-9-]+)\s*(,[^)]*)?\)', s):
+        if m.group(1) not in definies and not m.group(2):
+            signaler(f, s[:m.start()].count(chr(10)) + 1,
+                     f'variable CSS jamais definie : {m.group(1)}')
 
 if fautes:
     print('\n'.join(fautes))

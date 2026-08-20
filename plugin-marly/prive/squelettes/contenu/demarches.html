@@ -1,0 +1,45 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre"><:marly:titre_demarches:></h1>
+
+<p class="explication"><:marly:intro_demarches:></p>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ECRIRE{demarche,id_demarche=new})]"><:marly:creer_demarche:></a>
+</p>
+
+<B_fiches>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:champ_titre:></th>
+			<th><:marly:col_famille:></th>
+			<th><:marly:col_socle:></th>
+			<th><:marly:col_etat:></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+</B_fiches>
+		<BOUCLE_fiches(DEMARCHES){par famille, rang, titre}{statut IN publie,prepa}>
+		<tr>
+			<td>
+				<a href="[(#URL_ECRIRE{demarche,id_demarche=#ID_DEMARCHE})]">#TITRE</a>
+				[<br><small>(#RESUME|couper{110})</small>]
+			</td>
+			<td>[(#FAMILLE|=={mairie}|?{'<:marly:famille_mairie_court:>',''})][(#FAMILLE|=={enligne}|?{'<:marly:famille_enligne_court:>',''})][(#FAMILLE|=={ailleurs}|?{'<:marly:famille_ailleurs_court:>',''})]</td>
+			<td>[(#SOCLE|?{'<:marly:origine_socle:>','<:marly:origine_mairie:>'})]</td>
+			<td>[(#STATUT|=={publie}|?{'<:marly:publication_oui:>','<:marly:publication_non:>'})]</td>
+			<td class="actions">
+				<a class="btn" href="[(#URL_ECRIRE{demarche,id_demarche=#ID_DEMARCHE})]"><:marly:modifier:></a>
+				<a class="btn" href="[(#URL_ACTION_AUTEUR{supprimer_demarche,#ID_DEMARCHE,#URL_ECRIRE{demarches}})]"
+				   onclick="return confirm('[(#VAL{marly:confirmer_suppression}|_T|attribut_html)]');"><:marly:supprimer:></a>
+			</td>
+		</tr>
+		</BOUCLE_fiches>
+	</tbody>
+</table>
+<//B_fiches>
+<p class="explication"><:marly:aucune_demarche:></p>
+<//B_fiches>
