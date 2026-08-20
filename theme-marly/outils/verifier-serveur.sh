@@ -67,7 +67,40 @@ while IFS= read -r lien; do
 done < "$TMP/liens"
 
 echo
-echo "== 4. Journal de SPIP (30 dernieres lignes)"
+echo "== 4. Version du plugin en base"
+# La divergence la plus silencieuse de tout le montage. SPIP ne lance la mise
+# a jour d'un plugin QUE lorsqu'il relit la liste des plugins et constate que
+# la version declaree differe de celle enregistree. Deployer des fichiers ne
+# suffit donc pas : tant que personne n'a charge ?exec=admin_plugin, la base
+# reste a l'ancienne version. Les colonnes et les tables nouvelles manquent,
+# et rien ne le dit — jusqu'a ce qu'un formulaire echoue a l'enregistrement.
+DECLAREE=$(grep -o 'version="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1 | sed 's/version="//; s/"//')
+CONNECT="$SITE/config/connect.php"
+if [ -f "$CONNECT" ]; then
+	DB=$(sed -n "s/.*spip_connect_db(\s*'\([^']*\)'\s*,\s*'\([^']*\)'\s*,\s*'\([^']*\)'\s*,\s*'\([^']*\)'\s*,\s*'\([^']*\)'.*/\3|\4|\5|\1/p" "$CONNECT" | head -1)
+	LOGIN=$(echo "$DB" | cut -d'|' -f1)
+	PASSE=$(echo "$DB" | cut -d'|' -f2)
+	BASE=$(echo "$DB"  | cut -d'|' -f3)
+	HOTE=$(echo "$DB"  | cut -d'|' -f4)
+	if [ -n "$BASE" ]; then
+		ENBASE=$(mysql -h "${HOTE:-localhost}" -u "$LOGIN" -p"$PASSE" "$BASE" -N -B \
+		         -e "SELECT valeur FROM spip_meta WHERE nom='marly_base_version'" 2>/dev/null)
+		printf '   declaree dans paquet.xml : %s\n' "${DECLAREE:-?}"
+		printf '   enregistree en base      : %s\n' "${ENBASE:-aucune}"
+		if [ "$DECLAREE" != "$ENBASE" ]; then
+			echo "   <-- LA MISE A JOUR N'A PAS TOURNE."
+			echo "       Chargez $BASE/ecrire/?exec=admin_plugin dans le navigateur."
+			SOUCIS=1
+		fi
+	else
+		echo "   connect.php illisible, controle passe"
+	fi
+else
+	echo "   pas de config/connect.php"
+fi
+
+echo
+echo "== 5. Journal de SPIP (30 dernieres lignes)"
 if [ -f "$SITE/tmp/spip.log" ]; then
 	tail -30 "$SITE/tmp/spip.log"
 else
