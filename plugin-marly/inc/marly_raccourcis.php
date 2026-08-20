@@ -23,8 +23,11 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 function marly_cibles_raccourcis() {
 	$cibles = array('' => _T('marly:choisir_destination'));
 
-	foreach (sql_allfetsel('id_demarche, titre', 'spip_demarches',
-	                       "statut = 'publie'", '', 'famille, rang, titre') as $d) {
+	include_spip('inc/marly_outils');
+	foreach (marly_table_prete('spip_demarches')
+	         ? sql_allfetsel('id_demarche, titre', 'spip_demarches',
+	                         "statut = 'publie'", '', 'famille, rang, titre')
+	         : array() as $d) {
 		$cibles['demarche:' . $d['id_demarche']] = _T('marly:cible_demarche') . ' — ' . $d['titre'];
 	}
 

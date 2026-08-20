@@ -33,9 +33,12 @@ function formulaires_editer_association_charger_dist($id_association = 'new') {
 	   champ libre reste, pour l'exception : une association qui se reunit
 	   chez ses membres n'a pas de batiment communal. */
 	include_spip('inc/marly_lieux');
+	include_spip('inc/marly_outils');
 	$valeurs['_lieux'] = array(0 => _T('marly:aucun_lieu_choisi'));
-	foreach (sql_allfetsel('id_lieu, nom', 'spip_lieux', "statut = 'publie'", '', 'rang, nom') as $l) {
-		$valeurs['_lieux'][$l['id_lieu']] = $l['nom'];
+	if (marly_table_prete('spip_lieux')) {
+		foreach (sql_allfetsel('id_lieu, nom', 'spip_lieux', "statut = 'publie'", '', 'rang, nom') as $l) {
+			$valeurs['_lieux'][$l['id_lieu']] = $l['nom'];
+		}
 	}
 
 	/* Les rubriques du site, pour relier l'association a celle ou elle

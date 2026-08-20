@@ -41,6 +41,7 @@ function formulaires_editer_demarche_charger_dist($id_demarche = 'new') {
 	/* Les deux listes fermées, passées au gabarit plutôt que recopiées dedans :
 	   le PHP et le formulaire ne peuvent pas diverger. */
 	include_spip('inc/marly_demarches');
+	include_spip('inc/marly_outils');
 	$valeurs['_icones'] = marly_icones_demarches();
 	$valeurs['_familles'] = array();
 	foreach (marly_familles_demarches() as $cle => $intitule) {
@@ -51,8 +52,8 @@ function formulaires_editer_demarche_charger_dist($id_demarche = 'new') {
 	   gabarit : une boucle sur une table vide y donnerait un select sans
 	   option, sans qu'on sache si c'est normal. */
 	$valeurs['_elus'] = array(0 => _T('marly:aucun_elu_choisi'));
-	foreach (sql_allfetsel('id_elu, nom, prenom, fonction, delegation', 'spip_elus',
-	                       "statut = 'publie'", '', 'rang, nom') as $elu) {
+	foreach (marly_table_prete('spip_elus') ? sql_allfetsel('id_elu, nom, prenom, fonction, delegation', 'spip_elus',
+	                       "statut = 'publie'", '', 'rang, nom') : array() as $elu) {
 		$libelle = trim($elu['prenom'] . ' ' . $elu['nom']);
 		if ($elu['delegation']) {
 			$libelle .= ' — ' . $elu['delegation'];
