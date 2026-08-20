@@ -70,32 +70,44 @@ echo "--- Caches"
 rm -rf "$SITE/tmp/cache"
 find "$SITE/local" -maxdepth 1 -name 'cache-*' -exec rm -rf {} + 2>/dev/null || true
 
+# La base ne se met plus a jour toute seule dans un navigateur : on la met a
+# jour ici. SPIP n'appelle plugin_installes_meta() que depuis la page des
+# plugins ; tant qu'on dependait de ce geste, la base pouvait prendre six
+# versions de retard sans que rien ne le signale. C'est ce qui est arrive.
+#
+# Sous l'utilisateur du site, jamais en root : SPIP reecrit ses caches au
+# passage, et un cache appartenant a root rend le site illisible pour Apache.
+echo "--- Mise a jour de la base"
+PROPRIO=$(stat -c %U "$SITE")
+MAJ="php $DEPOT/theme-marly/outils/majbase.php $SITE"
+if [ "$(id -u)" = "0" ] && [ "$PROPRIO" != "root" ]; then
+	if command -v runuser >/dev/null 2>&1; then
+		runuser -u "$PROPRIO" -- $MAJ || echo "  (la mise a jour a echoue, voir ci-dessus)"
+	else
+		su -s /bin/sh -c "$MAJ" "$PROPRIO" || echo "  (la mise a jour a echoue, voir ci-dessus)"
+	fi
+else
+	$MAJ || echo "  (la mise a jour a echoue, voir ci-dessus)"
+fi
+
 echo
 echo "Deploye. Version du plugin : $APRES"
 
 # SPIP verifie l'existence des tables A LA COMPILATION du squelette, pas a
 # l'execution. Une version qui ajoute une table casse donc TOUT le site
-# public tant que la mise a jour du plugin n'a pas tourne — et cette mise a
-# jour ne tourne qu'a la premiere visite de l'espace prive. L'ordre des deux
-# gestes n'est pas une precaution, c'est la condition pour que le site reste
-# debout entre les deux.
+# public tant que la mise a jour n'a pas tourne. C'est la raison pour
+# laquelle elle est faite ici, dans la foulee de la copie, et non laissee a
+# un geste qu'on peut oublier : entre les deux, le site est par terre.
 if [ "$AVANT" != "$APRES" ]; then
 	echo
 	echo "  La version du plugin a change ($AVANT -> $APRES)."
-	echo "  CHARGEZ CETTE PAGE AVANT DE VISITER LE SITE :"
-	echo "      https://marlygomont.pixfeed.net/ecrire/?exec=admin_plugin"
-	echo
-	echo "  Ce n'est pas l'ouverture de l'espace prive qui cree les tables,"
-	echo "  c'est la RELECTURE DE LA LISTE DES PLUGINS : SPIP y compare la"
-	echo "  version declaree a celle qu'il a enregistree, et ne lance la mise"
-	echo "  a jour que si elles different. Tant qu'elle n'a pas tourne, un"
-	echo "  squelette qui interroge une table absente met le site en erreur."
+	echo "  La mise a jour de la base a tourne juste au-dessus ; le controle"
+	echo "  ci-dessous dit si elle a abouti."
 fi
 
-# On ne se fie pas a la memoire : on lit ce que la base dit vraiment. Le
-# script ne peut pas declencher la mise a jour lui-meme — elle exige une
-# session ouverte dans l'espace prive, qu'un script en ligne de commande n'a
-# pas — mais il peut dire si elle a eu lieu.
+# On ne se fie pas a ce que la mise a jour vient d'afficher : on relit ce que
+# la base dit vraiment. Un script qui se contente de son propre compte rendu
+# ne verifie rien.
 SCHEMA=$(grep -o 'schema="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1 | sed 's/schema="//; s/"//')
 CONNECT="$SITE/config/connect.php"
 if [ -n "$SCHEMA" ] && [ -f "$CONNECT" ]; then
@@ -115,8 +127,9 @@ if [ -n "$SCHEMA" ] && [ -f "$CONNECT" ]; then
 			echo "  BASE PAS A JOUR : elle est en ${ENBASE:-aucune}, le plugin attend $SCHEMA."
 			echo "  Les tables et colonnes nouvelles N'EXISTENT PAS encore."
 			echo
-			echo "  Ouvrez cette page dans le NAVIGATEUR, puis relancez ce script"
-			echo "  pour verifier :"
+			echo "  La mise a jour lancee plus haut n'a donc pas abouti :"
+			echo "  relisez ce qu'elle a affiche. En recours, la page des"
+			echo "  plugins la relance depuis un navigateur :"
 			echo "      https://marlygomont.pixfeed.net/ecrire/?exec=admin_plugin"
 			echo "  ================================================================"
 		fi
