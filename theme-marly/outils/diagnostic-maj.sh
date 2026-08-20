@@ -84,6 +84,19 @@ php -l "$SITE/plugins/marly/base/marly.php" 2>&1
 ls -l "$SITE/plugins/marly/marly_administrations.php"
 
 echo
+echo "=== 7. Ce que SPIP a MEMORISE du plugin"
+# SPIP ne relit pas paquet.xml a chaque page : il garde les informations des
+# plugins, schema compris. Si sa memoire est en retard sur les fichiers, il
+# compare une vieille version a la base et conclut qu'il n'y a rien a faire.
+DEPLOYEE=$(grep -o 'version="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1 | sed 's/version="//; s/"//')
+echo "version dans le paquet.xml depose : $DEPLOYEE"
+echo "ce que la meta plugin retient de marly :"
+$SQL -e "SELECT valeur FROM spip_meta WHERE nom='plugin'" 2>/dev/null | grep -o 'marly.\{0,300\}' | head -2
+echo
+echo "contenu de tmp/ (les caches que le deploiement ne vide peut-etre pas) :"
+ls -la "$SITE/tmp" | head -25
+
+echo
 echo "=== RESUME (c'est cette partie qui decide)"
 SCHEMA=$(grep -o 'schema="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1 | sed 's/schema="//; s/"//')
 ENBASE=$($SQL -e "SELECT valeur FROM spip_meta WHERE nom='marly_base_version'" 2>/dev/null)
@@ -96,3 +109,5 @@ echo "  version enregistree en base   : ${ENBASE:-aucune}"
 echo "  plugin marly actif pour SPIP  : ${ACTIF:-?}"
 echo "  table spip_lieux presente     : $LIEUX (1 = oui, 0 = non)"
 echo "  lignes dans tmp/log/maj.log   : $MAJLOG (0 = la mise a jour n'a JAMAIS tourne)"
+CONNUE=$($SQL -e "SELECT IF(valeur LIKE '%$DEPLOYEE%','oui','NON') FROM spip_meta WHERE nom='plugin'" 2>/dev/null)
+echo "  SPIP connait la version $DEPLOYEE : ${CONNUE:-?} (NON = sa memoire des plugins est en retard)"
