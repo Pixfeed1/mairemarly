@@ -260,53 +260,24 @@ function filtre_marly_icone_lieu_dist($type) {
 }
 
 /**
- * L'adresse de la carte OpenStreetMap, cadree sur les lieux de la commune.
+ * L'image du plan d'un point, fabriquee par le serveur.
  *
- * Rend une chaine vide si aucun lieu n'a de coordonnees. La page n'affiche
- * alors pas de carte : mieux vaut rien qu'une carte du milieu de l'ocean, ce
- * que donne une latitude et une longitude a zero.
+ * Rend l'adresse d'un PNG assemble chez nous : nos dimensions, notre
+ * marqueur, le credit OpenStreetMap grave en coin. Rien ne part chez un
+ * tiers quand un habitant visite la page. '' si l'image n'a pu se faire,
+ * et le gabarit n'affiche alors pas de carte.
  */
-function filtre_marly_carte_commune_dist($rien = '') {
-	include_spip('inc/marly_lieux');
-	$c = marly_cadre_carte();
-	if (!$c) {
-		return '';
-	}
-	return 'https://www.openstreetmap.org/export/embed.html?bbox='
-		. rtrim(rtrim(number_format($c['ouest'], 5, '.', ''), '0'), '.') . '%2C'
-		. rtrim(rtrim(number_format($c['sud'], 5, '.', ''), '0'), '.') . '%2C'
-		. rtrim(rtrim(number_format($c['est'], 5, '.', ''), '0'), '.') . '%2C'
-		. rtrim(rtrim(number_format($c['nord'], 5, '.', ''), '0'), '.')
-		. '&layer=mapnik';
+function filtre_marly_carte_image_point_dist($latitude, $longitude = '') {
+	include_spip('inc/marly_carte_image');
+	return marly_carte_image_point($latitude, $longitude);
 }
 
 /**
- * Le cadre de carte autour d'un point, pour la facade cliquable.
- *
- * Meme regle que pour la carte de la commune : c'est une ADRESSE de carte
- * qu'on rend ici, pas une carte. Rien n'est charge tant que le visiteur n'a
- * pas clique, donc son adresse IP ne part pas chez OpenStreetMap a
- * l'ouverture de la page. Le consentement se donne, il ne se presume pas.
- *
- * La marge de 0,003 degre cadre a environ 300 metres autour du point : de
- * quoi reconnaitre la rue et les reperes autour, sans perdre le batiment.
+ * L'image du plan de la commune : tous les lieux publies et localises.
  */
-function filtre_marly_carte_point_dist($latitude, $longitude = '') {
-	$lat = trim((string) $latitude);
-	$lon = trim((string) $longitude);
-	if ($lat === '' or $lon === '' or !is_numeric($lat) or !is_numeric($lon)) {
-		return '';
-	}
-	$lat = (float) $lat;
-	$lon = (float) $lon;
-	$m = 0.003;
-	$n = function ($v) {
-		return rtrim(rtrim(number_format($v, 5, '.', ''), '0'), '.');
-	};
-	return 'https://www.openstreetmap.org/export/embed.html?bbox='
-		. $n($lon - $m) . '%2C' . $n($lat - $m) . '%2C'
-		. $n($lon + $m) . '%2C' . $n($lat + $m)
-		. '&layer=mapnik&marker=' . $n($lat) . '%2C' . $n($lon);
+function filtre_marly_carte_image_commune_dist($rien = '') {
+	include_spip('inc/marly_carte_image');
+	return marly_carte_image_commune();
 }
 
 /**

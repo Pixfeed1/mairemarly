@@ -22,20 +22,19 @@
 
 	[(#REM) L'adresse, puis le plan si elle a pu etre localisee.
 
-	        La carte s'affiche directement, sans clic prealable : choix arrete
-	        avec la mairie. La transmission de l'adresse IP du visiteur aux
-	        serveurs d'OpenStreetMap est a mentionner sur la page
-	        confidentialite.
+	        Le plan est une IMAGE fabriquee par notre serveur : nos couleurs,
+	        pas d'habillage tiers, et rien ne part chez OpenStreetMap quand un
+	        habitant visite la page. Le credit (c) OpenStreetMap est grave
+	        dans le coin de l'image, c'est la condition de la licence.
 
-	        Le lien reste sous la carte, il ne fait pas double emploi : il
-	        ouvre le plan en grand et permet d'y demander un itineraire. ]
+	        Cliquer sur le plan, ou sur le lien dessous, ouvre le vrai
+	        OpenStreetMap pour zoomer ou demander un itineraire. ]
 	[<section><h2><:marly:asso_ou:></h2>
 		<p>(#LIEU)</p>
-		[<div class="carte-cadre">
-		<iframe src="(#LATITUDE|marly_carte_point{#LONGITUDE}|attribut_html)"
-		        title="<:marly:asso_ou:>"
-		        loading="lazy" referrerpolicy="no-referrer"></iframe>
-		</div>]
+		[<a class="carte-cadre" href="[(#LATITUDE|marly_lien_carte{#LONGITUDE}|attribut_html)]" rel="noopener">
+			<img src="(#LATITUDE|marly_carte_image_point{#LONGITUDE}|attribut_html)"
+			     alt="<:marly:carte_alt:>" loading="lazy" width="760" height="420">
+		</a>]
 		[<p><a class="lien-fleche" href="(#LATITUDE|marly_lien_carte{#LONGITUDE}|attribut_html)" rel="noopener">
 			<:marly:voir_sur_la_carte:>
 			<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg></a></p>]

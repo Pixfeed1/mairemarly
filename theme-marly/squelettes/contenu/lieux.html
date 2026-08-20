@@ -19,17 +19,16 @@
 	<h1><:marly:titre_ou_nous_trouver:></h1>
 	<p class="chapo"><:marly:lieux_intro:></p>
 
-	[(#REM) Pas de carte si aucun lieu n'a de coordonnees : une latitude et une
-	        longitude a zero placent le plan au milieu de l'ocean Atlantique.
+	[(#REM) Pas de carte tant qu'aucun lieu n'est localise : le filtre rend
+	        alors une chaine vide et le bloc ne s'affiche pas.
 
-	        La carte s'affiche directement, sans clic prealable : choix arrete
-	        avec la mairie. La transmission de l'adresse IP du visiteur aux
-	        serveurs d'OpenStreetMap est a mentionner sur la page
-	        confidentialite. ]
+	        Le plan est une IMAGE fabriquee par notre serveur : nos couleurs,
+	        pas d'habillage tiers, et rien ne part chez OpenStreetMap quand un
+	        habitant visite la page. Le credit (c) OpenStreetMap est grave
+	        dans le coin de l'image, c'est la condition de la licence. ]
 	[<div class="carte-cadre">
-	<iframe src="(#VAL|marly_carte_commune|attribut_html)"
-	        title="<:marly:titre_ou_nous_trouver:>"
-	        loading="lazy" referrerpolicy="no-referrer"></iframe>
+	<img src="(#VAL|marly_carte_image_commune|attribut_html)"
+	     alt="<:marly:carte_alt:>" loading="lazy" width="760" height="420">
 	</div>]
 
 	<B_lieux>
