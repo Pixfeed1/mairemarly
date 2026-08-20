@@ -57,8 +57,16 @@ if [ "$(id -u)" = "0" ]; then
 	chown -R --reference="$SITE" "$SITE/squelettes" "$SITE/plugins/marly"
 fi
 
-echo "--- Cache"
+# SPIP garde plusieurs caches, et vider le premier ne vide pas les autres.
+# Celui des LANGUES en particulier : quand il est en retard, une chaine
+# nouvellement ajoutee s'affiche sous la forme de sa cle, underscores changes
+# en espaces — << titre lettre info >> au lieu de << Lettre d'information >>.
+# Le symptome ne ressemble pas a un cache, il ressemble a une faute de frappe
+# dans le fichier de langue. On les vide donc tous : ils se reconstruisent
+# seuls a la premiere visite.
+echo "--- Caches"
 rm -rf "$SITE/tmp/cache"
+find "$SITE/local" -maxdepth 1 -name 'cache-*' -exec rm -rf {} + 2>/dev/null || true
 
 echo
 echo "Deploye. Version du plugin :"
