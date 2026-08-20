@@ -1,7 +1,7 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.13.0"
+	version="3.13.1"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
 	schema="3.13.0">
@@ -36,12 +36,32 @@
 	<menu
 		nom="configurer_marly"
 		titre="marly:titre_reglages"
-		parent="menu_configuration" />
+		parent="menu_configuration"
+		icone="marly-reglages.svg" />
 
 	<menu
 		nom="reservations"
 		titre="marly:titre_espace"
-		parent="menu_edition" />
+		parent="menu_edition"
+		icone="marly-reservations.svg" />
+
+	<menu
+		nom="raccourcis"
+		titre="marly:titre_raccourcis"
+		parent="menu_configuration"
+		icone="marly-raccourcis.svg" />
+
+	<menu
+		nom="elus"
+		titre="marly:titre_elus"
+		parent="menu_edition"
+		icone="marly-elus.svg" />
+
+	<menu
+		nom="demarches"
+		titre="marly:titre_demarches"
+		parent="menu_edition"
+		icone="marly-demarches.svg" />
 
 	<!--
 		La lettre d'information a sa propre entree. Elle etait rangee sous
@@ -52,24 +72,10 @@
 		qu'elle est.
 	-->
 	<menu
-		nom="raccourcis"
-		titre="marly:titre_raccourcis"
-		parent="menu_configuration" />
-
-	<menu
-		nom="elus"
-		titre="marly:titre_elus"
-		parent="menu_edition" />
-
-	<menu
-		nom="demarches"
-		titre="marly:titre_demarches"
-		parent="menu_edition" />
-
-	<menu
 		nom="lettres"
 		titre="marly:titre_lettre_info"
-		parent="menu_edition" />
+		parent="menu_edition"
+		icone="marly-lettres.svg" />
 
 
 
