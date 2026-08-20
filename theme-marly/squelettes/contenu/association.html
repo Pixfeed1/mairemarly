@@ -5,8 +5,26 @@
 <BOUCLE_asso(ASSOCIATIONS){id_association}>
 <div class="page-simple fiche-demarche">
 
+	[(#REM) Le retour a gauche, les outils de la fiche a droite : signaler
+	        une correction a la mairie, imprimer, partager. Le courriel de
+	        signalement est celui des reglages ; sans lui, le bouton n'a pas
+	        de destinataire et ne s'affiche pas. ]
+	<div class="fil-rangee">
 	<p class="fil"><a class="lien-fleche" href="#URL_PAGE{associations}"><:marly:retour_associations:>
 		<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a></p>
+	<p class="page-outils">
+		[<a class="outil" href="mailto:[(#CONFIG{marly/courriel}|attribut_html)]?subject=[(#NOM|attribut_html|url_encode)]"
+		   title="<:marly:outil_signaler:>">
+			<svg class="ico" aria-hidden="true"><use href="#ri-pencil-line"/></svg>
+			<span class="cache"><:marly:outil_signaler:></span></a>]
+		<button type="button" class="outil" data-imprimer title="<:marly:outil_imprimer:>">
+			<svg class="ico" aria-hidden="true"><use href="#ri-printer-line"/></svg>
+			<span class="cache"><:marly:outil_imprimer:></span></button>
+		<button type="button" class="outil" data-partager data-copie="<:marly:lien_copie:>" title="<:marly:outil_partager:>">
+			<svg class="ico" aria-hidden="true"><use href="#ri-share-line"/></svg>
+			<span class="cache"><:marly:outil_partager:></span></button>
+	</p>
+	</div>
 
 	[<img class="asso-photo-fiche" src="(#LOGO_ASSOCIATION|image_reduire{760,420}|extraire_attribut{src})" alt="">]
 

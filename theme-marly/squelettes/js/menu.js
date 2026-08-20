@@ -352,3 +352,39 @@
 
 	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
 })();
+
+/**
+ * Les outils d'une fiche : imprimer, partager.
+ * ---------------------------------------------------------------------------
+ * Partager passe par le partage du telephone quand il existe ; sinon le lien
+ * est copie et le bouton le dit. Le bouton signaler est un simple mailto,
+ * il n'a pas besoin de script.
+ */
+(function () {
+	'use strict';
+
+	var imprimer = document.querySelector('[data-imprimer]');
+	if (imprimer) {
+		imprimer.addEventListener('click', function () { window.print(); });
+	}
+
+	var partager = document.querySelector('[data-partager]');
+	if (partager) {
+		partager.addEventListener('click', function () {
+			if (navigator.share) {
+				navigator.share({ title: document.title, url: location.href })['catch'](function () {});
+				return;
+			}
+			var dire = function () {
+				var note = document.createElement('span');
+				note.className = 'outil-note';
+				note.textContent = partager.getAttribute('data-copie');
+				partager.parentNode.appendChild(note);
+				setTimeout(function () { note.remove(); }, 2000);
+			};
+			if (navigator.clipboard) {
+				navigator.clipboard.writeText(location.href).then(dire, function () {});
+			}
+		});
+	}
+})();

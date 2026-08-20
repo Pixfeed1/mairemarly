@@ -1218,6 +1218,28 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    Elle s'affiche directement : choix arrete avec la mairie. Le cadre garde
    une hauteur fixe pour que la page ne saute pas pendant le chargement.
    =========================================================================== */
+/* --- les outils d'une fiche : signaler, imprimer, partager ---------------- */
+.fil-rangee{ display:flex; align-items:center; justify-content:space-between; gap:14px; }
+.fil-rangee .fil{ margin:0; }
+.page-outils{ margin:0; display:flex; gap:10px; position:relative; }
+.page-outils .outil{
+	display:inline-flex; align-items:center; justify-content:center;
+	width:42px; height:42px; border-radius:50%;
+	background:none; border:1.5px solid var(--accent); color:var(--accent);
+	cursor:pointer; padding:0; text-decoration:none;
+}
+.page-outils .outil:hover{ background:var(--accent); color:#fff; }
+.page-outils .outil .ico{ width:19px; height:19px; fill:currentColor; }
+.page-outils .cache{ position:absolute; width:1px; height:1px; overflow:hidden;
+	clip:rect(0 0 0 0); white-space:nowrap; }
+.outil-note{ position:absolute; top:100%; right:0; margin-top:8px;
+	background:var(--encre); color:#fff; font-size:12.5px;
+	padding:5px 10px; border-radius:4px; white-space:nowrap; }
+
+@media print{
+	.entete, .pied, .page-outils, .carte-cadre{ display:none !important; }
+}
+
 /* Masque tant que carte.js n'a pas trouve de point : sans JavaScript, la
    liste et l'adresse portent l'information, pas de cadre vide. */
 .carte-cadre{ display:none; }
