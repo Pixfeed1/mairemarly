@@ -553,11 +553,25 @@ function marly_declarer_tables_objets_sql($tables) {
 	return $tables;
 }
 
+/**
+ * Les alias de tables pour les boucles.
+ *
+ * Quatre manquaient : les demarches, les elus, les raccourcis et les
+ * associations, ajoutes apres coup sans que cette fonction suive. SPIP 4
+ * renseigne en principe ces alias tout seul depuis declarer_tables_objets_sql,
+ * mais une declaration incomplete a cote d'une declaration complete est un
+ * piege pour la prochaine lecture : on croit voir la liste des tables, et il
+ * en manque la moitie.
+ */
 function marly_declarer_tables_interfaces($interfaces) {
 	$interfaces['table_des_tables']['salles']       = 'salles';
 	$interfaces['table_des_tables']['reservations'] = 'reservations';
 	$interfaces['table_des_tables']['manifestations'] = 'manifestations';
 	$interfaces['table_des_tables']['abonnes'] = 'abonnes';
 	$interfaces['table_des_tables']['lettres'] = 'lettres';
+	$interfaces['table_des_tables']['demarches'] = 'demarches';
+	$interfaces['table_des_tables']['elus'] = 'elus';
+	$interfaces['table_des_tables']['raccourcis'] = 'raccourcis';
+	$interfaces['table_des_tables']['associations'] = 'associations';
 	return $interfaces;
 }
