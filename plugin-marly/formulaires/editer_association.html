@@ -63,18 +63,25 @@
 		<fieldset>
 			<legend><:marly:asso_quand:></legend>
 			<ul>
-			<li class="marly-champ marly-lieu_choisi">
-				<label for="id_lieu"><:marly:champ_lieu_choisi:></label>
-				<select name="id_lieu" id="id_lieu">
-					<BOUCLE_lieux(DATA){source tableau,#ENV{_lieux}}>
-					<option value="#CLE"[(#ENV{id_lieu}|=={#CLE}|oui) selected]>#VALEUR</option>
-					</BOUCLE_lieux>
-				</select>
-				<small><:marly:lieu_choisi_aide:></small>
-			</li>
+			[(#REM) Un seul champ, et des SUGGESTIONS plutot qu'un menu ferme.
+			        Un menu aurait oblige a saisir d'abord le batiment dans un
+			        autre ecran, puis a revenir : deux ecrans et une notion de
+			        plus a comprendre pour dire ou l'on se reunit.
+
+			        Ici on ecrit. Si le lieu existe deja, il est propose des les
+			        premieres lettres, ce qui suffit a eviter << salle des
+			        fetes >>, << Salle des Fetes >> et << salle polyvalente >>
+			        sur trois fiches. ]
 			<li class="marly-champ marly-lieu">
 				<label for="lieu"><:marly:champ_lieu_asso:></label>
-				<input type="text" class="text" name="lieu" id="lieu" value="[(#ENV{lieu}|attribut_html)]">
+				<input type="text" class="text" name="lieu" id="lieu"
+				       value="[(#ENV{lieu}|attribut_html)]" list="lieux-connus">
+				<datalist id="lieux-connus">
+					<BOUCLE_lieux(DATA){source tableau,#ENV{_lieux}}>
+					<option value="#VALEUR">
+					</BOUCLE_lieux>
+				</datalist>
+				<small><:marly:lieu_asso_aide:></small>
 			</li>
 			<li class="marly-champ marly-horaires">
 				<label for="horaires"><:marly:champ_horaires:></label>

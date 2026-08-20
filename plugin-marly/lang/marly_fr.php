@@ -222,7 +222,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'modifier_lieu'        => 'Modifier',
 	'aucun_lieu'           => 'Aucun lieu enregistré.',
 	'lieu_enregistre'      => 'Enregistré.',
-	'intro_lieux'          => 'Les bâtiments de la commune : mairie, salle des fêtes, école, église, terrain. Saisis une fois ici, ils se choisissent ensuite dans les fiches des associations et des événements, et forment la carte de la page « Où nous trouver ».',
+	'intro_lieux'          => 'Cet écran sert à UNE chose : la page « Où nous trouver » du site, qui affiche les bâtiments de la commune, leurs adresses, leurs horaires, et une carte. Il n’est pas nécessaire d’y saisir quoi que ce soit pour utiliser le reste du site.',
 	'champ_nom_lieu'       => 'Nom du lieu',
 	'champ_type_lieu'      => 'Nature',
 	'type_lieu_aide'       => 'Elle détermine le symbole affiché à côté du nom.',
@@ -253,9 +253,6 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'afficher_la_carte'    => 'Afficher la carte',
 	'carte_avertissement'  => 'La carte est fournie par OpenStreetMap. En l’affichant, votre adresse IP est transmise à ses serveurs. Elle ne se charge donc qu’à votre demande.',
 	'voir_en_grand'        => 'Ouvrir la carte sur OpenStreetMap',
-	'champ_lieu_choisi'    => 'Lieu des activités',
-	'lieu_choisi_aide'     => 'Choisissez un lieu de la commune. S’il n’y figure pas, laissez « Ailleurs » et précisez dans le champ suivant.',
-	'aucun_lieu_choisi'    => 'Ailleurs, ou pas de lieu fixe',
 
 	// --- Associations ---------------------------------------------------------
 	'titre_associations'   => 'Associations',
@@ -275,6 +272,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'president_aide'       => 'La personne à qui l’on s’adresse : présidente, président ou secrétaire. Avec son accord : ce nom sera public.',
 	'champ_site'           => 'Site ou page internet',
 	'champ_lieu_asso'      => 'Où se déroulent les activités',
+	'lieu_asso_aide'       => 'Écrivez-le simplement : « salle des fêtes », « école », « chez les membres ». Les lieux déjà connus vous sont proposés dès les premières lettres.',
 	'champ_horaires'       => 'Jours et horaires',
 	'horaires_asso_aide'   => 'Par exemple : « Entraînements le mardi et le jeudi, de 18 h à 20 h, salle des fêtes ».',
 	'champ_rubrique_asso'  => 'Rubrique où l’association publie',

@@ -9,7 +9,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 function marly_champs_association() {
 	return array('nom', 'theme', 'activite', 'president', 'telephone',
-	             'courriel', 'site', 'lieu', 'id_lieu', 'horaires', 'rang', 'statut', 'id_rubrique');
+	             'courriel', 'site', 'lieu', 'horaires', 'rang', 'statut', 'id_rubrique');
 }
 
 function formulaires_editer_association_charger_dist($id_association = 'new') {
@@ -26,18 +26,17 @@ function formulaires_editer_association_charger_dist($id_association = 'new') {
 		'statut'  => 'publie',
 		'_themes' => marly_themes_traduits(),
 		'id_rubrique' => 0,
-		'id_lieu' => 0,
 	);
 
-	/* Les lieux de la commune, saisis une fois dans leur propre ecran. Le
-	   champ libre reste, pour l'exception : une association qui se reunit
-	   chez ses membres n'a pas de batiment communal. */
-	include_spip('inc/marly_lieux');
+	/* Les lieux deja saisis servent de SUGGESTIONS au champ libre, rien de
+	   plus. Un menu ferme aurait oblige a creer le batiment dans un autre
+	   ecran avant de pouvoir dire ou l'association se reunit : deux ecrans et
+	   une notion de plus, pour une commune qui compte cinq batiments. */
 	include_spip('inc/marly_outils');
-	$valeurs['_lieux'] = array(0 => _T('marly:aucun_lieu_choisi'));
+	$valeurs['_lieux'] = array();
 	if (marly_table_prete('spip_lieux')) {
-		foreach (sql_allfetsel('id_lieu, nom', 'spip_lieux', "statut = 'publie'", '', 'rang, nom') as $l) {
-			$valeurs['_lieux'][$l['id_lieu']] = $l['nom'];
+		foreach (sql_allfetsel('nom', 'spip_lieux', "statut = 'publie'", '', 'rang, nom') as $l) {
+			$valeurs['_lieux'][] = $l['nom'];
 		}
 	}
 
@@ -122,7 +121,6 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 	}
 	$champs['rang'] = intval($champs['rang']) ?: 100;
 	$champs['id_rubrique'] = intval($champs['id_rubrique']);
-	$champs['id_lieu'] = intval($champs['id_lieu']);
 	if (!in_array($champs['statut'], array('publie', 'prepa'), true)) {
 		$champs['statut'] = 'publie';
 	}
