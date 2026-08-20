@@ -62,8 +62,11 @@ p.alerte{ color:#A32020; }
    haut : la premiere etiquette venait se coller au bord du cadre blanc,
    alors que tout le reste du formulaire respire de 18 px. On rend cet espace
    a la liste elle-meme, une seule fois, plutot qu'au premier champ — sans
-   quoi il faudrait y repenser chaque fois qu'on change l'ordre des champs. */
-.formulaire_spip form > ul{ padding-top:18px; }
+   quoi il faudrait y repenser chaque fois qu'on change l'ordre des champs.
+   24 px et non 18 : c'est la respiration deja employee ailleurs sur ces
+   ecrans, et une valeur de plus dans un habillage est une valeur de plus a
+   maintenir. */
+.formulaire_spip form > ul{ padding-top:24px; }
 
 .formulaire_spip .marly-champ{
 	display:block;
