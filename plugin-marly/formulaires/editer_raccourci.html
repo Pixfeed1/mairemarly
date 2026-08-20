@@ -39,9 +39,13 @@
 				<small><:marly:icone_aide:></small>
 			</li>
 			<li class="marly-champ marly-rang">
-				<label for="rang"><:marly:champ_rang:></label>
-				<input type="number" class="text" name="rang" id="rang" value="[(#ENV{rang}|attribut_html)]" min="1" max="999">
-				<small><:marly:rang_aide:></small>
+				<label for="rang"><:marly:champ_position:></label>
+				<select name="rang" id="rang">
+					<BOUCLE_positions(DATA){source tableau,#ENV{_positions}}>
+					<option value="#CLE"[(#ENV{rang}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_positions>
+				</select>
+				<small><:marly:position_aide:></small>
 			</li>
 			<li class="marly-champ marly-statut">
 				<label for="statut"><:marly:champ_publication:></label>

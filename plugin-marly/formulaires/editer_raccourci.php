@@ -21,10 +21,18 @@ function formulaires_editer_raccourci_charger_dist($id_raccourci = 'new') {
 		'icone'   => 'ri-arrow-right-line',
 		'cible'   => '',
 		'url'     => '',
-		'rang'    => 100,
+		'rang'    => 1,
 		'statut'  => 'publie',
 		'_icones' => marly_icones_demarches(),
 		'_cibles' => marly_cibles_raccourcis(),
+		/* Six positions nommees plutot qu'un nombre. On ne demande pas a
+		   quelqu'un qui range six boutons de raisonner en << ordre 10 >> :
+		   on lui demande lequel vient en premier. */
+		'_positions' => array(
+			1 => _T('marly:position_1'), 2 => _T('marly:position_2'),
+			3 => _T('marly:position_3'), 4 => _T('marly:position_4'),
+			5 => _T('marly:position_5'), 6 => _T('marly:position_6'),
+		),
 	);
 
 	if ($id_raccourci !== 'new' and intval($id_raccourci)) {
@@ -83,7 +91,7 @@ function formulaires_editer_raccourci_traiter_dist($id_raccourci = 'new') {
 		'titre'  => trim((string) _request('titre')),
 		'icone'  => trim((string) _request('icone')),
 		'cible'  => $cible,
-		'rang'   => intval(_request('rang')) ?: 100,
+		'rang'   => min(6, max(1, intval(_request('rang')))),
 		'statut' => in_array(_request('statut'), array('publie', 'prepa'), true)
 		            ? _request('statut') : 'publie',
 	);
