@@ -1,10 +1,10 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.19.0"
+	version="3.20.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
-	schema="3.18.0">
+	schema="3.20.0">
 
 	<!--
 		schema = la version de la BASE, et c'est ELLE que SPIP compare a la meta

@@ -20,7 +20,16 @@
 		[<div><dt><:marly:champ_courriel:></dt><dd><a href="mailto:[(#COURRIEL|attribut_html)]">(#COURRIEL)</a></dd></div>]
 	</dl>
 
-	[<section><h2><:marly:asso_ou:></h2><p>(#LIEU)</p></section>]
+	[(#REM) L'adresse, et le lien vers le plan si elle a pu etre localisee. Un
+	        LIEN et non une carte integree : tant que personne ne clique, rien
+	        ne part chez OpenStreetMap. L'adresse est ecrite juste au-dessus,
+	        un plan pleine largeur n'apporterait rien de plus. ]
+	[<section><h2><:marly:asso_ou:></h2>
+		<p>(#LIEU)</p>
+		[<p><a class="lien-fleche" href="(#LATITUDE|marly_lien_carte{#LONGITUDE}|attribut_html)" rel="noopener">
+			<:marly:voir_sur_la_carte:>
+			<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg></a></p>]
+	</section>]
 	[<section><h2><:marly:asso_quand:></h2>(#HORAIRES|propre)</section>]
 
 	[<p class="fiche-liens">

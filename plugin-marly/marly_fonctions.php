@@ -279,3 +279,22 @@ function filtre_marly_carte_commune_dist($rien = '') {
 		. rtrim(rtrim(number_format($c['nord'], 5, '.', ''), '0'), '.')
 		. '&layer=mapnik';
 }
+
+/**
+ * Le lien vers un point sur OpenStreetMap.
+ *
+ * Un LIEN, et non une carte integree : tant que personne ne clique, aucune
+ * requete ne part chez OpenStreetMap et aucune adresse IP ne lui est
+ * transmise. Sur une fiche d'association, un plan pleine largeur n'apporte
+ * rien de plus qu'un lien — l'adresse est deja ecrite juste au-dessus.
+ */
+function filtre_marly_lien_carte_dist($latitude, $longitude = '') {
+	$lat = trim((string) $latitude);
+	$lon = trim((string) $longitude);
+	if ($lat === '' or $lon === '') {
+		return '';
+	}
+	return 'https://www.openstreetmap.org/?mlat=' . rawurlencode($lat)
+		. '&mlon=' . rawurlencode($lon)
+		. '#map=17/' . rawurlencode($lat) . '/' . rawurlencode($lon);
+}

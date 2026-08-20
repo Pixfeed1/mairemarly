@@ -9,7 +9,8 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 function marly_champs_association() {
 	return array('nom', 'theme', 'activite', 'president', 'telephone',
-	             'courriel', 'site', 'lieu', 'horaires', 'rang', 'statut', 'id_rubrique');
+	             'courriel', 'site', 'lieu', 'latitude', 'longitude',
+	             'horaires', 'rang', 'statut', 'id_rubrique');
 }
 
 function formulaires_editer_association_charger_dist($id_association = 'new') {
@@ -55,7 +56,8 @@ function formulaires_editer_association_charger_dist($id_association = 'new') {
 		}
 		$valeurs['_rubriques'][$r['id_rubrique']] = $chemin;
 	}
-	foreach (array('nom', 'activite', 'president', 'telephone', 'courriel', 'site', 'lieu', 'horaires') as $c) {
+	foreach (array('nom', 'activite', 'president', 'telephone', 'courriel', 'site', 'lieu',
+	               'latitude', 'longitude', 'horaires') as $c) {
 		$valeurs[$c] = '';
 	}
 
@@ -123,6 +125,27 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 	$champs['id_rubrique'] = intval($champs['id_rubrique']);
 	if (!in_array($champs['statut'], array('publie', 'prepa'), true)) {
 		$champs['statut'] = 'publie';
+	}
+
+	/* L'adresse suffit : les coordonnees s'en deduisent a l'enregistrement.
+	   C'est le serveur qui interroge OpenStreetMap, pas le visiteur — aucune
+	   donnee d'habitant ne part.
+
+	   On ne cherche que si le lieu a CHANGE, ou s'il n'y a pas encore de
+	   coordonnees : sans cela, chaque modification de l'horaire relancerait
+	   une requete pour une adresse identique. */
+	$ancien = ($id_association !== 'new' and intval($id_association))
+		? sql_getfetsel('lieu', 'spip_associations', 'id_association = ' . intval($id_association))
+		: null;
+
+	if ($champs['lieu'] !== '' and ($champs['latitude'] === '' or $champs['lieu'] !== $ancien)) {
+		include_spip('inc/marly_geocodage');
+		$point = marly_geocoder($champs['lieu']);
+		$champs['latitude']  = $point['latitude'] ?? '';
+		$champs['longitude'] = $point['longitude'] ?? '';
+	}
+	if ($champs['lieu'] === '') {
+		$champs['latitude'] = $champs['longitude'] = '';
 	}
 
 	if ($id_association === 'new' or !intval($id_association)) {

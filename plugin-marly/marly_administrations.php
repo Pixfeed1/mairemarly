@@ -103,6 +103,11 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_lieux', 'spip_associations')),
 	);
 
+	/* 3.20.0 — les coordonnees d'une association, tirees de son adresse. */
+	$maj['3.20.0'] = array(
+		array('maj_tables', array('spip_associations')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }

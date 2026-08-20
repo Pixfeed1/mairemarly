@@ -220,7 +220,13 @@ function marly_declarer_tables_objets_sql($tables) {
 			'courriel'    => 'varchar(255) NOT NULL DEFAULT ""',
 			'site'        => 'varchar(255) NOT NULL DEFAULT ""',
 			'id_lieu'     => 'bigint(21) NOT NULL DEFAULT 0',
+
+			/* Ou se deroulent les activites, ecrit en clair, et les
+			   coordonnees qui en sont tirees automatiquement a
+			   l'enregistrement. La mairie ne saisit qu'une chose. */
 			'lieu'        => 'varchar(255) NOT NULL DEFAULT ""',
+			'latitude'    => 'varchar(24) NOT NULL DEFAULT ""',
+			'longitude'   => 'varchar(24) NOT NULL DEFAULT ""',
 			'horaires'    => 'text NOT NULL DEFAULT ""',
 			/* La rubrique ou l'association ecrit, si elle ecrit.
 			   ------------------------------------------------------------------
