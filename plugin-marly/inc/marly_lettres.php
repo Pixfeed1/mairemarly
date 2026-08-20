@@ -47,6 +47,15 @@ function marly_lien_desinscription($jeton) {
  * Styles en ligne, tableau de mise en page : ce n'est pas de la nostalgie.
  * Les clients de messagerie ignorent les feuilles de style externes, et
  * Outlook ne sait toujours pas mettre en page en flexbox.
+ *
+ * Le cadre ne porte PAS de largeur fixe. Une largeur fixe devient le plancher
+ * de la mise en page : le courriel ne peut plus se replier, et sur un
+ * téléphone il est coupé sur la droite. max-width n'y peut rien — c'est la
+ * largeur fixe qui commande. On écrit donc l'inverse : toute la largeur
+ * disponible, plafonnée à 600 px.
+ *
+ * Outlook pour bureau, lui, ignore max-width. D'où le tableau entre
+ * <!--[if mso]-->, que seul Outlook lit : il lui donne ses 600 px en dur.
  */
 function marly_lettre_html($lettre, $abonne) {
 	$site   = $GLOBALS['meta']['nom_site'] ?? '';
@@ -62,20 +71,32 @@ function marly_lettre_html($lettre, $abonne) {
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>$titre</title></head>
+<title>$titre</title>
+<style>
+	/* Sur un telephone, les marges laterales du cadre mangent le texte : il
+	   reste moins de 290 px de ligne. On les reduit. Les messageries qui
+	   ignorent les media queries — Outlook pour bureau — gardent la mise en
+	   page large, qui leur convient de toute facon. */
+	@media (max-width:620px) {
+		.marly-marge { padding-left:20px !important; padding-right:20px !important; }
+		.marly-bord  { padding-left:8px  !important; padding-right:8px  !important; }
+	}
+</style>
+</head>
 <body style="margin:0;padding:0;background:#FDF8EE;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FDF8EE;">
-<tr><td align="center" style="padding:28px 14px;">
+<tr><td align="center" class="marly-bord" style="padding:28px 14px;">
 
-	<table role="presentation" width="600" cellpadding="0" cellspacing="0"
-	       style="width:600px;max-width:100%;background:#FFFFFF;border-top:5px solid #1E5B41;">
+	<!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0"><tr><td><![endif]-->
+	<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+	       style="width:100%;max-width:600px;background:#FFFFFF;border-top:5px solid #1E5B41;">
 
-		<tr><td style="padding:30px 36px 8px;">
+		<tr><td class="marly-marge" style="padding:30px 36px 8px;">
 			<p style="margin:0;font-family:Georgia,serif;font-size:13px;letter-spacing:.08em;
 			          text-transform:uppercase;color:#1E5B41;">$site</p>
 		</td></tr>
 
-		<tr><td style="padding:0 36px 26px;">
+		<tr><td class="marly-marge" style="padding:0 36px 26px;">
 			<h1 style="margin:6px 0 18px;font-family:Georgia,serif;font-size:30px;line-height:1.15;color:#1D1A1A;">$titre</h1>
 			$chapo
 			<div style="font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:1.65;color:#1D1A1A;">
@@ -83,10 +104,10 @@ function marly_lettre_html($lettre, $abonne) {
 			</div>
 		</td></tr>
 
-		<tr><td style="padding:22px 36px 30px;border-top:1px solid #DED6C6;">
+		<tr><td class="marly-marge" style="padding:22px 36px 30px;border-top:1px solid #DED6C6;">
 			<p style="margin:0 0 10px;font-family:Helvetica,Arial,sans-serif;font-size:13px;line-height:1.5;color:#55504A;">
-				Vous recevez ce message parce que vous vous êtes abonné à la lettre
-				d'information de $site.
+				Vous recevez ce message au titre de votre abonnement à la lettre
+				d’information de la commune. Le nom de l’expéditeur figure en tête.
 			</p>
 			<p style="margin:0;font-family:Helvetica,Arial,sans-serif;font-size:13px;">
 				<a href="$desinscrire" style="color:#1E5B41;">Me désinscrire</a>
@@ -96,6 +117,7 @@ function marly_lettre_html($lettre, $abonne) {
 		</td></tr>
 
 	</table>
+	<!--[if mso]></td></tr></table><![endif]-->
 
 </td></tr></table>
 </body></html>
@@ -113,8 +135,8 @@ function marly_lettre_texte($lettre, $abonne) {
 		. str_repeat('=', min(60, strlen($lettre['titre']))) . "\n\n"
 		. $chapo . $texte . "\n\n"
 		. str_repeat('-', 60) . "\n"
-		. "Vous recevez ce message parce que vous vous êtes abonné à la lettre\n"
-		. "d'information de $site.\n\n"
+		. "Vous recevez ce message au titre de votre abonnement à la lettre\n"
+		. "d’information de la commune.\n\n"
 		. "Me désinscrire : " . marly_lien_desinscription($abonne['jeton']) . "\n";
 }
 
