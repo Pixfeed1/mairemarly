@@ -30,6 +30,10 @@
 	   amp;action. Deux etoiles rendent la valeur brute, json_encode en
 	   fait une chaine JavaScript sure. */
 	var url = [(#ENV**{_url_chercher}|json_encode)];
+	/* Trois couches peuvent echapper cette adresse : le PHP qui la
+	   fabrique, la ligne d'inclusion, ce gabarit. Chacune a deja mordu.
+	   Quoi qu'il arrive en amont, on la remet d'aplomb ici. */
+	url = url.replace(/&amp;/g, '&');
 	if (!lat || !lon || !zone || !url) { return; }
 
 	var bouton = document.createElement('button');

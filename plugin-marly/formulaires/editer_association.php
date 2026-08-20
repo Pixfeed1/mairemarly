@@ -79,7 +79,13 @@ function formulaires_editer_association_charger_dist($id_association = 'new') {
 	   vaut que pour la session ouverte, et l'action verifie l'autorisation
 	   une seconde fois de son cote. */
 	include_spip('inc/actions');
-	$valeurs['_url_chercher'] = generer_action_auteur('marly_chercher_adresse', '');
+	/* generer_action_auteur rend une adresse prete a etre posee dans du
+	   HTML : ses separateurs sont deja &amp;. Elle traverse ensuite deux
+	   gabarits qui, sans etoiles, echappent encore. Il a fallu trois
+	   allers-retours pour compter les couches : on neutralise celle-ci a
+	   la source, et les gabarits passent la valeur en #ENV**. */
+	$valeurs['_url_chercher'] = str_replace('&amp;', '&',
+		generer_action_auteur('marly_chercher_adresse', ''));
 
 	return $valeurs;
 }
