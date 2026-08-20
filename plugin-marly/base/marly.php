@@ -149,6 +149,54 @@ function marly_declarer_tables_objets_sql($tables) {
 		'editable'   => 'non',
 	);
 
+	/* ELUS — qui est responsable de quoi.
+	   ------------------------------------------------------------------------
+	   Une table a part, et non des champs libres sur chaque fiche. L'elu
+	   referent de l'etat civil est le meme sur les six fiches d'etat civil :
+	   en champ libre, on le saisit six fois, on se trompe une fois sur le
+	   numero, et le jour ou il change de delegation il faut retrouver les six.
+	   C'est ainsi qu'un site de mairie devient faux au bout de deux ans.
+
+	   Elle servira aussi a la page du conseil municipal, que toute commune
+	   finit par vouloir. */
+	$tables['spip_elus'] = array(
+		'field' => array(
+			'id_elu'      => 'bigint(21) NOT NULL',
+			'nom'         => 'varchar(120) NOT NULL DEFAULT ""',
+			'prenom'      => 'varchar(120) NOT NULL DEFAULT ""',
+			'fonction'    => 'varchar(120) NOT NULL DEFAULT ""',
+			'delegation'  => 'varchar(255) NOT NULL DEFAULT ""',
+			'telephone'   => 'varchar(60) NOT NULL DEFAULT ""',
+			'courriel'    => 'varchar(255) NOT NULL DEFAULT ""',
+			'permanence'  => 'text NOT NULL DEFAULT ""',
+			'rang'        => 'int(11) NOT NULL DEFAULT 100',
+			'statut'      => 'varchar(20) NOT NULL DEFAULT "publie"',
+			'maj'         => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY' => 'id_elu',
+			'KEY statut'  => 'statut',
+		),
+		'titre'      => 'nom AS titre, "" AS lang',
+		'principale' => 'oui',
+		'type'       => 'elu',
+		'editable'   => 'oui',
+		'champs_editables'  => array('nom', 'prenom', 'fonction', 'delegation',
+		                             'telephone', 'courriel', 'permanence', 'rang'),
+		'rechercher_champs' => array('nom' => 8, 'prenom' => 6, 'fonction' => 4, 'delegation' => 3),
+		'statut' => array(
+			array(
+				'champ'     => 'statut',
+				'publie'    => 'publie',
+				'previsu'   => 'publie,prepa',
+				'exception' => 'statut',
+			),
+		),
+		'texte_modifier'    => 'marly:modifier_elu',
+		'texte_creer'       => 'marly:creer_elu',
+		'info_aucun_objet'  => 'marly:aucun_elu',
+	);
+
 	/* DEMARCHES — les fiches pratiques.
 	   ------------------------------------------------------------------------
 	   Une fiche n'est pas un article : elle a toujours la meme structure — qui
@@ -194,6 +242,26 @@ function marly_declarer_tables_objets_sql($tables) {
 			   jamais reposer une fiche qu'elle aurait supprimee. */
 			'socle'        => 'tinyint(1) NOT NULL DEFAULT 0',
 
+			/* L'elu referent : une reference, pas une copie. */
+			'id_elu'       => 'bigint(21) NOT NULL DEFAULT 0',
+
+			/* Le contact propre a cette demarche. Vides, la fiche affiche ceux
+			   de la mairie, pris dans les reglages : on ne saisit que
+			   l'exception. */
+			'contact_tel'      => 'varchar(60) NOT NULL DEFAULT ""',
+			'contact_courriel' => 'varchar(255) NOT NULL DEFAULT ""',
+
+			/* L'encadre permanent — << les demarches d'etat civil sont
+			   gratuites, mefiez-vous des sites payants >>. */
+			'a_savoir'     => 'text NOT NULL DEFAULT ""',
+
+			/* L'avertissement temporaire, et SA DATE DE FIN. Un message qu'il
+			   faut penser a retirer n'est jamais retire : celui de la ville
+			   dont on s'inspire annonce un incident de mars, et il est encore
+			   affiche en aout. Le notre s'efface seul. */
+			'alerte'       => 'text NOT NULL DEFAULT ""',
+			'alerte_fin'   => "date NOT NULL DEFAULT '0000-00-00'",
+
 			'rang'         => 'int(11) NOT NULL DEFAULT 100',
 			'statut'       => 'varchar(20) NOT NULL DEFAULT "publie"',
 			'maj'          => 'TIMESTAMP',
@@ -208,7 +276,9 @@ function marly_declarer_tables_objets_sql($tables) {
 		'type'       => 'demarche',
 		'editable'   => 'oui',
 		'champs_editables'  => array('titre', 'famille', 'icone', 'resume', 'qui', 'comment',
-		                             'pieces', 'cout', 'delai', 'ou', 'lien', 'lien_faire', 'rang'),
+		                             'pieces', 'cout', 'delai', 'ou', 'lien', 'lien_faire', 'rang',
+		                             'id_elu', 'contact_tel', 'contact_courriel',
+		                             'a_savoir', 'alerte', 'alerte_fin'),
 		'rechercher_champs' => array('titre' => 8, 'resume' => 4, 'qui' => 2, 'comment' => 2),
 		'statut' => array(
 			array(

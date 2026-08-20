@@ -35,6 +35,7 @@ ri-tools-line            Travaux, voirie
 ri-government-line       Mairie, administration
 ri-scales-3-line         Élections, démocratie
 ri-water-flash-line      Eau, énergie
+ri-error-warning-line    Avertissement, alerte
 
 # --- Réseaux sociaux ---------------------------------------------------------
 # Mêmes règles : un mot-clé par ligne dans le groupe « Icônes ».

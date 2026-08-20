@@ -1,0 +1,37 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre"><:marly:titre_elus:></h1>
+<p class="explication"><:marly:intro_elus:></p>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ECRIRE{elu,id_elu=new})]"><:marly:creer_elu:></a>
+</p>
+
+<B_elus>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:champ_nom_elu:></th>
+			<th><:marly:champ_fonction:></th>
+			<th><:marly:col_delegation:></th>
+			<th><:marly:champ_telephone:></th>
+			<th><:marly:col_etat:></th>
+		</tr>
+	</thead>
+	<tbody>
+</B_elus>
+		<BOUCLE_elus(ELUS){par rang, nom}{statut IN publie,prepa}>
+		<tr>
+			<td><a href="[(#URL_ECRIRE{elu,id_elu=#ID_ELU})]">[(#PRENOM) ]#NOM</a></td>
+			<td>#FONCTION</td>
+			<td>[(#DELEGATION)]</td>
+			<td>[(#TELEPHONE)]</td>
+			<td>[(#STATUT|=={publie}|?{'<:marly:publication_oui:>','<:marly:publication_non:>'})]</td>
+		</tr>
+		</BOUCLE_elus>
+	</tbody>
+</table>
+<//B_elus>
+<p class="explication"><:marly:aucun_elu:></p>
+<//B_elus>

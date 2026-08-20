@@ -1,0 +1,61 @@
+<div class="formulaire_spip formulaire_editer_elu">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<ul>
+			<li class="marly-champ marly-prenom">
+				<label for="prenom"><:marly:champ_prenom:></label>
+				<input type="text" class="text" name="prenom" id="prenom" value="[(#ENV{prenom}|attribut_html)]" autocomplete="off">
+			</li>
+			<li class="marly-champ marly-nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
+				<label for="nom"><:marly:champ_nom_elu:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]" required>
+			</li>
+			<li class="marly-champ marly-fonction[ (#ENV**{erreurs}|table_valeur{fonction}|oui)erreur]">
+				<label for="fonction"><:marly:champ_fonction:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{fonction})</span>]
+				<input type="text" class="text" name="fonction" id="fonction" value="[(#ENV{fonction}|attribut_html)]" required>
+				<small><:marly:fonction_aide:></small>
+			</li>
+			<li class="marly-champ marly-delegation">
+				<label for="delegation"><:marly:champ_delegation:></label>
+				<input type="text" class="text" name="delegation" id="delegation" value="[(#ENV{delegation}|attribut_html)]">
+				<small><:marly:delegation_aide:></small>
+			</li>
+			<li class="marly-champ marly-telephone">
+				<label for="telephone"><:marly:champ_telephone:></label>
+				<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]">
+			</li>
+			<li class="marly-champ marly-courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
+				<label for="courriel"><:marly:champ_courriel:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]">
+			</li>
+			<li class="marly-champ marly-permanence">
+				<label for="permanence"><:marly:champ_permanence:></label>
+				<textarea name="permanence" id="permanence" rows="2">[(#ENV{permanence}|textebrut)]</textarea>
+				<small><:marly:permanence_aide:></small>
+			</li>
+			<li class="marly-champ marly-rang">
+				<label for="rang"><:marly:champ_rang:></label>
+				<input type="number" class="text" name="rang" id="rang" value="[(#ENV{rang}|attribut_html)]" min="1" max="999">
+				<small><:marly:rang_aide:></small>
+			</li>
+			<li class="marly-champ marly-statut">
+				<label for="statut"><:marly:champ_publication:></label>
+				<select name="statut" id="statut">
+					<option value="publie"[(#ENV{statut}|=={publie}|oui) selected]><:marly:publication_oui:></option>
+					<option value="prepa"[(#ENV{statut}|=={prepa}|oui) selected]><:marly:publication_non:></option>
+				</select>
+			</li>
+		</ul>
+		<p class="boutons"><input type="submit" class="submit" value="<:marly:enregistrer:>"></p>
+	</form>
+	]
+
+</div>

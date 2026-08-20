@@ -1,42 +1,107 @@
 [(#REM)
   Une fiche demarche.
   ---------------------------------------------------------------------------
-  L'ordre suit celui des questions : de quoi s'agit-il, suis-je concerne,
-  comment je m'y prends, qu'est-ce que j'emporte, combien, combien de temps,
-  ou. << Ou s'adresser >> est mis en evidence : c'est ce qu'on vient chercher.
+  Deux colonnes. A gauche ce qu'on lit, a droite ce qu'on garde sous les yeux :
+  a qui l'on s'adresse et comment on l'appelle. C'est la construction qu'ont
+  adoptee les communes qui font ce metier depuis longtemps, et elle tient a une
+  observation simple — on lit la marche a suivre une fois, on cherche le
+  numero de telephone trois fois.
+
+  L'ordre de la colonne de gauche suit celui des questions : de quoi s'agit-il,
+  suis-je concerne, comment je m'y prends, qu'est-ce que j'emporte, combien,
+  combien de temps, ou.
 
   La reglementation n'est PAS recopiee ici : la fiche renvoie a celle de
-  service-public.gouv.fr, qui est tenue a jour par l'Etat. Une commune qui
-  recopie le droit diffuse une information fausse deux ans plus tard.
+  service-public.gouv.fr, tenue a jour par l'Etat. Une commune qui recopie le
+  droit diffuse une information fausse deux ans plus tard.
 ]
 <BOUCLE_fiche(DEMARCHES){id_demarche}>
-<div class="page-simple fiche-demarche">
+<div class="page-large">
 
-	<p class="fil"><a class="lien-fleche" href="#URL_PAGE{demarches}"><:marly:retour_demarches:></a></p>
+	<nav class="fil-ariane" aria-label="Fil d’Ariane">
+		<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+		<span aria-hidden="true">›</span>
+		<a href="#URL_PAGE{demarches}"><:marly:toutes_les_demarches:></a>
+		<span aria-hidden="true">›</span>
+		<span aria-current="page">#TITRE</span>
+	</nav>
 
-	<h1>#TITRE</h1>
-	[<p class="chapo">(#RESUME)</p>]
+	[(#REM) L'avertissement temporaire passe AVANT tout : s'il dit que le
+	        guichet est ferme, le reste de la page ne sert a rien. Il disparait
+	        de lui-meme apres sa date de fin. ]
+	[(#REM) L'icone ET le mot. L'icone se voit d'un coup d'oeil, le mot est lu
+	        par les lecteurs d'ecran — une icone decorative ne l'est pas, et la
+	        couleur seule ne porte jamais un avertissement a elle seule. ]
+	[<p class="encadre-alerte">
+		<svg class="ico" aria-hidden="true"><use href="#ri-error-warning-line"/></svg>
+		<strong><:marly:attention:></strong>
+		(#ALERTE|marly_alerte_active{#ALERTE_FIN})
+	</p>]
 
-	[<section><h2><:marly:demarche_qui:></h2>(#QUI|propre)</section>]
-	[<section><h2><:marly:demarche_comment:></h2>(#COMMENT|propre)</section>]
-	[<section><h2><:marly:demarche_pieces:></h2>(#PIECES|propre)</section>]
+	<div class="fiche-grille">
 
-	[(#REM) Chaque couple dans son div : HTML5 le prevoit, et c'est la seule
-	        facon de mettre une liste de definitions en colonnes sans que la
-	        grille separe l'intitule de sa valeur. ]
-	<dl class="fiche-chiffres">
-		[<div><dt><:marly:demarche_cout:></dt><dd>(#COUT)</dd></div>]
-		[<div><dt><:marly:demarche_delai:></dt><dd>(#DELAI)</dd></div>]
-	</dl>
+		<div class="fiche-corps fiche-demarche">
+			<h1>#TITRE</h1>
+			[<p class="chapo">(#RESUME)</p>]
 
-	[<section class="fiche-ou"><h2><:marly:demarche_ou:></h2>(#OU|propre)</section>]
+			[<section><h2><:marly:demarche_qui:></h2>(#QUI|propre)</section>]
 
-	<p class="fiche-liens">
-		[<a class="pilule plein" href="(#LIEN_FAIRE|attribut_html)" rel="noopener">
-			<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg> <:marly:faire_en_ligne:></a>]
-		[<a class="pilule" href="(#LIEN|attribut_html)" rel="noopener">
-			<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:voir_fiche_officielle:></a>]
-	</p>
+			[<section><h2><:marly:demarche_comment:></h2>(#COMMENT|propre)</section>]
 
+			[(#REM) Le bouton d'action ici, a l'endroit ou l'on decide d'agir,
+			        et non tout en bas : on lit la marche a suivre, puis on
+			        cherche par ou commencer. ]
+			[<p class="fiche-liens">
+				<a class="pilule plein" href="(#LIEN_FAIRE|attribut_html)" rel="noopener">
+					<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg> <:marly:faire_en_ligne:></a>
+			</p>]
+
+			[<section><h2><:marly:demarche_pieces:></h2>(#PIECES|propre)</section>]
+
+			<dl class="fiche-chiffres">
+				[<div><dt><:marly:demarche_cout:></dt><dd>(#COUT)</dd></div>]
+				[<div><dt><:marly:demarche_delai:></dt><dd>(#DELAI)</dd></div>]
+			</dl>
+
+			[<section class="fiche-ou"><h2><:marly:demarche_ou:></h2>(#OU|propre)</section>]
+
+			[(#REM) L'encadre permanent : ce qui protege l'habitant, et qui ne
+			        depend pas de la reglementation — qu'une demarche soit
+			        gratuite, par exemple, et que des sites la facturent. ]
+			[<div class="encadre-savoir">
+				<h2><:marly:a_savoir_titre:></h2>
+				(#A_SAVOIR|propre)
+			</div>]
+
+			[<p class="fiche-liens">
+				<a class="pilule" href="(#LIEN|attribut_html)" rel="noopener">
+					<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:voir_fiche_officielle:></a>
+			</p>]
+		</div>
+
+		<aside class="fiche-cote">
+
+			<BOUCLE_referent(ELUS){id_elu}{statut=publie}>
+			<section class="bloc-cote">
+				<h2><:marly:referent_titre:></h2>
+				<p class="elu-nom">[(#PRENOM) ]#NOM</p>
+				<p class="elu-role">#FONCTION[<br>(#DELEGATION)]</p>
+				[<p class="elu-perm">(#PERMANENCE|propre)</p>]
+				[<p><a href="tel:[(#TELEPHONE|replace{' ',''}|attribut_html)]">(#TELEPHONE)</a></p>]
+			</section>
+			</BOUCLE_referent>
+
+			[(#REM) Le contact de la demarche, ou celui de la mairie a defaut :
+			        la secretaire ne saisit que l'exception. ]
+			<section class="bloc-cote">
+				<h2><:marly:contact_titre:></h2>
+				[<p class="cote-tel"><a href="tel:[(#CONTACT_TEL|sinon{#CONFIG{marly/telephone}}|replace{' ',''}|attribut_html)]">(#CONTACT_TEL|sinon{#CONFIG{marly/telephone}})</a></p>]
+				[<p><a href="mailto:[(#CONTACT_COURRIEL|sinon{#CONFIG{marly/courriel}}|attribut_html)]">(#CONTACT_COURRIEL|sinon{#CONFIG{marly/courriel}})</a></p>]
+				[<p class="cote-horaires">(#CONFIG{marly/horaires}|propre)</p>]
+			</section>
+
+		</aside>
+
+	</div>
 </div>
 </BOUCLE_fiche>

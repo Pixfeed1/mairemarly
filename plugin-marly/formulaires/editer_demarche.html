@@ -85,6 +85,51 @@
 		</fieldset>
 
 		<fieldset>
+			<legend><:marly:contact_titre:></legend>
+			<ul>
+			<li class="marly-champ marly-elu">
+				<label for="id_elu"><:marly:champ_elu:></label>
+				<select name="id_elu" id="id_elu">
+					<BOUCLE_elus(DATA){source tableau,#ENV{_elus}}>
+					<option value="#CLE"[(#ENV{id_elu}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_elus>
+				</select>
+				<small><:marly:elu_aide:></small>
+			</li>
+			<li class="marly-champ marly-contact_tel">
+				<label for="contact_tel"><:marly:champ_contact_tel:></label>
+				<input type="tel" class="text" name="contact_tel" id="contact_tel" value="[(#ENV{contact_tel}|attribut_html)]">
+				<small><:marly:contact_aide:></small>
+			</li>
+			<li class="marly-champ marly-contact_courriel">
+				<label for="contact_courriel"><:marly:champ_contact_courriel:></label>
+				<input type="email" class="text" name="contact_courriel" id="contact_courriel" value="[(#ENV{contact_courriel}|attribut_html)]">
+			</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
+			<legend><:marly:a_savoir_titre:></legend>
+			<ul>
+			<li class="marly-champ marly-a_savoir">
+				<label for="a_savoir"><:marly:champ_a_savoir:></label>
+				<textarea name="a_savoir" id="a_savoir" rows="3">[(#ENV{a_savoir}|textebrut)]</textarea>
+				<small><:marly:a_savoir_aide:></small>
+			</li>
+			<li class="marly-champ marly-alerte">
+				<label for="alerte"><:marly:champ_alerte:></label>
+				<textarea name="alerte" id="alerte" rows="2">[(#ENV{alerte}|textebrut)]</textarea>
+				<small><:marly:alerte_aide:></small>
+			</li>
+			<li class="marly-champ marly-alerte_fin">
+				<label for="alerte_fin"><:marly:champ_alerte_fin:></label>
+				<input type="date" class="text" name="alerte_fin" id="alerte_fin" value="[(#ENV{alerte_fin}|attribut_html)]">
+				<small><:marly:alerte_fin_aide:></small>
+			</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
 			<legend><:marly:voir_fiche_officielle:></legend>
 			<ul>
 			<li class="marly-champ marly-lien[ (#ENV**{erreurs}|table_valeur{lien}|oui)erreur]">

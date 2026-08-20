@@ -1,7 +1,7 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.11.3"
+	version="3.12.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
 	<!--
@@ -14,7 +14,7 @@
 		Cette valeur doit donc toujours valoir la DERNIERE etape declaree dans
 		marly_administrations.php. Le verificateur le controle desormais.
 	-->
-	schema="3.11.0">
+	schema="3.12.0">
 
 	<nom>Réglages et réservations de Marly-Gomont</nom>
 	<licence>GNU/GPL v3</licence>
@@ -50,6 +50,11 @@
 		l'endroit ou une chose est rangee est la premiere explication de ce
 		qu'elle est.
 	-->
+	<menu
+		nom="elus"
+		titre="marly:titre_elus"
+		parent="menu_edition" />
+
 	<menu
 		nom="demarches"
 		titre="marly:titre_demarches"

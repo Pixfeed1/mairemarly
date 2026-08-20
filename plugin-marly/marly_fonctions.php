@@ -154,3 +154,26 @@ function filtre_marly_nb_destinataires_dist($rien = '') {
 	include_spip('inc/marly_lettres');
 	return marly_nb_destinataires();
 }
+
+/**
+ * L'avertissement temporaire d'une fiche, s'il est encore d'actualité.
+ *
+ * Rend le texte, ou rien. La date de fin est le cœur du dispositif : un
+ * message qu'il faut penser à retirer n'est jamais retiré. Sur le site dont
+ * nous nous inspirons, un avis d'incident daté de mars s'affichait encore en
+ * août.
+ *
+ * Sans date de fin, l'avertissement reste — c'est un choix explicite de la
+ * mairie, et le formulaire le dit.
+ */
+function marly_alerte_active($alerte, $fin = '') {
+	$alerte = trim((string) $alerte);
+	if ($alerte === '') {
+		return '';
+	}
+	$fin = trim((string) $fin);
+	if ($fin === '' or $fin === '0000-00-00') {
+		return $alerte;
+	}
+	return ($fin >= date('Y-m-d')) ? $alerte : '';
+}
