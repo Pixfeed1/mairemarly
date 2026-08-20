@@ -65,8 +65,20 @@
 			var reponse = null;
 			try { reponse = JSON.parse(xhr.responseText); } catch (e) { reponse = null; }
 			if (!reponse || !reponse.propositions) {
-				dire([(#VAL{marly:recherche_en_panne}|_T|json_encode)]
-					+ ' (' + xhr.responseText.substring(0, 60) + ')');
+				/* SPIP a repondu une page au lieu d'executer l'action. La page
+				   contient sa raison, mais pas ses 60 premiers caracteres :
+				   on donne l'adresse appelee, qu'on ouvre pour la lire. */
+				zone.textContent = '';
+				var p = document.createElement('p');
+				p.className = 'marly-propositions-note';
+				p.textContent = [(#VAL{marly:recherche_en_panne}|_T|json_encode)] + ' ';
+				var a = document.createElement('a');
+				a.href = url + '&q=' + encodeURIComponent(q);
+				a.target = '_blank';
+				a.rel = 'noopener';
+				a.textContent = a.href;
+				p.appendChild(a);
+				zone.appendChild(p);
 				return;
 			}
 			if (!reponse.propositions.length) {
