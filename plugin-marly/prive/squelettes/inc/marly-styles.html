@@ -57,6 +57,14 @@ p.alerte{ color:#A32020; }
    de specificite qui se rejouerait a chaque version de SPIP. */
 .formulaire_spip ul{ list-style:none; margin:0; padding:0; }
 
+/* Rien ne touche le bord de son cadre. En remettant les marges de la liste a
+   zero pour aligner les etiquettes, on avait aussi supprime l'espace du
+   haut : la premiere etiquette venait se coller au bord du cadre blanc,
+   alors que tout le reste du formulaire respire de 18 px. On rend cet espace
+   a la liste elle-meme, une seule fois, plutot qu'au premier champ — sans
+   quoi il faudrait y repenser chaque fois qu'on change l'ordre des champs. */
+.formulaire_spip form > ul{ padding-top:18px; }
+
 .formulaire_spip .marly-champ{
 	display:block;
 	clear:both;
