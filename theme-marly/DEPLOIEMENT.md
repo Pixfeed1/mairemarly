@@ -75,15 +75,41 @@ git clone -b claude/refonte-spip-mairie-marly-o47sn4 \
   https://github.com/Pixfeed1/mairemarly.git depot-marly
 ```
 
-Puis on relie **le dossier des squelettes** dans la racine web, et **le
-plugin** dans le dossier des plugins :
+Le dépôt n'est pas le site : on **recopie** les sources dans la racine web.
 
 ```bash
-ln -s ~/depot-marly/theme-marly/squelettes ~/marlygomont.pixfeed.net/squelettes
-
-mkdir -p ~/marlygomont.pixfeed.net/plugins
-ln -s ~/depot-marly/plugin-marly ~/marlygomont.pixfeed.net/plugins/marly
+cp ~/depot-marly/theme-marly/outils/deployer.sh ~/deployer.sh
+chmod +x ~/deployer.sh
+sh ~/deployer.sh
 ```
+
+Le script tire la branche, recopie `theme-marly/squelettes/` vers
+`~/marlygomont.pixfeed.net/squelettes/` et `plugin-marly/` vers
+`~/marlygomont.pixfeed.net/plugins/marly/`, puis vide le cache. C'est la
+seule commande à relancer à chaque mise à jour.
+
+> **Pourquoi une copie et non un lien symbolique.** Cette question a coûté
+> deux déploiements. PHP suit les liens sans rien demander : les squelettes
+> étaient lus, les pages se composaient, tout paraissait juste. Apache, lui,
+> refuse de servir un fichier à travers un lien dès que l'hébergeur a posé
+> `Options -FollowSymLinks` ou `SymLinksIfOwnerMatch` — le réglage courant en
+> mutualisé. Le HTML arrivait donc, les feuilles de style répondaient 403, et
+> la page s'affichait toute nue.
+>
+> Les gabarits passent par PHP, les fichiers statiques passent par HTTP. Les
+> deux doivent être joignables, chacun à sa manière — et une copie l'est sans
+> dépendre d'un réglage qu'on ne maîtrise pas.
+
+Pour vérifier que les fichiers statiques sont bien servis, avant même de
+regarder la page :
+
+```bash
+curl -s -o /dev/null -w "theme.css : %{http_code}\n" \
+  -u mairie:MOTDEPASSE https://marlygomont.pixfeed.net/squelettes/css/theme.css
+```
+
+`200` : tout va bien. `403` : Apache refuse de servir le fichier — c'est le
+symptôme du lien symbolique. `404` : la copie n'a pas eu lieu.
 
 > **Le plugin doit être actif AVANT que le thème ne serve une page.** Les
 > gabarits interrogent les tables `SALLES` et `MANIFESTATIONS` — pour savoir
@@ -99,25 +125,10 @@ Le plugin doit ensuite être **activé** dans l'espace privé :
 `Configuration ▸ Gestion des plugins ▸ Réglages de Marly-Gomont`. Il ajoute
 alors l'entrée `Réglages de la commune` au menu Configuration.
 
-> **Pourquoi un lien, et pas simplement `dossier_squelettes` vers l'extérieur.**
-> C'est l'erreur que j'ai faite au premier déploiement, et elle ne se voit
-> qu'au premier chargement. PHP sait lire des gabarits hors de la racine web,
-> et les pages sortaient donc correctement — mais le NAVIGATEUR ne peut pas
-> aller chercher un fichier hors de la racine web. La feuille de style, les
-> scripts et les polices ne se chargeaient pas, et le site s'affichait en HTML
-> brut. Les gabarits passent par PHP, les fichiers statiques passent par HTTP :
-> les deux doivent être joignables, chacun à sa manière.
->
-> Le lien n'expose que le thème. Le reste du dépôt, `.git` compris, demeure
-> hors d'atteinte. Et un `.htaccess` dans `squelettes/` interdit de servir les
-> `.html` : ce sont des gabarits, pas des pages.
-
 `squelettes/` étant le dossier que SPIP consulte par défaut, **aucun réglage
-n'est nécessaire** — pas de `mes_options.php`.
-
-Si l'hébergement refuse de suivre les liens symboliques, on rapatrie le dépôt
-dans la racine web et on interdit l'accès à `refonte/`, `pentest/` et `.git`
-par un `.htaccess`.
+n'est nécessaire** — pas de `mes_options.php`. Un `.htaccess` dans
+`squelettes/` interdit de servir les `.html` : ce sont des gabarits, pas des
+pages.
 
 ## 4. Interdire l'indexation
 

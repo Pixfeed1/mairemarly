@@ -4,6 +4,18 @@
 # feuille de style, les scripts, les polices et les images. Mais les .html
 # qu'il contient sont du code, pas des pages : les servir tels quels
 # exposerait la structure du site sans rien apporter à personne.
+#
+# Les deux syntaxes sont écrites, chacune sous un test de module. « Require »
+# est celle d'Apache 2.4, « Deny » celle de 2.2. Sans ces tests, la mauvaise
+# des deux ne provoque pas une règle ignorée mais une erreur 500 sur TOUT le
+# dossier — feuille de style comprise. Le site s'affiche alors en HTML brut,
+# et rien n'indique que le fautif est ce fichier.
 <FilesMatch "\.(html|php|py)$">
-	Require all denied
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order allow,deny
+		Deny from all
+	</IfModule>
 </FilesMatch>
