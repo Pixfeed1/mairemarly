@@ -34,6 +34,9 @@ function formulaires_editer_lieu_charger_dist($id_lieu = 'new') {
 		}
 	}
 
+	include_spip('inc/actions');
+	$valeurs['_url_chercher'] = generer_action_auteur('marly_chercher_adresse', '');
+
 	return $valeurs;
 }
 
@@ -96,9 +99,13 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 	/* Les coordonnées se cherchent toutes seules à partir de l'adresse. On ne
 	   le fait QUE si elles sont vides : une correction faite à la main ne doit
 	   jamais être écrasée par un service automatique. */
+	/* Un point choisi dans la liste ne se rediscute pas : les coordonnees
+	   sont deja dans les champs, il n'y a rien a chercher. */
+	$choisi = (_request('point_choisi') === '1');
+
 	$trouvees = false;
 	$precis = false;
-	if ($champs['latitude'] === '' and $champs['longitude'] === '' and $champs['adresse'] !== '') {
+	if (!$choisi and $champs['latitude'] === '' and $champs['longitude'] === '' and $champs['adresse'] !== '') {
 		include_spip('inc/marly_geocodage');
 		$point = marly_geocoder($champs['adresse']);
 		if ($point) {

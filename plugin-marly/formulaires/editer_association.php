@@ -75,6 +75,12 @@ function formulaires_editer_association_charger_dist($id_association = 'new') {
 		}
 	}
 
+	/* L'adresse du service qui cherche pour nous. Signee par SPIP : elle ne
+	   vaut que pour la session ouverte, et l'action verifie l'autorisation
+	   une seconde fois de son cote. */
+	include_spip('inc/actions');
+	$valeurs['_url_chercher'] = generer_action_auteur('marly_chercher_adresse', '');
+
 	return $valeurs;
 }
 
@@ -138,9 +144,15 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		? sql_getfetsel('lieu', 'spip_associations', 'id_association = ' . intval($id_association))
 		: null;
 
+	/* Un point choisi dans la liste des propositions ne se rediscute pas :
+	   la mairie a vu l'adresse et a clique dessus. Chercher a nouveau
+	   ecraserait son choix par une devinette. */
+	$choisi = (_request('point_choisi') === '1'
+		and $champs['latitude'] !== '' and $champs['longitude'] !== '');
+
 	$cherchees = false;
-	$precis = false;
-	if ($champs['lieu'] !== '' and ($champs['latitude'] === '' or $champs['lieu'] !== $ancien)) {
+	$precis = $choisi;
+	if (!$choisi and $champs['lieu'] !== '' and ($champs['latitude'] === '' or $champs['lieu'] !== $ancien)) {
 		include_spip('inc/marly_geocodage');
 		$cherchees = true;
 		$point = marly_geocoder($champs['lieu']);

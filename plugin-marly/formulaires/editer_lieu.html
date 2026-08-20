@@ -25,6 +25,9 @@
 			<li class="marly-champ marly-adresse">
 				<label for="adresse"><:marly:champ_adresse_lieu:></label>
 				<textarea name="adresse" id="adresse" rows="2">[(#ENV{adresse}|textebrut)]</textarea>
+				<div id="marly-propositions"></div>
+				<input type="hidden" name="point_choisi" id="marly-point-choisi" value="">
+				<INCLURE{fond=prive/squelettes/inc/marly-adresse}{champ_adresse=adresse}{champ_lat=latitude}{champ_lon=longitude}{_url_chercher=#ENV{_url_chercher}}>
 			</li>
 			<li class="marly-champ marly-horaires">
 				<label for="horaires"><:marly:champ_horaires_lieu:></label>

@@ -82,6 +82,18 @@
 					</BOUCLE_lieux>
 				</datalist>
 				<small><:marly:lieu_asso_aide:></small>
+				<div id="marly-propositions"></div>
+				<input type="hidden" name="latitude"  id="marly-latitude"  value="[(#ENV{latitude}|attribut_html)]">
+				<input type="hidden" name="longitude" id="marly-longitude" value="[(#ENV{longitude}|attribut_html)]">
+				<input type="hidden" name="point_choisi" id="marly-point-choisi" value="">
+				[(#REM) Ou en est la localisation, visible en ouvrant la fiche et non
+				        seulement apres avoir enregistre. Le lien vaut mieux qu'un
+				        indice de precision : la mairie regarde la carte et voit
+				        elle-meme si le marqueur est sur le bon batiment. ]
+				[<p class="marly-point-retenu"><:marly:point_enregistre:>
+					<a href="(#ENV{latitude}|marly_lien_carte{#ENV{longitude}}|attribut_html)"
+					   target="_blank" rel="noopener"><:marly:verifier_sur_la_carte:></a></p>]
+				<INCLURE{fond=prive/squelettes/inc/marly-adresse}{champ_adresse=lieu}{_url_chercher=#ENV{_url_chercher}}>
 			</li>
 			<li class="marly-champ marly-horaires">
 				<label for="horaires"><:marly:champ_horaires:></label>

@@ -162,6 +162,9 @@ if LANGS:
         # <:marly:cle:> dans les squelettes, 'marly:cle' dans paquet.xml et le PHP
         cles = set(re.findall(r'<:marly:([a-z0-9_]+)[:|]', t))
         cles |= set(re.findall(r"""["']marly:([a-z0-9_]+)["']""", t))
+        # #VAL{marly:cle}|_T : la forme employee quand la chaine part dans du
+        # JavaScript, ou une apostrophe non encodee casserait le script.
+        cles |= set(re.findall(r'#VAL\{marly:([a-z0-9_]+)\}', t))
         court = f.replace(os.path.join(RACINE, '..'), '').lstrip('/')
         for c in sorted({c for c in cles - connues if not c.endswith('_')}):
             signaler(court, 1, f'chaine de langue absente : marly:{c}')

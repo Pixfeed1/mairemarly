@@ -1,0 +1,104 @@
+[(#REM)
+  La recherche d'adresse, sur les ecrans de saisie d'un lieu et d'une
+  association.
+
+  On tape l'adresse, on clique sur << Chercher >>, OpenStreetMap propose ce
+  qu'il connait, on choisit la bonne ligne. Rien n'est devine a la place de
+  la personne qui saisit : elle reconnait le bon resultat dans une liste,
+  sans avoir a savoir sous quel nom un batiment y est enregistre.
+
+  Une requete par clic, jamais a la frappe : les conditions d'usage de
+  Nominatim excluent la saisie assistee au caractere.
+
+  Sans JavaScript, le bouton n'apparait pas et l'enregistrement cherche
+  l'adresse tout seul, comme avant : rien n'est perdu, c'est seulement moins
+  confortable.
+]
+<script type="text/javascript">
+(function () {
+	'use strict';
+
+	var champ = document.getElementById('#ENV{champ_adresse,adresse}');
+	if (!champ) { return; }
+
+	var lat = document.getElementById('#ENV{champ_lat,marly-latitude}');
+	var lon = document.getElementById('#ENV{champ_lon,marly-longitude}');
+	var choisi = document.getElementById('marly-point-choisi');
+	var zone = document.getElementById('marly-propositions');
+	var url = '#ENV{_url_chercher}';
+	if (!lat || !lon || !zone || !url) { return; }
+
+	var bouton = document.createElement('button');
+	bouton.type = 'button';
+	bouton.className = 'marly-chercher-adresse';
+	bouton.textContent = [(#VAL{marly:chercher_adresse}|_T|json_encode)];
+	champ.parentNode.insertBefore(bouton, zone);
+
+	function dire(texte) {
+		zone.textContent = '';
+		var p = document.createElement('p');
+		p.className = 'marly-propositions-note';
+		p.textContent = texte;
+		zone.appendChild(p);
+	}
+
+	bouton.addEventListener('click', function () {
+		var q = champ.value.trim();
+		if (!q) { dire([(#VAL{marly:adresse_a_saisir}|_T|json_encode)]); return; }
+
+		bouton.disabled = true;
+		dire([(#VAL{marly:recherche_en_cours}|_T|json_encode)]);
+
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', url + '&q=' + encodeURIComponent(q), true);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState !== 4) { return; }
+			bouton.disabled = false;
+
+			var reponse = null;
+			try { reponse = JSON.parse(xhr.responseText); } catch (e) { reponse = null; }
+			if (!reponse || !reponse.propositions || !reponse.propositions.length) {
+				dire([(#VAL{marly:aucune_proposition}|_T|json_encode)]);
+				return;
+			}
+
+			zone.textContent = '';
+			var titre = document.createElement('p');
+			titre.className = 'marly-propositions-note';
+			titre.textContent = [(#VAL{marly:choisir_proposition}|_T|json_encode)];
+			zone.appendChild(titre);
+
+			var liste = document.createElement('ul');
+			liste.className = 'marly-propositions';
+			reponse.propositions.forEach(function (p) {
+				var li = document.createElement('li');
+				var b = document.createElement('button');
+				b.type = 'button';
+				b.textContent = p.intitule;
+				b.addEventListener('click', function () {
+					lat.value = p.latitude;
+					lon.value = p.longitude;
+					if (choisi) { choisi.value = '1'; }
+					zone.textContent = '';
+					var ok = document.createElement('p');
+					ok.className = 'marly-point-retenu';
+					ok.textContent = [(#VAL{marly:point_retenu}|_T|json_encode)] + ' ' + p.intitule + ' ';
+					var voir = document.createElement('a');
+					voir.href = 'https://www.openstreetmap.org/?mlat=' + encodeURIComponent(p.latitude)
+						+ '&mlon=' + encodeURIComponent(p.longitude)
+						+ '#map=18/' + encodeURIComponent(p.latitude) + '/' + encodeURIComponent(p.longitude);
+					voir.target = '_blank';
+					voir.rel = 'noopener';
+					voir.textContent = [(#VAL{marly:verifier_sur_la_carte}|_T|json_encode)];
+					ok.appendChild(voir);
+					zone.appendChild(ok);
+				});
+				li.appendChild(b);
+				liste.appendChild(li);
+			});
+			zone.appendChild(liste);
+		};
+		xhr.send();
+	});
+})();
+</script>

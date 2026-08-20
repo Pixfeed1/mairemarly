@@ -116,8 +116,31 @@ function marly_interroger_nominatim($requete) {
 		return array();
 	}
 
-	$url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=fr&q='
-		. rawurlencode($requete);
+	$json = marly_appeler_nominatim($requete, 1);
+	if (!isset($json[0]['lat'], $json[0]['lon'])) {
+		return array();
+	}
+
+	return array(
+		'latitude'  => substr((string) $json[0]['lat'], 0, 12),
+		'longitude' => substr((string) $json[0]['lon'], 0, 12),
+	);
+}
+
+/**
+ * L'appel brut a Nominatim. Rend la liste decodee, ou un tableau vide.
+ */
+function marly_appeler_nominatim($requete, $limite) {
+	include_spip('inc/config');
+	include_spip('inc/distant');
+	if (!function_exists('recuperer_url')) {
+		spip_log('marly : recuperer_url indisponible, geocodage impossible',
+			'marly.' . _LOG_INFO_IMPORTANTE);
+		return array();
+	}
+
+	$url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=fr'
+		. '&limit=' . intval($limite) . '&q=' . rawurlencode($requete);
 
 	/* L'en-tête identifie le site et donne une adresse de contact : c'est ce
 	   que demandent les conditions d'usage de Nominatim, et c'est ce qui
@@ -137,12 +160,56 @@ function marly_interroger_nominatim($requete) {
 	));
 
 	$json = json_decode($reponse['page'] ?? '', true);
-	if (!is_array($json) or !isset($json[0]['lat'], $json[0]['lon'])) {
+
+	return is_array($json) ? $json : array();
+}
+
+/**
+ * Cherche une adresse et rend les propositions, pour que la mairie choisisse.
+ *
+ * C'est la bonne façon de faire, et elle est arrivée après deux détours.
+ * Deviner l'adresse à la place de la personne qui la saisit oblige à
+ * l'expliquer quand la devinette rate ; lui montrer ce qu'OpenStreetMap
+ * connaît et la laisser cliquer ne demande aucune explication. Personne n'a
+ * à savoir sous quel nom un bâtiment est enregistré : il suffit de le
+ * reconnaître dans une liste.
+ *
+ * L'appel part du SERVEUR, pas du navigateur de la mairie : c'est ce qui
+ * permet de tenir l'en-tête d'identification exigé par Nominatim, et de ne
+ * pas exposer le poste de la secrétaire au service tiers.
+ *
+ * Une requête par clic sur le bouton, jamais à la frappe : les conditions
+ * d'usage de Nominatim excluent explicitement la saisie assistée au
+ * caractère.
+ */
+function marly_chercher_adresses($recherche, $limite = 5) {
+	$recherche = trim(preg_replace('/\s+/', ' ', str_replace("\n", ', ', (string) $recherche)));
+	if ($recherche === '') {
 		return array();
 	}
 
-	return array(
-		'latitude'  => substr((string) $json[0]['lat'], 0, 12),
-		'longitude' => substr((string) $json[0]['lon'], 0, 12),
-	);
+	include_spip('inc/config');
+	$ville = lire_config('marly/ville', '');
+	$cp    = lire_config('marly/code_postal', '');
+	if ($ville and stripos($recherche, $ville) === false) {
+		$recherche .= ', ' . trim($cp . ' ' . $ville);
+	}
+
+	$json = marly_appeler_nominatim($recherche, intval($limite) ?: 5);
+	$propositions = array();
+	foreach ($json as $trouve) {
+		if (!isset($trouve['lat'], $trouve['lon'])) {
+			continue;
+		}
+		$propositions[] = array(
+			'intitule'  => (string) ($trouve['display_name'] ?? $recherche),
+			'latitude'  => substr((string) $trouve['lat'], 0, 12),
+			'longitude' => substr((string) $trouve['lon'], 0, 12),
+		);
+	}
+
+	spip_log('marly : « ' . $recherche . ' » -> ' . count($propositions) . ' proposition(s)',
+		'marly.' . _LOG_INFO_IMPORTANTE);
+
+	return $propositions;
 }

@@ -168,4 +168,44 @@ p.alerte{ color:#A32020; }
 /* Le compteur d'abonnes dans la colonne de gauche : c'est le seul chiffre
    qu'on vient verifier avant d'appuyer sur Envoyer. */
 .cadre-info .gros{ font-size:2.4em; line-height:1; color:#1E5B41; }
+
+/* La recherche d'adresse : un bouton sous le champ, puis la liste des
+   propositions. Chaque proposition est un bouton pleine largeur : on clique
+   dedans sans viser, y compris sur un ecran tactile. */
+.marly-chercher-adresse {
+	margin-top: 6px;
+	padding: 6px 12px;
+	cursor: pointer;
+}
+.marly-propositions-note {
+	margin: 8px 0 4px;
+	font-size: .9em;
+}
+ul.marly-propositions {
+	list-style: none;
+	margin: 0 0 4px;
+	padding: 0;
+	border: 1px solid #CCC;
+	border-radius: 3px;
+	max-width: 640px;
+}
+ul.marly-propositions li + li { border-top: 1px solid #E4E4E4; }
+ul.marly-propositions button {
+	display: block;
+	width: 100%;
+	text-align: left;
+	padding: 8px 10px;
+	background: none;
+	border: 0;
+	cursor: pointer;
+	font: inherit;
+	line-height: 1.35;
+}
+ul.marly-propositions button:hover,
+ul.marly-propositions button:focus { background: #EEF4F0; }
+.marly-point-retenu {
+	margin: 8px 0 0;
+	font-size: .9em;
+}
+.marly-point-retenu a { margin-left: .4em; }
 </style>
