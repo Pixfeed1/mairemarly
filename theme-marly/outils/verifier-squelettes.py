@@ -381,6 +381,25 @@ for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.p
                  "et le message n'est jamais ecrit. Suffixer le nom du journal "
                  "par '.' . _LOG_INFO_IMPORTANTE")
 
+# 23. Une valeur SPIP posee dans du JavaScript doit etre brute et encodee.
+#     #ENV{x} protege sa sortie pour du HTML : une adresse d'action y perd
+#     ses separateurs, qui deviennent &amp;. SPIP recoit alors des parametres
+#     nommes amp;action, ne reconnait plus l'appel et repond une page entiere
+#     au lieu du JSON attendu. Rien ne le signale : le code HTTP reste 200.
+#     La forme sure est #ENV**{x}|json_encode, qui rend une chaine JavaScript
+#     complete, guillemets compris.
+for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
+                 glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _bloc in re.finditer(r'<script\b[^>]*>(.*?)</script>', _src, re.S | re.I):
+        for _m in re.finditer(r'#ENV(\*{0,2})\{([a-z0-9_]+)[^}]*\}', _bloc.group(1)):
+            if _m.group(1) == '**':
+                continue
+            signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'),
+                     _src[:_bloc.start(1) + _m.start()].count(chr(10)) + 1,
+                     f'#ENV{{{_m.group(2)}}} dans du JavaScript sans ** : la valeur sera '
+                     'echappee pour du HTML. Ecrire #ENV**{...}|json_encode')
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

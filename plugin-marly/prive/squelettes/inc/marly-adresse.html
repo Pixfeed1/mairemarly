@@ -18,14 +18,18 @@
 (function () {
 	'use strict';
 
-	var champ = document.getElementById('#ENV{champ_adresse,adresse}');
+	var champ = document.getElementById([(#ENV**{champ_adresse,adresse}|json_encode)]);
 	if (!champ) { return; }
 
-	var lat = document.getElementById('#ENV{champ_lat,marly-latitude}');
-	var lon = document.getElementById('#ENV{champ_lon,marly-longitude}');
+	var lat = document.getElementById([(#ENV**{champ_lat,marly-latitude}|json_encode)]);
+	var lon = document.getElementById([(#ENV**{champ_lon,marly-longitude}|json_encode)]);
 	var choisi = document.getElementById('marly-point-choisi');
 	var zone = document.getElementById('marly-propositions');
-	var url = '#ENV{_url_chercher}';
+	/* #ENV protege sa sortie pour du HTML : les separateurs d'une adresse
+	   y deviennent &amp;, et SPIP recoit alors des parametres nommes
+	   amp;action. Deux etoiles rendent la valeur brute, json_encode en
+	   fait une chaine JavaScript sure. */
+	var url = [(#ENV**{_url_chercher}|json_encode)];
 	if (!lat || !lon || !zone || !url) { return; }
 
 	var bouton = document.createElement('button');
