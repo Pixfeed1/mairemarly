@@ -274,3 +274,50 @@ déjà reçu.
 En cas d'erreur, `Arrêter l'envoi` stoppe les envois restants — mais les
 courriels déjà partis sont partis. L'écran le dit en toutes lettres plutôt que
 de le laisser espérer.
+
+## Donner un compte à une association
+
+Une association qui veut publier ses actualités écrit ses propres articles.
+La mairie les relit et les publie : **le maire est directeur de publication**,
+il répond juridiquement de tout ce qui paraît, y compris de ce qu'une
+association écrit. C'est la raison du partage, et elle n'est pas
+administrative.
+
+### 1. Créer la rubrique
+
+`Édition ▸ Rubriques ▸ Créer une rubrique`, à l'intérieur de « Vie
+associative ». Une rubrique par association qui publie.
+
+### 2. Créer le compte
+
+`Édition ▸ Auteurs ▸ Créer un auteur`.
+
+| Champ | Ce qu'on met |
+|---|---|
+| Nom | Le nom de l'association, pas celui du président |
+| Adresse électronique | Celle de l'association |
+| Statut | **Rédacteur** |
+
+Le compte appartient à **l'association**, jamais à la personne. Quand le
+président change, la mairie modifie l'adresse et réinitialise le mot de
+passe : elle ne recrée rien, et l'historique des articles reste cohérent.
+
+Un compte par association, et non un compte partagé : on sait qui a écrit
+quoi, ce qui compte le jour où un texte pose problème, et un mot de passe
+commun finit toujours par circuler.
+
+### 3. Relier la fiche à la rubrique
+
+`Édition ▸ Associations`, ouvrir la fiche, choisir la rubrique dans
+« Rubrique où l'association publie ». Ses articles publiés s'afficheront
+alors sur sa fiche.
+
+### Ce que peut et ne peut pas un rédacteur
+
+- **Il peut** écrire un article, le modifier tant qu'il n'est pas publié, y
+  joindre des images, et le proposer à la publication.
+- **Il ne peut pas** publier, modifier un article publié, toucher aux
+  rubriques, aux démarches, aux élus, ni aux réglages du site.
+
+L'article proposé apparaît à la mairie dans `Publication ▸ Suivi de la
+publication`. Elle le lit, corrige si besoin, et publie.

@@ -236,6 +236,10 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_lieu_asso'      => 'Où se déroulent les activités',
 	'champ_horaires'       => 'Jours et horaires',
 	'horaires_asso_aide'   => 'Par exemple : « Entraînements le mardi et le jeudi, de 18 h à 20 h, salle des fêtes ».',
+	'champ_rubrique_asso'  => 'Rubrique où l’association publie',
+	'rubrique_asso_aide'   => 'Si l’association a un compte pour écrire ses actualités, indiquez la rubrique où elle publie : ses articles apparaîtront sur sa fiche. Laissez « Aucune » si elle n’écrit pas.',
+	'aucune_rubrique'      => 'Aucune, cette association n’écrit pas d’articles',
+	'actus_association'    => 'Les actualités de l’association',
 	'col_theme'            => 'Thème',
 	'col_responsable'      => 'Responsable',
 

@@ -9,7 +9,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 function marly_champs_association() {
 	return array('nom', 'theme', 'activite', 'president', 'telephone',
-	             'courriel', 'site', 'lieu', 'horaires', 'rang', 'statut');
+	             'courriel', 'site', 'lieu', 'horaires', 'rang', 'statut', 'id_rubrique');
 }
 
 function formulaires_editer_association_charger_dist($id_association = 'new') {
@@ -25,7 +25,24 @@ function formulaires_editer_association_charger_dist($id_association = 'new') {
 		'rang'    => 100,
 		'statut'  => 'publie',
 		'_themes' => marly_themes_traduits(),
+		'id_rubrique' => 0,
 	);
+
+	/* Les rubriques du site, pour relier l'association a celle ou elle
+	   publiera. Le chemin complet est affiche : dans un site a deux niveaux,
+	   deux rubriques peuvent porter le meme titre. */
+	$valeurs['_rubriques'] = array(0 => _T('marly:aucune_rubrique'));
+	foreach (sql_allfetsel('id_rubrique, titre, id_parent', 'spip_rubriques',
+	                       "statut = 'publie'", '', '0+titre, titre') as $r) {
+		$chemin = $r['titre'];
+		if ($r['id_parent']) {
+			$parent = sql_getfetsel('titre', 'spip_rubriques', 'id_rubrique = ' . intval($r['id_parent']));
+			if ($parent) {
+				$chemin = $parent . ' / ' . $chemin;
+			}
+		}
+		$valeurs['_rubriques'][$r['id_rubrique']] = $chemin;
+	}
 	foreach (array('nom', 'activite', 'president', 'telephone', 'courriel', 'site', 'lieu', 'horaires') as $c) {
 		$valeurs[$c] = '';
 	}
@@ -86,6 +103,7 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		$champs[$c] = trim((string) _request($c));
 	}
 	$champs['rang'] = intval($champs['rang']) ?: 100;
+	$champs['id_rubrique'] = intval($champs['id_rubrique']);
 	if (!in_array($champs['statut'], array('publie', 'prepa'), true)) {
 		$champs['statut'] = 'publie';
 	}

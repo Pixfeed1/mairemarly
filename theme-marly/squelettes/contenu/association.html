@@ -28,5 +28,26 @@
 			<svg class="ico" aria-hidden="true"><use href="#ri-external-link-line"/></svg> <:marly:asso_site:></a>
 	</p>]
 
+	[(#REM) Les articles ecrits par l'association elle-meme, dans sa rubrique.
+	        Elle les redige avec un compte redacteur : elle peut ecrire et
+	        modifier, jamais publier. C'est la mairie qui publie, parce que le
+	        maire est directeur de publication et repond de ce qui parait.
+
+	        Rien ne s'affiche si l'association n'a pas de rubrique, ou si elle
+	        n'a encore rien publie. ]
+	<B_actus>
+	<h2><:marly:actus_association:></h2>
+	<ul class="fiches">
+		<BOUCLE_actus(ARTICLES){id_rubrique=#ID_RUBRIQUE}{par date}{inverse}{0,10}>
+		<li><a href="#URL_ARTICLE">
+			<span class="fiche-texte">
+				<b>#TITRE</b>
+				<span>[(#DATE|affdate)][ · (#INTRODUCTION|couper{120})]</span>
+			</span>
+		</a></li>
+		</BOUCLE_actus>
+	</ul>
+	</B_actus>
+
 </div>
 </BOUCLE_asso>

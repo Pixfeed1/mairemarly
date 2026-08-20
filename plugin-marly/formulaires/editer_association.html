@@ -72,6 +72,15 @@
 				<textarea name="horaires" id="horaires" rows="2">[(#ENV{horaires}|textebrut)]</textarea>
 				<small><:marly:horaires_asso_aide:></small>
 			</li>
+			<li class="marly-champ marly-rubrique">
+				<label for="id_rubrique"><:marly:champ_rubrique_asso:></label>
+				<select name="id_rubrique" id="id_rubrique">
+					<BOUCLE_rubriques(DATA){source tableau,#ENV{_rubriques}}>
+					<option value="#CLE"[(#ENV{id_rubrique}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_rubriques>
+				</select>
+				<small><:marly:rubrique_asso_aide:></small>
+			</li>
 			<li class="marly-champ marly-rang">
 				<label for="rang"><:marly:champ_rang:></label>
 				<input type="number" class="text" name="rang" id="rang" value="[(#ENV{rang}|attribut_html)]" min="1" max="999">

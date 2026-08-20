@@ -171,6 +171,15 @@ function marly_declarer_tables_objets_sql($tables) {
 			'site'        => 'varchar(255) NOT NULL DEFAULT ""',
 			'lieu'        => 'varchar(255) NOT NULL DEFAULT ""',
 			'horaires'    => 'text NOT NULL DEFAULT ""',
+			/* La rubrique ou l'association ecrit, si elle ecrit.
+			   ------------------------------------------------------------------
+			   C'est ce qui reliait deja les associations a leurs articles sur
+			   l'ancien site, et c'etait la bonne idee : il manquait seulement
+			   de la brancher sur la fiche. A zero, la fiche n'affiche aucune
+			   actualite, et c'est tres bien : une association sur deux n'a rien
+			   a publier. */
+			'id_rubrique' => 'bigint(21) NOT NULL DEFAULT 0',
+
 			'rang'        => 'int(11) NOT NULL DEFAULT 100',
 			'statut'      => 'varchar(20) NOT NULL DEFAULT "publie"',
 			'maj'         => 'TIMESTAMP',
@@ -185,7 +194,7 @@ function marly_declarer_tables_objets_sql($tables) {
 		'type'       => 'association',
 		'editable'   => 'oui',
 		'champs_editables'  => array('nom', 'theme', 'activite', 'president', 'telephone',
-		                             'courriel', 'site', 'lieu', 'horaires', 'rang'),
+		                             'courriel', 'site', 'lieu', 'horaires', 'rang', 'id_rubrique'),
 		'rechercher_champs' => array('nom' => 8, 'activite' => 4, 'president' => 2),
 		'statut' => array(
 			array(

@@ -93,6 +93,11 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('marly_ajouter_demarche_association'),
 	);
 
+	/* 3.16.0 — la rubrique ou une association publie ses articles. */
+	$maj['3.16.0'] = array(
+		array('maj_tables', array('spip_associations')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
