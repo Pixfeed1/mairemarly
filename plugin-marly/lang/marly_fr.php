@@ -352,7 +352,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'asso_publiee_acces' => 'Un accès vous a été créé pour écrire les actualités de votre association sur le site. Votre identifiant : @login@. Choisissez votre mot de passe ici :',
 	'asso_publiee_role' => 'Vos articles sont relus par la mairie avant leur mise en ligne, comme pour tout ce qui paraît sur le site de la commune.',
 	'asso_publiee_maj' => 'Pensez à signaler à la mairie tout changement : contact, horaires, activités. Une fiche à jour, c’est une association que l’on trouve.',
-	'signalement_titre' => 'Signaler une association',
+	'signalement_titre' => 'Proposer une association',
 	'signalement_intro' => 'Remplissez la fiche de votre association : la mairie la relit avant sa mise en ligne, puis vous recevez un accès pour la tenir à jour et publier vos actualités.',
 	'signalement_objet' => 'Annuaire des associations : @nom@',
 	
@@ -363,7 +363,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'erreur_envoi_signalement' => 'L’envoi n’a pas abouti. Réessayez, ou téléphonez à la mairie.',
 	'fermer_signalement' => 'Fermer la fenêtre',
 	'asso_absente' => 'Votre association ne figure pas dans l’annuaire ?',
-	'asso_absente_lien' => 'Signalez-la à la mairie',
+	'asso_absente_lien' => 'Proposez-la à la mairie',
 	'asso_absente_objet' => 'Notre association dans l’annuaire du site',
 	'creer_la_sienne'      => 'Créer une association',
 
