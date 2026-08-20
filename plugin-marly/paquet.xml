@@ -1,10 +1,20 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.11.1"
+	version="3.11.2"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
-	schema="3.6.0">
+	<!--
+		schema = la version de la BASE, et c'est ELLE que SPIP compare a la meta
+		marly_base_version pour decider de lancer marly_upgrade(). Pas << version >>.
+		Tant que les deux sont egales, SPIP considere la base a jour et n'execute
+		rien : les fichiers sont neufs, les tables restent vieilles, et aucun
+		message ne le signale.
+
+		Cette valeur doit donc toujours valoir la DERNIERE etape declaree dans
+		marly_administrations.php. Le verificateur le controle desormais.
+	-->
+	schema="3.11.0">
 
 	<nom>Réglages et réservations de Marly-Gomont</nom>
 	<licence>GNU/GPL v3</licence>

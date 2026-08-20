@@ -191,6 +191,26 @@ for f in sorted(glob.glob('squelettes/css/*.css')):
             signaler(f, s[:m.start()].count(chr(10)) + 1,
                      f'variable CSS jamais definie : {m.group(1)}')
 
+# 14. Le schema declare doit valoir la derniere etape de mise a jour.
+#     paquet.xml porte DEUX numeros : << version >>, celle du plugin, et
+#     << schema >>, celle de la base. SPIP ne compare que la seconde a ce
+#     qu'il a enregistre : tant qu'elle ne bouge pas, marly_upgrade() n'est
+#     jamais appele. Les fichiers sont neufs, les tables restent vieilles, et
+#     RIEN ne le dit — jusqu'a ce qu'un gabarit interroge une table absente.
+#     Ce piege a laisse la base cinq versions en arriere sans que personne
+#     s'en apercoive.
+paquet = os.path.join(RACINE, '..', 'plugin-marly', 'paquet.xml')
+admin = os.path.join(RACINE, '..', 'plugin-marly', 'marly_administrations.php')
+if os.path.exists(paquet) and os.path.exists(admin):
+    declare = re.search(r'schema="([0-9.]+)"', open(paquet, encoding='utf-8').read())
+    etapes = re.findall(r"\$maj\['([0-9.]+)'\]", open(admin, encoding='utf-8').read())
+    if declare and etapes:
+        derniere = max(etapes, key=lambda v: [int(n) for n in v.split('.')])
+        if declare.group(1) != derniere:
+            signaler('plugin-marly/paquet.xml', 1,
+                     f'schema="{declare.group(1)}" alors que la derniere etape '
+                     f'de mise a jour est {derniere} : marly_upgrade ne sera pas appele')
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
