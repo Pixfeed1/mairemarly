@@ -82,8 +82,12 @@ echo "Deploye. Version du plugin : $APRES"
 if [ "$AVANT" != "$APRES" ]; then
 	echo
 	echo "  La version du plugin a change ($AVANT -> $APRES)."
-	echo "  OUVREZ L'ESPACE PRIVE AVANT DE VISITER LE SITE :"
-	echo "      https://marlygomont.pixfeed.net/ecrire/"
-	echo "  C'est cette visite qui cree les tables. Sans elle, un squelette"
-	echo "  qui interroge une table absente met le site public en erreur."
+	echo "  CHARGEZ CETTE PAGE AVANT DE VISITER LE SITE :"
+	echo "      https://marlygomont.pixfeed.net/ecrire/?exec=admin_plugin"
+	echo
+	echo "  Ce n'est pas l'ouverture de l'espace prive qui cree les tables,"
+	echo "  c'est la RELECTURE DE LA LISTE DES PLUGINS : SPIP y compare la"
+	echo "  version declaree a celle qu'il a enregistree, et ne lance la mise"
+	echo "  a jour que si elles different. Tant qu'elle n'a pas tourne, un"
+	echo "  squelette qui interroge une table absente met le site en erreur."
 fi
