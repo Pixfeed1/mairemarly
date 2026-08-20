@@ -43,6 +43,19 @@ for f in sorted(glob.glob('squelettes/**/*.html', recursive=True)):
     for nom in set(re.findall(r'<//B_([a-zA-Z0-9_]+)>', s)):
         if f'<B_{nom}>' not in s:
             signaler(f, 1, f'<//B_{nom}> sans <B_{nom}> correspondant')
+        if s.count(f'<//B_{nom}>') > 1:
+            signaler(f, 1, f'<//B_{nom}> ecrit {s.count(f"<//B_{nom}>")} fois : il n\'en faut qu\'un')
+
+    # 3bis. La boucle doit se trouver ENTRE <B_x> et </B_x>. Fermer le bloc
+    #       avant elle ne provoque aucune erreur : SPIP sort le contenu, mais
+    #       APRES le reste de la page. Le tableau se retrouvait sous le pied
+    #       de page de SPIP, et l'alternative << aucun element >> s'affichait
+    #       en meme temps que les elements.
+    for nom in set(re.findall(r'<B_([a-zA-Z0-9_]+)>', s)):
+        if f'</B_{nom}>' in s and f'<BOUCLE_{nom}(' in s:
+            if s.index(f'</B_{nom}>') < s.index(f'<BOUCLE_{nom}('):
+                signaler(f, s[:s.index(f'</B_{nom}>')].count(chr(10)) + 1,
+                         f'</B_{nom}> ferme le bloc AVANT la boucle : le contenu sortira hors de la page')
 
     # 4. Feuilles de style et scripts appeles mais absents du depot.
     for m in re.finditer(r'#CHEMIN\{([^}]+)\}', s):
