@@ -103,3 +103,7 @@ p.alerte{ color:#A32020; }
 .formulaire_configurer_marly .editer_telephone input{
 	max-width:200px;
 }
+
+/* Le compteur d'abonnes dans la colonne de gauche : c'est le seul chiffre
+   qu'on vient verifier avant d'appuyer sur Envoyer. */
+.cadre-info .gros{ font-size:2.4em; line-height:1; color:#1E5B41; }

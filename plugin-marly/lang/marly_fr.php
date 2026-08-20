@@ -359,6 +359,8 @@ resterez abonné.
 	'aucune_lettre'         => 'Aucune lettre. Rédigez-en une pour l’envoyer aux abonnés.',
 	'abonnes_actifs'        => 'Abonnés confirmés, qui recevront les envois :',
 	'abonnes'               => 'abonnés',
+	'abonnes_recevront'     => 'personnes recevront cette lettre',
+	'voir_les_abonnes'      => 'Voir la liste',
 
 	'champ_objet'           => 'Objet du courriel',
 	'objet_aide'            => 'C’est ce que les gens liront dans leur boîte avant de décider d’ouvrir. Soyez concret : « Coupure d’eau jeudi 12 » vaut mieux que « Lettre d’information n° 3 ».',

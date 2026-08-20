@@ -1,0 +1,19 @@
+[(#REM)
+  La colonne de gauche de l'ecran d'une lettre.
+  ---------------------------------------------------------------------------
+  Elle existe pour REMPLACER celle que SPIP genere tout seul pour un objet
+  editorial : elle proposait un logo et un lien << Voir en ligne >> qui n'ont
+  aucun sens ici — une lettre part par courriel, elle n'a pas de page.
+
+  A la place, le seul chiffre qu'on vient verifier avant d'appuyer sur
+  Envoyer : combien de personnes vont recevoir.
+]
+<div class="boite_info">
+	<div class="cadre-info">
+		<p>
+			<strong class="gros">[(#VAL|marly_nb_destinataires)]</strong><br>
+			<:marly:abonnes_recevront:>
+		</p>
+		<p><a href="[(#URL_ECRIRE{abonnes})]"><:marly:voir_les_abonnes:></a></p>
+	</div>
+</div>

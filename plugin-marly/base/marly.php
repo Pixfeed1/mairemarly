@@ -127,8 +127,13 @@ function marly_declarer_tables_objets_sql($tables) {
 		'date'       => 'date',
 		'principale' => 'oui',
 		'type'       => 'lettre',
-		'editable'   => 'oui',
-		'champs_editables' => array('titre', 'chapo', 'texte'),
+
+		/* PAS editable au sens de SPIP. Une lettre n'a ni logo, ni page
+		   publique, ni fiche a consulter : la declarer editable faisait
+		   apparaitre une colonne << Logo lettre >> et un lien << Voir en
+		   ligne >> qui ne menaient nulle part. Notre formulaire est un CVT
+		   maison, il n'a pas besoin de cette machinerie. */
+		'editable'   => 'non',
 	);
 
 	$tables['spip_abonnes'] = array(
