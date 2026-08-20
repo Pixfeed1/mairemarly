@@ -149,6 +149,51 @@ function marly_declarer_tables_objets_sql($tables) {
 		'editable'   => 'non',
 	);
 
+	/* RACCOURCIS — les six ronds de la page d'accueil.
+	   ------------------------------------------------------------------------
+	   Ils venaient de mots-cles poses sur des articles : un groupe pour les
+	   raccourcis, un autre pour les icones, un chapo commencant par << = >>
+	   pour la destination. Trois mecanismes a comprendre pour poser un bouton,
+	   et le secretariat de mairie n'a aucune raison de les apprendre.
+
+	   Ici, une ligne = un rond. Un intitule, une icone choisie au clic, une
+	   destination prise dans une liste. La destination est ecrite sous la
+	   forme << type:valeur >> — demarche:12, rubrique:3, page:reservation,
+	   url:https://... — parce qu'une colonne par type de cible aurait laisse
+	   cinq colonnes vides sur six a chaque ligne. */
+	$tables['spip_raccourcis'] = array(
+		'field' => array(
+			'id_raccourci' => 'bigint(21) NOT NULL',
+			'titre'        => 'varchar(120) NOT NULL DEFAULT ""',
+			'icone'        => 'varchar(60) NOT NULL DEFAULT ""',
+			'cible'        => 'varchar(255) NOT NULL DEFAULT ""',
+			'rang'         => 'int(11) NOT NULL DEFAULT 100',
+			'statut'       => 'varchar(20) NOT NULL DEFAULT "publie"',
+			'maj'          => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY' => 'id_raccourci',
+			'KEY statut'  => 'statut',
+		),
+		'titre'      => 'titre AS titre, "" AS lang',
+		'principale' => 'oui',
+		'type'       => 'raccourci',
+		'editable'   => 'oui',
+		'champs_editables'  => array('titre', 'icone', 'cible', 'rang'),
+		'rechercher_champs' => array('titre' => 8),
+		'statut' => array(
+			array(
+				'champ'     => 'statut',
+				'publie'    => 'publie',
+				'previsu'   => 'publie,prepa',
+				'exception' => 'statut',
+			),
+		),
+		'texte_modifier'    => 'marly:modifier_raccourci',
+		'texte_creer'       => 'marly:creer_raccourci',
+		'info_aucun_objet'  => 'marly:aucun_raccourci',
+	);
+
 	/* ELUS — qui est responsable de quoi.
 	   ------------------------------------------------------------------------
 	   Une table a part, et non des champs libres sur chaque fiche. L'elu

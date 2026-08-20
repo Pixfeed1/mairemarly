@@ -81,6 +81,11 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_elus', 'spip_demarches')),
 	);
 
+	/* 3.13.0 — les raccourcis de la page d'accueil. */
+	$maj['3.13.0'] = array(
+		array('maj_tables', array('spip_raccourcis')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
@@ -116,6 +121,7 @@ function marly_vider_tables($nom_meta_base_version) {
 	   lit. Les réglages, eux, restent — désactiver le plugin ne doit pas
 	   faire perdre le numéro de téléphone de la mairie. Ils seront effacés
 	   avec la meta ci-dessous seulement si l'on désinstalle vraiment. */
+	sql_drop_table('spip_raccourcis');
 	sql_drop_table('spip_elus');
 	sql_drop_table('spip_demarches');
 	sql_drop_table('spip_lettres');

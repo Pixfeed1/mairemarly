@@ -1,0 +1,58 @@
+<div class="formulaire_spip formulaire_editer_raccourci">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<ul>
+			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
+				<label for="titre"><:marly:champ_intitule:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" maxlength="30" required>
+				<small><:marly:raccourci_titre_aide:></small>
+			</li>
+			<li class="marly-champ marly-cible[ (#ENV**{erreurs}|table_valeur{cible}|oui)erreur]">
+				<label for="cible"><:marly:champ_destination:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{cible})</span>]
+				<select name="cible" id="cible">
+					<BOUCLE_cibles(DATA){source tableau,#ENV{_cibles}}>
+					<option value="#CLE"[(#ENV{cible}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_cibles>
+				</select>
+				<small><:marly:destination_aide:></small>
+			</li>
+			<li class="marly-champ marly-url[ (#ENV**{erreurs}|table_valeur{url}|oui)erreur]">
+				<label for="url"><:marly:champ_url_exterieure:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{url})</span>]
+				<input type="url" class="text" name="url" id="url" value="[(#ENV{url}|attribut_html)]" placeholder="https://">
+				<small><:marly:url_exterieure_aide:></small>
+			</li>
+			<li class="marly-champ marly-icone">
+				<label for="icone"><:marly:champ_icone:></label>
+				<select name="icone" id="icone">
+					<BOUCLE_icones(DATA){source tableau,#ENV{_icones}}>
+					<option value="#CLE"[(#ENV{icone}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_icones>
+				</select>
+				<small><:marly:icone_aide:></small>
+			</li>
+			<li class="marly-champ marly-rang">
+				<label for="rang"><:marly:champ_rang:></label>
+				<input type="number" class="text" name="rang" id="rang" value="[(#ENV{rang}|attribut_html)]" min="1" max="999">
+				<small><:marly:rang_aide:></small>
+			</li>
+			<li class="marly-champ marly-statut">
+				<label for="statut"><:marly:champ_publication:></label>
+				<select name="statut" id="statut">
+					<option value="publie"[(#ENV{statut}|=={publie}|oui) selected]><:marly:publication_oui:></option>
+					<option value="prepa"[(#ENV{statut}|=={prepa}|oui) selected]><:marly:publication_non:></option>
+				</select>
+			</li>
+		</ul>
+		<p class="boutons"><input type="submit" class="submit" value="<:marly:enregistrer:>"></p>
+	</form>
+	]
+
+</div>

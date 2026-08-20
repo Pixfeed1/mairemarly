@@ -216,6 +216,25 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_places'              => 'Nombre de places',
 	'champ_tarif'               => 'Tarif',
 
+	// --- Accès rapides --------------------------------------------------------
+	'titre_raccourcis'     => 'Accès rapides',
+	'creer_raccourci'      => 'Ajouter un accès rapide',
+	'modifier_raccourci'   => 'Modifier',
+	'aucun_raccourci'      => 'Aucun accès rapide. La page d’accueil affiche alors les rubriques du site.',
+	'raccourci_enregistre' => 'Enregistré.',
+	'intro_raccourcis'     => 'Les six ronds de la page d’accueil, sous la bannière. Au-delà de six, les suivants ne s’affichent pas : une liste de raccourcis qui s’allonge cesse d’être un raccourci. Tant que rien n’est saisi ici, la page d’accueil propose les rubriques du site.',
+	'raccourci_titre_aide' => 'Court : il s’affiche sous un rond. « Comptes rendus », « Urbanisme ». Trente caractères au plus.',
+	'champ_destination'    => 'Vers quoi',
+	'destination_aide'     => 'Tout ce que le site contient vous est proposé. Vous n’avez à taper une adresse que pour un site extérieur.',
+	'choisir_destination'  => 'Choisissez une destination…',
+	'cible_demarche'       => 'Démarche',
+	'cible_rubrique'       => 'Rubrique',
+	'cible_page'           => 'Page',
+	'cible_url'            => 'Une autre adresse (site extérieur)',
+	'champ_url_exterieure' => 'Adresse du site extérieur',
+	'url_exterieure_aide'  => 'À remplir seulement si vous avez choisi « une autre adresse » ci-dessus.',
+	'destination_perdue'   => 'destination supprimée — ce raccourci ne s’affiche pas',
+
 	// --- Élus -----------------------------------------------------------------
 	'titre_elus'           => 'Élus',
 	'creer_elu'            => 'Ajouter un élu',

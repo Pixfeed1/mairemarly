@@ -62,56 +62,36 @@
 		<div class="acces-liens">
 			<h2 class="titre-bloc droite"><:marly:acces:> <span><:marly:rapides:></span></h2>
 
-			[(#REM) Les raccourcis sont les articles portant le mot-clé
-			        « Raccourcis ». Chacun apporte ses trois éléments :
+			[(#REM) Les raccourcis viennent de l'ecran << Acces rapides >>, dans
+			        Configuration. Une ligne = un rond : un intitule, une icone
+			        choisie au clic, une destination prise dans une liste.
 
-			          - son TITRE devient le libellé ;
-			          - sa DESTINATION vient du chapo : un chapo qui commence par
-			            « = » suivi d'une adresse fait de l'article un article
-			            virtuel, une redirection — fonction native de SPIP. On
-			            peut donc pointer vers une rubrique, un article, ou un
-			            site extérieur. Sans « = », le raccourci mène à l'article
-			            lui-même ;
-			          - son ICÔNE vient d'un mot-clé du groupe « Icônes ». Le
-			            mot-clé porte un nom lisible (« Maison »), son descriptif
-			            porte le nom technique (ri-home-4-line). La secrétaire
-			            coche « Maison », elle ne tape jamais de code.
+			        Ils venaient auparavant de mots-cles poses sur des articles,
+			        avec un second groupe de mots-cles pour les icones et un
+			        chapo commencant par << = >> pour la destination. Trois
+			        mecanismes a comprendre pour poser un bouton : le
+			        secretariat d'une mairie n'a aucune raison de les
+			        apprendre.
 
-			        L'ordre vient de la numérotation du titre : « 10. Comptes
-			        rendus », « 20. Démarches ». SPIP masque le numéro.
-
-			        On s'arrête à six. Au-delà la grille se déséquilibre, et une
-			        liste de raccourcis qui s'allonge cesse d'être un raccourci.
-
-			        Tant qu'aucun article ne porte le mot-clé, ce sont les six
-			        destinations ci-dessous qui s'affichent : le site n'est
-			        jamais vide, et la mairie reprend la main quand elle veut. ]
+			        Un raccourci dont la destination a disparu — rubrique
+			        supprimee, demarche depubliee — rend une adresse vide et ne
+			        s'affiche pas. Cinq ronds valent mieux que six dont un mene
+			        a une page vide. ]
 			<B_raccourcis>
 			<ul>
-				<BOUCLE_raccourcis(ARTICLES){titre_mot=Raccourcis}{par num titre, titre}{0,6}>
-				<li><a href="[(#VIRTUEL|sinon{#URL_ARTICLE})]">
+				<BOUCLE_raccourcis(RACCOURCIS){par rang, titre}{0,6}>
+				[<li><a href="(#CIBLE|marly_url_raccourci)">
 					<span class="rond">
-						<B_ico>
-						<BOUCLE_ico(MOTS){id_article}{type=Icônes}{0,1}>
-						<svg class="ico" aria-hidden="true"><use href="#[(#DESCRIPTIF|supprimer_tags|trim)]"/></svg>
-						</BOUCLE_ico>
-						</B_ico>
-						<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg>
-						<//B_ico>
+						<svg class="ico" aria-hidden="true"><use href="#[(#ICONE|sinon{ri-arrow-right-line}|trim)]"/></svg>
 					</span>
-					#TITRE</a></li>
+					#TITRE</a></li>]
 				</BOUCLE_raccourcis>
 			</ul>
 			</B_raccourcis>
 
-			[(#REM) Tant qu'aucun article ne porte le mot-clé, on prend les
-			        rubriques racines du site. Elles existent forcément — c'est
-			        la structure que la mairie vient de créer — donc aucun de ces
-			        six liens ne peut mener à une erreur.
-
-			        La version précédente pointait vers des pages nommées
-			        « conseil », « urbanisme », « bulletin » qui n'ont jamais
-			        existé : la page d'accueil offrait cinq boutons cassés. ]
+			[(#REM) Rien de saisi : les rubriques racines du site. Elles
+			        existent forcement, donc aucun de ces liens ne peut mener a
+			        une erreur — et la mairie reprend la main quand elle veut. ]
 			<B_rubriques>
 			<ul>
 				<BOUCLE_rubriques(RUBRIQUES){racine}{par num titre, titre}{0,6}>

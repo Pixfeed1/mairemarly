@@ -1,0 +1,42 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre"><:marly:titre_raccourcis:></h1>
+<p class="explication"><:marly:intro_raccourcis:></p>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ECRIRE{raccourci,id_raccourci=new})]"><:marly:creer_raccourci:></a>
+</p>
+
+<B_raccourcis>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:champ_intitule:></th>
+			<th><:marly:champ_destination:></th>
+			<th><:marly:champ_rang:></th>
+			<th><:marly:col_etat:></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+</B_raccourcis>
+		<BOUCLE_raccourcis(RACCOURCIS){par rang, titre}{statut IN publie,prepa}>
+		<tr>
+			<td><a href="[(#URL_ECRIRE{raccourci,id_raccourci=#ID_RACCOURCI})]">#TITRE</a></td>
+			[(#REM) Si la destination a disparu — rubrique supprimee, demarche
+			        depubliee — on le DIT ici, au lieu de laisser un rond qui
+			        mene a une page vide sur la page d'accueil. ]
+			<td>[(#CIBLE|marly_url_raccourci|sinon{'<em><:marly:destination_perdue:></em>'})]</td>
+			<td>#RANG</td>
+			<td>[(#STATUT|=={publie}|?{'<:marly:publication_oui:>','<:marly:publication_non:>'})]</td>
+			<td class="actions">
+				<a class="btn" href="[(#URL_ECRIRE{raccourci,id_raccourci=#ID_RACCOURCI})]"><:marly:modifier:></a>
+			</td>
+		</tr>
+		</BOUCLE_raccourcis>
+	</tbody>
+</table>
+<//B_raccourcis>
+<p class="explication"><:marly:aucun_raccourci:></p>
+<//B_raccourcis>
