@@ -19,7 +19,23 @@
 			<li class="marly-champ marly-fonction[ (#ENV**{erreurs}|table_valeur{fonction}|oui)erreur]">
 				<label for="fonction"><:marly:champ_fonction:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{fonction})</span>]
-				<input type="text" class="text" name="fonction" id="fonction" value="[(#ENV{fonction}|attribut_html)]" required>
+				[(#REM) Une liste de SUGGESTIONS et non un menu ferme. Les
+				        intitules courants sont proposes — ce qui evite dix
+				        orthographes de << adjoint au maire >> sur dix fiches —
+				        mais on peut toujours ecrire autre chose : une commune
+				        a parfois des fonctions qu'aucune liste ne prevoit. ]
+				<input type="text" class="text" name="fonction" id="fonction"
+				       value="[(#ENV{fonction}|attribut_html)]" list="fonctions-courantes" required>
+				<datalist id="fonctions-courantes">
+					<option value="Maire">
+					<option value="Adjointe au maire">
+					<option value="Adjoint au maire">
+					<option value="Conseillère municipale">
+					<option value="Conseiller municipal">
+					<option value="Conseillère municipale déléguée">
+					<option value="Conseiller municipal délégué">
+					<option value="Secrétaire de mairie">
+				</datalist>
 				<small><:marly:fonction_aide:></small>
 			</li>
 			<li class="marly-champ marly-delegation">

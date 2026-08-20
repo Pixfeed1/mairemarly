@@ -191,6 +191,20 @@ for f in sorted(glob.glob('squelettes/css/*.css')):
             signaler(f, s[:m.start()].count(chr(10)) + 1,
                      f'variable CSS jamais definie : {m.group(1)}')
 
+# 15. paquet.xml doit etre du XML valide.
+#     SPIP le lit avec un vrai analyseur : au moindre defaut il rejette le
+#     plugin ENTIER — plus de tables, plus de menus, plus de formulaires — et
+#     dit seulement << Erreur dans les plugins >>. Un commentaire pose par
+#     megarde a l'interieur de la balise ouvrante a suffi a mettre tout le
+#     plugin hors service, et le message ne designait pas la ligne fautive.
+import xml.dom.minidom
+_paquet = os.path.join(RACINE, '..', 'plugin-marly', 'paquet.xml')
+if os.path.exists(_paquet):
+    try:
+        xml.dom.minidom.parse(_paquet)
+    except Exception as _e:
+        signaler('plugin-marly/paquet.xml', 1, f'XML invalide, le plugin entier sera rejete : {_e}')
+
 # 14. Le schema declare doit valoir la derniere etape de mise a jour.
 #     paquet.xml porte DEUX numeros : << version >>, celle du plugin, et
 #     << schema >>, celle de la base. SPIP ne compare que la seconde a ce

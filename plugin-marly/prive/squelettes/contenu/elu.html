@@ -4,3 +4,22 @@
 <h1 class="grostitre">[(#ENV{id_elu}|=={new}|?{'<:marly:creer_elu:>','<:marly:modifier_elu:>'})]</h1>
 
 [(#FORMULAIRE_EDITER_ELU{#ENV{id_elu,new}})]
+
+[(#REM)
+  La photographie de l'elu.
+  ---------------------------------------------------------------------------
+  On passe par la mediatheque de SPIP plutot que d'ecrire notre propre envoi
+  de fichier : elle gere les vignettes, les droits, le nettoyage, et la photo
+  reste disponible ailleurs sur le site. Reecrire tout cela pour un portrait
+  serait une deuxieme mediatheque a maintenir.
+
+  Elle n'apparait qu'apres le premier enregistrement : SPIP a besoin d'un
+  identifiant pour rattacher une image a quelque chose.
+]
+[(#ENV{id_elu}|=={new}|non)
+<div class="marly-photo">
+	<h2><:marly:photo_elu:></h2>
+	<p class="explication"><:marly:photo_elu_aide:></p>
+	[(#FORMULAIRE_ILLUSTRER_DOCUMENT{elu,#ENV{id_elu}})]
+</div>
+]

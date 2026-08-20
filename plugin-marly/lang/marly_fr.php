@@ -232,6 +232,8 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_delegation'     => 'Délégation',
 	'delegation_aide'      => 'Ce dont cette personne a la charge : état civil, urbanisme, associations. C’est ce que les habitants lisent pour savoir à qui s’adresser.',
 	'champ_permanence'     => 'Permanence',
+	'photo_elu'            => 'Photographie',
+	'photo_elu_aide'       => 'Un portrait, de préférence cadré serré et pris de face. Il s’affiche en petit, à côté du nom : une photo de groupe ou un paysage y seraient illisibles.',
 	'permanence_aide'      => 'Quand et comment on peut la rencontrer. Par exemple : « Reçoit sur rendez-vous, le samedi matin ».',
 	'col_delegation'       => 'Délégation',
 	'aucun_elu_choisi'     => 'Aucun',
