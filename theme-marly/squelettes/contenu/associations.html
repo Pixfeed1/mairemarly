@@ -5,46 +5,154 @@
   sert de modele en propose douze, mais elle compte quarante associations :
   poser douze filtres devant une dizaine de lignes, c'est un appareil de tri
   plus gros que ce qu'il trie. Les intertitres font ici le meme travail, sans
-  qu'on ait rien a cliquer.
+  qu'on ait rien a cliquer. Le champ de recherche viendra le jour ou le nombre
+  le justifiera, pas avant.
 
-  Le champ de recherche viendra le jour ou le nombre le justifiera — pas
-  avant.
+  Une boucle par theme, ecrite en toutes lettres. SPIP ne sait pas grouper une
+  boucle par une colonne en intercalant un titre, et la version precedente
+  passait par une boucle DATA sur un tableau de themes : elle etait plus
+  courte, mais je n'avais aucun moyen de l'essayer avant de la livrer. Huit
+  boucles verbeuses qui marchent valent mieux qu'une elegante dont on ignore
+  si elle marche.
 
-  Une boucle par theme : SPIP ne sait pas grouper une boucle par une colonne
-  en intercalant un titre. Sept boucles courtes coutent sept requetes sur une
-  table de dix lignes, ce qui ne se mesure pas, et le gabarit reste lisible.
+  Un titre de groupe ne s'affiche que si le groupe contient quelque chose :
+  c'est le role du bloc optionnel autour de chacune.
 ]
 <div class="page-simple">
 
 	<h1><:marly:titre_vie_associative:></h1>
 	<p class="chapo"><:marly:assos_intro:></p>
 
-	<BOUCLE_themes(DATA){source tableau,#VAL|marly_themes_pour_boucle}>
-	<B_assos>
-	<h2 class="titre-bloc">[(#CLE|marly_theme_association)]</h2>
+	<B_t_sport>
+	<h2 class="titre-bloc"><:marly:theme_sport:></h2>
 	<ul class="annuaire">
-		<BOUCLE_assos(ASSOCIATIONS){theme=#CLE}{par rang, nom}>
-		<li>
-			<a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-				[(#REM) La tuile coloree tient lieu d'image tant qu'il n'y en a
-				        pas. C'est le seul cas ou une image d'attente se
-				        justifie : elle maintient la regularite de la liste,
-				        alors qu'un trou la casse. ]
-				<span class="asso-tuile" aria-hidden="true">
-					<svg class="ico"><use href="#ri-team-line"/></svg>
-				</span>
-				<span class="asso-texte">
-					<b>#NOM</b>
-					[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
-					[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
-				</span>
-			</a>
-		</li>
-		</BOUCLE_assos>
+		<BOUCLE_t_sport(ASSOCIATIONS){theme=sport}{par rang, nom}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			<span class="asso-texte">
+				<b>#NOM</b>
+				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+				[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+			</span>
+		</a></li>
+		</BOUCLE_t_sport>
 	</ul>
-	</B_assos>
-	</BOUCLE_themes>
+	</B_t_sport>
 
+	<B_t_culture>
+	<h2 class="titre-bloc"><:marly:theme_culture:></h2>
+	<ul class="annuaire">
+		<BOUCLE_t_culture(ASSOCIATIONS){theme=culture}{par rang, nom}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			<span class="asso-texte">
+				<b>#NOM</b>
+				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+				[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+			</span>
+		</a></li>
+		</BOUCLE_t_culture>
+	</ul>
+	</B_t_culture>
+
+	<B_t_enfance>
+	<h2 class="titre-bloc"><:marly:theme_enfance:></h2>
+	<ul class="annuaire">
+		<BOUCLE_t_enfance(ASSOCIATIONS){theme=enfance}{par rang, nom}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			<span class="asso-texte">
+				<b>#NOM</b>
+				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+				[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+			</span>
+		</a></li>
+		</BOUCLE_t_enfance>
+	</ul>
+	</B_t_enfance>
+
+	<B_t_solidarite>
+	<h2 class="titre-bloc"><:marly:theme_solidarite:></h2>
+	<ul class="annuaire">
+		<BOUCLE_t_solidarite(ASSOCIATIONS){theme=solidarite}{par rang, nom}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			<span class="asso-texte">
+				<b>#NOM</b>
+				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+				[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+			</span>
+		</a></li>
+		</BOUCLE_t_solidarite>
+	</ul>
+	</B_t_solidarite>
+
+	<B_t_patrimoine>
+	<h2 class="titre-bloc"><:marly:theme_patrimoine:></h2>
+	<ul class="annuaire">
+		<BOUCLE_t_patrimoine(ASSOCIATIONS){theme=patrimoine}{par rang, nom}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			<span class="asso-texte">
+				<b>#NOM</b>
+				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+				[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+			</span>
+		</a></li>
+		</BOUCLE_t_patrimoine>
+	</ul>
+	</B_t_patrimoine>
+
+	<B_t_memoire>
+	<h2 class="titre-bloc"><:marly:theme_memoire:></h2>
+	<ul class="annuaire">
+		<BOUCLE_t_memoire(ASSOCIATIONS){theme=memoire}{par rang, nom}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			<span class="asso-texte">
+				<b>#NOM</b>
+				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+				[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+			</span>
+		</a></li>
+		</BOUCLE_t_memoire>
+	</ul>
+	</B_t_memoire>
+
+	<B_t_culte>
+	<h2 class="titre-bloc"><:marly:theme_culte:></h2>
+	<ul class="annuaire">
+		<BOUCLE_t_culte(ASSOCIATIONS){theme=culte}{par rang, nom}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			<span class="asso-texte">
+				<b>#NOM</b>
+				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+				[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+			</span>
+		</a></li>
+		</BOUCLE_t_culte>
+	</ul>
+	</B_t_culte>
+
+	<B_t_autre>
+	<h2 class="titre-bloc"><:marly:theme_autre:></h2>
+	<ul class="annuaire">
+		<BOUCLE_t_autre(ASSOCIATIONS){theme=autre}{par rang, nom}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			<span class="asso-texte">
+				<b>#NOM</b>
+				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
+				[<span class="asso-contact">(#PRESIDENT)[ · (#TELEPHONE)]</span>]
+			</span>
+		</a></li>
+		</BOUCLE_t_autre>
+	</ul>
+	</B_t_autre>
+
+	[(#REM) Aucune association publiee : on le dit, plutot que de laisser une
+	        page qui parait cassee. ]
 	<B_aucune>
 	<BOUCLE_aucune(ASSOCIATIONS){0,1}></BOUCLE_aucune>
 	</B_aucune>
