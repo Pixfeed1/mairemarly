@@ -43,21 +43,31 @@ p.alerte{ color:#A32020; }
 .formulaire_editer_lettre .editer,
 .formulaire_editer_salle .editer,
 .formulaire_editer_manifestation .editer,
+.formulaire_editer_lettre .editer,
+.formulaire_editer_salle .editer,
+.formulaire_editer_manifestation .editer,
 .formulaire_configurer_marly .editer{
-	display:block;
+	display:block !important;
 	margin-bottom:18px;
+	overflow:hidden;   /* referme le flottement eventuel d'un champ voisin */
 }
 
+/* !important assume : l'habillage de l'espace prive pose ses etiquettes en
+   colonne avec une specificite au moins egale a la notre, et il peut changer
+   d'une version de SPIP a l'autre. On ne gagne pas ce duel par la
+   specificite sans ecrire des selecteurs illisibles qui casseront a la
+   prochaine mise a jour. */
 .formulaire_editer_lettre .editer label,
 .formulaire_editer_salle .editer label,
 .formulaire_editer_manifestation .editer label,
 .formulaire_configurer_marly .editer label{
-	display:block;
-	float:none;
-	width:auto;
-	margin:0 0 5px;
-	padding:0;
-	text-align:left;
+	display:block !important;
+	float:none !important;
+	clear:both !important;
+	width:auto !important;
+	margin:0 0 5px !important;
+	padding:0 !important;
+	text-align:left !important;
 	font-weight:700;
 }
 
@@ -72,11 +82,11 @@ p.alerte{ color:#A32020; }
 .formulaire_editer_manifestation .editer select,
 .formulaire_configurer_marly .editer input,
 .formulaire_configurer_marly .editer textarea{
-	display:block;
-	float:none;
-	width:100%;
+	display:block !important;
+	float:none !important;
+	width:100% !important;
 	max-width:640px;
-	margin:0;
+	margin:0 !important;
 	box-sizing:border-box;
 }
 
