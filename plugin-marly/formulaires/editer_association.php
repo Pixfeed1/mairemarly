@@ -139,12 +139,14 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		: null;
 
 	$cherchees = false;
+	$precis = false;
 	if ($champs['lieu'] !== '' and ($champs['latitude'] === '' or $champs['lieu'] !== $ancien)) {
 		include_spip('inc/marly_geocodage');
 		$cherchees = true;
 		$point = marly_geocoder($champs['lieu']);
 		$champs['latitude']  = $point['latitude'] ?? '';
 		$champs['longitude'] = $point['longitude'] ?? '';
+		$precis = !empty($point['precis']);
 	}
 	if ($champs['lieu'] === '') {
 		$champs['latitude'] = $champs['longitude'] = '';
@@ -175,8 +177,10 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 	   l'adresse avait ete localisee : la secretaire voyait << Enregistre >>,
 	   aucune carte n'apparaissait sur le site, et rien n'expliquait l'ecart.
 	   C'est le meme compte rendu que sur les lieux. */
-	if ($champs['latitude'] !== '') {
+	if ($champs['latitude'] !== '' and $precis) {
 		$message = _T('marly:association_enregistree_localisee');
+	} elseif ($champs['latitude'] !== '') {
+		$message = _T('marly:association_enregistree_approchee');
 	} elseif ($cherchees) {
 		$message = _T('marly:association_enregistree_non_localisee');
 	} else {

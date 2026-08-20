@@ -22,12 +22,25 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 }
 
 /**
- * Rend array('latitude' => …, 'longitude' => …), ou un tableau vide.
+ * Rend array('latitude' => …, 'longitude' => …, 'precis' => true|false),
+ * ou un tableau vide si rien n'a été trouvé.
  *
- * L'adresse est complétée par la commune et le code postal pris dans les
- * réglages : « salle des fêtes » seul ne veut rien dire pour un service qui
- * couvre la planète, alors que « salle des fêtes, 02120 Marly-Gomont » le
- * situe.
+ * La recherche se fait en trois passes de plus en plus larges, parce qu'une
+ * adresse écrite par un humain n'est presque jamais celle qu'OpenStreetMap
+ * connaît. Le cas qui a servi de test : « Église Saint-Remi, Marly-Gomont »
+ * ne rend RIEN, alors que « eglise Marly-Gomont » rend le bâtiment exact.
+ * OpenStreetMap connaît l'église, pas son vocable. Une secrétaire écrira
+ * toujours le nom d'usage, et refuser cette écriture serait lui demander de
+ * deviner un vocabulaire qu'elle n'a pas à connaître.
+ *
+ *   1. l'adresse telle qu'elle est écrite ;
+ *   2. la même sans les virgules — Nominatim les lit comme une hiérarchie
+ *      stricte, et un intitulé qu'il ignore fait échouer le tout ;
+ *   3. la commune seule, qui situe au moins le village.
+ *
+ * La troisième passe rend un point APPROCHÉ, d'où l'indicateur « precis » :
+ * l'écran d'enregistrement le dit à la mairie plutôt que de laisser croire
+ * que le marqueur est sur le bâtiment.
  */
 function marly_geocoder($adresse) {
 	$adresse = trim(preg_replace('/\s+/', ' ', str_replace("\n", ', ', (string) $adresse)));
@@ -41,27 +54,69 @@ function marly_geocoder($adresse) {
 
 	/* On n'ajoute la commune que si l'adresse ne la contient pas déjà : la
 	   répéter fait chuter la pertinence du résultat. */
-	$requete = $adresse;
+	$complete = $adresse;
 	if ($ville and stripos($adresse, $ville) === false) {
-		$requete .= ', ' . trim($cp . ' ' . $ville);
+		$complete .= ', ' . trim($cp . ' ' . $ville);
+	}
+
+	/* Chaque passe dit elle-meme si son resultat vaut pour l'adresse
+	   demandee ou seulement pour la commune. Le deduire du rang serait faux
+	   le jour ou la commune n'est pas renseignee dans les reglages. */
+	$passes = array(array($complete, true));
+	$sans_virgule = trim(preg_replace('/\s+/', ' ', str_replace(',', ' ', $complete)));
+	if ($sans_virgule !== $complete) {
+		$passes[] = array($sans_virgule, true);
+	}
+	if ($ville) {
+		$passes[] = array(trim($cp . ' ' . $ville), false);
+	}
+
+	foreach ($passes as $rang => $passe) {
+		list($requete, $precis) = $passe;
+		/* Nominatim demande une requête par seconde au plus. On n'attend
+		   qu'entre deux essais réels : le cas courant, celui qui réussit du
+		   premier coup, n'attend pas du tout. */
+		if ($rang) {
+			usleep(1100000);
+		}
+		$point = marly_interroger_nominatim($requete);
+		if ($point) {
+			spip_log("marly : « $requete » -> {$point['latitude']}, {$point['longitude']}"
+				. ($precis ? '' : ' (point approche : commune seule)'),
+				'marly.' . _LOG_INFO_IMPORTANTE);
+			$point['precis'] = $precis;
+			return $point;
+		}
+	}
+
+	spip_log("marly : aucune des " . count($passes) . " recherches n'a localise « $adresse »",
+		'marly.' . _LOG_INFO_IMPORTANTE);
+	return array();
+}
+
+/**
+ * Une interrogation de Nominatim. Rend les coordonnées, ou un tableau vide.
+ */
+function marly_interroger_nominatim($requete) {
+	include_spip('inc/config');
+	include_spip('inc/distant');
+	if (!function_exists('recuperer_url')) {
+		spip_log('marly : recuperer_url indisponible, geocodage impossible',
+			'marly.' . _LOG_INFO_IMPORTANTE);
+		return array();
 	}
 
 	$url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=fr&q='
 		. rawurlencode($requete);
 
-	include_spip('inc/distant');
-	if (!function_exists('recuperer_url')) {
-		spip_log('marly : recuperer_url indisponible, geocodage impossible', 'marly.' . _LOG_INFO_IMPORTANTE);
-		return array();
-	}
-
 	/* L'en-tête identifie le site et donne une adresse de contact : c'est ce
 	   que demandent les conditions d'usage de Nominatim, et c'est ce qui
-	   permet qu'on nous prévienne plutôt qu'on nous bloque. */
-	$contact = lire_config('marly/courriel', $GLOBALS['meta']['email_webmaster'] ?? '');
-	/* Les en-tetes se passent en TABLEAU, une ligne par entree : SPIP boucle
+	   permet qu'on nous prévienne plutôt qu'on nous bloque.
+
+	   Les en-tetes se passent en TABLEAU, une ligne par entree : SPIP boucle
 	   dessus. En chaine, il tombe sur un foreach() qui recoit du texte, et
 	   l'avertissement PHP sort au milieu de la page. */
+	$contact = lire_config('marly/courriel', $GLOBALS['meta']['email_webmaster'] ?? '');
 	$reponse = recuperer_url($url, array(
 		'taille_max' => 40000,
 		'transcoder' => false,
@@ -73,11 +128,8 @@ function marly_geocoder($adresse) {
 
 	$json = json_decode($reponse['page'] ?? '', true);
 	if (!is_array($json) or !isset($json[0]['lat'], $json[0]['lon'])) {
-		spip_log("marly : adresse non localisee — $requete", 'marly.' . _LOG_INFO_IMPORTANTE);
 		return array();
 	}
-
-	spip_log("marly : $requete -> {$json[0]['lat']}, {$json[0]['lon']}", 'marly.' . _LOG_INFO_IMPORTANTE);
 
 	return array(
 		'latitude'  => substr((string) $json[0]['lat'], 0, 12),

@@ -97,6 +97,7 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 	   le fait QUE si elles sont vides : une correction faite à la main ne doit
 	   jamais être écrasée par un service automatique. */
 	$trouvees = false;
+	$precis = false;
 	if ($champs['latitude'] === '' and $champs['longitude'] === '' and $champs['adresse'] !== '') {
 		include_spip('inc/marly_geocodage');
 		$point = marly_geocoder($champs['adresse']);
@@ -104,6 +105,7 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 			$champs['latitude']  = $point['latitude'];
 			$champs['longitude'] = $point['longitude'];
 			$trouvees = true;
+			$precis = !empty($point['precis']);
 		}
 	}
 
@@ -119,8 +121,10 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 	/* On dit ce qui s'est passé. Un enregistrement muet laisse croire que les
 	   coordonnées ont été trouvées alors qu'elles ne l'ont peut-être pas été,
 	   et le lieu manquerait sur la carte sans que personne le sache. */
-	if ($trouvees) {
+	if ($trouvees and $precis) {
 		$message = _T('marly:lieu_enregistre_localise');
+	} elseif ($trouvees) {
+		$message = _T('marly:lieu_enregistre_approche');
 	} elseif ($champs['latitude'] === '' and $champs['adresse'] !== '') {
 		$message = _T('marly:lieu_enregistre_non_localise');
 	} else {
