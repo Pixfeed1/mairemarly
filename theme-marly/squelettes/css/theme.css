@@ -1005,28 +1005,37 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .fiche-texte span{ display:block; color:var(--encre-doux); line-height:1.5; }
 
 /* --- Une fiche ------------------------------------------------------------ */
-.fiche-demarche section{ margin:0 0 26px; }
+/* La feuille pose section{padding-block:70px} pour les grandes sections de
+   l'accueil. Une fiche empile de petits blocs qui portent la meme balise :
+   sans cette remise a zero, chacun herite de 70 px en haut ET en bas, et
+   deux paragraphes se retrouvent separes par 140 px de vide. */
+.fiche-demarche section{ padding-block:0; margin:0 0 26px; }
 .fiche-demarche section p{ margin:0 0 12px; line-height:1.65; }
+.fiche-demarche section:last-of-type{ margin-bottom:0; }
 
 /* Le coût et le délai côte à côte : ce sont les deux chiffres qu'on cherche
    avant de décider de se déplacer, et les lire l'un sous l'autre les noie
    dans le texte. */
+/* Une liste de definitions ne se met pas en colonnes avec flex : dt et dd
+   sont deux enfants distincts, la grille les separerait. Chaque couple est
+   donc enveloppe dans un div — HTML5 le prevoit expressement pour cela. */
 .fiche-chiffres{
-	display:flex;
-	flex-wrap:wrap;
-	gap:12px 40px;
+	display:grid;
+	grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+	gap:18px 40px;
 	margin:0 0 30px;
-	padding:18px 22px;
+	padding:20px 24px;
 	background:var(--creme-sombre);
 }
+.fiche-chiffres > div{ min-width:0; }
 .fiche-chiffres dt{
-	font-size:.82em;
-	letter-spacing:.06em;
+	font-size:.8em;
+	letter-spacing:.07em;
 	text-transform:uppercase;
 	color:var(--encre-doux);
-	margin:0 0 3px;
+	margin:0 0 4px;
 }
-.fiche-chiffres dd{ margin:0 40px 0 0; font-weight:600; }
+.fiche-chiffres dd{ margin:0; font-weight:600; line-height:1.45; }
 
 /* « Où s'adresser » est ce qu'on vient chercher : il ne doit pas se lire
    comme un paragraphe parmi d'autres. */

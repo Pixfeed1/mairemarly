@@ -21,9 +21,12 @@
 	[<section><h2><:marly:demarche_comment:></h2>(#COMMENT|propre)</section>]
 	[<section><h2><:marly:demarche_pieces:></h2>(#PIECES|propre)</section>]
 
+	[(#REM) Chaque couple dans son div : HTML5 le prevoit, et c'est la seule
+	        facon de mettre une liste de definitions en colonnes sans que la
+	        grille separe l'intitule de sa valeur. ]
 	<dl class="fiche-chiffres">
-		[<dt><:marly:demarche_cout:></dt><dd>(#COUT)</dd>]
-		[<dt><:marly:demarche_delai:></dt><dd>(#DELAI)</dd>]
+		[<div><dt><:marly:demarche_cout:></dt><dd>(#COUT)</dd></div>]
+		[<div><dt><:marly:demarche_delai:></dt><dd>(#DELAI)</dd></div>]
 	</dl>
 
 	[<section class="fiche-ou"><h2><:marly:demarche_ou:></h2>(#OU|propre)</section>]
