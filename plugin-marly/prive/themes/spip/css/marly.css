@@ -27,3 +27,79 @@
 
 td.actions .btn + .btn{ margin-left:6px; }
 p.alerte{ color:#A32020; }
+
+/* ---------------------------------------------------------------------------
+   Mise en page des formulaires du plugin.
+   ---------------------------------------------------------------------------
+   Par defaut, l'espace prive pose l'etiquette A COTE des champs courts et
+   AU-DESSUS des zones de texte. Dans un meme formulaire, l'oeil saute d'une
+   colonne a l'autre selon le type de champ — et les textes d'aide, qui sont
+   longs chez nous, se retrouvent decales.
+
+   On aligne tout : etiquette au-dessus, champ sur toute la largeur. Un
+   formulaire se lit alors de haut en bas, une ligne par idee.
+   --------------------------------------------------------------------------- */
+
+.formulaire_editer_lettre .editer,
+.formulaire_editer_salle .editer,
+.formulaire_editer_manifestation .editer,
+.formulaire_configurer_marly .editer{
+	display:block;
+	margin-bottom:18px;
+}
+
+.formulaire_editer_lettre .editer label,
+.formulaire_editer_salle .editer label,
+.formulaire_editer_manifestation .editer label,
+.formulaire_configurer_marly .editer label{
+	display:block;
+	float:none;
+	width:auto;
+	margin:0 0 5px;
+	padding:0;
+	text-align:left;
+	font-weight:700;
+}
+
+.formulaire_editer_lettre .editer input[type="text"],
+.formulaire_editer_lettre .editer input[type="url"],
+.formulaire_editer_lettre .editer textarea,
+.formulaire_editer_salle .editer input,
+.formulaire_editer_salle .editer textarea,
+.formulaire_editer_salle .editer select,
+.formulaire_editer_manifestation .editer input,
+.formulaire_editer_manifestation .editer textarea,
+.formulaire_editer_manifestation .editer select,
+.formulaire_configurer_marly .editer input,
+.formulaire_configurer_marly .editer textarea{
+	display:block;
+	float:none;
+	width:100%;
+	max-width:640px;
+	margin:0;
+	box-sizing:border-box;
+}
+
+/* Le texte d'aide sous son champ, aligne avec lui — et non decale par la
+   colonne d'etiquettes qui n'existe plus. */
+.formulaire_editer_lettre .editer small,
+.formulaire_editer_salle .editer small,
+.formulaire_editer_manifestation .editer small,
+.formulaire_configurer_marly .editer small{
+	display:block;
+	margin:5px 0 0;
+	max-width:640px;
+	color:#555;
+	font-size:.88em;
+	line-height:1.45;
+}
+
+/* Les champs qui n'ont aucune raison d'etre larges : une capacite, un delai,
+   un code postal. Un champ de 640 px pour trois chiffres suggere qu'on
+   attend davantage. */
+.formulaire_editer_salle .editer input[type="number"],
+.formulaire_editer_manifestation .editer input[type="number"],
+.formulaire_configurer_marly .editer_code_postal input,
+.formulaire_configurer_marly .editer_telephone input{
+	max-width:200px;
+}
