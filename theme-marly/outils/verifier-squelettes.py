@@ -205,6 +205,25 @@ if os.path.exists(_paquet):
     except Exception as _e:
         signaler('plugin-marly/paquet.xml', 1, f'XML invalide, le plugin entier sera rejete : {_e}')
 
+# 16. Aucune chaine de langue ne doit etre declaree deux fois.
+#     PHP garde la DERNIERE et oublie la premiere, sans un mot. Une cle
+#     ajoutee pour un ecran ecrase alors l'etiquette d'un autre : la salle
+#     s'est retrouvee avec << Titre >> a la place de << Nom >>, et rien ne le
+#     disait — il fallait rouvrir l'ecran pour s'en apercevoir.
+for _l in [os.path.join(RACINE, 'squelettes', 'lang', 'marly_fr.php'),
+           os.path.join(RACINE, '..', 'plugin-marly', 'lang', 'marly_fr.php')]:
+    if not os.path.exists(_l):
+        continue
+    _vues, _src = {}, open(_l, encoding='utf-8').read().split('\n')
+    for _n, _ligne in enumerate(_src, 1):
+        _m = re.match(r"\s*'([a-z0-9_]+)'\s*=>", _ligne)
+        if not _m:
+            continue
+        if _m.group(1) in _vues:
+            signaler(_l.replace(os.path.join(RACINE, '..'), '').lstrip('/'), _n,
+                     f"chaine declaree deux fois : {_m.group(1)} (ligne {_vues[_m.group(1)]} ecrasee)")
+        _vues[_m.group(1)] = _n
+
 # 14. Le schema declare doit valoir la derniere etape de mise a jour.
 #     paquet.xml porte DEUX numeros : << version >>, celle du plugin, et
 #     << schema >>, celle de la base. SPIP ne compare que la seconde a ce

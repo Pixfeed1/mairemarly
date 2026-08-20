@@ -20,7 +20,7 @@
 			<legend><:marly:champ_resume:></legend>
 			<ul>
 			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
-				<label for="titre"><:marly:champ_titre:></label>
+				<label for="titre"><:marly:champ_intitule:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
 				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
 			</li>

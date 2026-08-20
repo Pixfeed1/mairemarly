@@ -256,7 +256,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'documents_titre'      => 'Documents à télécharger',
 
 	// --- Démarches ------------------------------------------------------------
-	'champ_titre'          => 'Titre',
+	'champ_intitule'       => 'Intitulé',
 	'champ_publication'    => 'Publication',
 	'publication_oui'      => 'Publiée — visible sur le site',
 	'publication_non'      => 'Brouillon — invisible sur le site',
@@ -422,8 +422,6 @@ adresse ne sera pas utilisée et sera effacée sous sept jours.
 
 	'votre_nom_seul'        => 'Nom',
 	'confirmez_courriel'    => 'Confirmez votre adresse électronique',
-	'code_postal'           => 'Code postal',
-	'ville'                 => 'Commune',
 	'requis_explication'    => 'Les champs marqués « obligatoire » doivent être remplis.',
 	'lieu_facultatif'       => 'Facultatif : si vous l’indiquez, la mairie saura distinguer les habitants de la commune des personnes des environs.',
 	'me_desabonner'         => 'Me désabonner',
