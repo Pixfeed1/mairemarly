@@ -108,6 +108,12 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_associations')),
 	);
 
+	/* 3.21.0 — les associations saisies avant que la creation automatique
+	   n'existe recoivent leur rubrique. Une seule fois. */
+	$maj['3.21.0'] = array(
+		array('marly_rubriques_associations_manquantes'),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
@@ -169,6 +175,36 @@ function marly_ajouter_demarche_association() {
 		'lien_faire' => 'https://www.service-public.gouv.fr/particuliers/vosdroits/R37933',
 	));
 	spip_log('marly : fiche << creer une association >> ajoutee', 'marly');
+}
+
+/**
+ * Donne sa rubrique à chaque association qui n'en a pas.
+ *
+ * Rattrapage pour celles saisies avant que la création automatique n'existe.
+ * Il ne tourne qu'une fois, à cette étape de mise à jour : à ce moment-là,
+ * aucune mairie n'a encore pu choisir « Aucune » délibérément, puisque le
+ * choix vient d'apparaître. Plus tard, ce serait défaire une décision.
+ *
+ * C'est aussi la première fois que marly_rubrique_association() s'exécute
+ * pour de bon. Si l'appel à SPIP échoue, rien n'est perdu : les associations
+ * restent sans rubrique, et la mairie peut en choisir une à la main.
+ */
+function marly_rubriques_associations_manquantes() {
+	if (!sql_countsel('spip_associations', 'id_rubrique = 0')) {
+		return;
+	}
+
+	include_spip('inc/marly_associations');
+	$faites = 0;
+	foreach (sql_allfetsel('id_association, nom', 'spip_associations', 'id_rubrique = 0') as $a) {
+		$id_rubrique = marly_rubrique_association($a['nom']);
+		if ($id_rubrique) {
+			sql_updateq('spip_associations', array('id_rubrique' => $id_rubrique),
+				'id_association = ' . intval($a['id_association']));
+			$faites++;
+		}
+	}
+	spip_log("marly : $faites rubrique(s) d'association creee(s) en rattrapage", 'marly');
 }
 
 function marly_vider_tables($nom_meta_base_version) {

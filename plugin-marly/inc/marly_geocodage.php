@@ -59,11 +59,16 @@ function marly_geocoder($adresse) {
 	   que demandent les conditions d'usage de Nominatim, et c'est ce qui
 	   permet qu'on nous prévienne plutôt qu'on nous bloque. */
 	$contact = lire_config('marly/courriel', $GLOBALS['meta']['email_webmaster'] ?? '');
+	/* Les en-tetes se passent en TABLEAU, une ligne par entree : SPIP boucle
+	   dessus. En chaine, il tombe sur un foreach() qui recoit du texte, et
+	   l'avertissement PHP sort au milieu de la page. */
 	$reponse = recuperer_url($url, array(
 		'taille_max' => 40000,
 		'transcoder' => false,
-		'headers'    => "User-Agent: SitePublicMarlyGomont/1.0 ($contact)\r\n"
-		              . "Accept-Language: fr\r\n",
+		'headers'    => array(
+			'User-Agent: SitePublicMarlyGomont/1.0 (' . $contact . ')',
+			'Accept-Language: fr',
+		),
 	));
 
 	$json = json_decode($reponse['page'] ?? '', true);
