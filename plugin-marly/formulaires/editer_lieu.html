@@ -1,0 +1,61 @@
+<div class="formulaire_spip formulaire_editer_lieu">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<ul>
+			<li class="marly-champ marly-nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
+				<label for="nom"><:marly:champ_nom_lieu:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]" required>
+			</li>
+			<li class="marly-champ marly-type[ (#ENV**{erreurs}|table_valeur{type}|oui)erreur]">
+				<label for="type"><:marly:champ_type_lieu:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{type})</span>]
+				<select name="type" id="type">
+					<BOUCLE_types(DATA){source tableau,#ENV{_types}}>
+					<option value="#CLE"[(#ENV{type}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_types>
+				</select>
+				<small><:marly:type_lieu_aide:></small>
+			</li>
+			<li class="marly-champ marly-adresse">
+				<label for="adresse"><:marly:champ_adresse_lieu:></label>
+				<textarea name="adresse" id="adresse" rows="2">[(#ENV{adresse}|textebrut)]</textarea>
+			</li>
+			<li class="marly-champ marly-horaires">
+				<label for="horaires"><:marly:champ_horaires_lieu:></label>
+				<textarea name="horaires" id="horaires" rows="2">[(#ENV{horaires}|textebrut)]</textarea>
+				<small><:marly:horaires_lieu_aide:></small>
+			</li>
+			<li class="marly-champ marly-descriptif">
+				<label for="descriptif"><:marly:champ_descriptif:></label>
+				<textarea name="descriptif" id="descriptif" rows="3">[(#ENV{descriptif}|textebrut)]</textarea>
+			</li>
+			<li class="marly-champ marly-latitude[ (#ENV**{erreurs}|table_valeur{latitude}|oui)erreur]">
+				<label for="latitude"><:marly:champ_latitude:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{latitude})</span>]
+				<input type="text" class="text" name="latitude" id="latitude" value="[(#ENV{latitude}|attribut_html)]" placeholder="49.94123">
+				<small><:marly:coordonnees_aide:></small>
+			</li>
+			<li class="marly-champ marly-longitude[ (#ENV**{erreurs}|table_valeur{longitude}|oui)erreur]">
+				<label for="longitude"><:marly:champ_longitude:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{longitude})</span>]
+				<input type="text" class="text" name="longitude" id="longitude" value="[(#ENV{longitude}|attribut_html)]" placeholder="3.78456">
+			</li>
+			<li class="marly-champ marly-statut">
+				<label for="statut"><:marly:champ_publication:></label>
+				<select name="statut" id="statut">
+					<option value="publie"[(#ENV{statut}|=={publie}|oui) selected]><:marly:publication_oui:></option>
+					<option value="prepa"[(#ENV{statut}|=={prepa}|oui) selected]><:marly:publication_non:></option>
+				</select>
+			</li>
+		</ul>
+		<p class="boutons"><input type="submit" class="submit" value="<:marly:enregistrer:>"></p>
+	</form>
+	]
+
+</div>

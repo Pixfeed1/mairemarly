@@ -63,6 +63,15 @@
 		<fieldset>
 			<legend><:marly:asso_quand:></legend>
 			<ul>
+			<li class="marly-champ marly-lieu_choisi">
+				<label for="id_lieu"><:marly:champ_lieu_choisi:></label>
+				<select name="id_lieu" id="id_lieu">
+					<BOUCLE_lieux(DATA){source tableau,#ENV{_lieux}}>
+					<option value="#CLE"[(#ENV{id_lieu}|=={#CLE}|oui) selected]>#VALEUR</option>
+					</BOUCLE_lieux>
+				</select>
+				<small><:marly:lieu_choisi_aide:></small>
+			</li>
 			<li class="marly-champ marly-lieu">
 				<label for="lieu"><:marly:champ_lieu_asso:></label>
 				<input type="text" class="text" name="lieu" id="lieu" value="[(#ENV{lieu}|attribut_html)]">

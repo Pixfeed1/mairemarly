@@ -1,0 +1,39 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre"><:marly:titre_lieux:></h1>
+<p class="explication"><:marly:intro_lieux:></p>
+
+<p class="boutons">
+	<a class="btn" href="[(#URL_ECRIRE{lieu,id_lieu=new})]"><:marly:creer_lieu:></a>
+</p>
+
+<B_lieux>
+<table class="spip liste">
+	<thead>
+		<tr>
+			<th><:marly:champ_nom_lieu:></th>
+			<th><:marly:champ_type_lieu:></th>
+			<th><:marly:champ_adresse_lieu:></th>
+			<th><:marly:col_carte:></th>
+			<th><:marly:col_etat:></th>
+		</tr>
+	</thead>
+	<tbody>
+		<BOUCLE_lieux(LIEUX){par rang, nom}{statut IN publie,prepa}>
+		<tr>
+			<td><a href="[(#URL_ECRIRE{lieu,id_lieu=#ID_LIEU})]">#NOM</a></td>
+			<td>[(#TYPE|marly_type_lieu)]</td>
+			<td>[(#ADRESSE|textebrut|couper{70})]</td>
+			[(#REM) On dit en clair si le lieu apparaitra sur la carte : sans
+			        coordonnees, il figure dans la liste mais pas sur le plan,
+			        et rien d'autre ne le signalerait. ]
+			<td>[(#LATITUDE|oui)<:marly:sur_la_carte:>][(#LATITUDE|non)<em><:marly:sans_coordonnees:></em>]</td>
+			<td>[(#STATUT|=={publie}|?{'marly:publication_oui','marly:publication_non'}|_T)]</td>
+		</tr>
+		</BOUCLE_lieux>
+	</tbody>
+</table>
+</B_lieux>
+<p class="explication"><:marly:aucun_lieu:></p>
+<//B_lieux>

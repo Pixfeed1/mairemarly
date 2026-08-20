@@ -1,0 +1,6 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre">[(#ENV{id_lieu}|=={new}|?{'marly:creer_lieu','marly:modifier_lieu'}|_T)]</h1>
+
+[(#FORMULAIRE_EDITER_LIEU{#ENV{id_lieu,new}})]

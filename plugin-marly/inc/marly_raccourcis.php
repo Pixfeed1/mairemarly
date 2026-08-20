@@ -38,6 +38,7 @@ function marly_cibles_raccourcis() {
 	$pages = array(
 		'demarches'    => 'marly:toutes_les_demarches',
 		'associations' => 'marly:titre_vie_associative',
+		'lieux'        => 'marly:titre_ou_nous_trouver',
 		'reservation'  => 'marly:reserver',
 		'newsletter'   => 'marly:newsletter',
 	);

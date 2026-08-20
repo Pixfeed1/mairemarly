@@ -98,6 +98,11 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_associations')),
 	);
 
+	/* 3.18.0 — les lieux de la commune, et le lieu d'une association. */
+	$maj['3.18.0'] = array(
+		array('maj_tables', array('spip_lieux', 'spip_associations')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
@@ -166,6 +171,7 @@ function marly_vider_tables($nom_meta_base_version) {
 	   lit. Les réglages, eux, restent — désactiver le plugin ne doit pas
 	   faire perdre le numéro de téléphone de la mairie. Ils seront effacés
 	   avec la meta ci-dessous seulement si l'on désinstalle vraiment. */
+	sql_drop_table('spip_lieux');
 	sql_drop_table('spip_associations');
 	sql_drop_table('spip_raccourcis');
 	sql_drop_table('spip_elus');

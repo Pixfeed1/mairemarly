@@ -244,3 +244,38 @@ function filtre_marly_icone_theme_dist($theme) {
 	);
 	return $icones[$theme] ?? 'ri-team-line';
 }
+
+/** L'intitule d'une nature de lieu. */
+function filtre_marly_type_lieu_dist($type) {
+	include_spip('inc/marly_lieux');
+	$types = marly_types_lieux();
+	return isset($types[$type]) ? _T($types[$type][0]) : '';
+}
+
+/** L'icone d'une nature de lieu. */
+function filtre_marly_icone_lieu_dist($type) {
+	include_spip('inc/marly_lieux');
+	$types = marly_types_lieux();
+	return isset($types[$type]) ? $types[$type][1] : 'ri-map-pin-2-line';
+}
+
+/**
+ * L'adresse de la carte OpenStreetMap, cadree sur les lieux de la commune.
+ *
+ * Rend une chaine vide si aucun lieu n'a de coordonnees. La page n'affiche
+ * alors pas de carte : mieux vaut rien qu'une carte du milieu de l'ocean, ce
+ * que donne une latitude et une longitude a zero.
+ */
+function filtre_marly_carte_commune_dist($rien = '') {
+	include_spip('inc/marly_lieux');
+	$c = marly_cadre_carte();
+	if (!$c) {
+		return '';
+	}
+	return 'https://www.openstreetmap.org/export/embed.html?bbox='
+		. rtrim(rtrim(number_format($c['ouest'], 5, '.', ''), '0'), '.') . '%2C'
+		. rtrim(rtrim(number_format($c['sud'], 5, '.', ''), '0'), '.') . '%2C'
+		. rtrim(rtrim(number_format($c['est'], 5, '.', ''), '0'), '.') . '%2C'
+		. rtrim(rtrim(number_format($c['nord'], 5, '.', ''), '0'), '.')
+		. '&layer=mapnik';
+}

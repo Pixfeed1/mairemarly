@@ -20,6 +20,13 @@
 		[<div><dt><:marly:champ_courriel:></dt><dd><a href="mailto:[(#COURRIEL|attribut_html)]">(#COURRIEL)</a></dd></div>]
 	</dl>
 
+	[(#REM) Le lieu de la commune s'il est choisi, le champ libre sinon. Le
+	        premier apporte l'adresse avec lui ; personne ne la retape. ]
+	<BOUCLE_lieu(LIEUX){id_lieu}>
+	<section><h2><:marly:asso_ou:></h2>
+		<p><b>#NOM</b>[<br>(#ADRESSE|propre)]</p>
+	</section>
+	</BOUCLE_lieu>
 	[<section><h2><:marly:asso_ou:></h2><p>(#LIEU)</p></section>]
 	[<section><h2><:marly:asso_quand:></h2>(#HORAIRES|propre)</section>]
 

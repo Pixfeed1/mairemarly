@@ -45,6 +45,12 @@
 					[(#REM) L'annuaire des associations n'est pas une rubrique :
 					        c'est une page a lui. Sans ce lien, il n'etait
 					        atteignable que par son adresse. ]
+					[(#REM) La carte des batiments de la commune, s'il y en a. ]
+					<B_lieux_pied>
+					<BOUCLE_lieux_pied(LIEUX){0,1}></BOUCLE_lieux_pied>
+					<li><a href="#URL_PAGE{lieux}"><:marly:titre_ou_nous_trouver:></a></li>
+					</B_lieux_pied>
+
 					<B_assos_pied>
 					<BOUCLE_assos_pied(ASSOCIATIONS){0,1}></BOUCLE_assos_pied>
 					<li><a href="#URL_PAGE{associations}"><:marly:titre_vie_associative:></a></li>

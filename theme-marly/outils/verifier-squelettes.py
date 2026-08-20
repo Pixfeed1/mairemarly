@@ -317,6 +317,7 @@ DIVERGENCES_VOULUES = {
     'statut':   "publication d'une fiche / ouverture d'une salle a la reservation",
     'titre':    "intitule d'une fiche / nom d'une salle / objet d'un courriel",
     'video':    "video annoncee dans une lettre / video d'un evenement",
+    'adresse':  "adresse postale officielle de la mairie / adresse d'un batiment de la commune",
 }
 _FORMS = os.path.join(RACINE, '..', 'plugin-marly', 'formulaires')
 if os.path.isdir(_FORMS):

@@ -149,6 +149,56 @@ function marly_declarer_tables_objets_sql($tables) {
 		'editable'   => 'non',
 	);
 
+	/* LIEUX — les batiments de la commune.
+	   ------------------------------------------------------------------------
+	   Cinq ou six adresses qui ne bougeront jamais : la mairie, la salle des
+	   fetes, l'ecole, l'eglise, le terrain. Elles etaient jusqu'ici recopiees
+	   en toutes lettres dans chaque fiche d'association et chaque evenement.
+
+	   Les coordonnees sont relevees une fois, a la main, et rangees ici. Ce
+	   n'est pas de la paresse : interroger un service de geocodage a chaque
+	   enregistrement, pour cinq points qui ne bougeront jamais, serait une
+	   dependance exterieure pour rien — et une panne de plus le jour ou ce
+	   service change ses conditions. */
+	$tables['spip_lieux'] = array(
+		'field' => array(
+			'id_lieu'     => 'bigint(21) NOT NULL',
+			'nom'         => 'varchar(180) NOT NULL DEFAULT ""',
+			'type'        => 'varchar(30) NOT NULL DEFAULT "autre"',
+			'adresse'     => 'text NOT NULL DEFAULT ""',
+			/* En degres decimaux, tels que openstreetmap.org les donne. */
+			'latitude'    => 'varchar(24) NOT NULL DEFAULT ""',
+			'longitude'   => 'varchar(24) NOT NULL DEFAULT ""',
+			'horaires'    => 'text NOT NULL DEFAULT ""',
+			'descriptif'  => 'text NOT NULL DEFAULT ""',
+			'rang'        => 'int(11) NOT NULL DEFAULT 100',
+			'statut'      => 'varchar(20) NOT NULL DEFAULT "publie"',
+			'maj'         => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY' => 'id_lieu',
+			'KEY statut'  => 'statut',
+		),
+		'titre'      => 'nom AS titre, "" AS lang',
+		'principale' => 'oui',
+		'type'       => 'lieu',
+		'editable'   => 'oui',
+		'champs_editables'  => array('nom', 'type', 'adresse', 'latitude', 'longitude',
+		                             'horaires', 'descriptif', 'rang'),
+		'rechercher_champs' => array('nom' => 8, 'adresse' => 4, 'descriptif' => 2),
+		'statut' => array(
+			array(
+				'champ'     => 'statut',
+				'publie'    => 'publie',
+				'previsu'   => 'publie,prepa',
+				'exception' => 'statut',
+			),
+		),
+		'texte_modifier'    => 'marly:modifier_lieu',
+		'texte_creer'       => 'marly:creer_lieu',
+		'info_aucun_objet'  => 'marly:aucun_lieu',
+	);
+
 	/* ASSOCIATIONS — l'annuaire de la vie associative.
 	   ------------------------------------------------------------------------
 	   Des champs separes, comme pour les demarches et les elus. Ce qu'on vient
@@ -169,6 +219,7 @@ function marly_declarer_tables_objets_sql($tables) {
 			'telephone'   => 'varchar(60) NOT NULL DEFAULT ""',
 			'courriel'    => 'varchar(255) NOT NULL DEFAULT ""',
 			'site'        => 'varchar(255) NOT NULL DEFAULT ""',
+			'id_lieu'     => 'bigint(21) NOT NULL DEFAULT 0',
 			'lieu'        => 'varchar(255) NOT NULL DEFAULT ""',
 			'horaires'    => 'text NOT NULL DEFAULT ""',
 			/* La rubrique ou l'association ecrit, si elle ecrit.
@@ -194,7 +245,7 @@ function marly_declarer_tables_objets_sql($tables) {
 		'type'       => 'association',
 		'editable'   => 'oui',
 		'champs_editables'  => array('nom', 'theme', 'activite', 'president', 'telephone',
-		                             'courriel', 'site', 'lieu', 'horaires', 'rang', 'id_rubrique'),
+		                             'courriel', 'site', 'lieu', 'id_lieu', 'horaires', 'rang', 'id_rubrique'),
 		'rechercher_champs' => array('nom' => 8, 'activite' => 4, 'president' => 2),
 		'statut' => array(
 			array(
@@ -582,5 +633,6 @@ function marly_declarer_tables_interfaces($interfaces) {
 	$interfaces['table_des_tables']['elus'] = 'elus';
 	$interfaces['table_des_tables']['raccourcis'] = 'raccourcis';
 	$interfaces['table_des_tables']['associations'] = 'associations';
+	$interfaces['table_des_tables']['lieux'] = 'lieux';
 	return $interfaces;
 }

@@ -1212,3 +1212,56 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 	.asso-tuile .ico{ width:26px; height:26px; }
 	.annuaire a{ gap:14px; }
 }
+
+/* ===========================================================================
+   LA CARTE DE LA COMMUNE
+   ---------------------------------------------------------------------------
+   Elle ne se charge qu'au clic : une carte integree transmet l'adresse IP du
+   visiteur a un tiers des l'ouverture de la page. Tant qu'on n'a pas clique,
+   c'est un aplat aux couleurs du site, pas une image tiree d'ailleurs.
+   =========================================================================== */
+.carte-facade{
+	position:relative;
+	margin:0 0 34px;
+	background:var(--creme-sombre);
+	border:1px solid var(--trait);
+	min-height:260px;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:center;
+	gap:14px;
+	padding:26px 22px;
+	text-align:center;
+}
+.carte-facade iframe{
+	width:100%;
+	height:420px;
+	border:0;
+	display:block;
+}
+.carte-fond .ico{ width:52px; height:52px; fill:var(--trait); }
+.carte-afficher{
+	display:inline-flex;
+	align-items:center;
+	gap:9px;
+	background:var(--accent);
+	color:#fff;
+	border:0;
+	padding:13px 24px;
+	font:inherit;
+	font-weight:700;
+	cursor:pointer;
+	border-radius:999px;
+}
+.carte-afficher:hover{ background:var(--accent-sombre); }
+.carte-afficher .ico{ width:20px; height:20px; fill:currentColor; }
+.carte-note{
+	margin:0;
+	max-width:52ch;
+	font-size:.88em;
+	line-height:1.5;
+	color:var(--encre-doux);
+}
+.lieu-horaires{ display:block; margin-top:4px; font-weight:600; }
+.lieu-note{ display:block; margin-top:4px; font-style:italic; }
