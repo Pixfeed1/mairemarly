@@ -12,18 +12,18 @@
 	<form method="post" action="#ENV{action}">
 		#ACTION_FORMULAIRE{#ENV{action}}
 		<ul>
-			<li class="editer editer_titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
+			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
 				<label for="titre"><:marly:champ_objet:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
 				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
 				<small><:marly:objet_aide:></small>
 			</li>
-			<li class="editer editer_chapo">
+			<li class="marly-champ marly-chapo">
 				<label for="chapo"><:marly:champ_accroche:></label>
 				<textarea name="chapo" id="chapo" rows="2">[(#ENV{chapo}|textebrut)]</textarea>
 				<small><:marly:accroche_aide:></small>
 			</li>
-			<li class="editer editer_texte[ (#ENV**{erreurs}|table_valeur{texte}|oui)erreur]">
+			<li class="marly-champ marly-texte[ (#ENV**{erreurs}|table_valeur{texte}|oui)erreur]">
 				<label for="texte"><:marly:champ_texte:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{texte})</span>]
 				<textarea name="texte" id="texte" rows="16" class="inserer_barre_edition">[(#ENV{texte}|textebrut)]</textarea>

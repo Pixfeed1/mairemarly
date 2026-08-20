@@ -98,6 +98,29 @@ for f in sorted(glob.glob('squelettes/**/*.html', recursive=True)):
             signaler(f, s[:m.start()].count(chr(10)) + 1,
                      f"formulaire {nom} appele, mais formulaires/{nom}.php et .html manquent")
 
+# 9. Tout ecran de l'espace prive doit controler l'acces.
+#    L'espace prive n'est pas reserve aux administrateurs : un compte
+#    redacteur y entre aussi. Un ecran sans #AUTORISER laisse lire — et
+#    parfois modifier — ce qui ne le regarde pas. Trouve sur l'ecran de
+#    redaction des lettres, qui etait ouvert a tout compte connecte.
+for f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly',
+                                       'prive/squelettes/contenu/*.html'))):
+    if '#AUTORISER{' not in open(f, encoding='utf-8').read():
+        signaler('plugin-marly/prive/squelettes/contenu/' + os.path.basename(f), 1,
+                 'ecran prive sans #AUTORISER : accessible a tout compte connecte')
+
+# 10. Un formulaire d'edition doit verifier l'autorisation dans son PHP.
+#     Proteger l'ecran ne suffit pas : l'action du formulaire reste une URL
+#     qu'on peut appeler directement, sans jamais passer par l'ecran.
+for f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly',
+                                       'formulaires/*.php'))):
+    nom = os.path.basename(f)[:-4]
+    if not (nom.startswith('editer_') or nom.startswith('configurer_')):
+        continue
+    if 'autoriser(' not in open(f, encoding='utf-8').read():
+        signaler('plugin-marly/formulaires/' + nom + '.php', 1,
+                 "formulaire d'edition sans appel a autoriser()")
+
 # 6. Accolades CSS. Une accolade orpheline ferme la feuille en avance et
 #    toutes les regles suivantes sont ignorees, sans le moindre message.
 for f in sorted(glob.glob('squelettes/css/*.css')):

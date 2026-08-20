@@ -16,41 +16,41 @@
 		<fieldset>
 			<legend><:marly:legende_evenement:></legend>
 			<ul>
-			<li class="editer editer_titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
+			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
 				<label for="titre"><:marly:champ_titre:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
 				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
 			</li>
-			<li class="editer editer_lieu[ (#ENV**{erreurs}|table_valeur{lieu}|oui)erreur]">
+			<li class="marly-champ marly-lieu[ (#ENV**{erreurs}|table_valeur{lieu}|oui)erreur]">
 				<label for="lieu"><:marly:champ_lieu:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{lieu})</span>]
 				<input type="text" class="text" name="lieu" id="lieu" value="[(#ENV{lieu}|attribut_html)]">
 				<small><:marly:lieu_aide:></small>
 			</li>
-			<li class="editer editer_date_debut[ (#ENV**{erreurs}|table_valeur{date_debut}|oui)erreur]">
+			<li class="marly-champ marly-date_debut[ (#ENV**{erreurs}|table_valeur{date_debut}|oui)erreur]">
 				<label for="date_debut"><:marly:champ_date_debut:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{date_debut})</span>]
 				<input type="datetime-local" class="text" name="date_debut" id="date_debut" value="[(#ENV{date_debut}|attribut_html)]" required>
 			</li>
-			<li class="editer editer_date_fin[ (#ENV**{erreurs}|table_valeur{date_fin}|oui)erreur]">
+			<li class="marly-champ marly-date_fin[ (#ENV**{erreurs}|table_valeur{date_fin}|oui)erreur]">
 				<label for="date_fin"><:marly:champ_date_fin:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{date_fin})</span>]
 				<input type="datetime-local" class="text" name="date_fin" id="date_fin" value="[(#ENV{date_fin}|attribut_html)]">
 				<small><:marly:date_fin_aide:></small>
 			</li>
 				[(#ENV{id_manifestation}|=={new}|oui)
-				<li class="editer editer_logo">
+				<li class="marly-champ marly-logo">
 					<label><:marly:champ_logo:></label>
 					<small><:marly:logo_aide:></small>
 				</li>
 				]
-				<li class="editer editer_video[ (#ENV**{erreurs}|table_valeur{video}|oui)erreur]">
+				<li class="marly-champ marly-video[ (#ENV**{erreurs}|table_valeur{video}|oui)erreur]">
 					<label for="video"><:marly:champ_video:></label>
 					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{video})</span>]
 					<input type="url" class="text" name="video" id="video" value="[(#ENV{video}|attribut_html)]" placeholder="https://">
 					<small><:marly:video_aide:></small>
 				</li>
-				<li class="editer editer_descriptif">
+				<li class="marly-champ marly-descriptif">
 					<label for="descriptif"><:marly:champ_descriptif:></label>
 					<textarea name="descriptif" id="descriptif" rows="6">[(#ENV{descriptif}|textebrut)]</textarea>
 				</li>
@@ -60,25 +60,25 @@
 		<fieldset>
 			<legend><:marly:legende_places:></legend>
 			<ul>
-			<li class="editer editer_places[ (#ENV**{erreurs}|table_valeur{places}|oui)erreur]">
+			<li class="marly-champ marly-places[ (#ENV**{erreurs}|table_valeur{places}|oui)erreur]">
 				<label for="places"><:marly:champ_places:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{places})</span>]
 				<input type="number" class="text" name="places" id="places" value="[(#ENV{places}|attribut_html)]" min="0">
 				<small><:marly:places_aide:></small>
 			</li>
-			<li class="editer editer_places_par_personne[ (#ENV**{erreurs}|table_valeur{places_par_personne}|oui)erreur]">
+			<li class="marly-champ marly-places_par_personne[ (#ENV**{erreurs}|table_valeur{places_par_personne}|oui)erreur]">
 				<label for="places_par_personne"><:marly:champ_places_par_personne:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{places_par_personne})</span>]
 				<input type="number" class="text" name="places_par_personne" id="places_par_personne" value="[(#ENV{places_par_personne}|attribut_html)]" min="1">
 				<small><:marly:places_par_personne_aide:></small>
 			</li>
-			<li class="editer editer_tarif[ (#ENV**{erreurs}|table_valeur{tarif}|oui)erreur]">
+			<li class="marly-champ marly-tarif[ (#ENV**{erreurs}|table_valeur{tarif}|oui)erreur]">
 				<label for="tarif"><:marly:champ_tarif:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{tarif})</span>]
 				<input type="text" class="text" name="tarif" id="tarif" value="[(#ENV{tarif}|attribut_html)]">
 				<small><:marly:tarif_aide:></small>
 			</li>
-				<li class="editer editer_validation">
+				<li class="marly-champ marly-validation">
 					<label for="validation"><:marly:champ_validation:></label>
 					<select name="validation" id="validation">
 						<option value="auto"[(#ENV{validation}|=={auto}|oui) selected]><:marly:validation_auto:></option>
@@ -92,19 +92,19 @@
 		<fieldset>
 			<legend><:marly:legende_fenetre:></legend>
 			<ul>
-			<li class="editer editer_ouverture[ (#ENV**{erreurs}|table_valeur{ouverture}|oui)erreur]">
+			<li class="marly-champ marly-ouverture[ (#ENV**{erreurs}|table_valeur{ouverture}|oui)erreur]">
 				<label for="ouverture"><:marly:champ_ouverture:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ouverture})</span>]
 				<input type="datetime-local" class="text" name="ouverture" id="ouverture" value="[(#ENV{ouverture}|attribut_html)]">
 				<small><:marly:ouverture_aide:></small>
 			</li>
-			<li class="editer editer_cloture[ (#ENV**{erreurs}|table_valeur{cloture}|oui)erreur]">
+			<li class="marly-champ marly-cloture[ (#ENV**{erreurs}|table_valeur{cloture}|oui)erreur]">
 				<label for="cloture"><:marly:champ_cloture:></label>
 				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{cloture})</span>]
 				<input type="datetime-local" class="text" name="cloture" id="cloture" value="[(#ENV{cloture}|attribut_html)]">
 				<small><:marly:cloture_aide:></small>
 			</li>
-				<li class="editer editer_statut">
+				<li class="marly-champ marly-statut">
 					<label for="statut"><:marly:champ_statut:></label>
 					<select name="statut" id="statut">
 						<option value="prepa"[(#ENV{statut}|=={prepa}|oui) selected]><:marly:statut_prepa:></option>

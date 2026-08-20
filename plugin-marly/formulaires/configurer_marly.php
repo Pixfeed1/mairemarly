@@ -71,6 +71,13 @@ function formulaires_configurer_marly_verifier_dist() {
 }
 
 function formulaires_configurer_marly_traiter_dist() {
+	/* L'écran de réglages est protégé, mais l'action du formulaire reste une
+	   URL : sans ce contrôle, un compte rédacteur pourrait réécrire les
+	   coordonnées de la mairie en postant directement dessus. */
+	if (!autoriser('configurer')) {
+		return array('message_erreur' => _T('avis_operation_impossible'));
+	}
+
 	foreach (marly_champs() as $champ) {
 		ecrire_config('marly/' . $champ, trim((string) _request($champ)));
 	}
