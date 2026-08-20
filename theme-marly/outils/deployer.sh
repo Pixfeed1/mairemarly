@@ -45,8 +45,10 @@ mkdir -p "$SITE/squelettes"
 rsync -a --delete "$DEPOT/theme-marly/squelettes/" "$SITE/squelettes/"
 
 echo "--- Plugin"
+AVANT=$(grep -o 'version="[^"]*"' "$SITE/plugins/marly/paquet.xml" 2>/dev/null | head -1)
 mkdir -p "$SITE/plugins/marly"
 rsync -a --delete "$DEPOT/plugin-marly/" "$SITE/plugins/marly/"
+APRES=$(grep -o 'version="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1)
 
 # Deployer en root laisserait des fichiers appartenant a root dans le site
 # d'un utilisateur : selon la configuration (suexec, php-fpm, mod_userdir),
@@ -69,5 +71,19 @@ rm -rf "$SITE/tmp/cache"
 find "$SITE/local" -maxdepth 1 -name 'cache-*' -exec rm -rf {} + 2>/dev/null || true
 
 echo
-echo "Deploye. Version du plugin :"
-grep -o 'version="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1
+echo "Deploye. Version du plugin : $APRES"
+
+# SPIP verifie l'existence des tables A LA COMPILATION du squelette, pas a
+# l'execution. Une version qui ajoute une table casse donc TOUT le site
+# public tant que la mise a jour du plugin n'a pas tourne — et cette mise a
+# jour ne tourne qu'a la premiere visite de l'espace prive. L'ordre des deux
+# gestes n'est pas une precaution, c'est la condition pour que le site reste
+# debout entre les deux.
+if [ "$AVANT" != "$APRES" ]; then
+	echo
+	echo "  La version du plugin a change ($AVANT -> $APRES)."
+	echo "  OUVREZ L'ESPACE PRIVE AVANT DE VISITER LE SITE :"
+	echo "      https://marlygomont.pixfeed.net/ecrire/"
+	echo "  C'est cette visite qui cree les tables. Sans elle, un squelette"
+	echo "  qui interroge une table absente met le site public en erreur."
+fi
