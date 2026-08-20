@@ -21,6 +21,12 @@
  * deployer.sh s'en charge.
  */
 
+/* Sans ca, un fichier qui sort en cours de route ne dit rien et on croit a
+   un demarrage silencieux. La premiere version de ce script a coute un
+   aller-retour pour cette seule raison. */
+error_reporting(E_ALL);
+ini_set('display_errors', 'stderr');
+
 if (PHP_SAPI !== 'cli') {
 	die("Ce script ne s'utilise qu'en ligne de commande.\n");
 }
@@ -46,7 +52,16 @@ $_SERVER['HTTP_HOST']       = basename($racine);
 require_once $racine . '/ecrire/inc_version.php';
 
 if (!function_exists('include_spip')) {
-	fwrite(STDERR, "SPIP n'a pas demarre.\n");
+	fwrite(STDERR, "SPIP n'a pas demarre. Ce qu'il a eu le temps de poser :\n");
+	foreach (array('_ECRIRE_INC_VERSION', '_DIR_RESTREINT', '_ROOT_RESTREINT',
+	               '_DIR_RACINE', '_ROOT_RACINE', '_FILE_CONNECT') as $c) {
+		fwrite(STDERR, sprintf("  %-20s %s\n", $c,
+			defined($c) ? (constant($c) === '' ? '(chaine vide)' : constant($c)) : 'NON DEFINI'));
+	}
+	$utils = (defined('_ROOT_RESTREINT') ? _ROOT_RESTREINT : $racine . '/ecrire/') . 'inc/utils.php';
+	fwrite(STDERR, "  inc/utils.php attendu ici : $utils\n");
+	fwrite(STDERR, '  il existe : ' . (is_file($utils) ? 'oui' : 'NON') . "\n");
+	fwrite(STDERR, '  version de PHP : ' . PHP_VERSION . "\n");
 	exit(1);
 }
 
