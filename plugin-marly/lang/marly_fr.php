@@ -335,7 +335,6 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'aucune_association_publiee' => 'L’annuaire est en cours de constitution.',
 	'asso_responsable'     => 'Responsable',
 	'asso_ou'              => 'Où',
-	'voir_sur_la_carte'    => 'Voir sur la carte',
 	'asso_quand'           => 'Quand',
 	'asso_site'            => 'Voir leur site',
 	'retour_associations'  => 'Toutes les associations',

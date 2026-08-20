@@ -27,17 +27,14 @@
 	        habitant visite la page. Le credit (c) OpenStreetMap est grave
 	        dans le coin de l'image, c'est la condition de la licence.
 
-	        Cliquer sur le plan, ou sur le lien dessous, ouvre le vrai
-	        OpenStreetMap pour zoomer ou demander un itineraire. ]
+	        Cliquer sur le plan ouvre le vrai OpenStreetMap pour zoomer ou
+	        demander un itineraire. ]
 	[<section><h2><:marly:asso_ou:></h2>
 		<p>(#LIEU)</p>
 		[<a class="carte-cadre" href="[(#LATITUDE|marly_lien_carte{#LONGITUDE}|attribut_html)]" rel="noopener">
 			<img src="(#LATITUDE|marly_carte_image_point{#LONGITUDE}|attribut_html)"
 			     alt="<:marly:carte_alt:>" loading="lazy" width="760" height="420">
 		</a>]
-		[<p><a class="lien-fleche" href="(#LATITUDE|marly_lien_carte{#LONGITUDE}|attribut_html)" rel="noopener">
-			<:marly:voir_sur_la_carte:>
-			<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg></a></p>]
 	</section>]
 	[<section><h2><:marly:asso_quand:></h2>(#HORAIRES|propre)</section>]
 
