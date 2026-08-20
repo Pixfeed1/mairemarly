@@ -160,8 +160,14 @@ function marly_appeler_nominatim($requete, $limite) {
 	));
 
 	$json = json_decode($reponse['page'] ?? '', true);
+	if (!is_array($json)) {
+		spip_log('marly : Nominatim, reponse inattendue (statut '
+			. ($reponse['status'] ?? '?') . ') pour « ' . $requete . ' »',
+			'marly.' . _LOG_INFO_IMPORTANTE);
+		return array();
+	}
 
-	return is_array($json) ? $json : array();
+	return $json;
 }
 
 /**

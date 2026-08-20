@@ -55,9 +55,21 @@
 			if (xhr.readyState !== 4) { return; }
 			bouton.disabled = false;
 
+			/* Trois echecs differents se ressemblaient a l'ecran : refus
+			   d'acces, reponse qui n'est pas du JSON, et recherche sans
+			   resultat. Les confondre a coute un aller-retour. */
+			if (xhr.status !== 200) {
+				dire([(#VAL{marly:recherche_en_panne}|_T|json_encode)] + ' (' + xhr.status + ')');
+				return;
+			}
 			var reponse = null;
 			try { reponse = JSON.parse(xhr.responseText); } catch (e) { reponse = null; }
-			if (!reponse || !reponse.propositions || !reponse.propositions.length) {
+			if (!reponse || !reponse.propositions) {
+				dire([(#VAL{marly:recherche_en_panne}|_T|json_encode)]
+					+ ' (' + xhr.responseText.substring(0, 60) + ')');
+				return;
+			}
+			if (!reponse.propositions.length) {
 				dire([(#VAL{marly:aucune_proposition}|_T|json_encode)]);
 				return;
 			}

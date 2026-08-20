@@ -35,7 +35,12 @@ function formulaires_editer_lieu_charger_dist($id_lieu = 'new') {
 	}
 
 	include_spip('inc/actions');
-	$valeurs['_url_chercher'] = generer_action_auteur('marly_chercher_adresse', '');
+	/* generer_action_auteur ecrit les separateurs en &amp;, forme prevue
+	   pour un attribut HTML. Dans du JavaScript, elle donne des parametres
+	   nommes amp;arg : SPIP ne reconnait plus l'action et repond une page
+	   entiere au lieu du JSON attendu. */
+	$valeurs['_url_chercher'] = str_replace('&amp;', '&',
+		generer_action_auteur('marly_chercher_adresse', ''));
 
 	return $valeurs;
 }

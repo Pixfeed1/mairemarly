@@ -251,6 +251,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'chercher_adresse' => 'Chercher cette adresse',
 	'adresse_a_saisir' => 'Écrivez d’abord une adresse, puis cliquez sur Chercher.',
 	'recherche_en_cours' => 'Recherche en cours…',
+	'recherche_en_panne' => 'La recherche n’a pas abouti. Signalez ce message tel quel :',
 	'aucune_proposition' => 'Aucune adresse trouvée. Essayez plus simple : le nom de la rue seul, par exemple « rue de l’Église ».',
 	'choisir_proposition' => 'Cliquez sur la bonne adresse :',
 	'point_retenu' => 'Adresse retenue :',
