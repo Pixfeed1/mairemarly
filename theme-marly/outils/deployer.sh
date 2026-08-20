@@ -91,3 +91,34 @@ if [ "$AVANT" != "$APRES" ]; then
 	echo "  a jour que si elles different. Tant qu'elle n'a pas tourne, un"
 	echo "  squelette qui interroge une table absente met le site en erreur."
 fi
+
+# On ne se fie pas a la memoire : on lit ce que la base dit vraiment. Le
+# script ne peut pas declencher la mise a jour lui-meme — elle exige une
+# session ouverte dans l'espace prive, qu'un script en ligne de commande n'a
+# pas — mais il peut dire si elle a eu lieu.
+SCHEMA=$(grep -o 'schema="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1 | sed 's/schema="//; s/"//')
+CONNECT="$SITE/config/connect.php"
+if [ -n "$SCHEMA" ] && [ -f "$CONNECT" ]; then
+	INFOS=$(sed -n "s/.*spip_connect_db(\s*'\([^']*\)'\s*,\s*'[^']*'\s*,\s*'\([^']*\)'\s*,\s*'\([^']*\)'\s*,\s*'\([^']*\)'.*/\1|\2|\3|\4/p" "$CONNECT" | head -1)
+	HOTE=$(echo "$INFOS" | cut -d'|' -f1)
+	LOGIN=$(echo "$INFOS" | cut -d'|' -f2)
+	PASSE=$(echo "$INFOS" | cut -d'|' -f3)
+	BASE=$(echo "$INFOS"  | cut -d'|' -f4)
+	if [ -n "$BASE" ]; then
+		ENBASE=$(mysql -h "${HOTE:-localhost}" -u "$LOGIN" -p"$PASSE" "$BASE" -N -B \
+		         -e "SELECT valeur FROM spip_meta WHERE nom='marly_base_version'" 2>/dev/null)
+		echo
+		if [ "$ENBASE" = "$SCHEMA" ]; then
+			echo "Base a jour : $ENBASE. Rien d'autre a faire."
+		else
+			echo "  ================================================================"
+			echo "  BASE PAS A JOUR : elle est en ${ENBASE:-aucune}, le plugin attend $SCHEMA."
+			echo "  Les tables et colonnes nouvelles N'EXISTENT PAS encore."
+			echo
+			echo "  Ouvrez cette page dans le NAVIGATEUR, puis relancez ce script"
+			echo "  pour verifier :"
+			echo "      https://marlygomont.pixfeed.net/ecrire/?exec=admin_plugin"
+			echo "  ================================================================"
+		fi
+	fi
+fi
