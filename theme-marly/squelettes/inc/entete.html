@@ -74,9 +74,20 @@
 			<a class="pilule plein" href="#URL_PAGE{login}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:connexion:>
 			</a>
+			[(#REM) Le bouton de la lettre d'information ne s'affiche que si une
+			        lettre existe — meme un brouillon. Proposer de s'abonner a
+			        quelque chose qui n'a jamais paru, c'est promettre sans
+			        savoir quand on tiendra.
+
+			        La mairie n'a rien a activer : le jour ou elle commence sa
+			        premiere lettre, le bouton apparait. ]
+			<B_lettre_existe>
+			<BOUCLE_lettre_existe(LETTRES){0,1}></BOUCLE_lettre_existe>
 			<a class="pilule" href="#URL_PAGE{newsletter}" data-ouvre-newsletter>
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:newsletter:>
 			</a>
+			</B_lettre_existe>
+
 			[(#REM) Le bouton << Reserver >> n'apparait QUE s'il y a quelque chose
 			        a reserver : une salle ouverte, ou un evenement a venir dont
 			        les inscriptions sont publiees.

@@ -139,9 +139,8 @@ function formulaires_inscription_newsletter_traiter_dist($mode = 'abonnement') {
  * sur le nom du site ou la forme du lien.
  */
 function marly_courriel_abonne($courriel, $nom, $jeton, $quoi) {
-	$action = ($quoi === 'confirmation') ? 'confirmer' : 'desinscrire';
-	$lien = url_absolue(generer_url_public('newsletter',
-		'action=' . $action . '&jeton=' . $jeton));
+	$faire = ($quoi === 'confirmation') ? 'confirmer' : 'desinscrire';
+	$lien = url_absolue('spip.php?action=marly_abonne&faire=' . $faire . '&jeton=' . $jeton);
 
 	$contexte = array(
 		'nom'  => $nom ?: $courriel,

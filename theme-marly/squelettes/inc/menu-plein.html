@@ -31,15 +31,37 @@
 		</nav>
 
 		<div class="liens-service">
+			[(#REM) Les memes regles que dans l'en-tete, et pour la meme raison :
+			        ce menu est le SEUL acces sur telephone. Un bouton cache en
+			        haut d'ecran mais present ici menerait quand meme a une page
+			        vide, et c'est justement sur telephone qu'on ne pardonne pas
+			        un aller-retour pour rien. ]
+			<B_lettre_menu>
+			<BOUCLE_lettre_menu(LETTRES){0,1}></BOUCLE_lettre_menu>
 			<a class="pilule" href="#URL_PAGE{newsletter}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:newsletter:>
 			</a>
+			</B_lettre_menu>
+
 			<a class="pilule" href="#URL_PAGE{login}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:espace_citoyen:>
 			</a>
+
+			<B_menu_salles>
+			<BOUCLE_menu_salles(SALLES){statut=publie}{0,1}></BOUCLE_menu_salles>
 			<a class="pilule plein" href="#URL_PAGE{reservation}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg> <:marly:reserver:>
 			</a>
+			</B_menu_salles>
+
+			<B_menu_manifs>
+			<BOUCLE_menu_manifs(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{0,1}></BOUCLE_menu_manifs>
+			<a class="pilule plein" href="#URL_PAGE{reservation}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg> <:marly:reserver:>
+			</a>
+			</B_menu_manifs>
+			<//B_menu_manifs>
+			<//B_menu_salles>
 		</div>
 
 	</div>

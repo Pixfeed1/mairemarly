@@ -38,7 +38,9 @@ define('_MARLY_LOT', 25);
  * Un clic dessus suffit : pas de page intermédiaire, pas de confirmation.
  */
 function marly_lien_desinscription($jeton) {
-	return url_absolue(generer_url_public('newsletter', 'action=desinscrire&jeton=' . $jeton));
+	/* Une ACTION, et non une page. Une page publique ne doit pas ecrire en
+	   base : un aspirateur de liens desinscrirait des gens en passant. */
+	return url_absolue('spip.php?action=marly_abonne&faire=desinscrire&jeton=' . $jeton);
 }
 
 /**

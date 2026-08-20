@@ -9,6 +9,11 @@
   RGAA : role dialog, aria-modal, piege a focus, Echap ferme, le focus
   revient au bouton, et le panneau ferme sort de l'ordre de tabulation.
 ]
+[(#REM) La fenetre n'est posee dans la page que si une lettre existe. Un
+        formulaire qu'aucun bouton n'ouvre reste postable par un robot : le
+        cacher ne suffit pas, il faut ne pas l'ecrire. ]
+<B_panneau_lettre>
+<BOUCLE_panneau_lettre(LETTRES){0,1}></BOUCLE_panneau_lettre>
 <div class="panneau-nl" id="panneau-newsletter" data-ouvert="non" aria-hidden="true"
      role="dialog" aria-modal="true" aria-labelledby="titre-newsletter">
 	<div class="nl-dedans">
@@ -25,3 +30,4 @@
 
 	</div>
 </div>
+</B_panneau_lettre>

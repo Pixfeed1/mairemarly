@@ -33,6 +33,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'newsletter'           => 'Newsletter',
 	'lettre'               => 'Lettre',
 	'dinformation'         => 'd’information',
+	'retour_accueil'       => 'Retour à l’accueil',
 	'fermer_newsletter'    => 'Fermer l’inscription à la lettre d’information',
 	'newsletter_intro'     => 'Travaux, coupures d’eau, alertes météo, conseil municipal, manifestations : recevez l’essentiel par courriel. Quelques envois par an, jamais plus.',
 	'contacter_mairie'     => 'Contacter la mairie',

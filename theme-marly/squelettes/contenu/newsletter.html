@@ -1,0 +1,44 @@
+[(#REM)
+  La page de la lettre d'information.
+  ---------------------------------------------------------------------------
+  Elle sert a trois choses, et c'est important qu'elle serve aux trois :
+
+   - s'abonner, pour qui arrive sans JavaScript ou depuis un lien direct ;
+   - lire ce qui s'est passe apres avoir clique un lien recu par courriel,
+     confirmation ou desinscription ;
+   - se desabonner, en basculant le formulaire.
+
+  Sans cette page, les liens des courriels ne menaient nulle part — y compris
+  celui de desinscription, present dans CHAQUE envoi. C'est exactement ce que
+  Gmail et Yahoo sanctionnent chez un expediteur en nombre.
+
+  Elle n'ecrit rien en base : c'est l'action marly_abonne qui le fait, et qui
+  renvoie ici avec le resultat dans « fait ».
+]
+<div class="page-simple">
+
+	<h1><:marly:lettre:> <span><:marly:dinformation:></span></h1>
+
+	[(#ENV{fait}|=={confirme}|oui)
+	<p class="reponse_formulaire reponse_formulaire_ok"><:marly:newsletter_confirme:></p>
+	]
+	[(#ENV{fait}|=={desinscrit}|oui)
+	<p class="reponse_formulaire reponse_formulaire_ok"><:marly:newsletter_desinscrit:></p>
+	]
+	[(#ENV{fait}|=={inconnu}|oui)
+	<p class="reponse_formulaire reponse_formulaire_erreur"><:marly:newsletter_jeton_inconnu:></p>
+	]
+
+	[(#REM) Apres une desinscription, on ne represente pas le formulaire
+	        d'abonnement : la personne vient de dire non, lui retendre la main
+	        dans la seconde est du harcelement poli. On lui propose le site. ]
+	[(#ENV{fait}|=={desinscrit}|non)
+	<p class="nl-intro"><:marly:newsletter_intro:></p>
+	[(#FORMULAIRE_INSCRIPTION_NEWSLETTER{#ENV{mode,abonnement}})]
+	]
+
+	[(#ENV{fait}|=={desinscrit}|oui)
+	<p><a class="pilule" href="#URL_SITE_SPIP/"><:marly:retour_accueil:></a></p>
+	]
+
+</div>
