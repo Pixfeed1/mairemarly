@@ -214,6 +214,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_date_fin'            => 'Fin',
 	'date_fin_aide'             => 'Laissez vide pour un événement ponctuel.',
 	'champ_places'              => 'Nombre de places',
+	'champ_tarif'               => 'Tarif',
 	'places_aide'               => '0 pour ne pas limiter — une kermesse en plein air n’a pas de jauge.',
 	'champ_logo'                => 'Photographie',
 	'logo_aide'                 => 'Elle s’ajoute après l’enregistrement, dans la colonne de droite : « Ajouter un logo ». C’est elle qui s’affiche sur la carte du site.',

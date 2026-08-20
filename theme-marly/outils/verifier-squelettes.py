@@ -121,6 +121,38 @@ for f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly',
         signaler('plugin-marly/formulaires/' + nom + '.php', 1,
                  "formulaire d'edition sans appel a autoriser()")
 
+# 11. Toute chaine de langue appelee doit exister.
+#     Quand elle manque, SPIP n'affiche pas une erreur : il affiche la cle,
+#     underscores remplaces par des espaces. << titre lettre info >> au lieu
+#     de << Lettre d'information >>. Ca ressemble a une faute de frappe dans
+#     le fichier de langue, on va donc la chercher la ou elle n'est pas.
+#     Les chaines vivent dans DEUX fichiers du meme nom, l'un dans le theme
+#     et l'autre dans le plugin : SPIP les fusionne, le controle doit donc
+#     les fusionner aussi.
+LANGS = [os.path.join(RACINE, 'squelettes', 'lang', 'marly_fr.php'),
+         os.path.join(RACINE, '..', 'plugin-marly', 'lang', 'marly_fr.php')]
+LANGS = [l for l in LANGS if os.path.exists(l)]
+if LANGS:
+    connues = set()
+    for l in LANGS:
+        connues |= set(re.findall(r"^\s*'([a-z0-9_]+)'\s*=>", open(l, encoding='utf-8').read(), re.M))
+
+    cibles = glob.glob('squelettes/**/*.html', recursive=True)
+    cibles += glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'),
+                        recursive=True)
+    cibles += [os.path.join(RACINE, '..', 'plugin-marly', 'paquet.xml')]
+    cibles += glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.php'),
+                        recursive=True)
+
+    for f in sorted(set(cibles)):
+        t = open(f, encoding='utf-8').read()
+        # <:marly:cle:> dans les squelettes, 'marly:cle' dans paquet.xml et le PHP
+        cles = set(re.findall(r'<:marly:([a-z0-9_]+)[:|]', t))
+        cles |= set(re.findall(r"""["']marly:([a-z0-9_]+)["']""", t))
+        court = f.replace(os.path.join(RACINE, '..'), '').lstrip('/')
+        for c in sorted({c for c in cles - connues if not c.endswith('_')}):
+            signaler(court, 1, f'chaine de langue absente : marly:{c}')
+
 # 6. Accolades CSS. Une accolade orpheline ferme la feuille en avance et
 #    toutes les regles suivantes sont ignorees, sans le moindre message.
 for f in sorted(glob.glob('squelettes/css/*.css')):
