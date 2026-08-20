@@ -400,6 +400,20 @@ for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
                      f'#ENV{{{_m.group(2)}}} dans du JavaScript sans ** : la valeur sera '
                      'echappee pour du HTML. Ecrire #ENV**{...}|json_encode')
 
+# 23 bis. Le meme piege a la frontiere d'une inclusion : une adresse passee
+#     en argument d'INCLURE via #ENV sans etoiles est echappee AVANT d'entrer
+#     dans le gabarit inclus. Celui-ci a beau la traiter proprement, elle
+#     arrive deja abimee. C'est un oeil humain qui a trouve celui-la.
+for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
+                 glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _m in re.finditer(r'\{(_?url[a-z0-9_]*)=#ENV\{', _src):
+        signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'),
+                 _src[:_m.start()].count(chr(10)) + 1,
+                 f'{_m.group(1)} passe a une inclusion via #ENV sans ** : '
+                 "l'adresse sera echappee avant d'entrer dans le gabarit inclus. "
+                 'Ecrire #ENV**{...}')
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
