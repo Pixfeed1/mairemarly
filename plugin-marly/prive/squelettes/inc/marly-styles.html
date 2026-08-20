@@ -103,6 +103,21 @@ p.alerte{ color:#A32020; }
 	line-height:1.45;
 }
 
+/* La barre d'outils d'ecriture (gras, italique, lien...) est posee par SPIP
+   AUTOUR de la zone de texte, dans ses propres div. Sans cette regle elle
+   prend toute la largeur disponible pendant que la zone qu'elle commande
+   s'arrete a 640 px : la barre depasse son propre champ, et on ne voit plus
+   a quoi elle s'applique. */
+.formulaire_spip .marly-champ .markItUp,
+.formulaire_spip .marly-champ .markItUpContainer,
+.formulaire_spip .marly-champ .barre_outils{
+	max-width:640px;
+	box-sizing:border-box;
+}
+.formulaire_spip .marly-champ .markItUp textarea{
+	max-width:none;
+}
+
 /* Le message d'erreur au-dessus du champ fautif : on le lit avant de
    corriger, pas apres. */
 .formulaire_spip .marly-champ .erreur_message{

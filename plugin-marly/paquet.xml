@@ -1,7 +1,7 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.7.6"
+	version="3.8.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
 	schema="3.6.0">
@@ -30,6 +30,19 @@
 	<menu
 		nom="reservations"
 		titre="marly:titre_espace"
+		parent="menu_edition" />
+
+	<!--
+		La lettre d'information a sa propre entree. Elle etait rangee sous
+		<< Reservations >> parce qu'elle est arrivee apres, et qu'un ecran de
+		plus dans un espace existant coute moins qu'un espace de plus. Mais
+		personne ne cherche une lettre d'information dans les reservations :
+		l'endroit ou une chose est rangee est la premiere explication de ce
+		qu'elle est.
+	-->
+	<menu
+		nom="lettres"
+		titre="marly:titre_lettre_info"
 		parent="menu_edition" />
 
 

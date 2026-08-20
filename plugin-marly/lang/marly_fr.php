@@ -147,6 +147,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 
 	// --- Salles ---------------------------------------------------------------
 	'titre_espace'         => 'Réservations',
+	'titre_lettre_info'    => 'Lettre d’information',
 	'titre_ressources'     => 'Ce qu’on peut réserver',
 	'onglet_demandes'      => 'Demandes',
 	'onglet_ressources'    => 'Ce qu’on peut réserver',
