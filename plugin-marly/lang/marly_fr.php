@@ -243,6 +243,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'theme_solidarite'     => 'Solidarité et entraide',
 	'theme_patrimoine'     => 'Patrimoine et environnement',
 	'theme_memoire'        => 'Mémoire et anciens combattants',
+	'theme_culte'          => 'Vie religieuse',
 	'theme_autre'          => 'Autres associations',
 
 	'titre_vie_associative' => 'Vie associative',
