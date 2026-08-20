@@ -221,7 +221,7 @@
 	        absente ne sait pas comment entrer. L'ancien site faisait pareil,
 	        avec un courriel en tete de rubrique. ]
 	[<p class="explication asso-entree"><:marly:asso_absente:>
-		<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)?subject=[(#VAL{marly:asso_absente_objet}|_T|url_encode)]"
+		<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)?subject=[(#VAL{marly:asso_absente_objet}|_T|urlencode)]"
 		   data-ouvre-signalement><:marly:asso_absente_lien:></a></p>]
 
 	<INCLURE{fond=inc/panneau-signaler-asso}{env}>

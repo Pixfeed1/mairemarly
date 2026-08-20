@@ -456,6 +456,25 @@ for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
                      'affiches tels quels sur la page')
         _i = _j
 
+# 25. Les filtres qui n'existent pas sous le nom qu'on croit.
+#     SPIP accepte comme filtre toute fonction PHP : |urlencode marche parce
+#     que urlencode() existe. |url_encode ne correspond a rien, et l'erreur
+#     n'apparait qu'a l'execution, en tete de page publique. La liste ici
+#     recense les graphies fautives deja rencontrees et leurs formes justes.
+FILTRES_FAUTIFS = {
+    'url_encode': 'urlencode',
+    'html_entities': 'entites_html',
+    'strip_tags': 'textebrut',
+}
+for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
+                 glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _nom, _juste in FILTRES_FAUTIFS.items():
+        for _m in re.finditer(r'\|' + _nom + r'\b', _src):
+            signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'),
+                     _src[:_m.start()].count(chr(10)) + 1,
+                     f"filtre inexistant |{_nom} : ecrire |{_juste}")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
