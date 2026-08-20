@@ -195,7 +195,7 @@ function marly_notifier($id_reservation, $evenement) {
 
 	$envoyer = charger_fonction('envoyer_mail', 'inc', true);
 	if (!$envoyer) {
-		spip_log("marly : envoyer_mail indisponible, notification $evenement perdue pour $id_reservation", 'marly' . _LOG_ERREUR);
+		spip_log("marly : envoyer_mail indisponible, notification $evenement perdue pour $id_reservation", 'marly.' . _LOG_ERREUR);
 		return;
 	}
 

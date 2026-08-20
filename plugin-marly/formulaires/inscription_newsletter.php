@@ -150,7 +150,7 @@ function marly_courriel_abonne($courriel, $nom, $jeton, $quoi) {
 
 	$envoyer = charger_fonction('envoyer_mail', 'inc', true);
 	if (!$envoyer) {
-		spip_log("marly : envoyer_mail indisponible, $quoi perdue pour $courriel", 'marly' . _LOG_ERREUR);
+		spip_log("marly : envoyer_mail indisponible, $quoi perdue pour $courriel", 'marly.' . _LOG_ERREUR);
 		return;
 	}
 	$envoyer($courriel,

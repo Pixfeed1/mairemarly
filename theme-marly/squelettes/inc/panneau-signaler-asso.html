@@ -1,0 +1,30 @@
+[(#REM)
+  inc/panneau-signaler-asso.html — la fenetre de signalement d'une
+  association. Meme mecanique que la newsletter : le declencheur est un
+  vrai lien (mailto) qui marche sans JavaScript ; avec, la fenetre s'ouvre
+  par-dessus la page. Memes habits aussi : la classe panneau-nl porte tout
+  le style, l'identifiant seul change.
+
+  Elle n'est posee que si la mairie a un courriel : sans destinataire, le
+  formulaire n'aurait nulle part ou ecrire. Un formulaire qu'aucun bouton
+  n'ouvre reste postable par un robot : le cacher ne suffit pas, il faut ne
+  pas l'ecrire.
+]
+[(#CONFIG{marly/courriel}|oui)
+<div class="panneau-nl" id="panneau-signalement" data-ouvert="non" aria-hidden="true"
+     role="dialog" aria-modal="true" aria-labelledby="titre-signalement">
+	<div class="nl-dedans">
+
+		<button class="fermer" type="button" data-ferme-signalement>
+			<svg class="ico" aria-hidden="true"><use href="#ri-close-line"/></svg>
+			<span class="sr"><:marly:fermer_signalement:></span>
+		</button>
+
+		<h2 class="titre-bloc" id="titre-signalement"><:marly:signalement_titre:></h2>
+		<p class="nl-intro"><:marly:signalement_intro:></p>
+
+		#FORMULAIRE_SIGNALER_ASSOCIATION
+
+	</div>
+</div>
+]

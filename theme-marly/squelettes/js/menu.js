@@ -388,3 +388,69 @@
 		});
 	}
 })();
+
+/**
+ * La fenetre de signalement d'une association.
+ * ---------------------------------------------------------------------------
+ * Meme mecanique que la newsletter : le declencheur est un vrai lien
+ * (mailto), la fenetre s'ouvre par-dessus. Et un formulaire qui vient de
+ * repondre doit rester visible, sinon l'usager croit avoir echoue.
+ */
+(function () {
+	'use strict';
+
+	var declencheurs = document.querySelectorAll('[data-ouvre-signalement]');
+	var panneau = document.getElementById('panneau-signalement');
+	if (!declencheurs.length || !panneau) { return; }
+
+	var fermeture = panneau.querySelector('[data-ferme-signalement]');
+	var ouvert = false;
+	var appelant = null;
+
+	function basculer(vers, origine) {
+		ouvert = (typeof vers === 'boolean') ? vers : !ouvert;
+		panneau.setAttribute('data-ouvert', ouvert ? 'oui' : 'non');
+		panneau.setAttribute('aria-hidden', ouvert ? 'false' : 'true');
+		if ('inert' in HTMLElement.prototype) { panneau.inert = !ouvert; }
+		document.documentElement.style.overflow = ouvert ? 'hidden' : '';
+		if (ouvert) {
+			appelant = origine || document.activeElement;
+			var champ = panneau.querySelector('input[type="text"]');
+			if (champ) { champ.focus(); }
+		} else if (appelant) {
+			appelant.focus();
+			appelant = null;
+		}
+	}
+
+	Array.prototype.forEach.call(declencheurs, function (d) {
+		d.addEventListener('click', function (e) {
+			e.preventDefault();
+			basculer(true, d);
+		});
+	});
+	if (fermeture) {
+		fermeture.addEventListener('click', function () { basculer(false); });
+	}
+	document.addEventListener('keydown', function (e) {
+		if (e.key === 'Escape' && ouvert) { basculer(false); }
+	});
+	panneau.addEventListener('keydown', function (e) {
+		if (e.key !== 'Tab' || !ouvert) { return; }
+		var cibles = panneau.querySelectorAll('a[href], button:not([disabled]), input:not([type="hidden"]):not([tabindex="-1"]), textarea');
+		if (!cibles.length) { return; }
+		var premier = cibles[0], dernier = cibles[cibles.length - 1];
+		if (e.shiftKey && document.activeElement === premier) {
+			e.preventDefault(); dernier.focus();
+		} else if (!e.shiftKey && document.activeElement === dernier) {
+			e.preventDefault(); premier.focus();
+		}
+	});
+
+	/* Un formulaire qui vient de repondre doit rester visible. */
+	if (panneau.querySelector('.reponse_formulaire')) {
+		basculer(true, declencheurs[0]);
+	}
+
+	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
+})();

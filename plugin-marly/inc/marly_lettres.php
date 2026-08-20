@@ -304,7 +304,7 @@ function marly_envoyer_lot($id_lettre) {
 
 	$envoyer = charger_fonction('envoyer_mail', 'inc', true);
 	if (!$envoyer) {
-		spip_log('marly : envoyer_mail indisponible, envoi suspendu', 'marly' . _LOG_ERREUR);
+		spip_log('marly : envoyer_mail indisponible, envoi suspendu', 'marly.' . _LOG_ERREUR);
 		return 0;
 	}
 

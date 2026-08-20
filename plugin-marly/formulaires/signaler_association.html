@@ -1,0 +1,58 @@
+[(#REM)
+  Le formulaire de signalement d'une association. Rien n'entre en base :
+  un courriel part vers la mairie, qui cree la fiche elle-meme.
+]
+<div class="formulaire_spip formulaire_signaler_association">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<div class="piege" aria-hidden="true">
+			<label for="_piege_sa">Laissez ce champ vide</label>
+			<input type="text" name="_piege" id="_piege_sa" value="" tabindex="-1" autocomplete="off">
+		</div>
+		<input type="hidden" name="_pose" value="[(#ENV{_pose}|attribut_html)]">
+
+		<p class="nl-requis"><:marly:requis_explication:></p>
+		<ul>
+			<li class="editer editer_organisme[ (#ENV**{erreurs}|table_valeur{organisme}|oui)erreur]">
+				<label for="sa-organisme"><:marly:champ_nom_association:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{organisme})</span>]
+				<input type="text" class="text" name="organisme" id="sa-organisme"
+				       value="[(#ENV{organisme}|attribut_html)]" required aria-required="true" maxlength="120">
+			</li>
+			<li class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
+				<label for="sa-nom"><:marly:votre_nom:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+				<input type="text" class="text" name="nom" id="sa-nom"
+				       value="[(#ENV{nom}|attribut_html)]" autocomplete="name" required aria-required="true" maxlength="120">
+			</li>
+			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
+				<label for="sa-courriel"><:marly:votre_courriel:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				<input type="email" class="text" name="courriel" id="sa-courriel"
+				       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" maxlength="120">
+				<small><:marly:un_moyen_de_reponse:></small>
+			</li>
+			<li class="editer editer_telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
+				<label for="sa-telephone"><:marly:champ_telephone:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
+				<input type="tel" class="text" name="telephone" id="sa-telephone"
+				       value="[(#ENV{telephone}|attribut_html)]" autocomplete="tel" maxlength="20">
+			</li>
+			<li class="editer editer_message">
+				<label for="sa-message"><:marly:votre_message:></label>
+				<textarea name="message" id="sa-message" rows="4" maxlength="1500">[(#ENV{message}|textebrut)]</textarea>
+				<small><:marly:signalement_message_aide:></small>
+			</li>
+		</ul>
+		<p class="boutons">
+			<input type="submit" class="submit" value="<:marly:signalement_envoyer:>">
+		</p>
+	</form>
+	]
+</div>

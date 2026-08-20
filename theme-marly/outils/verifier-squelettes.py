@@ -371,6 +371,14 @@ for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.p
     for _m in re.finditer(r"spip_log\((?:[^()]|\([^()]*\))*?\)", _src):
         _appel = _m.group(0)
         if '_LOG_' in _appel:
+            # La gravite est la, mais le point separateur peut manquer :
+            # 'marly' . _LOG_ERREUR nomme un journal marly6, et le message
+            # part dans un fichier que personne ne lira jamais.
+            if re.search(r"'\s*\.\s*_LOG_", _appel) and not re.search(r"\.'\s*\.\s*_LOG_", _appel):
+                signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                         _src[:_m.start()].count('\n') + 1,
+                         "gravite collee au nom du journal sans point : le journal s'appellerait "
+                         "marly6. Ecrire 'marly.' . _LOG_...")
             continue
         # Un appel sans nom de journal va dans spip.log, ecrit quoi qu'il arrive.
         if not re.search(r",\s*'[^']+'\s*\)$", _appel):
