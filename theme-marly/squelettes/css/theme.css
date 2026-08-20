@@ -1218,7 +1218,11 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    Elle s'affiche directement : choix arrete avec la mairie. Le cadre garde
    une hauteur fixe pour que la page ne saute pas pendant le chargement.
    =========================================================================== */
-.carte-cadre{ display:block; margin:0 0 34px; border:1px solid var(--trait); }
-.carte-cadre img{ display:block; width:100%; height:auto; }
+/* Masque tant que carte.js n'a pas trouve de point : sans JavaScript, la
+   liste et l'adresse portent l'information, pas de cadre vide. */
+.carte-cadre{ display:none; }
+.carte-cadre.carte-active{ display:block; height:420px; margin:0 0 34px;
+	border:1px solid var(--trait); }
+.carte-epingle{ background:none; border:none; }
 .lieu-horaires{ display:block; margin-top:4px; font-weight:600; }
 .lieu-note{ display:block; margin-top:4px; font-style:italic; }

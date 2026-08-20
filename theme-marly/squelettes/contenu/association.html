@@ -20,21 +20,25 @@
 		[<div><dt><:marly:champ_courriel:></dt><dd><a href="mailto:[(#COURRIEL|attribut_html)]">(#COURRIEL)</a></dd></div>]
 	</dl>
 
-	[(#REM) L'adresse, puis le plan si elle a pu etre localisee.
+	[(#REM) L'adresse, puis la carte si elle a pu etre localisee.
 
-	        Le plan est une IMAGE fabriquee par notre serveur : nos couleurs,
-	        pas d'habillage tiers, et rien ne part chez OpenStreetMap quand un
-	        habitant visite la page. Le credit (c) OpenStreetMap est grave
-	        dans le coin de l'image, c'est la condition de la licence.
+	        Une vraie carte, ou l'on se deplace et zoome : Leaflet, heberge
+	        avec le site, tuiles OpenStreetMap chargees au fil de la
+	        navigation. Le seul texte tiers est le credit (c) OpenStreetMap,
+	        du au titre de la licence des donnees.
 
-	        Cliquer sur le plan ouvre le vrai OpenStreetMap pour zoomer ou
-	        demander un itineraire. ]
+	        Sans JavaScript, le cadre reste masque et l'adresse ecrite
+	        au-dessus porte l'information. ]
 	[<section><h2><:marly:asso_ou:></h2>
 		<p>(#LIEU)</p>
-		[<a class="carte-cadre" href="[(#LATITUDE|marly_lien_carte{#LONGITUDE}|attribut_html)]" rel="noopener">
-			<img src="(#LATITUDE|marly_carte_image_point{#LONGITUDE}|attribut_html)"
-			     alt="<:marly:carte_alt:>" loading="lazy" width="760" height="420">
-		</a>]
+		[<div class="carte-cadre" data-carte
+		      data-lat="(#LATITUDE|attribut_html)" data-lon="[(#LONGITUDE|attribut_html)]"
+		      data-nom="[(#NOM|attribut_html)]"></div>]
+		[(#LATITUDE|oui)
+		<link rel="stylesheet" href="#CHEMIN{js/leaflet/leaflet.css}">
+		<script src="#CHEMIN{js/leaflet/leaflet.js}"></script>
+		<script src="#CHEMIN{js/carte.js}"></script>
+		]
 	</section>]
 	[<section><h2><:marly:asso_quand:></h2>(#HORAIRES|propre)</section>]
 

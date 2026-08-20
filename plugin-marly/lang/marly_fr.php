@@ -248,7 +248,6 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'lieu_enregistre'      => 'Enregistré.',
 	'lieu_enregistre_localise' => 'Enregistré. L’adresse a été localisée : le lieu apparaît sur la carte.',
 	'point_enregistre' => 'Adresse localisée :',
-	'carte_alt' => 'Plan d’accès',
 	'chercher_adresse' => 'Chercher cette adresse',
 	'adresse_a_saisir' => 'Écrivez d’abord une adresse, puis cliquez sur Chercher.',
 	'recherche_en_cours' => 'Recherche en cours…',

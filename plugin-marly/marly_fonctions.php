@@ -260,27 +260,6 @@ function filtre_marly_icone_lieu_dist($type) {
 }
 
 /**
- * L'image du plan d'un point, fabriquee par le serveur.
- *
- * Rend l'adresse d'un PNG assemble chez nous : nos dimensions, notre
- * marqueur, le credit OpenStreetMap grave en coin. Rien ne part chez un
- * tiers quand un habitant visite la page. '' si l'image n'a pu se faire,
- * et le gabarit n'affiche alors pas de carte.
- */
-function filtre_marly_carte_image_point_dist($latitude, $longitude = '') {
-	include_spip('inc/marly_carte_image');
-	return marly_carte_image_point($latitude, $longitude);
-}
-
-/**
- * L'image du plan de la commune : tous les lieux publies et localises.
- */
-function filtre_marly_carte_image_commune_dist($rien = '') {
-	include_spip('inc/marly_carte_image');
-	return marly_carte_image_commune();
-}
-
-/**
  * Le lien vers un point sur OpenStreetMap.
  *
  * Il accompagne la carte au lieu de la remplacer : la facade situe le lieu,

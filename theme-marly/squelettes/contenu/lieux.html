@@ -19,22 +19,21 @@
 	<h1><:marly:titre_ou_nous_trouver:></h1>
 	<p class="chapo"><:marly:lieux_intro:></p>
 
-	[(#REM) Pas de carte tant qu'aucun lieu n'est localise : le filtre rend
-	        alors une chaine vide et le bloc ne s'affiche pas.
-
-	        Le plan est une IMAGE fabriquee par notre serveur : nos couleurs,
-	        pas d'habillage tiers, et rien ne part chez OpenStreetMap quand un
-	        habitant visite la page. Le credit (c) OpenStreetMap est grave
-	        dans le coin de l'image, c'est la condition de la licence. ]
-	[<div class="carte-cadre">
-	<img src="(#VAL|marly_carte_image_commune|attribut_html)"
-	     alt="<:marly:carte_alt:>" loading="lazy" width="760" height="420">
-	</div>]
+	[(#REM) Une vraie carte, ou l'on se deplace et zoome : Leaflet, heberge
+	        avec le site, tuiles OpenStreetMap chargees au fil de la
+	        navigation. Les points sont lus depuis la liste des lieux
+	        ci-dessous (data-carte-point) : la carte reste masquee tant que
+	        le script n'a trouve aucun lieu localise, et sans JavaScript la
+	        liste porte toute l'information. ]
+	<div class="carte-cadre" data-carte></div>
+	<link rel="stylesheet" href="#CHEMIN{js/leaflet/leaflet.css}">
+	<script src="#CHEMIN{js/leaflet/leaflet.js}"></script>
+	<script src="#CHEMIN{js/carte.js}"></script>
 
 	<B_lieux>
 	<ul class="fiches">
 		<BOUCLE_lieux(LIEUX){par rang, nom}>
-		<li>
+		<li[ data-carte-point data-lat="(#LATITUDE|attribut_html)" data-lon="[(#LONGITUDE|attribut_html)]" data-nom="[(#NOM|attribut_html)]"]>
 			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#[(#TYPE|marly_icone_lieu)]"/></svg></span>
 			<span class="fiche-texte">
 				<b>#NOM</b>

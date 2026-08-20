@@ -144,15 +144,6 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 		$message = _T('marly:lieu_enregistre');
 	}
 
-	/* Les plans se fabriquent MAINTENANT, pendant l'enregistrement : celui
-	   du lieu, et celui de la commune qui vient de changer. L'habitant ne
-	   paie jamais la fabrication. */
-	include_spip('inc/marly_carte_image');
-	if ($champs['latitude'] !== '' and $champs['longitude'] !== '') {
-		marly_carte_image_point($champs['latitude'], $champs['longitude']);
-	}
-	marly_carte_image_commune();
-
 	return array('message_ok' => $message,
 	             'redirect' => generer_url_ecrire('lieux'));
 }
