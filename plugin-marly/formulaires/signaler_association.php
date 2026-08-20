@@ -123,9 +123,13 @@ function formulaires_signaler_association_traiter_dist() {
 
 	$envoyer = charger_fonction('envoyer_mail', 'inc', true);
 	if ($envoyer) {
+		/* Reply-To en en-tete brut : c'est la forme que le facteur de SPIP
+		   accepte, la cle << repondre_a >> n'existe pas chez lui. Repondre au
+		   courriel de notification repond ainsi directement au demandeur. */
 		$envoyer($destinataire,
 			_T('marly:preinscription_objet', array('nom' => $champs['nom'])),
-			array('texte' => $corps, 'repondre_a' => $champs['courriel']));
+			array('texte' => $corps,
+			      'headers' => array('Reply-To: ' . $champs['courriel'])));
 	} else {
 		spip_log('marly : envoyer_mail indisponible, la mairie n\'est pas prevenue de la preinscription',
 			'marly.' . _LOG_INFO_IMPORTANTE);
