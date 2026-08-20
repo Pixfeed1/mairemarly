@@ -224,6 +224,8 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'association_enregistree' => 'Enregistré.',
 	'intro_associations'   => 'L’annuaire de la vie associative. Ce que les habitants viennent y chercher n’est pas une présentation : c’est qui appeler. Le nom du responsable et son téléphone comptent plus que le reste.',
 	'champ_nom_asso'       => 'Nom de l’association',
+	'photo_asso'           => 'Photographie',
+	'photo_asso_aide'      => 'Une photo de l’équipe, du local ou d’une manifestation. Facultative : sans elle, la fiche affiche une pastille aux couleurs de la commune, avec le symbole du thème.',
 	'champ_theme'          => 'Thème',
 	'theme_aide'           => 'Il sert à regrouper les associations sur la page. Choisissez le plus proche : mieux vaut « Culture et loisirs » que « Autre ».',
 	'champ_activite'       => 'Activité',

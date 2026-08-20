@@ -28,7 +28,14 @@
 	<ul class="annuaire">
 		<BOUCLE_t_sport(ASSOCIATIONS){theme=sport}{par rang, nom}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			[(#REM) La photographie si la mairie en a depose une, la tuile du
+			        theme sinon. La tuile n'est pas une image d'attente qui
+			        signale un manque : elle porte l'icone du theme, donc une
+			        information, et la liste garde sa regularite. ]
+			[(#LOGO_ASSOCIATION|non)
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#[(#THEME|marly_icone_theme)]"/></svg></span>
+			]
+			[<img class="asso-photo" src="(#LOGO_ASSOCIATION|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
 			<span class="asso-texte">
 				<b>#NOM</b>
 				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
@@ -44,7 +51,14 @@
 	<ul class="annuaire">
 		<BOUCLE_t_culture(ASSOCIATIONS){theme=culture}{par rang, nom}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			[(#REM) La photographie si la mairie en a depose une, la tuile du
+			        theme sinon. La tuile n'est pas une image d'attente qui
+			        signale un manque : elle porte l'icone du theme, donc une
+			        information, et la liste garde sa regularite. ]
+			[(#LOGO_ASSOCIATION|non)
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#[(#THEME|marly_icone_theme)]"/></svg></span>
+			]
+			[<img class="asso-photo" src="(#LOGO_ASSOCIATION|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
 			<span class="asso-texte">
 				<b>#NOM</b>
 				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
@@ -60,7 +74,14 @@
 	<ul class="annuaire">
 		<BOUCLE_t_enfance(ASSOCIATIONS){theme=enfance}{par rang, nom}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			[(#REM) La photographie si la mairie en a depose une, la tuile du
+			        theme sinon. La tuile n'est pas une image d'attente qui
+			        signale un manque : elle porte l'icone du theme, donc une
+			        information, et la liste garde sa regularite. ]
+			[(#LOGO_ASSOCIATION|non)
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#[(#THEME|marly_icone_theme)]"/></svg></span>
+			]
+			[<img class="asso-photo" src="(#LOGO_ASSOCIATION|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
 			<span class="asso-texte">
 				<b>#NOM</b>
 				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
@@ -76,7 +97,14 @@
 	<ul class="annuaire">
 		<BOUCLE_t_solidarite(ASSOCIATIONS){theme=solidarite}{par rang, nom}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			[(#REM) La photographie si la mairie en a depose une, la tuile du
+			        theme sinon. La tuile n'est pas une image d'attente qui
+			        signale un manque : elle porte l'icone du theme, donc une
+			        information, et la liste garde sa regularite. ]
+			[(#LOGO_ASSOCIATION|non)
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#[(#THEME|marly_icone_theme)]"/></svg></span>
+			]
+			[<img class="asso-photo" src="(#LOGO_ASSOCIATION|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
 			<span class="asso-texte">
 				<b>#NOM</b>
 				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
@@ -92,7 +120,14 @@
 	<ul class="annuaire">
 		<BOUCLE_t_patrimoine(ASSOCIATIONS){theme=patrimoine}{par rang, nom}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			[(#REM) La photographie si la mairie en a depose une, la tuile du
+			        theme sinon. La tuile n'est pas une image d'attente qui
+			        signale un manque : elle porte l'icone du theme, donc une
+			        information, et la liste garde sa regularite. ]
+			[(#LOGO_ASSOCIATION|non)
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#[(#THEME|marly_icone_theme)]"/></svg></span>
+			]
+			[<img class="asso-photo" src="(#LOGO_ASSOCIATION|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
 			<span class="asso-texte">
 				<b>#NOM</b>
 				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
@@ -108,7 +143,14 @@
 	<ul class="annuaire">
 		<BOUCLE_t_memoire(ASSOCIATIONS){theme=memoire}{par rang, nom}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			[(#REM) La photographie si la mairie en a depose une, la tuile du
+			        theme sinon. La tuile n'est pas une image d'attente qui
+			        signale un manque : elle porte l'icone du theme, donc une
+			        information, et la liste garde sa regularite. ]
+			[(#LOGO_ASSOCIATION|non)
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#[(#THEME|marly_icone_theme)]"/></svg></span>
+			]
+			[<img class="asso-photo" src="(#LOGO_ASSOCIATION|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
 			<span class="asso-texte">
 				<b>#NOM</b>
 				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
@@ -124,7 +166,14 @@
 	<ul class="annuaire">
 		<BOUCLE_t_culte(ASSOCIATIONS){theme=culte}{par rang, nom}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			[(#REM) La photographie si la mairie en a depose une, la tuile du
+			        theme sinon. La tuile n'est pas une image d'attente qui
+			        signale un manque : elle porte l'icone du theme, donc une
+			        information, et la liste garde sa regularite. ]
+			[(#LOGO_ASSOCIATION|non)
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#[(#THEME|marly_icone_theme)]"/></svg></span>
+			]
+			[<img class="asso-photo" src="(#LOGO_ASSOCIATION|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
 			<span class="asso-texte">
 				<b>#NOM</b>
 				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]
@@ -140,7 +189,14 @@
 	<ul class="annuaire">
 		<BOUCLE_t_autre(ASSOCIATIONS){theme=autre}{par rang, nom}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
-			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#ri-team-line"/></svg></span>
+			[(#REM) La photographie si la mairie en a depose une, la tuile du
+			        theme sinon. La tuile n'est pas une image d'attente qui
+			        signale un manque : elle porte l'icone du theme, donc une
+			        information, et la liste garde sa regularite. ]
+			[(#LOGO_ASSOCIATION|non)
+			<span class="asso-tuile" aria-hidden="true"><svg class="ico"><use href="#[(#THEME|marly_icone_theme)]"/></svg></span>
+			]
+			[<img class="asso-photo" src="(#LOGO_ASSOCIATION|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
 			<span class="asso-texte">
 				<b>#NOM</b>
 				[<span class="asso-activite">(#ACTIVITE|couper{160})</span>]

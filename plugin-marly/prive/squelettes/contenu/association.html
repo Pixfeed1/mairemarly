@@ -4,3 +4,17 @@
 <h1 class="grostitre">[(#ENV{id_association}|=={new}|?{'marly:creer_association','marly:modifier_association'}|_T)]</h1>
 
 [(#FORMULAIRE_EDITER_ASSOCIATION{#ENV{id_association,new}})]
+
+[(#REM)
+  La photographie de l'association, confiee a la mediatheque de SPIP : elle
+  gere les vignettes, les droits et le nettoyage, et l'image reste disponible
+  ailleurs sur le site. Elle n'apparait qu'apres le premier enregistrement,
+  SPIP ayant besoin d'un identifiant pour rattacher une image a quelque chose.
+]
+[(#ENV{id_association}|=={new}|non)
+<div class="marly-photo">
+	<h2><:marly:photo_asso:></h2>
+	<p class="explication"><:marly:photo_asso_aide:></p>
+	[(#FORMULAIRE_ILLUSTRER_DOCUMENT{association,#ENV{id_association}})]
+</div>
+]

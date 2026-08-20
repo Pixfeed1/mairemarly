@@ -221,3 +221,26 @@ function filtre_marly_url_raccourci_dist($cible) {
 	include_spip('inc/marly_raccourcis');
 	return marly_url_raccourci($cible);
 }
+
+/**
+ * L'icone d'un theme d'association, pour la tuile de l'annuaire.
+ *
+ * Une icone par thème, et non la même partout. Répétée huit fois à
+ * l'identique, une illustration cesse d'informer et devient du bruit ; en
+ * changeant avec le thème, la tuile dit quelque chose avant même qu'on lise
+ * le titre. Et elle ne remplace jamais une photographie : elle occupe la
+ * place tant qu'il n'y en a pas.
+ */
+function filtre_marly_icone_theme_dist($theme) {
+	$icones = array(
+		'sport'      => 'ri-run-line',
+		'culture'    => 'ri-palette-line',
+		'enfance'    => 'ri-school-line',
+		'solidarite' => 'ri-hand-heart-line',
+		'patrimoine' => 'ri-ancient-gate-line',
+		'memoire'    => 'ri-medal-line',
+		'culte'      => 'ri-building-2-line',
+		'autre'      => 'ri-team-line',
+	);
+	return $icones[$theme] ?? 'ri-team-line';
+}

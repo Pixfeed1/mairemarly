@@ -36,6 +36,12 @@ ri-government-line       Mairie, administration
 ri-scales-3-line         Élections, démocratie
 ri-water-flash-line      Eau, énergie
 ri-error-warning-line    Avertissement, alerte
+ri-run-line              Sport
+ri-palette-line          Culture, loisirs
+ri-hand-heart-line       Solidarité, entraide
+ri-ancient-gate-line     Patrimoine
+ri-medal-line            Mémoire, anciens combattants
+ri-building-2-line       Bâtiment
 
 # --- Réseaux sociaux ---------------------------------------------------------
 # Mêmes règles : un mot-clé par ligne dans le groupe « Icônes ».

@@ -1174,6 +1174,24 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 }
 .asso-tuile .ico{ width:34px; height:34px; fill:#fff; opacity:.85; }
 
+/* La photographie prend exactement la place de la tuile : la liste garde sa
+   regularite qu'il y en ait une ou non. */
+.asso-photo{
+	flex:0 0 auto;
+	width:76px; height:76px;
+	object-fit:cover;
+	border-radius:3px;
+	display:block;
+}
+.asso-photo-fiche{
+	display:block;
+	width:100%;
+	max-width:760px;
+	height:auto;
+	margin:0 0 22px;
+	border-radius:3px;
+}
+
 .asso-texte{ display:block; min-width:0; }
 .asso-texte b{ display:block; font-size:1.08em; margin-bottom:3px; }
 .asso-activite{ display:block; color:var(--encre-doux); line-height:1.5; }
@@ -1190,7 +1208,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 }
 
 @media (max-width:600px){
-	.asso-tuile{ width:60px; height:60px; }
+	.asso-tuile, .asso-photo{ width:60px; height:60px; }
 	.asso-tuile .ico{ width:26px; height:26px; }
 	.annuaire a{ gap:14px; }
 }
