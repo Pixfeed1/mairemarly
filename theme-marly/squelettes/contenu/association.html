@@ -13,7 +13,7 @@
 	<p class="fil"><a class="lien-fleche" href="#URL_PAGE{associations}"><:marly:retour_associations:>
 		<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a></p>
 	<p class="page-outils">
-		[<a class="outil" href="mailto:[(#CONFIG{marly/courriel}|attribut_html)]?subject=[(#NOM|attribut_html|url_encode)]"
+		[<a class="outil" href="mailto:(#CONFIG{marly/courriel}|attribut_html)?subject=[(#NOM|attribut_html|url_encode)]"
 		   title="<:marly:outil_signaler:>">
 			<svg class="ico" aria-hidden="true"><use href="#ri-pencil-line"/></svg>
 			<span class="cache"><:marly:outil_signaler:></span></a>]

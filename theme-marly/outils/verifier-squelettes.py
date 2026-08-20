@@ -414,6 +414,40 @@ for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
                  "l'adresse sera echappee avant d'entrer dans le gabarit inclus. "
                  'Ecrire #ENV**{...}')
 
+# 24. Un bloc optionnel doit avoir sa balise pivot.
+#     [ ... ] ne devient conditionnel que si une balise (#XXX) se trouve
+#     DIRECTEMENT dedans. Si toutes les balises du bloc sont deja dans leurs
+#     propres crochets, le bloc exterieur n'a pas de pivot : SPIP le prend
+#     pour du texte et AFFICHE les crochets sur la page. Vu autour du bouton
+#     << signaler >> d'une fiche. On ne controle que les blocs qui ouvrent du
+#     HTML ([<...), pour ne pas confondre avec les crochets du JavaScript.
+for _f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
+                 glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _i = 0
+    while True:
+        _i = _src.find('[<', _i)
+        if _i < 0:
+            break
+        _prof, _j, _pivot = 0, _i + 1, False
+        while _j < len(_src):
+            _c = _src[_j]
+            if _c == '[':
+                _prof += 1
+            elif _c == ']':
+                if _prof == 0:
+                    break
+                _prof -= 1
+            elif _prof == 0 and _c == '(' and _src[_j:_j + 2] == '(#':
+                _pivot = True
+            _j += 1
+        if _j < len(_src) and not _pivot:
+            signaler(_f.replace(os.path.join(RACINE, '..'), '').lstrip('/'),
+                     _src[:_i].count(chr(10)) + 1,
+                     'bloc optionnel sans balise pivot : les crochets seront '
+                     'affiches tels quels sur la page')
+        _i = _j
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
