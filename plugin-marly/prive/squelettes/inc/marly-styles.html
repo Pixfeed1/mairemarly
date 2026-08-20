@@ -42,6 +42,15 @@
 .marly-apercu h3{ margin-top:0; }
 .marly-apercu .chapo{ font-size:1.05em; color:#555; }
 
+/* Les cellules d'un tableau sont centrees verticalement par defaut. Des que
+   deux colonnes n'ont pas le meme nombre de lignes, les plus courtes flottent
+   au milieu des plus longues et la lecture en diagonale devient impossible.
+   Toutes les listes se lisent ligne a ligne : on cale en haut. */
+table.spip.liste td{ vertical-align:top; }
+table.spip.liste th{ vertical-align:bottom; text-align:left; }
+table.spip.liste td small{ color:#55504A; line-height:1.4; }
+
+td.actions{ white-space:nowrap; }
 td.actions .btn + .btn{ margin-left:6px; }
 p.alerte{ color:#A32020; }
 
