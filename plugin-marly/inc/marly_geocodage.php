@@ -197,25 +197,59 @@ function marly_chercher_adresses($recherche, $limite = 5) {
 	include_spip('inc/config');
 	$ville = lire_config('marly/ville', '');
 	$cp    = lire_config('marly/code_postal', '');
-	if ($ville and stripos($recherche, $ville) === false) {
-		$recherche .= ', ' . trim($cp . ' ' . $ville);
-	}
 
-	$json = marly_appeler_nominatim($recherche, intval($limite) ?: 5);
-	$propositions = array();
-	foreach ($json as $trouve) {
-		if (!isset($trouve['lat'], $trouve['lon'])) {
-			continue;
+	/* Du plus precis au plus large. « Eglise Saint-Remi » ne dit rien a
+	   OpenStreetMap, qui connait le batiment sans son vocable : on retire
+	   alors les mots un par un en partant de la fin, jusqu'a « Eglise »,
+	   qui le trouve. La personne qui saisit n'a pas a connaitre la
+	   formulation attendue : elle choisit dans ce qui s'affiche. */
+	$premier = trim(preg_replace('/[,].*$/', '', $recherche));
+	$essais = array($recherche);
+	if ($premier !== '' and $premier !== $recherche) {
+		$essais[] = $premier;
+	}
+	$mots = preg_split('/\s+/', $premier);
+	while (count($mots) > 1 and count($essais) < 4) {
+		array_pop($mots);
+		$reste = implode(' ', $mots);
+		/* Un numero seul (le << 12 >> de << 12 rue du Moulin >>) situerait
+		   n'importe quoi : on s'arrete avant. */
+		if (preg_match('/^\d+$/', $reste)) {
+			break;
 		}
-		$propositions[] = array(
-			'intitule'  => (string) ($trouve['display_name'] ?? $recherche),
-			'latitude'  => substr((string) $trouve['lat'], 0, 12),
-			'longitude' => substr((string) $trouve['lon'], 0, 12),
-		);
+		$essais[] = $reste;
 	}
 
-	spip_log('marly : « ' . $recherche . ' » -> ' . count($propositions) . ' proposition(s)',
-		'marly.' . _LOG_INFO_IMPORTANTE);
+	$propositions = array();
+	foreach (array_values(array_unique($essais)) as $rang => $essai) {
+		if ($ville and stripos($essai, $ville) === false) {
+			$essai .= ', ' . trim($cp . ' ' . $ville);
+		}
+		if ($rang > 0) {
+			/* Une requete par seconde au plus : c'est la condition d'usage
+			   de Nominatim, et elle vaut aussi pour nos elargissements. */
+			usleep(1100000);
+		}
+		foreach (marly_appeler_nominatim($essai, intval($limite) ?: 5) as $trouve) {
+			if (!isset($trouve['lat'], $trouve['lon'])) {
+				continue;
+			}
+			$propositions[] = array(
+				'intitule'  => (string) ($trouve['display_name'] ?? $essai),
+				'latitude'  => substr((string) $trouve['lat'], 0, 12),
+				'longitude' => substr((string) $trouve['lon'], 0, 12),
+			);
+		}
+		if ($propositions) {
+			spip_log('marly : « ' . $essai . ' » -> ' . count($propositions)
+				. ' proposition(s)', 'marly.' . _LOG_INFO_IMPORTANTE);
+			break;
+		}
+	}
+	if (!$propositions) {
+		spip_log('marly : aucun des ' . count($essais) . ' essais n\'a rien donne pour « '
+			. $recherche . ' »', 'marly.' . _LOG_INFO_IMPORTANTE);
+	}
 
 	return $propositions;
 }
