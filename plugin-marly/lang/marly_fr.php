@@ -341,6 +341,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'asso_quand'           => 'Quand',
 	'asso_site'            => 'Voir leur site',
 	'retour_associations'  => 'Toutes les associations',
+	'confirmer_suppression_association' => 'Supprimer cette fiche ? Sa rubrique et ses articles sont conservés.',
 	'erreur_asso_existe' => 'Une association porte déjà ce nom dans l’annuaire. Pour corriger sa fiche, contactez la mairie.',
 	'courriel_gerant_aide' => 'C’est à cette adresse que la mairie confirmera la parution et enverra l’accès pour tenir la fiche à jour.',
 	'preinscription_objet' => 'Annuaire des associations : demande de @nom@',

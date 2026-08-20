@@ -16,6 +16,7 @@
 			<th><:marly:col_theme:></th>
 			<th><:marly:col_responsable:></th>
 			<th><:marly:col_etat:></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -28,6 +29,11 @@
 			<td>[(#THEME|marly_theme_association)]</td>
 			<td>[(#PRESIDENT)<br>][<small>(#TELEPHONE)</small>]</td>
 			<td>[(#STATUT|=={publie}|?{'marly:publication_oui','marly:publication_non'}|_T)]</td>
+			<td class="actions">
+				<a class="btn" href="[(#URL_ECRIRE{association,id_association=#ID_ASSOCIATION})]"><:marly:modifier:></a>
+				<a class="btn" href="[(#URL_ACTION_AUTEUR{supprimer_association,#ID_ASSOCIATION,#URL_ECRIRE{associations}})]"
+				   onclick="return confirm('[(#VAL{marly:confirmer_suppression_association}|_T|attribut_html)]');"><:marly:supprimer:></a>
+			</td>
 		</tr>
 		</BOUCLE_assos>
 	</tbody>
