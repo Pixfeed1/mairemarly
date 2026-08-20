@@ -48,6 +48,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'titre'      => 'titre AS titre, "" AS lang',
 		'principale' => 'oui',
 		'type'       => 'salle',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_salle qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre salle >>. */
+		'texte_objet'  => 'marly:objet_salle',
+		'texte_objets' => 'marly:objets_salles',
 		'editable'   => 'oui',
 		'champs_editables'  => array('titre', 'descriptif', 'capacite', 'tarif_commune',
 		                             'tarif_hors_commune', 'caution', 'delai_min', 'delai_max'),
@@ -141,6 +147,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'principale' => 'oui',
 		'type'       => 'lettre',
 
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_lettre qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre lettre >>. */
+		'texte_objet'  => 'marly:objet_lettre',
+		'texte_objets' => 'marly:objets_lettres',
+
 		/* PAS editable au sens de SPIP. Une lettre n'a ni logo, ni page
 		   publique, ni fiche a consulter : la declarer editable faisait
 		   apparaitre une colonne << Logo lettre >> et un lien << Voir en
@@ -182,6 +194,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'titre'      => 'nom AS titre, "" AS lang',
 		'principale' => 'oui',
 		'type'       => 'lieu',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_lieu qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre lieu >>. */
+		'texte_objet'  => 'marly:objet_lieu',
+		'texte_objets' => 'marly:objets_lieux',
 		'editable'   => 'oui',
 		'champs_editables'  => array('nom', 'type', 'adresse', 'latitude', 'longitude',
 		                             'horaires', 'descriptif', 'rang'),
@@ -249,6 +267,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'titre'      => 'nom AS titre, "" AS lang',
 		'principale' => 'oui',
 		'type'       => 'association',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_association qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre association >>. */
+		'texte_objet'  => 'marly:objet_association',
+		'texte_objets' => 'marly:objets_associations',
 		'editable'   => 'oui',
 		'champs_editables'  => array('nom', 'theme', 'activite', 'president', 'telephone',
 		                             'courriel', 'site', 'lieu', 'id_lieu', 'horaires', 'rang', 'id_rubrique'),
@@ -295,6 +319,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'titre'      => 'titre AS titre, "" AS lang',
 		'principale' => 'oui',
 		'type'       => 'raccourci',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_raccourci qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre raccourci >>. */
+		'texte_objet'  => 'marly:objet_raccourci',
+		'texte_objets' => 'marly:objets_raccourcis',
 		'editable'   => 'oui',
 		'champs_editables'  => array('titre', 'icone', 'cible', 'rang'),
 		'rechercher_champs' => array('titre' => 8),
@@ -342,6 +372,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'titre'      => 'nom AS titre, "" AS lang',
 		'principale' => 'oui',
 		'type'       => 'elu',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_elu qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre elu >>. */
+		'texte_objet'  => 'marly:objet_elu',
+		'texte_objets' => 'marly:objets_elus',
 		'editable'   => 'oui',
 		'champs_editables'  => array('nom', 'prenom', 'fonction', 'delegation',
 		                             'telephone', 'courriel', 'permanence', 'rang'),
@@ -436,6 +472,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'titre'      => 'titre AS titre, "" AS lang',
 		'principale' => 'oui',
 		'type'       => 'demarche',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_demarche qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre demarche >>. */
+		'texte_objet'  => 'marly:objet_demarche',
+		'texte_objets' => 'marly:objets_demarches',
 		'editable'   => 'oui',
 		'champs_editables'  => array('titre', 'famille', 'icone', 'resume', 'qui', 'comment',
 		                             'pieces', 'cout', 'delai', 'ou', 'lien', 'lien_faire', 'rang',
@@ -492,6 +534,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'date'       => 'date',
 		'principale' => 'oui',
 		'type'       => 'abonne',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_abonne qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre abonne >>. */
+		'texte_objet'  => 'marly:objet_abonne',
+		'texte_objets' => 'marly:objets_abonnes',
 		'editable'   => 'non',
 	);
 
@@ -541,6 +589,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'date'       => 'date_debut',
 		'principale' => 'oui',
 		'type'       => 'manifestation',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_manifestation qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre manifestation >>. */
+		'texte_objet'  => 'marly:objet_manifestation',
+		'texte_objets' => 'marly:objets_manifestations',
 		'editable'   => 'oui',
 
 		/* C'est cette declaration qui ouvre les LOGOS : SPIP autorise une
@@ -613,6 +667,12 @@ function marly_declarer_tables_objets_sql($tables) {
 		'date'       => 'date',
 		'principale' => 'oui',
 		'type'       => 'reservation',
+
+		/* Comment cet objet s'appelle. Sans ces deux lignes, SPIP cherche une
+		   chaine titre_reservation qui n'existe pas, et affiche le nom de la cle
+		   dans sa barre d'administration : << titre reservation >>. */
+		'texte_objet'  => 'marly:objet_reservation',
+		'texte_objets' => 'marly:objets_reservations',
 		'editable'   => 'non',
 	);
 

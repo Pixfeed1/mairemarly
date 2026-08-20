@@ -216,6 +216,30 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'champ_places'              => 'Nombre de places',
 	'champ_tarif'               => 'Tarif',
 
+	// --- Comment nos objets s'appellent ---------------------------------------
+	// SPIP s'en sert partout où il parle d'un objet sans savoir lequel : sa
+	// barre d'administration, ses messages, ses formulaires génériques.
+	'objet_salle'          => 'Ressource',
+	'objets_salles'        => 'Ressources',
+	'objet_reservation'    => 'Réservation',
+	'objets_reservations'  => 'Réservations',
+	'objet_manifestation'  => 'Événement',
+	'objets_manifestations' => 'Événements',
+	'objet_abonne'         => 'Abonné',
+	'objets_abonnes'       => 'Abonnés',
+	'objet_lettre'         => 'Lettre d’information',
+	'objets_lettres'       => 'Lettres d’information',
+	'objet_demarche'       => 'Démarche',
+	'objets_demarches'     => 'Démarches',
+	'objet_elu'            => 'Élu',
+	'objets_elus'          => 'Élus',
+	'objet_raccourci'      => 'Accès rapide',
+	'objets_raccourcis'    => 'Accès rapides',
+	'objet_association'    => 'Association',
+	'objets_associations'  => 'Associations',
+	'objet_lieu'           => 'Lieu',
+	'objets_lieux'         => 'Lieux',
+
 	// --- Lieux ----------------------------------------------------------------
 	'titre_lieux'          => 'Lieux',
 	'creer_lieu'           => 'Ajouter un lieu',
