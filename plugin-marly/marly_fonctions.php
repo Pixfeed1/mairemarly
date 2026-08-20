@@ -190,3 +190,34 @@ function filtre_marly_themes_pour_boucle_dist($rien = '') {
 	include_spip('inc/marly_associations');
 	return marly_themes_traduits();
 }
+
+/* ---------------------------------------------------------------------------
+   Les filtres vivent TOUS ici, et nulle part ailleurs.
+   ---------------------------------------------------------------------------
+   SPIP ne charge que ce fichier pour compiler un squelette. Un filtre range
+   dans inc/ existe pour le PHP, mais reste introuvable pour un gabarit :
+   << Filtre marly_url_raccourci non defini >>. Les deux qui suivent etaient
+   dans ce cas.
+
+   Ils appellent le fichier qui porte la logique : le filtre est un guichet,
+   pas un endroit ou raisonner.
+   --------------------------------------------------------------------------- */
+
+/** L'intitule d'un theme d'association, pour l'affichage. */
+function filtre_marly_theme_association_dist($theme) {
+	include_spip('inc/marly_associations');
+	$themes = marly_themes_associations();
+	return isset($themes[$theme]) ? _T($themes[$theme]) : '';
+}
+
+/**
+ * L'adresse d'un raccourci de la page d'accueil.
+ *
+ * Rend une chaine vide si la destination n'existe plus : le gabarit n'affiche
+ * alors pas le rond. Cinq raccourcis valent mieux que six dont un mene a une
+ * page vide.
+ */
+function filtre_marly_url_raccourci_dist($cible) {
+	include_spip('inc/marly_raccourcis');
+	return marly_url_raccourci($cible);
+}

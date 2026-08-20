@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Les six raccourcis de la page d'accueil.
  * ---------------------------------------------------------------------------
@@ -56,7 +57,7 @@ function marly_cibles_raccourcis() {
  * une démarche dépubliée. Le gabarit n'affiche alors pas le rond : mieux vaut
  * cinq raccourcis que six dont un mène à une page vide.
  */
-function filtre_marly_url_raccourci_dist($cible) {
+function marly_url_raccourci($cible) {
 	$cible = trim((string) $cible);
 	if ($cible === '' or strpos($cible, ':') === false) {
 		return '';

@@ -269,6 +269,25 @@ for f in sorted(glob.glob('squelettes/**/*.html', recursive=True) +
                  s[:m.start()].count(chr(10)) + 1,
                  'balise de langue dans un argument de filtre : elle sera affichee telle quelle')
 
+# 19. Tout filtre marly_* appele dans un gabarit doit vivre dans
+#     marly_fonctions.php, le seul fichier que SPIP charge pour compiler un
+#     squelette. Range ailleurs, le filtre existe pour le PHP mais reste
+#     introuvable pour un gabarit, qui s'arrete sur
+#     << Filtre marly_xxx non defini >>.
+_FONCTIONS = os.path.join(RACINE, '..', 'plugin-marly', 'marly_fonctions.php')
+if os.path.exists(_FONCTIONS):
+    _src = open(_FONCTIONS, encoding='utf-8').read()
+    _appeles = set()
+    for _f in glob.glob('squelettes/**/*.html', recursive=True) + \
+              glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'), recursive=True):
+        _appeles |= set(re.findall(r'\|(marly_[a-z0-9_]+)', open(_f, encoding='utf-8').read()))
+    for _nom in sorted(_appeles):
+        if (f'function filtre_{_nom}_dist' not in _src
+                and f'function filtre_{_nom}(' not in _src
+                and f'function {_nom}(' not in _src):
+            signaler('plugin-marly/marly_fonctions.php', 1,
+                     f'filtre {_nom} appele dans un gabarit mais absent de ce fichier')
+
 # 14. Le schema declare doit valoir la derniere etape de mise a jour.
 #     paquet.xml porte DEUX numeros : << version >>, celle du plugin, et
 #     << schema >>, celle de la base. SPIP ne compare que la seconde a ce
