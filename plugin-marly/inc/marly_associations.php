@@ -44,3 +44,53 @@ function marly_themes_traduits() {
 	}
 	return $out;
 }
+
+/**
+ * La rubrique d'une association, créée au besoin.
+ * ---------------------------------------------------------------------------
+ * Créée dès l'enregistrement de l'association, et non sur demande. Une
+ * rubrique vide n'apparaît PAS sur le site : SPIP ne publie une rubrique que
+ * lorsqu'elle contient au moins un article publié. Elle ne coûte donc rien
+ * tant que personne n'écrit, et le jour où l'association veut publier, tout
+ * est déjà en place — personne n'a à comprendre ce qu'est une rubrique.
+ *
+ * La rubrique d'accueil est cherchée parmi les rubriques racines, à son
+ * titre. Si aucune ne convient, elle est créée : mieux vaut une rubrique
+ * « Vie associative » posée d'office qu'une association rattachée n'importe
+ * où.
+ *
+ * Rend l'identifiant, ou 0 si SPIP n'a pas pu créer la rubrique. L'échec est
+ * silencieux et sans conséquence : l'association est enregistrée, il lui
+ * manque seulement sa rubrique, que la mairie peut choisir à la main.
+ */
+function marly_rubrique_association($nom) {
+	include_spip('action/editer_objet');
+	if (!function_exists('objet_inserer')) {
+		spip_log('marly : objet_inserer indisponible, rubrique non creee', 'marly');
+		return 0;
+	}
+
+	$parent = sql_getfetsel('id_rubrique', 'spip_rubriques',
+		"id_parent = 0 AND (titre LIKE " . sql_quote('%associ%')
+		. " OR titre LIKE " . sql_quote('%Vie asso%') . ')');
+
+	if (!$parent) {
+		$parent = objet_inserer('rubrique', 0);
+		if (!$parent) {
+			return 0;
+		}
+		objet_modifier('rubrique', $parent, array(
+			'titre'      => _T('marly:titre_vie_associative'),
+			'descriptif' => _T('marly:assos_intro'),
+		));
+	}
+
+	$id = objet_inserer('rubrique', $parent);
+	if (!$id) {
+		return 0;
+	}
+	objet_modifier('rubrique', $id, array('titre' => $nom));
+	spip_log("marly : rubrique $id creee pour l'association " . $nom, 'marly');
+
+	return $id;
+}

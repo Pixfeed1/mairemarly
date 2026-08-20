@@ -118,6 +118,18 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		if (!$id_association) {
 			return array('message_erreur' => _T('marly:erreur_enregistrement'));
 		}
+
+		/* Sa rubrique est creee dans la foulee. Elle n'apparaitra pas sur le
+		   site tant qu'aucun article n'y est publie, donc elle ne coute rien ;
+		   et le jour ou l'association veut ecrire, il n'y a rien a preparer. */
+		if (!$champs['id_rubrique']) {
+			include_spip('inc/marly_associations');
+			$id_rubrique = marly_rubrique_association($champs['nom']);
+			if ($id_rubrique) {
+				sql_updateq('spip_associations', array('id_rubrique' => $id_rubrique),
+					'id_association = ' . intval($id_association));
+			}
+		}
 	} else {
 		sql_updateq('spip_associations', $champs, 'id_association = ' . intval($id_association));
 	}
