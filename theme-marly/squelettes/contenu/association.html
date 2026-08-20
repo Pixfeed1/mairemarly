@@ -20,12 +20,27 @@
 		[<div><dt><:marly:champ_courriel:></dt><dd><a href="mailto:[(#COURRIEL|attribut_html)]">(#COURRIEL)</a></dd></div>]
 	</dl>
 
-	[(#REM) L'adresse, et le lien vers le plan si elle a pu etre localisee. Un
-	        LIEN et non une carte integree : tant que personne ne clique, rien
-	        ne part chez OpenStreetMap. L'adresse est ecrite juste au-dessus,
-	        un plan pleine largeur n'apporterait rien de plus. ]
+	[(#REM) L'adresse, puis le plan si elle a pu etre localisee.
+
+	        La carte ne se charge qu'au clic. Un cadre integre d'emblee
+	        interrogerait OpenStreetMap des l'ouverture de la page et lui
+	        transmettrait l'adresse IP du visiteur : pour une collectivite,
+	        c'est une transmission a un tiers sans base legale.
+
+	        Le lien reste sous la carte, il ne fait pas double emploi : il
+	        ouvre le plan en grand et permet d'y demander un itineraire. ]
 	[<section><h2><:marly:asso_ou:></h2>
 		<p>(#LIEU)</p>
+		[<div class="carte-facade" data-carte="(#LATITUDE|marly_carte_point{#LONGITUDE}|attribut_html)">
+			<div class="carte-fond" aria-hidden="true">
+				<svg class="ico"><use href="#ri-map-pin-2-line"/></svg>
+			</div>
+			<button type="button" class="carte-afficher">
+				<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg>
+				<span><:marly:afficher_la_carte:></span>
+			</button>
+			<p class="carte-note"><:marly:carte_avertissement:></p>
+		</div>]
 		[<p><a class="lien-fleche" href="(#LATITUDE|marly_lien_carte{#LONGITUDE}|attribut_html)" rel="noopener">
 			<:marly:voir_sur_la_carte:>
 			<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg></a></p>]

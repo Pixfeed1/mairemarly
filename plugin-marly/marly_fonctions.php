@@ -281,12 +281,40 @@ function filtre_marly_carte_commune_dist($rien = '') {
 }
 
 /**
+ * Le cadre de carte autour d'un point, pour la facade cliquable.
+ *
+ * Meme regle que pour la carte de la commune : c'est une ADRESSE de carte
+ * qu'on rend ici, pas une carte. Rien n'est charge tant que le visiteur n'a
+ * pas clique, donc son adresse IP ne part pas chez OpenStreetMap a
+ * l'ouverture de la page. Le consentement se donne, il ne se presume pas.
+ *
+ * La marge de 0,003 degre cadre a environ 300 metres autour du point : de
+ * quoi reconnaitre la rue et les reperes autour, sans perdre le batiment.
+ */
+function filtre_marly_carte_point_dist($latitude, $longitude = '') {
+	$lat = trim((string) $latitude);
+	$lon = trim((string) $longitude);
+	if ($lat === '' or $lon === '' or !is_numeric($lat) or !is_numeric($lon)) {
+		return '';
+	}
+	$lat = (float) $lat;
+	$lon = (float) $lon;
+	$m = 0.003;
+	$n = function ($v) {
+		return rtrim(rtrim(number_format($v, 5, '.', ''), '0'), '.');
+	};
+	return 'https://www.openstreetmap.org/export/embed.html?bbox='
+		. $n($lon - $m) . '%2C' . $n($lat - $m) . '%2C'
+		. $n($lon + $m) . '%2C' . $n($lat + $m)
+		. '&layer=mapnik&marker=' . $n($lat) . '%2C' . $n($lon);
+}
+
+/**
  * Le lien vers un point sur OpenStreetMap.
  *
- * Un LIEN, et non une carte integree : tant que personne ne clique, aucune
- * requete ne part chez OpenStreetMap et aucune adresse IP ne lui est
- * transmise. Sur une fiche d'association, un plan pleine largeur n'apporte
- * rien de plus qu'un lien — l'adresse est deja ecrite juste au-dessus.
+ * Il accompagne la carte au lieu de la remplacer : la facade situe le lieu,
+ * le lien permet d'ouvrir le plan en grand et d'y demander un itineraire,
+ * ce qu'un cadre integre ne fait pas.
  */
 function filtre_marly_lien_carte_dist($latitude, $longitude = '') {
 	$lat = trim((string) $latitude);

@@ -97,6 +97,18 @@ echo "contenu de tmp/ (les caches que le deploiement ne vide peut-etre pas) :"
 ls -la "$SITE/tmp" | head -25
 
 echo
+echo "=== 8. Les associations, leur rubrique et leur localisation"
+# Une carte absente sur le site public a deux causes possibles, et une seule
+# se voit ici : soit l'adresse n'a jamais ete saisie, soit elle l'a ete mais
+# le geocodage n'a rien rapporte. Sans ces colonnes sous les yeux, on
+# corrige au hasard le squelette alors que la donnee manque.
+$SQL -e "SELECT id_association, LEFT(nom,28) AS nom, id_rubrique,
+                IF(lieu='','(vide)',LEFT(lieu,34)) AS lieu,
+                IF(latitude='' OR latitude IS NULL,'NON LOCALISEE',
+                   CONCAT(latitude,' / ',longitude)) AS point
+         FROM spip_associations ORDER BY id_association" 2>&1
+
+echo
 echo "=== RESUME (c'est cette partie qui decide)"
 SCHEMA=$(grep -o 'schema="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1 | sed 's/schema="//; s/"//')
 ENBASE=$($SQL -e "SELECT valeur FROM spip_meta WHERE nom='marly_base_version'" 2>/dev/null)
