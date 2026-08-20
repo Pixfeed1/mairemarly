@@ -29,6 +29,19 @@
 				<textarea name="texte" id="texte" rows="16" class="inserer_barre_edition">[(#ENV{texte}|textebrut)]</textarea>
 				<small><:marly:texte_aide:></small>
 			</li>
+			<li class="marly-champ marly-video[ (#ENV**{erreurs}|table_valeur{video}|oui)erreur]">
+				<label for="video"><:marly:champ_video_lettre:></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{video})</span>]
+				<input type="url" class="text" name="video" id="video" value="[(#ENV{video}|attribut_html)]" placeholder="https://">
+				<small><:marly:video_lettre_aide:></small>
+			</li>
+			<li class="marly-champ marly-actus">
+				<label class="marly-case">
+					<input type="checkbox" name="actus" id="actus" value="oui"[(#ENV{actus}|oui) checked]>
+					<:marly:champ_actus:>
+				</label>
+				<small><:marly:actus_aide:></small>
+			</li>
 		</ul>
 		<p class="boutons"><input type="submit" class="submit" value="<:marly:enregistrer:>"></p>
 	</form>

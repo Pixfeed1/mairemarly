@@ -215,6 +215,12 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'date_fin_aide'             => 'Laissez vide pour un événement ponctuel.',
 	'champ_places'              => 'Nombre de places',
 	'champ_tarif'               => 'Tarif',
+
+	// --- Lettre : media et renvois vers le site -------------------------------
+	'champ_video_lettre'   => 'Lien vers une vidéo',
+	'video_lettre_aide'    => 'YouTube, Viméo, ou une vidéo déposée sur le site. Une vidéo ne se lit pas dans un courriel : le message affichera un bouton qui l’ouvre.',
+	'champ_actus'          => 'Reprendre les dernières actualités du site',
+	'actus_aide'           => 'Ajoute en fin de lettre les trois derniers articles publiés, avec leur date et un lien. Rien à choisir : ce sont ceux que vous venez de publier.',
 	'places_aide'               => '0 pour ne pas limiter — une kermesse en plein air n’a pas de jauge.',
 	'champ_logo'                => 'Photographie',
 	'logo_aide'                 => 'Elle s’ajoute après l’enregistrement, dans la colonne de droite : « Ajouter un logo ». C’est elle qui s’affiche sur la carte du site.',

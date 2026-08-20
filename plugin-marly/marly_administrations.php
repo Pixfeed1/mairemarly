@@ -60,6 +60,13 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_lettres')),
 	);
 
+	/* 3.9.0 — un lien video et la reprise des dernieres actualites sur les
+	   lettres. Les lettres deja ecrites gardent leur contenu : maj_tables
+	   ajoute les colonnes, il ne reecrit rien. */
+	$maj['3.9.0'] = array(
+		array('maj_tables', array('spip_lettres')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }

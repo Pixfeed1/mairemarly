@@ -108,6 +108,19 @@ function marly_declarer_tables_objets_sql($tables) {
 			'chapo'        => 'text NOT NULL DEFAULT ""',
 			'texte'        => 'longtext NOT NULL DEFAULT ""',
 
+			/* Un lien vers une video. Elle ne se LIT pas dans un courriel :
+			   toutes les messageries ou presque suppriment la balise video.
+			   On envoie donc un appel a la regarder, qui ouvre la video sur
+			   le site — c'est ce que font tous les envois en nombre. */
+			'video'        => 'varchar(255) NOT NULL DEFAULT ""',
+
+			/* Reprendre en fin de lettre les derniers articles publies. Une
+			   case a cocher plutot qu'un choix d'articles : le secretariat
+			   n'a pas a composer une selection en plus d'ecrire la lettre,
+			   et les trois derniers articles sont, par construction, ceux
+			   qu'on vient de publier. */
+			'actus'        => 'tinyint(1) NOT NULL DEFAULT 1',
+
 			/* redaction -> envoi -> envoyee, ou arretee */
 			'statut'       => 'varchar(20) NOT NULL DEFAULT "redaction"',
 

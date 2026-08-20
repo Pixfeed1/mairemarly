@@ -17,6 +17,11 @@ function formulaires_editer_lettre_charger_dist($id_lettre = 'new') {
 		'titre'     => '',
 		'chapo'     => '',
 		'texte'     => '',
+		'video'     => '',
+		/* Cochee par defaut : reprendre les dernieres actualites est ce
+		   qu'on veut presque toujours, et decocher demande un geste de
+		   moins que cocher. */
+		'actus'     => 'oui',
 	);
 
 	if ($id_lettre !== 'new' and intval($id_lettre)) {
@@ -27,9 +32,10 @@ function formulaires_editer_lettre_charger_dist($id_lettre = 'new') {
 			if ($lettre['statut'] !== 'redaction') {
 				return false;
 			}
-			foreach (array('titre', 'chapo', 'texte') as $champ) {
+			foreach (array('titre', 'chapo', 'texte', 'video') as $champ) {
 				$valeurs[$champ] = $lettre[$champ];
 			}
+			$valeurs['actus'] = $lettre['actus'] ? 'oui' : '';
 		}
 	}
 
@@ -46,6 +52,13 @@ function formulaires_editer_lettre_verifier_dist($id_lettre = 'new') {
 		$erreurs['texte'] = _T('marly:erreur_obligatoire');
 	}
 
+	/* Une adresse sans https:// ne mene nulle part une fois cliquee, et
+	   l'erreur ne se verrait qu'apres l'envoi — quand il est trop tard. */
+	$video = trim((string) _request('video'));
+	if ($video !== '' and !preg_match(',^https?://,i', $video)) {
+		$erreurs['video'] = _T('marly:erreur_adresse');
+	}
+
 	return $erreurs;
 }
 
@@ -54,6 +67,8 @@ function formulaires_editer_lettre_traiter_dist($id_lettre = 'new') {
 		'titre' => trim((string) _request('titre')),
 		'chapo' => trim((string) _request('chapo')),
 		'texte' => trim((string) _request('texte')),
+		'video' => trim((string) _request('video')),
+		'actus' => _request('actus') ? 1 : 0,
 	);
 
 	if ($id_lettre === 'new' or !intval($id_lettre)) {
