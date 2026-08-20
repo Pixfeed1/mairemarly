@@ -146,9 +146,10 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 	   On ne cherche que si le lieu a CHANGE, ou s'il n'y a pas encore de
 	   coordonnees : sans cela, chaque modification de l'horaire relancerait
 	   une requete pour une adresse identique. */
-	$ancien = ($id_association !== 'new' and intval($id_association))
-		? sql_getfetsel('lieu', 'spip_associations', 'id_association = ' . intval($id_association))
+	$avant = ($id_association !== 'new' and intval($id_association))
+		? sql_fetsel('lieu, statut', 'spip_associations', 'id_association = ' . intval($id_association))
 		: null;
+	$ancien = $avant['lieu'] ?? null;
 
 	/* Un point choisi dans la liste des propositions ne se rediscute pas :
 	   la mairie a vu l'adresse et a clique dessus. Chercher a nouveau
@@ -203,6 +204,15 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 					'id_association = ' . intval($id_association));
 			}
 		}
+	}
+
+	/* La fiche vient-elle d'etre publiee ? C'est le deuxieme temps du
+	   pipeline de preinscription : la personne qui s'est declaree gerante
+	   recoit la confirmation, son acces redacteur est cree, et le courriel
+	   lui donne le lien pour choisir son mot de passe. Uniquement au
+	   passage en attente vers publie : pas a chaque enregistrement. */
+	if (($avant['statut'] ?? '') === 'prepa' and $champs['statut'] === 'publie') {
+		marly_prevenir_association_publiee($id_association);
 	}
 
 	/* On dit ce qui s'est passe. Un enregistrement muet laissait croire que

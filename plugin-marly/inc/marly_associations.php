@@ -94,3 +94,96 @@ function marly_rubrique_association($nom) {
 
 	return $id;
 }
+
+/**
+ * Trouve ou crée le compte rédacteur d'une association.
+ *
+ * Rend le login, ou '' si rien n'a pu être fait. Le compte est créé SANS
+ * mot de passe : personne ne peut s'en servir tant que son titulaire ne
+ * l'a pas défini lui-même par le lien « mot de passe oublié ». On n'envoie
+ * donc jamais de mot de passe par courriel, et aucun mot de passe
+ * provisoire ne traîne nulle part : c'est le circuit de SPIP qui fait
+ * autorité, pas un des nôtres.
+ *
+ * Rédacteur, pas plus : il écrit, la mairie publie. Le maire est
+ * directeur de publication.
+ */
+function marly_compte_redacteur($nom, $courriel) {
+	$courriel = trim((string) $courriel);
+	if (!$courriel or !filter_var($courriel, FILTER_VALIDATE_EMAIL)) {
+		return '';
+	}
+
+	$existant = sql_fetsel('id_auteur, login', 'spip_auteurs', 'email = ' . sql_quote($courriel));
+	if ($existant) {
+		return $existant['login'] ?: $courriel;
+	}
+
+	include_spip('action/editer_objet');
+	$id_auteur = objet_inserer('auteur');
+	if (!$id_auteur) {
+		spip_log("marly : creation du compte impossible pour $courriel",
+			'marly.' . _LOG_INFO_IMPORTANTE);
+		return '';
+	}
+
+	/* Directement en base, a dessein : l'API des auteurs melange droits et
+	   institution, et un echec silencieux ici laisserait un compte fantome.
+	   Les colonnes posees sont simples et connues. pass vide = connexion
+	   impossible tant que le titulaire n'a pas defini son mot de passe. */
+	sql_updateq('spip_auteurs', array(
+		'nom'    => (string) $nom ?: $courriel,
+		'login'  => $courriel,
+		'email'  => $courriel,
+		'statut' => '1comite',
+		'pass'   => '',
+	), 'id_auteur = ' . intval($id_auteur));
+
+	spip_log("marly : compte redacteur $courriel cree (auteur $id_auteur)",
+		'marly.' . _LOG_INFO_IMPORTANTE);
+
+	return $courriel;
+}
+
+/**
+ * Le courriel envoyé quand la mairie publie une fiche demandée.
+ *
+ * C'est le deuxième temps du pipeline : demande, validation, puis ce
+ * message, qui confirme la parution et donne l'accès. Le lien mène au
+ * circuit « mot de passe » de SPIP : la personne choisit son mot de passe
+ * elle-même, rien ne circule en clair.
+ */
+function marly_prevenir_association_publiee($id_association) {
+	$fiche = sql_fetsel('nom, president, courriel', 'spip_associations',
+		'id_association = ' . intval($id_association));
+	if (!$fiche or !trim((string) $fiche['courriel'])) {
+		return false;
+	}
+
+	$login = marly_compte_redacteur($fiche['president'], $fiche['courriel']);
+
+	include_spip('inc/filtres');
+	$url_site = url_absolue(generer_url_public('associations', ''));
+	$url_pass = url_absolue(generer_url_public('spip_pass', ''));
+
+	$corps = _T('marly:asso_publiee_corps', array('nom' => $fiche['nom'])) . "\n\n"
+		. $url_site . "\n\n";
+	if ($login) {
+		$corps .= _T('marly:asso_publiee_acces', array('login' => $login)) . "\n"
+			. $url_pass . "\n\n"
+			. _T('marly:asso_publiee_role') . "\n\n";
+	}
+	$corps .= _T('marly:asso_publiee_maj');
+
+	$envoyer = charger_fonction('envoyer_mail', 'inc', true);
+	if (!$envoyer or !$envoyer($fiche['courriel'],
+			_T('marly:asso_publiee_objet', array('nom' => $fiche['nom'])), $corps)) {
+		spip_log('marly : courriel de publication non envoye a ' . $fiche['courriel'],
+			'marly.' . _LOG_INFO_IMPORTANTE);
+		return false;
+	}
+
+	spip_log('marly : fiche publiee, courriel envoye a ' . $fiche['courriel'],
+		'marly.' . _LOG_INFO_IMPORTANTE);
+	return true;
+}

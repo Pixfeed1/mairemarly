@@ -275,6 +275,25 @@ En cas d'erreur, `Arrêter l'envoi` stoppe les envois restants — mais les
 courriels déjà partis sont partis. L'écran le dit en toutes lettres plutôt que
 de le laisser espérer.
 
+## Quand une association demande à entrer dans l'annuaire
+
+Le bas de la page Associations du site porte un bouton « Signalez-la à la
+mairie ». L'association y remplit sa fiche elle-même : nom, thème, activité,
+la personne qui la gère et son courriel. Ce qui se passe ensuite :
+
+1. La fiche arrive **en attente**, invisible du public, et vous recevez un
+   courriel. Répondre à ce courriel répond directement au demandeur.
+2. Ouvrez `Édition ▸ Associations`, relisez la fiche, corrigez au besoin,
+   choisissez « Publiée » et enregistrez. Pour refuser, supprimez la fiche.
+3. À la publication, tout le reste est automatique : la personne reçoit la
+   confirmation, un accès rédacteur lui est créé avec son courriel comme
+   identifiant, et le message lui donne le lien pour choisir son mot de
+   passe. Aucun mot de passe ne circule par courriel.
+
+Le compte créé est un compte **rédacteur** : l'association écrit ses
+articles dans sa rubrique, et c'est vous qui publiez, comme pour tout ce qui
+paraît sur le site.
+
 ## Donner un compte à une association
 
 Une association qui veut publier ses actualités écrit ses propres articles.
