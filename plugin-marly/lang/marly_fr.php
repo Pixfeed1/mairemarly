@@ -485,6 +485,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'toutes_les_demarches' => 'Toutes les démarches',
 	'demarches_intro'      => 'Ce que vous pouvez faire, et où. Les fiches renvoient vers service-public.gouv.fr pour la réglementation, toujours à jour ; la mairie précise ici ce qui la concerne : son guichet, ses horaires, ses pièces.',
 	'aucune_demarche_publiee' => 'Les fiches sont en cours de préparation.',
+	'demarches_voisines' => 'Dans la même famille de démarches',
 	'demarche_qui'         => 'Qui est concerné',
 	'demarche_comment'     => 'Comment faire',
 	'demarche_pieces'      => 'Pièces à fournir',

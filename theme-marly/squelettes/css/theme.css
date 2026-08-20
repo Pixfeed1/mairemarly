@@ -1230,6 +1230,9 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    Elle s'affiche directement : choix arrete avec la mairie. Le cadre garde
    une hauteur fixe pour que la page ne saute pas pendant le chargement.
    =========================================================================== */
+/* --- les fiches voisines en bas d'une demarche ---------------------------- */
+.fiche-voisines{ margin-top:34px; padding-top:26px; border-top:1px solid var(--trait); }
+
 /* --- les etapes numerotees d'une demarche --------------------------------- */
 /* SPIP rend -# en liste ordonnee : chaque etape porte son numero dans une
    pastille, facon parcours. C'est la lecture qu'attendent les usagers des

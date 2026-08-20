@@ -271,7 +271,7 @@ function marly_socle_demarches() {
 			'resume'  => 'Ces titres ne se délivrent que dans les mairies équipées d’un dispositif de recueil. Vérifiez avant de vous déplacer.',
 			'qui'     => 'Toute personne de nationalité française.',
 			'comment' => "-# Faites la pré-demande en ligne sur le site de l'ANTS. Elle est gratuite : seul le timbre fiscal du passeport est payant.\n-# Prenez rendez-vous dans une mairie équipée. N'importe laquelle, quel que soit votre domicile : les plus proches sont sur la carte de l'ANTS.\n-# Déposez le dossier au rendez-vous. La personne concernée doit être présente, ses empreintes sont recueillies.\n-# Un SMS vous prévient quand le titre est prêt : retirez-le, sans rendez-vous, là où vous avez déposé le dossier.",
-			'a_savoir' => 'Un titre non retiré dans les trois mois est détruit, sans remboursement. Méfiez-vous des sites payants qui imitent les sites officiels : la pré-demande et le rendez-vous sont gratuits.',
+			'a_savoir' => 'Un titre non retiré dans les trois mois est détruit, sans remboursement. Méfiez-vous des sites payants qui imitent les sites officiels : la pré-demande et le rendez-vous sont gratuits. Avec l’application France Identité, votre nouvelle carte peut aussi prouver votre identité en ligne.',
 			'pieces'  => 'Photo d’identité récente, justificatif de domicile, timbre fiscal pour un passeport, et ancien titre s’il s’agit d’un renouvellement.',
 			'cout'    => 'Carte d’identité gratuite. Passeport : 86 € pour un majeur',
 			'delai'   => 'Variable selon les rendez-vous disponibles',

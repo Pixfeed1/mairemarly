@@ -77,6 +77,27 @@
 				<a class="pilule" href="(#LIEN|attribut_html)" rel="noopener">
 					<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:voir_fiche_officielle:></a>
 			</p>]
+			[(#REM) Les fiches voisines : trois demarches de la meme famille,
+			        choisies toutes seules. Qui lit << carte d'identite >>
+			        cherche souvent << listes electorales >> dans la foulee ;
+			        ces liens le gardent sur le site au lieu de le renvoyer
+			        chercher ailleurs. Rien a saisir pour la mairie. ]
+			<B_voisines>
+			<section class="fiche-voisines">
+			<h2><:marly:demarches_voisines:></h2>
+			<ul class="fiches">
+				<BOUCLE_voisines(DEMARCHES){famille=#FAMILLE}{id_demarche != #ID_DEMARCHE}{par rang}{0,3}>
+				<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#[(#ICONE|sinon{ri-file-text-line})]"/></svg></span>
+					<span class="fiche-texte">
+						<b>#TITRE</b>
+						[<span>(#RESUME|couper{110})</span>]
+					</span>
+				</a></li>
+				</BOUCLE_voisines>
+			</ul>
+			</section>
+			</B_voisines>
 		</div>
 
 		<aside class="fiche-cote">
