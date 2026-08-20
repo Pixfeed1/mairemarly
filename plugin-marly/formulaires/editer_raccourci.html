@@ -38,6 +38,10 @@
 				</select>
 				<small><:marly:icone_aide:></small>
 			</li>
+			[(#REM) Le champ n'existe que s'il y a un choix a faire. Avec un
+			        seul raccourci, demander sa place est une question posee
+			        pour rien : il est premier. ]
+			<B_positions>
 			<li class="marly-champ marly-rang">
 				<label for="rang"><:marly:champ_position:></label>
 				<select name="rang" id="rang">
@@ -47,6 +51,9 @@
 				</select>
 				<small><:marly:position_aide:></small>
 			</li>
+			</B_positions>
+			<input type="hidden" name="rang" value="[(#ENV{rang}|attribut_html)]">
+			<//B_positions>
 			<li class="marly-champ marly-statut">
 				<label for="statut"><:marly:champ_publication:></label>
 				<select name="statut" id="statut">

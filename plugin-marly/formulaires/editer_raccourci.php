@@ -25,15 +25,36 @@ function formulaires_editer_raccourci_charger_dist($id_raccourci = 'new') {
 		'statut'  => 'publie',
 		'_icones' => marly_icones_demarches(),
 		'_cibles' => marly_cibles_raccourcis(),
-		/* Six positions nommees plutot qu'un nombre. On ne demande pas a
-		   quelqu'un qui range six boutons de raisonner en << ordre 10 >> :
-		   on lui demande lequel vient en premier. */
-		'_positions' => array(
-			1 => _T('marly:position_1'), 2 => _T('marly:position_2'),
-			3 => _T('marly:position_3'), 4 => _T('marly:position_4'),
-			5 => _T('marly:position_5'), 6 => _T('marly:position_6'),
-		),
 	);
+
+	/* La liste des places s'ajuste a ce qui existe.
+	   ------------------------------------------------------------------------
+	   Proposer six places quand il n'y a qu'un bouton est une question posee
+	   pour rien, et six reponses dont cinq sont fausses. On n'offre donc que
+	   les places reellement occupables : autant qu'il y a de raccourcis, plus
+	   une quand on en cree un.
+
+	   Et pour le tout premier, on ne demande rien du tout : il est premier,
+	   il n'y a pas a en discuter. */
+	$combien = sql_countsel('spip_raccourcis');
+	$creation = ($id_raccourci === 'new' or !intval($id_raccourci));
+	$places = $creation ? $combien + 1 : $combien;
+
+	$valeurs['_positions'] = array();
+	if ($places > 1) {
+		for ($i = 1; $i <= min(6, $places); $i++) {
+			$rang = ($i === 1) ? '1re' : $i . 'e';
+			if ($i === 1) {
+				$rang .= ', ' . _T('marly:position_gauche');
+			} elseif ($i === min(6, $places)) {
+				$rang .= ', ' . _T('marly:position_droite');
+			}
+			$valeurs['_positions'][$i] = $rang;
+		}
+	}
+	if ($creation) {
+		$valeurs['rang'] = min(6, $combien + 1);
+	}
 
 	if ($id_raccourci !== 'new' and intval($id_raccourci)) {
 		$r = sql_fetsel('*', 'spip_raccourcis', 'id_raccourci = ' . intval($id_raccourci));
