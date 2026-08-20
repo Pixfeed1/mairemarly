@@ -287,8 +287,6 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'titre_ou_nous_trouver' => 'Où nous trouver',
 	'lieux_intro'          => 'Les bâtiments de la commune et leurs horaires.',
 	'aucun_lieu_publie'    => 'Les adresses sont en cours de saisie.',
-	'afficher_la_carte'    => 'Afficher la carte',
-	'carte_avertissement'  => 'La carte est fournie par OpenStreetMap. En l’affichant, votre adresse IP est transmise à ses serveurs. Elle ne se charge donc qu’à votre demande.',
 	'voir_en_grand'        => 'Ouvrir la carte sur OpenStreetMap',
 
 	// --- Associations ---------------------------------------------------------

@@ -20,19 +20,17 @@
 	<p class="chapo"><:marly:lieux_intro:></p>
 
 	[(#REM) Pas de carte si aucun lieu n'a de coordonnees : une latitude et une
-	        longitude a zero placent le plan au milieu de l'ocean Atlantique. ]
-	[(#VAL|marly_carte_commune|oui)
-	<div class="carte-facade" data-carte="[(#VAL|marly_carte_commune|attribut_html)]">
-		<div class="carte-fond" aria-hidden="true">
-			<svg class="ico"><use href="#ri-map-pin-2-line"/></svg>
-		</div>
-		<button type="button" class="carte-afficher">
-			<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg>
-			<span><:marly:afficher_la_carte:></span>
-		</button>
-		<p class="carte-note"><:marly:carte_avertissement:></p>
-	</div>
-	]
+	        longitude a zero placent le plan au milieu de l'ocean Atlantique.
+
+	        La carte s'affiche directement, sans clic prealable : choix arrete
+	        avec la mairie. La transmission de l'adresse IP du visiteur aux
+	        serveurs d'OpenStreetMap est a mentionner sur la page
+	        confidentialite. ]
+	[<div class="carte-cadre">
+	<iframe src="(#VAL|marly_carte_commune|attribut_html)"
+	        title="<:marly:titre_ou_nous_trouver:>"
+	        loading="lazy" referrerpolicy="no-referrer"></iframe>
+	</div>]
 
 	<B_lieux>
 	<ul class="fiches">
