@@ -189,6 +189,20 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 		}
 	} else {
 		sql_updateq('spip_associations', $champs, 'id_association = ' . intval($id_association));
+
+		/* Une fiche sans rubrique en recoit une ici aussi, pas seulement a la
+		   creation : une association entree autrement que par ce formulaire
+		   (reprise, import) n'aurait sinon jamais la sienne, et un simple
+		   enregistrement de la fiche repare l'oubli. Une rubrique vide est
+		   invisible sur le site : en creer une ne montre rien. */
+		if (!$champs['id_rubrique']) {
+			include_spip('inc/marly_associations');
+			$id_rubrique = marly_rubrique_association($champs['nom']);
+			if ($id_rubrique) {
+				sql_updateq('spip_associations', array('id_rubrique' => $id_rubrique),
+					'id_association = ' . intval($id_association));
+			}
+		}
 	}
 
 	/* On dit ce qui s'est passe. Un enregistrement muet laissait croire que
