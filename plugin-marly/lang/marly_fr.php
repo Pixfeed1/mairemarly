@@ -247,6 +247,7 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'aucun_lieu'           => 'Aucun lieu enregistré.',
 	'lieu_enregistre'      => 'Enregistré.',
 	'lieu_enregistre_localise' => 'Enregistré. L’adresse a été localisée : le lieu apparaît sur la carte.',
+	'ville_aide' => 'Sert aussi à situer les adresses des lieux et des associations sur la carte. Sans elle, aucune adresse ne peut être localisée.',
 	'lieu_enregistre_approche' => 'Enregistré. L’adresse exacte n’a pas été reconnue : la carte est centrée sur le village, le marqueur n’est pas sur le bâtiment. Pour un repère précis, essayez le nom de la rue, par exemple « rue de l’Église ».',
 	'lieu_enregistre_non_localise' => 'Enregistré, mais l’adresse n’a pas pu être localisée : le lieu figure dans la liste, pas sur la carte. Précisez l’adresse, ou saisissez les coordonnées à la main.',
 	'intro_lieux'          => 'Cet écran sert à UNE chose : la page « Où nous trouver » du site, qui affiche les bâtiments de la commune, leurs adresses, leurs horaires, et une carte. Il n’est pas nécessaire d’y saisir quoi que ce soit pour utiliser le reste du site.',

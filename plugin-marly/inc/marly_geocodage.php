@@ -52,6 +52,16 @@ function marly_geocoder($adresse) {
 	$ville = lire_config('marly/ville', '');
 	$cp    = lire_config('marly/code_postal', '');
 
+	/* Sans commune, tout se degrade en silence : les adresses partent sans
+	   leur ville, et la passe de repli n'existe pas. Le dire ici evite de
+	   chercher la panne dans le geocodage alors qu'elle est dans un champ
+	   vide de l'ecran de configuration. */
+	if (!$ville) {
+		spip_log('marly : commune absente de la configuration, le geocodage '
+			. 'travaille sans elle et sans repli — voir Configuration',
+			'marly.' . _LOG_INFO_IMPORTANTE);
+	}
+
 	/* On n'ajoute la commune que si l'adresse ne la contient pas déjà : la
 	   répéter fait chuter la pertinence du résultat. */
 	$complete = $adresse;
