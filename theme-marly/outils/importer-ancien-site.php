@@ -206,6 +206,11 @@ foreach ($ids as $id) {
 		}
 		$titre = trim(preg_replace('#\s+#', ' ', strip_tags($brut)));
 		$titre = preg_replace('#\s*[-|].{0,40}(Marly[- ]Gomont|village).*$#i', '', $titre);
+		/* L'ancien site est inconstant sur la casse (<< réunion de conseil
+		   du 29 mai 2018 >>) : la premiere lettre passe en majuscule, le
+		   reste du titre ne bouge pas. */
+		$titre = mb_strtoupper(mb_substr($titre, 0, 1, 'UTF-8'), 'UTF-8')
+			. mb_substr($titre, 1, null, 'UTF-8');
 	}
 	if ($titre === '') {
 		echo "article$id : SANS TITRE, saute\n";
