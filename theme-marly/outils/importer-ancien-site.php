@@ -393,6 +393,24 @@ foreach ($ids as $id) {
 		$titre = mb_strtoupper(mb_substr($titre, 0, 1, 'UTF-8'), 'UTF-8')
 			. mb_substr($titre, 1, null, 'UTF-8');
 	}
+	/* Les entites HTML fuient de l'ancien theme dans les titres
+	   (<< le 23 Août 2014&nbsp;: >>, vu a l'essai des associations) :
+	   decodees, et l'espace insecable redevient une espace simple. */
+	foreach (array('titre', 'soustitre') as $champ) {
+		$$champ = html_entity_decode($$champ, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		$$champ = trim(preg_replace('#\s+#u', ' ', str_replace("\u{00A0}", ' ', $$champ)));
+	}
+
+	/* Quelques titres de l'ancien site ne peuvent pas etre repris tels
+	   quels : << Nouvel article >> pour le texte fondateur de la paroisse.
+	   Retitres AVANT le garde-fou anti-doublon, pour que les relances
+	   retrouvent l'article sous son nouveau nom. */
+	$retitres = array(
+		26 => 'La paroisse Notre-Dame de la Salette',
+	);
+	if (isset($retitres[$id])) {
+		$titre = $retitres[$id];
+	}
 	if ($titre === '') {
 		echo "article$id : SANS TITRE, saute\n";
 		continue;
