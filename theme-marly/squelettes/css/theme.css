@@ -833,11 +833,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
              font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
 .video-facade iframe{ display:block; width:100%; aspect-ratio:16/9; border:0; }
 
-/* --- Galerie -------------------------------------------------------------- */
-.galerie{ display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; margin:30px 0 0; }
-.galerie figure{ margin:0; }
-.galerie img{ display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:cover; }
-.galerie figcaption{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin-top:6px; }
+/* --- Galerie : definie une seule fois, avec l'article, plus bas. ---------- */
 
 /* --- Conformité des formulaires ------------------------------------------- */
 /* Un champ obligatoire se signale EN TEXTE. L'astérisque seul et la couleur
@@ -1282,6 +1278,81 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .texte pratique::before{ content:"En pratique"; display:block;
   font-family:var(--serif); font-weight:700; color:var(--accent); margin-bottom:8px; }
 
+/* --- les compositions de texte -------------------------------------------- */
+/* Valide maquette en main : apercu-compositions, l'article d'ete. */
+
+/* <imgN|droite> et <imgN|gauche> : la photo dans le texte, que le texte
+   habille. SPIP pose ces classes lui-meme sur le conteneur du document. */
+.texte .spip_documents_droite,
+.texte .spip_documents_gauche{ display:block; width:min(46%,380px); margin:6px 0 14px; }
+.texte .spip_documents_droite{ float:right; margin-left:28px; }
+.texte .spip_documents_gauche{ float:left; margin-right:28px; }
+.texte .spip_documents_droite img,
+.texte .spip_documents_gauche img{ display:block; width:100%; height:auto; border-radius:6px; }
+.texte .spip_documents_droite figcaption,
+.texte .spip_documents_gauche figcaption,
+.texte .spip_documents_droite .spip_doc_legende,
+.texte .spip_documents_gauche .spip_doc_legende{
+  font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin-top:6px; }
+/* Un intertitre reprend toute la largeur, et rien ne depasse en bas. */
+.texte h2,.texte h3{ clear:both; }
+.texte::after{ content:""; display:block; clear:both; }
+/* Les listes glissent a cote de la photo au lieu de passer dessous : sans
+   cela, les pastilles des etapes (posees en absolu) se peignent sur l'image. */
+.texte ol,.texte ul{ display:flow-root; }
+@media(max-width:640px){
+  .texte .spip_documents_droite,.texte .spip_documents_gauche{
+    float:none; width:100%; margin:18px 0; }
+}
+
+/* Le tableau natif SPIP : des lignes | cellule | cellule |, rien de plus.
+   L'en-tete souligne de vert, les lignes alternees. */
+.texte table{ width:100%; border-collapse:collapse; margin:24px 0;
+  font-family:var(--texte); font-size:15px; }
+.texte table caption{ text-align:left; font-weight:600; padding-bottom:10px; }
+.texte th{ background:var(--creme-sombre); border-top:3px solid var(--accent); text-align:left;
+  padding:11px 14px; font-size:12.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+.texte td{ padding:11px 14px; border-bottom:1px solid var(--trait); vertical-align:top; }
+.texte tbody tr:nth-child(even){ background:var(--creme); }
+
+/* <bouton>[Texte->url]</bouton> : le grand bouton centre. */
+.texte bouton{ display:block; text-align:center; margin:28px 0; }
+.texte bouton a{ display:inline-block; background:var(--accent); color:#fff; text-decoration:none;
+  font-family:var(--texte); font-weight:600; font-size:15.5px; padding:13px 28px; border-radius:999px; }
+.texte bouton a:hover{ background:var(--accent-sombre); }
+
+/* <important> : ce qui ne doit pas echapper au lecteur, date limite en tete. */
+.texte important{ display:block; background:#FBF3DC; border-left:4px solid var(--jaune);
+  border-radius:0 6px 6px 0; padding:16px 20px; margin:26px 0; }
+.texte important::before{ content:"À ne pas manquer"; display:block; font-family:var(--texte);
+  font-size:12.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:#9A6D14; margin-bottom:6px; }
+
+/* <encart> : la photo d'un cote, le titre et le lien de l'autre. Dedans :
+   une image, un intertitre, un texte court, un lien seul sur sa ligne. */
+.texte encart{ display:grid; grid-template-columns:minmax(0,44%) 1fr; align-items:center;
+  background:var(--creme-sombre); border-radius:6px; overflow:hidden; margin:32px 0; }
+.texte encart > .spip_documents{ grid-column:1; grid-row:1 / span 20; align-self:stretch;
+  float:none; width:auto; margin:0; }
+.texte encart > .spip_documents img{ display:block; width:100%; height:100%;
+  object-fit:cover; border-radius:0; }
+.texte encart > *{ grid-column:2; margin:0 0 12px; padding:0 30px; }
+.texte encart h2,.texte encart h3{ font-size:24px; padding-top:26px; margin-bottom:10px; clear:none; }
+.texte encart p{ font-size:15.5px; }
+.texte encart > :last-child{ padding-bottom:26px; }
+.texte encart > p:last-of-type a{ display:inline-block; background:var(--accent); color:#fff;
+  text-decoration:none; font-family:var(--texte); font-weight:600; font-size:14px;
+  padding:9px 20px; border-radius:999px; }
+.texte encart > p:last-of-type a:hover{ background:var(--accent-sombre); }
+@media(max-width:640px){
+  .texte encart{ display:block; }
+  .texte encart > .spip_documents{ width:100%; }
+  .texte encart > .spip_documents img{ height:auto; aspect-ratio:16/9; }
+  .texte encart > *{ padding:0 20px; }
+  .texte encart h2,.texte encart h3{ padding-top:18px; }
+  .texte encart > :last-child{ padding-bottom:20px; }
+}
+
 /* Le sommaire << Dans cet article >>, pose par menu.js des trois intertitres. */
 .article-sommaire{ background:var(--creme-sombre); border-radius:6px;
   padding:18px 22px; margin:26px 0; max-width:560px; }
@@ -1301,12 +1372,15 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .doc-texte b{ display:block; font-family:var(--texte); font-size:15px; }
 .doc-texte span{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
 
-/* La galerie : trois vignettes, cliquables vers l'image en grand. */
+/* La galerie : trois vignettes au format constant, cliquables vers l'image
+   en grand. La legende en gras et le credit dessous, facon reportage. */
 .galerie{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:10px 0 6px; }
-.galerie figure{ margin:0; border-radius:6px; overflow:hidden; }
-.galerie a{ display:block; }
-.galerie img{ display:block; width:100%; height:auto; }
+.galerie figure{ margin:0; }
+.galerie a{ display:block; border-radius:6px; overflow:hidden; }
+.galerie img{ display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:cover; border-radius:6px; }
 .galerie figcaption{ font-family:var(--texte); font-size:12px; color:var(--encre-doux); padding:6px 2px; }
+.galerie figcaption b{ display:block; font-weight:600; color:var(--encre); }
+.galerie figcaption .credit{ font-size:11.5px; }
 @media(max-width:700px){ .galerie{ grid-template-columns:1fr; } }
 
 /* La fin d'article : actualites liees, navigation, invitation a la lettre. */

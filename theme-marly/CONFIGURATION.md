@@ -344,19 +344,40 @@ publication`. Elle le lit, corrige si besoin, et publie.
 ## Écrire un article
 
 Tout article, de la mairie ou d'une association, prend automatiquement
-l'habillage du site : rien à régler. Trois gestes suffisent pour enrichir
-le texte :
+l'habillage du site : rien à régler. Quelques gestes suffisent pour
+enrichir le texte :
 
 | Vous tapez | Vous obtenez |
 |---|---|
 | `{{{Le programme}}}` | un intertitre vert |
+| `<img2\|gauche>` ou `<img3\|droite>` | la photo numéro 2 (ou 3) posée dans le texte, que le texte habille |
 | `<quote>Merci aux bénévoles.</quote>` | une citation posée sur un filet vert |
 | `<pratique>La demande se fait en mairie.</pratique>` | un encadré « En pratique » sur fond crème |
+| `<important>Inscriptions avant le 15 juin.</important>` | un encadré jaune « À ne pas manquer » |
+| des lignes commençant par `-#` | des étapes numérotées à pastilles vertes |
+| des lignes `\| Matériel \| Tarif \|` | un tableau habillé (mettez `{{ }}` autour des titres de colonnes) |
+| `<bouton>[Télécharger le programme->doc5]</bouton>` | un grand bouton vert centré |
+
+Le numéro dans `<img2>` est celui que l'image porte dans la colonne
+« Ajouter une image ou un document » de l'article.
+
+Une composition de plus, pour mettre un contenu en avant : l'encart, la
+photo d'un côté, le titre et le lien de l'autre.
+
+```
+<encart>
+<img4>
+{{{Le sentier de la Vallée rouvre}}}
+Fermé après les crues de l'hiver, le sentier est de nouveau praticable.
+[Voir l'itinéraire->article12]
+</encart>
+```
 
 Le reste vient tout seul : l'image jointe à l'article s'affiche en grand
-sous le titre, les autres images font la galerie « En images », les PDF
-deviennent des cartes « Télécharger », et quand l'article a trois
-intertitres ou plus, un sommaire « Dans cet article » apparaît de lui-même.
+sous le titre, les autres images font la galerie « En images » avec leur
+titre en légende et leur crédit, les PDF deviennent des cartes
+« Télécharger », et quand l'article a trois intertitres ou plus, un
+sommaire « Dans cet article » apparaît de lui-même.
 La date affichée est celle de la publication ; pour un texte ancien,
 choisissez « Afficher une date de rédaction antérieure » dans la colonne
 de gauche de l'article.

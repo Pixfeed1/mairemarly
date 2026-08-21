@@ -51,7 +51,7 @@
 				<BOUCLE_photos(DOCUMENTS){id_manifestation}{extension IN jpg,jpeg,png,webp}{par num titre, titre}>
 				<figure>
 					[(#FICHIER|image_reduire{480,320})]
-					[<figcaption>(#TITRE)</figcaption>]
+					[<figcaption><b>(#TITRE)</b>[<span class="credit">(#CREDITS)</span>]</figcaption>]
 				</figure>
 				</BOUCLE_photos>
 			</div>

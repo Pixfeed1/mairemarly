@@ -1,7 +1,8 @@
 [(#REM)
   Une rubrique : son texte d'introduction, ses sous-rubriques, puis ses
-  articles du plus recent au plus ancien, pagines par douze pour que la
-  page des trente-sept comptes rendus reste maniable.
+  articles du plus recent au plus ancien, groupes par annee et pagines par
+  douze pour que la page des trente-sept comptes rendus reste maniable.
+  Valide maquette en main : apercu-rubrique-sobre.
 ]
 <BOUCLE_rub(RUBRIQUES){id_rubrique}>
 <div class="page-simple fiche-demarche">
@@ -15,6 +16,12 @@
 		<span aria-hidden="true">›</span>
 		<span aria-current="page">#TITRE</span>
 	</nav>
+
+	[(#REM) Le nom de la rubrique mere en sur-titre, comme sur un article.
+	        Une rubrique de premier niveau n'a pas de mere : rien ne s'affiche. ]
+	<BOUCLE_mere(RUBRIQUES){id_rubrique=#ID_PARENT}>
+	<p class="article-rubrique">#TITRE</p>
+	</BOUCLE_mere>
 
 	<h1>#TITRE</h1>
 	[<div class="chapo">(#TEXTE)</div>]
@@ -34,9 +41,17 @@
 	</ul>
 	</B_sousrub>
 
+	[(#REM)
+	  Les articles, groupes par annee : un titre d'annee s'insere chaque fois
+	  que l'annee change, et une nouvelle liste s'ouvre dessous. Le filtre
+	  |unique ne rend l'annee que la premiere fois qu'il la voit ; la liste
+	  precedente se ferme d'abord, sauf devant le tout premier article.
+	]
 	<B_arts>
-	<ul class="fiches">
-		<BOUCLE_arts(ARTICLES){id_rubrique}{!par date}{pagination 12}>
+	<BOUCLE_arts(ARTICLES){id_rubrique}{!par date}{pagination 12}>
+	#SET{nouvelle_annee,#DATE|annee|unique{annees_rubrique}}
+	[(#GET{nouvelle_annee}|et{#COMPTEUR_BOUCLE|>{1}})</ul>]
+	[(#GET{nouvelle_annee}|oui)<h2 class="rubrique-annee">#GET{nouvelle_annee}</h2><ul class="fiches">]
 		<li><a href="#URL_ARTICLE">
 			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
 			<span class="fiche-texte">
@@ -44,7 +59,7 @@
 				<span>[(#DATE|affdate)][ · (#SOUSTITRE)][ · (#INTRODUCTION|couper{110})]</span>
 			</span>
 		</a></li>
-		</BOUCLE_arts>
+	</BOUCLE_arts>
 	</ul>
 	[<p class="pagination">(#PAGINATION{prive})</p>]
 	</B_arts>

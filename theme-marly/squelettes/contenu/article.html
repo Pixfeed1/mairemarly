@@ -61,7 +61,7 @@
 		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{par num titre, date}>
 		<figure><a href="#URL_DOCUMENT" title="<:marly:voir_la_photo:>">
 			<img src="[(#FICHIER|image_reduire{400,260}|extraire_attribut{src})]" alt="[(#TITRE|attribut_html)]">
-		</a>[<figcaption>(#TITRE)</figcaption>]</figure>
+		</a>[<figcaption><b>(#TITRE)</b>[<span class="credit">(#CREDITS)</span>]</figcaption>]</figure>
 		</BOUCLE_galerie>
 	</div>
 	</B_galerie>
