@@ -81,7 +81,7 @@ function ancien_date($texte) {
 	$mois = array('janvier'=>1,'février'=>2,'fevrier'=>2,'mars'=>3,'avril'=>4,'mai'=>5,
 	              'juin'=>6,'juillet'=>7,'août'=>8,'aout'=>8,'septembre'=>9,
 	              'octobre'=>10,'novembre'=>11,'décembre'=>12,'decembre'=>12);
-	if (preg_match(',(1er|\d{1,2})\s+(' . implode('|', array_keys($mois)) . ')\s+(\d{4}),iu',
+	if (preg_match('#(1er|\d{1,2})\s+(' . implode('|', array_keys($mois)) . ')\s+(\d{4})#iu',
 			$texte, $m)) {
 		$jour = ($m[1] === '1er') ? 1 : intval($m[1]);
 		return sprintf('%04d-%02d-%02d 12:00:00', $m[3], $mois[mb_strtolower($m[2])], $jour);
@@ -145,17 +145,23 @@ foreach ($ids as $id) {
 	if (preg_match(',<h1[^>]*>(.*?)</h1>,s', $page, $m)
 	or preg_match(',<title>(.*?)</title>,s', $page, $m)) {
 		$titre = trim(preg_replace(',\s+,', ' ', strip_tags($m[1])));
-		$titre = preg_replace(',\s*[-|].{0,40}(Marly[- ]Gomont|village).*$,i', '', $titre);
+		$titre = preg_replace('#\s*[-|].{0,40}(Marly[- ]Gomont|village).*$#i', '', $titre);
 	}
 	if ($titre === '') {
 		echo "article$id : SANS TITRE, saute\n";
 		continue;
 	}
 
-	/* La date et la rubrique d'origine : « Le 22 février 2018, par X, dans Y ». */
+	/* La date, l'auteur et la rubrique d'origine :
+	   « Le 22 février 2018, par X, dans Y ». */
 	$date = ancien_date($page);
+	$auteur = '';
+	if (preg_match('#par\s+<a[^>]*auteur[^>]*>(.*?)</a>#si', $page, $m)
+	or preg_match('#,\s*par\s+([^,<]{2,60}),\s*dans#u', $page, $m)) {
+		$auteur = trim(strip_tags($m[1]));
+	}
 	$rubrique_origine = '';
-	if (preg_match(',dans\s+<a[^>]*rubrique[^>]*>(.*?)</a>,si', $page, $m)) {
+	if (preg_match('#dans\s+<a[^>]*rubrique[^>]*>(.*?)</a>#si', $page, $m)) {
 		$rubrique_origine = trim(strip_tags($m[1]));
 	}
 
@@ -215,8 +221,9 @@ foreach ($ids as $id) {
 	$deja = sql_countsel('spip_articles', 'titre = ' . sql_quote($titre)
 		. ($date ? ' AND date = ' . sql_quote($date) : ''));
 
-	printf("article%-4d %-58s %s -> %s%s%s\n", $id, mb_substr($titre, 0, 58),
-		$date ? substr($date, 0, 10) : 'sans date ',
+	printf("article%-4d %-52s %s %-18s -> %s%s%s\n", $id, mb_substr($titre, 0, 52),
+		$date ? substr($date, 0, 10) : 'SANS DATE ',
+		$auteur !== '' ? 'par ' . mb_substr($auteur, 0, 14) : 'SANS AUTEUR',
 		$cible_txt,
 		$pieces ? ' [' . count($pieces) . ' fichier(s)]' : '',
 		$deja ? ' DEJA LA, saute' : '');
@@ -257,6 +264,30 @@ foreach ($ids as $id) {
 	if ($date) {
 		sql_updateq('spip_articles', array('date' => $date),
 			'id_article = ' . intval($id_article));
+	}
+
+	/* La signature d'origine. Un auteur SPIP peut exister sans aucun compte
+	   de connexion : juste un nom, relie a ses articles. C'est ce qu'on
+	   avait convenu pour Paul Gosset, et ca vaut pour tous. */
+	if ($auteur !== '') {
+		$id_auteur = sql_getfetsel('id_auteur', 'spip_auteurs',
+			'nom = ' . sql_quote($auteur));
+		if (!$id_auteur) {
+			$id_auteur = objet_inserer('auteur');
+			if ($id_auteur) {
+				objet_modifier('auteur', $id_auteur, array('nom' => $auteur));
+			}
+		}
+		if ($id_auteur and !sql_countsel('spip_auteurs_liens',
+				'id_auteur = ' . intval($id_auteur)
+				. " AND objet = 'article' AND id_objet = " . intval($id_article))) {
+			sql_insertq('spip_auteurs_liens', array(
+				'id_auteur' => $id_auteur,
+				'objet'     => 'article',
+				'id_objet'  => $id_article,
+				'vu'        => 'non',
+			));
+		}
 	}
 	$faits++;
 }
