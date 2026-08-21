@@ -524,9 +524,11 @@ foreach ($ids as $id) {
 		50  => array('Vie associative', 'Harmonie Municipale de Marly-Gomont'),
 		52  => array('Vie associative', 'Harmonie Municipale de Marly-Gomont'),
 		/* Le bulletin municipal n'est pas un souvenir : il vit sous la
-		   rubrique de la vie municipale, avec les comptes rendus. */
-		89  => array('Vie municipale', 'La voix du village'),
-		116 => array('Vie municipale', 'La voix du village'),
+		   rubrique de la vie municipale, avec les comptes rendus. La
+		   rubrique porte le nom d'usage des mairies ; << La voix du
+		   village >> est le titre du journal, il reste dans les articles. */
+		89  => array('Vie municipale', 'Le bulletin municipal'),
+		116 => array('Vie municipale', 'Le bulletin municipal'),
 	);
 	if (isset($reroutes[$id])) {
 		$chemin = $reroutes[$id];
@@ -572,16 +574,17 @@ foreach ($ids as $id) {
 		$cible_txt = 'rubrique du Comité d\'animation';
 	}
 	if (!$id_rubrique and !$cible_txt) {
-		/* Le reste part dans << Memoire du village >> : les fetes et
-		   rendez-vous d'hier dans sa sous-rubrique << Événements >> (sous
-		   la memoire, pas a la racine : l'agenda du site couvre deja les
-		   evenements a venir), le tout-venant a plat. Le gabarit rubrique
-		   regroupe par annee, la chronologie fait le reste. */
+		/* Le reste alimente les deux rubriques d'actualite, vivantes :
+		   << Événements >> pour ce qu'on raconte (fetes, forums,
+		   commemorations, photos), << Infos >> pour ce qu'on annonce
+		   (avis, arretes, alertes, fermetures). Les anciens articles y
+		   coulent au fond, le gabarit rubrique regroupant par annee ;
+		   l'agenda, lui, reste le calendrier pratique des dates a venir. */
 		$evenementiel = array('Evènements', 'Forums des artisans et des produits du terroir',
 			'ça se passe en thiérache', 'Marly en Images');
 		$chemin = in_array($rubrique_origine, $evenementiel, true)
-			? array('Mémoire du village', 'Événements')
-			: array('Mémoire du village');
+			? array('Événements')
+			: array('Infos');
 		$cible_txt = implode(' > ', $chemin);
 		$id_rubrique = rubrique_chemin($chemin, false);
 		$chemin_a_creer = $chemin;
