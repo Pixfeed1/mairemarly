@@ -572,10 +572,16 @@ foreach ($ids as $id) {
 		$cible_txt = 'rubrique du Comité d\'animation';
 	}
 	if (!$id_rubrique and !$cible_txt) {
-		/* Tout le reste part A PLAT dans << Memoire du village >> : pas de
-		   sous-tiroirs, choix valide — le gabarit rubrique regroupe deja
-		   les articles par annee, la chronologie fait la navigation. */
-		$chemin = array('Mémoire du village');
+		/* Le reste part dans << Memoire du village >> : les fetes et
+		   rendez-vous d'hier dans sa sous-rubrique << Événements >> (sous
+		   la memoire, pas a la racine : l'agenda du site couvre deja les
+		   evenements a venir), le tout-venant a plat. Le gabarit rubrique
+		   regroupe par annee, la chronologie fait le reste. */
+		$evenementiel = array('Evènements', 'Forums des artisans et des produits du terroir',
+			'ça se passe en thiérache', 'Marly en Images');
+		$chemin = in_array($rubrique_origine, $evenementiel, true)
+			? array('Mémoire du village', 'Événements')
+			: array('Mémoire du village');
 		$cible_txt = implode(' > ', $chemin);
 		$id_rubrique = rubrique_chemin($chemin, false);
 		$chemin_a_creer = $chemin;
