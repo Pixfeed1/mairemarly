@@ -76,13 +76,22 @@ function ancien_page($url) {
 	return $r['page'] ?? '';
 }
 
-/** « Le 22 février 2018 » -> 2018-02-22, sinon ''. */
+/**
+ * La date de PUBLICATION : « Le 22 février 2018, par X » -> 2018-02-22.
+ *
+ * Ancrée sur la ligne de signature, et pas sur la première date croisée
+ * dans la page : la « Commémoration de l'armistice du 8 mai 1945 » serait
+ * sinon entrée en base datée de 1945, la date du titre. C'est l'essai qui
+ * l'a montré, avant toute écriture.
+ */
 function ancien_date($texte) {
 	$mois = array('janvier'=>1,'février'=>2,'fevrier'=>2,'mars'=>3,'avril'=>4,'mai'=>5,
 	              'juin'=>6,'juillet'=>7,'août'=>8,'aout'=>8,'septembre'=>9,
 	              'octobre'=>10,'novembre'=>11,'décembre'=>12,'decembre'=>12);
-	if (preg_match('#(1er|\d{1,2})\s+(' . implode('|', array_keys($mois)) . ')\s+(\d{4})#iu',
-			$texte, $m)) {
+	$noms = implode('|', array_keys($mois));
+	/* La forme signee d'abord ; a defaut seulement, une date quelconque. */
+	if (preg_match('#Le\s+(1er|\d{1,2})\s+(' . $noms . ')\s+(\d{4})\s*,?\s*par#iu', $texte, $m)
+	or preg_match('#(1er|\d{1,2})\s+(' . $noms . ')\s+(\d{4})#iu', $texte, $m)) {
 		$jour = ($m[1] === '1er') ? 1 : intval($m[1]);
 		return sprintf('%04d-%02d-%02d 12:00:00', $m[3], $mois[mb_strtolower($m[2])], $jour);
 	}
@@ -165,6 +174,13 @@ foreach ($ids as $id) {
 	if (preg_match('#par\s+<a[^>]*auteur[^>]*>(.*?)</a>#si', $page, $m)
 	or preg_match('#,\s*par\s+([^,<]{2,60}),\s*dans#u', $page, $m)) {
 		$auteur = trim(strip_tags($m[1]));
+		/* Nom et prenom, proprement : « severine » devient « Séverine ».
+		   Le nom de famille, lui, ne s'invente pas — quand la mairie nous
+		   le donnera, une seule correction de la fiche auteur signera d'un
+		   coup ses 45 articles. */
+		$propres = array('severine' => 'Séverine');
+		$cle = mb_strtolower($auteur);
+		$auteur = $propres[$cle] ?? mb_convert_case($auteur, MB_CASE_TITLE, 'UTF-8');
 	}
 	$rubrique_origine = '';
 	if (preg_match('#dans\s+<a[^>]*rubrique[^>]*>(.*?)</a>#si', $page, $m)) {
