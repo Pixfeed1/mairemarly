@@ -155,7 +155,21 @@ function rapatrier_piece($u, $dossier_img) {
  * attache (meme nom) n'est pas rattache.
  */
 function attacher_pieces($id_article, $pieces, $dossier_img) {
-	include_spip('action/ajouter_documents');
+	/* La fonction vit dans le plugin medias (action/ajouter_documents.php)
+	   sous le nom action_ajouter_un_document_dist : elle se charge par
+	   charger_fonction, pas par un appel direct — mesure sur le serveur. */
+	static $ajouter = null;
+	if ($ajouter === null) {
+		include_spip('action/ajouter_documents');
+		$ajouter = charger_fonction('ajouter_un_document', 'action', true);
+		if (!$ajouter) {
+			fwrite(STDERR, "Le plugin medias ne repond pas : pieces non attachees.\n");
+			$ajouter = false;
+		}
+	}
+	if (!$ajouter) {
+		return 0;
+	}
 	$faits = 0;
 	foreach ($pieces as $u) {
 		$nomf = rapatrier_piece($u, $dossier_img);
@@ -178,7 +192,7 @@ function attacher_pieces($id_article, $pieces, $dossier_img) {
 			continue;
 		}
 		$mode = preg_match('#\.(jpe?g|png|gif|webp)$#i', $nomf) ? 'image' : 'document';
-		$id_doc = ajouter_un_document('new', array(
+		$id_doc = $ajouter('new', array(
 			'name'     => $nomf,
 			'tmp_name' => $copie,
 			'titre'    => '',
