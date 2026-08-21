@@ -10,6 +10,15 @@
  * n'écrit RIEN. On regarde sa sortie, et seulement ensuite on lance
  * « importer ». C'est la règle des mesures avant les gestes.
  *
+ * Pour travailler par tranches, un filtre sur la DESTINATION :
+ *
+ *   ... importer-ancien-site.php /racine-web cible="Comptes rendus"           # essai
+ *   ... importer-ancien-site.php /racine-web importer cible="Comptes rendus"  # réel
+ *
+ * Seuls les articles dont la rubrique de destination contient le motif sont
+ * traités ; les autres sont comptés puis ignorés, sans une ligne d'écran.
+ * On importe une tranche, on la vérifie sur le site, on passe à la suivante.
+ *
  * Choix assumés :
  *  - les articles gardent leur DATE D'ORIGINE : un compte rendu de 2017
  *    reste daté de 2017, c'est ce qui fait la profondeur du site ;
@@ -33,7 +42,13 @@ if (PHP_SAPI !== 'cli') {
 }
 
 $racine = isset($argv[1]) ? rtrim($argv[1], '/') : getcwd();
-$importer = (isset($argv[2]) and $argv[2] === 'importer');
+$importer = in_array('importer', $argv, true);
+$cible_filtre = '';
+foreach ($argv as $arg) {
+	if (strpos($arg, 'cible=') === 0) {
+		$cible_filtre = trim(substr($arg, 6), " \t\"'");
+	}
+}
 $ecrire = $racine . '/ecrire';
 if (!is_file($ecrire . '/inc_version.php') or !is_file($racine . '/vendor/autoload.php')) {
 	fwrite(STDERR, "Racine SPIP introuvable : $racine\n");
@@ -168,7 +183,10 @@ echo count($ids) . " articles reperes dans le plan.\n\n";
 
 $dossier_img = $racine . '/IMG/ancien-site/';
 
-$total = $faits = 0;
+$total = $faits = $ignores = 0;
+if ($cible_filtre !== '') {
+	echo "Filtre : seulement les articles dont la destination contient « $cible_filtre ».\n\n";
+}
 foreach ($ids as $id) {
 	$page = ancien_page(ANCIEN . "/spip.php?article$id");
 	if (!$page) {
@@ -232,14 +250,18 @@ foreach ($ids as $id) {
 		$pieces[] = $u;
 	}
 
-	/* La destination. */
+	/* La destination. On ne fait que la RESOUDRE ici : la creation d'une
+	   rubrique manquante attend d'avoir passe le filtre cible=, sinon le
+	   mode reel filtre creerait les rubriques des articles qu'il ignore. */
 	$cible_txt = '';
 	$id_rubrique = 0;
+	$chemin_a_creer = null;
 	if (preg_match('#^(r[ée]union\s+(de\s+)?(du\s+)?conseil|[ée]lection du maire)#iu', $titre)
 	or ($rubrique_origine === 'Mairie' and stripos($titre, 'conseil') !== false)) {
 		$chemin = array('Vie municipale', 'Comptes rendus du conseil');
 		$cible_txt = implode(' > ', $chemin);
-		$id_rubrique = rubrique_chemin($chemin, $importer);
+		$id_rubrique = rubrique_chemin($chemin, false);
+		$chemin_a_creer = $chemin;
 	} elseif ($rubrique_origine === 'Du coté des associations de Marly'
 	or $rubrique_origine === 'SECTEUR PAROISSIAL DE MARLY GOMONT') {
 		/* Deux articles que les mots-cles ne peuvent pas trouver : le texte
@@ -265,7 +287,8 @@ foreach ($ids as $id) {
 		if (!$id_rubrique) {
 			$chemin = array('Vie associative');
 			$cible_txt = 'Vie associative';
-			$id_rubrique = rubrique_chemin($chemin, $importer);
+			$id_rubrique = rubrique_chemin($chemin, false);
+			$chemin_a_creer = $chemin;
 		}
 	} elseif (mb_stripos($rubrique_origine, 'animation') !== false) {
 		$id_rubrique = rubrique_association('animation');
@@ -275,7 +298,19 @@ foreach ($ids as $id) {
 		$nom = $rubrique_origine !== '' ? $rubrique_origine : 'Archives du village';
 		$chemin = array('Mémoire du village', $nom);
 		$cible_txt = implode(' > ', $chemin);
-		$id_rubrique = rubrique_chemin($chemin, $importer);
+		$id_rubrique = rubrique_chemin($chemin, false);
+		$chemin_a_creer = $chemin;
+	}
+
+	/* Le filtre cible= : hors tranche, on compte et on passe. */
+	if ($cible_filtre !== '' and mb_stripos($cible_txt, $cible_filtre) === false) {
+		$ignores++;
+		continue;
+	}
+
+	/* Le filtre est passe : en mode reel, la rubrique manquante se cree. */
+	if (!$id_rubrique and $chemin_a_creer and $importer) {
+		$id_rubrique = rubrique_chemin($chemin_a_creer, true);
 	}
 
 	$total++;
@@ -365,7 +400,9 @@ foreach ($ids as $id) {
 if ($importer) {
 	marly_invalider_cache();
 }
-echo "\n$total article(s) lu(s)" . ($importer ? ", $faits importe(s)." : ". RIEN n'a ete ecrit : mode essai.") . "\n";
+echo "\n$total article(s) lu(s)"
+	. ($ignores ? ", $ignores hors tranche ignore(s)" : '')
+	. ($importer ? ", $faits importe(s)." : ". RIEN n'a ete ecrit : mode essai.") . "\n";
 if (!$importer) {
 	echo "Pour importer vraiment : php " . basename(__FILE__) . " $racine importer\n";
 }
