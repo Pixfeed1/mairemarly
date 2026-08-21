@@ -125,6 +125,41 @@ function ancien_date($texte) {
 	return '';
 }
 
+/**
+ * Le corps d'un article de l'ancien site : le premier bloc
+ * <div class="texte_principal">, decoupe en equilibrant les <div>,
+ * debarrasse du h1 (le titre, deja pris) et de la ligne de signature
+ * << Le 1er mai 2008, par Paul Gosset >> (date et auteur, deja pris).
+ */
+function ancien_corps($page) {
+	$pos = stripos($page, 'class="texte_principal"');
+	if ($pos === false) {
+		return '';
+	}
+	$debut = strrpos(substr($page, 0, $pos), '<div');
+	if ($debut === false) {
+		return '';
+	}
+	$niveau = 0;
+	$i = $debut;
+	$fin = strlen($page);
+	while (preg_match('#<div\b|</div>#i', $page, $m, PREG_OFFSET_CAPTURE, $i)) {
+		$balise = $m[0][0];
+		$i = $m[0][1] + strlen($balise);
+		$niveau += (stripos($balise, '</') === 0) ? -1 : 1;
+		if ($niveau === 0) {
+			$fin = $i;
+			break;
+		}
+	}
+	$bloc = substr($page, $debut, $fin - $debut);
+	$bloc = preg_replace('#^\s*<div[^>]*>#', '', $bloc);
+	$bloc = preg_replace('#</div>\s*$#', '', $bloc);
+	$bloc = preg_replace('#<h1[^>]*>.*?</h1>#s', '', $bloc, 1);
+	$bloc = preg_replace('#<p[^>]*>\s*Le\s+(1er|\d{1,2})\s+\p{L}+\s+\d{4}\s*,?\s*par\b.*?</p>#su', '', $bloc, 1);
+	return trim($bloc);
+}
+
 /** Rapatrie un fichier de l'ancien site dans IMG/ancien-site/ ; rend son
     nom local, ou '' si rien n'a pu etre recupere. */
 function rapatrier_piece($u, $dossier_img) {
@@ -443,16 +478,15 @@ foreach ($ids as $id) {
 	}
 	$rubrique_origine = $origines[$id] ?? '';
 
-	/* Le corps : le bloc texte du squelette d'epoque, sinon le plus grand
-	   <div> apres le h1. On garde le HTML tel quel. */
-	$texte = '';
-	foreach (array(',<div[^>]*class="[^"]*\btexte\b[^"]*"[^>]*>(.*?)</div>,s',
-	               ',<div[^>]*id="texte"[^>]*>(.*?)</div>,s') as $motif) {
-		if (preg_match($motif, $page, $m)) {
-			$texte = trim($m[1]);
-			break;
-		}
-	}
+	/* Le corps : le PREMIER bloc <div class="texte_principal"> du squelette
+	   d'epoque — il contient le h1 et la ligne de signature, qu'on retire.
+	   Les six autres blocs de meme classe sont les gadgets de la colonne
+	   (<< Dans la meme rubrique >>, << Votre recherche >>...), a ignorer.
+	   Mesure : les motifs naifs d'avant (\btexte\b, id="texte") n'ont
+	   JAMAIS rien attrape — 30 comptes rendus importes au corps vide, vus
+	   par le compte de mots de l'essai. Les divs s'emboitent, donc on
+	   decoupe en EQUILIBRANT les balises, pas au premier </div> venu. */
+	$texte = ancien_corps($page);
 
 	/* Les fichiers du site d'epoque : images et documents sous IMG/. */
 	$pieces = array();
@@ -524,18 +558,29 @@ foreach ($ids as $id) {
 		$id_rubrique = rubrique_chemin($chemin_a_creer, true);
 	}
 
+	/* Rapatrier les fichiers et recrire leurs liens dans le texte, pour la
+	   creation comme pour la reparation. L'essai ne telecharge rien. */
+	if ($importer) {
+		foreach ($pieces as $u) {
+			$nomf = rapatrier_piece($u, $dossier_img);
+			if ($nomf !== '') {
+				$texte = str_replace($u, 'IMG/ancien-site/' . $nomf, $texte);
+			}
+		}
+	}
+
 	$total++;
 	$ecarte = $ecartes[$id] ?? '';
 	$deja = null;
 	if (!$ecarte) {
-	$deja = sql_fetsel('id_article, statut, date', 'spip_articles', 'titre = ' . sql_quote($titre)
+	$deja = sql_fetsel('id_article, statut, date, texte', 'spip_articles', 'titre = ' . sql_quote($titre)
 		. ($date ? ' AND date = ' . sql_quote($date) : ''));
 	if (!$deja and $id_rubrique) {
 		/* SPIP retimbre la date a la publication (<< maintenant >>, sauf
 		   date future) : un article deja importe peut donc porter la
 		   mauvaise date et echapper au couple titre+date. On le retrouve
 		   par titre et rubrique, et on lui rend sa date plus bas. */
-		$deja = sql_fetsel('id_article, statut, date', 'spip_articles', 'titre = ' . sql_quote($titre)
+		$deja = sql_fetsel('id_article, statut, date, texte', 'spip_articles', 'titre = ' . sql_quote($titre)
 			. ' AND id_rubrique = ' . intval($id_rubrique));
 	}
 
@@ -549,6 +594,14 @@ foreach ($ids as $id) {
 		$mention = ' DEJA LA, saute';
 		if ($importer) {
 			$gestes = array();
+			/* Le corps d'abord : les 30 comptes rendus du premier passage
+			   sont vides (l'extraction ne trouvait rien). On ne rend le
+			   texte qu'a un article VIDE : jamais par-dessus une version
+			   que la mairie aurait retouchee. */
+			if ($texte !== '' and trim((string) $deja['texte']) === '') {
+				objet_modifier('article', $deja['id_article'], array('texte' => $texte));
+				$gestes[] = 'texte rendu';
+			}
 			if ($deja['statut'] !== 'publie') {
 				objet_modifier('article', $deja['id_article'], array('statut' => 'publie'));
 				$gestes[] = 'republie';
@@ -590,12 +643,10 @@ foreach ($ids as $id) {
 		continue;
 	}
 
-	/* Rapatrier les fichiers et recrire les liens du texte. */
-	foreach ($pieces as $u) {
-		$nomf = rapatrier_piece($u, $dossier_img);
-		if ($nomf !== '') {
-			$texte = str_replace($u, 'IMG/ancien-site/' . $nomf, $texte);
-		}
+	/* Les fichiers sont deja rapatries et les liens du texte recrits,
+	   juste avant le garde-fou anti-doublon. */
+	if ($texte === '') {
+		echo "  ATTENTION : corps vide, l'article sera cree sans texte\n";
 	}
 
 	$id_article = objet_inserer('article', $id_rubrique);
