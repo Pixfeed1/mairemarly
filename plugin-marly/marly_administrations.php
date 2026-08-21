@@ -134,8 +134,59 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('marly_adoucir_textes'),
 	);
 
+	/* 3.36.4 — la procuration entre au socle, et les liens qui manquaient
+	   encore (teleservice des actes, verification d'inscription electorale,
+	   cadastre, France Identite) se posent sur les fiches non retouchees. */
+	$maj['3.36.4'] = array(
+		array('marly_completer_liens_2026'),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
+}
+
+/**
+ * Insère la fiche « Voter par procuration » si elle n'existe pas, puis pose
+ * les liens manquants sur les fiches restées à la version connue du champ.
+ * Une fiche retouchée par la mairie ne bouge jamais.
+ */
+function marly_completer_liens_2026() {
+	include_spip('inc/marly_demarches');
+
+	$anciens = array(
+		'Demander un acte de naissance, de mariage ou de décès' => array(
+			'comment' => 'La demande se fait sur place, par courrier ou en ligne, au choix. Précisez la date de l’événement et les noms et prénoms des parents : ce sont eux qui permettent de retrouver l’acte.',
+			'lien_faire' => '',
+		),
+		'S’inscrire sur les listes électorales' => array(
+			'comment' => 'L’inscription se fait en ligne en quelques minutes, ou au secrétariat de la mairie si vous préférez être accompagné.',
+			'a_savoir' => '',
+		),
+		'Consulter le cadastre' => array(
+			'comment' => 'Rendez-vous sur le site officiel du cadastre : cherchez la commune, puis la parcelle. La consultation et l’impression sont gratuites.',
+		),
+		'Carte d’identité ou passeport' => array(
+			'a_savoir' => 'Un titre non retiré dans les trois mois est détruit, sans remboursement. Méfiez-vous des sites payants qui imitent les sites officiels : la pré-demande et le rendez-vous sont gratuits. Avec l’application France Identité, votre nouvelle carte peut aussi prouver votre identité en ligne.',
+		),
+	);
+
+	foreach (marly_socle_demarches() as $fiche) {
+		if ($fiche['titre'] === 'Voter par procuration'
+		and !sql_countsel('spip_demarches', 'titre = ' . sql_quote($fiche['titre']))) {
+			$fiche['statut'] = 'publie';
+			sql_insertq('spip_demarches', $fiche);
+			continue;
+		}
+		if (!isset($anciens[$fiche['titre']])) {
+			continue;
+		}
+		foreach ($anciens[$fiche['titre']] as $champ => $ancien) {
+			sql_updateq('spip_demarches', array($champ => $fiche[$champ]),
+				'titre = ' . sql_quote($fiche['titre'])
+				. ' AND ' . $champ . ' = ' . sql_quote($ancien));
+		}
+	}
+	spip_log('marly : procuration inseree et liens completes', 'marly.' . _LOG_INFO_IMPORTANTE);
 }
 
 /**
