@@ -411,6 +411,13 @@ foreach ($ids as $id) {
 	if (isset($retitres[$id])) {
 		$titre = $retitres[$id];
 	}
+
+	/* Les articles ecartes volontairement : les coquilles vides, jugees
+	   liste en main a l'essai (le compte de mots aide), JAMAIS par un
+	   seuil automatique. Montres avec la mention ECARTE, jamais ecrits. */
+	$ecartes = array(
+		// exemple : 42 => 'deux lignes, sans piece jointe, sans information',
+	);
 	if ($titre === '') {
 		echo "article$id : SANS TITRE, saute\n";
 		continue;
@@ -518,6 +525,9 @@ foreach ($ids as $id) {
 	}
 
 	$total++;
+	$ecarte = $ecartes[$id] ?? '';
+	$deja = null;
+	if (!$ecarte) {
 	$deja = sql_fetsel('id_article, statut, date', 'spip_articles', 'titre = ' . sql_quote($titre)
 		. ($date ? ' AND date = ' . sql_quote($date) : ''));
 	if (!$deja and $id_rubrique) {
@@ -533,7 +543,8 @@ foreach ($ids as $id) {
 	   par la publication) est repare au passage : le sauter le laisserait
 	   invisible, ou date d'aujourd'hui pour toujours. La date se rend
 	   APRES la republication, puisque c'est elle qui la retimbre. */
-	$mention = '';
+	}
+	$mention = $ecarte !== '' ? ' ECARTE : ' . $ecarte : '';
 	if ($deja) {
 		$mention = ' DEJA LA, saute';
 		if ($importer) {
@@ -559,16 +570,23 @@ foreach ($ids as $id) {
 		}
 	}
 
-	printf("article%-4d %-46s %s %-18s [%s] -> %s%s%s\n", $id,
+	/* La taille du texte, pour juger les coquilles vides liste en main :
+	   deux lignes avec un PDF joint valent de l'or, deux lignes sans rien
+	   sont du bruit. Ca se decide a l'oeil, pas au seuil automatique. */
+	$mots = preg_split('#\s+#u', trim(strip_tags($texte)), -1, PREG_SPLIT_NO_EMPTY);
+	$mots = count($mots);
+
+	printf("article%-4d %-46s %s %-18s [%s] %4d mots -> %s%s%s\n", $id,
 		mb_substr($titre . ($soustitre !== '' ? ' // ' . $soustitre : ''), 0, 46),
 		$date ? substr($date, 0, 10) : 'SANS DATE ',
 		$auteur !== '' ? 'par ' . mb_substr($auteur, 0, 14) : 'SANS AUTEUR',
 		$rubrique_origine !== '' ? mb_substr($rubrique_origine, 0, 22) : 'origine ?',
+		$mots,
 		$cible_txt,
 		$pieces ? ' [' . count($pieces) . ' fichier(s)]' : '',
 		$mention);
 
-	if (!$importer or $deja) {
+	if (!$importer or $deja or $ecarte !== '') {
 		continue;
 	}
 
