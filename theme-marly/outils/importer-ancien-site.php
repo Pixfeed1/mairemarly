@@ -673,6 +673,13 @@ foreach ($ids as $id) {
 		'texte'     => $texte,
 		'statut'    => 'publie',
 	));
+	/* SPIP refuse parfois le passage en publie au moment meme de la
+	   creation (les 6 articles d'assos sont restes en prepa), alors que la
+	   meme demande, seule, passe juste apres. On verifie le statut REEL et
+	   on republie dans la meme passe : plus de deuxieme relance a prevoir. */
+	if (sql_getfetsel('statut', 'spip_articles', 'id_article = ' . intval($id_article)) !== 'publie') {
+		objet_modifier('article', $id_article, array('statut' => 'publie'));
+	}
 	if ($date) {
 		sql_updateq('spip_articles', array('date' => $date),
 			'id_article = ' . intval($id_article));
