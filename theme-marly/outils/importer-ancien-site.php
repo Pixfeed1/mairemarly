@@ -501,7 +501,20 @@ foreach ($ids as $id) {
 	$cible_txt = '';
 	$id_rubrique = 0;
 	$chemin_a_creer = null;
-	if (preg_match('#^(r[ée]union\s+(de\s+)?(du\s+)?conseil|[ée]lection du maire)#iu', $titre)
+
+	/* Le reroutage a la main, prioritaire sur tout : l'ancien site classait
+	   parfois n'importe comment. Apres lecture de l'essai complet, on
+	   corrige ici, article par article, le chemin de destination ; les
+	   rubriques du chemin sont creees a l'import si elles manquent. */
+	$reroutes = array(
+		// exemple : 47 => array('Vie du village', 'Histoire'),
+	);
+	if (isset($reroutes[$id])) {
+		$chemin = $reroutes[$id];
+		$cible_txt = implode(' > ', $chemin) . ' [reroute]';
+		$id_rubrique = rubrique_chemin($chemin, false);
+		$chemin_a_creer = $chemin;
+	} elseif (preg_match('#^(r[ée]union\s+(de\s+)?(du\s+)?conseil|[ée]lection du maire)#iu', $titre)
 	or ($rubrique_origine === 'Mairie' and stripos($titre, 'conseil') !== false)) {
 		$chemin = array('Vie municipale', 'Comptes rendus du conseil');
 		$cible_txt = implode(' > ', $chemin);
