@@ -462,6 +462,15 @@ foreach ($ids as $id) {
 	/* La date, l'auteur et la rubrique d'origine :
 	   « Le 22 février 2018, par X, dans Y ». */
 	$date = ancien_date($page);
+	/* Les dates posees a la main, quand la page n'en donne aucune : le 91
+	   (<< Ouverture special Noel >>) est coince entre novembre et decembre
+	   2016 dans le plan, on le date du 1er decembre 2016. */
+	$redates = array(
+		91 => '2016-12-01 12:00:00',
+	);
+	if (isset($redates[$id])) {
+		$date = $redates[$id];
+	}
 	$auteur = '';
 	if (preg_match('#par\s+<a[^>]*auteur[^>]*>(.*?)</a>#si', $page, $m)
 	or preg_match('#,\s*par\s+([^,<]{2,60}),\s*dans#u', $page, $m)) {
@@ -508,7 +517,16 @@ foreach ($ids as $id) {
 	   corrige ici, article par article, le chemin de destination ; les
 	   rubriques du chemin sont creees a l'import si elles manquent. */
 	$reroutes = array(
-		// exemple : 47 => array('Vie du village', 'Histoire'),
+		/* L'ancien site classait ces articles d'associations en
+		   << Evenements >> : ils rejoignent la rubrique de leur asso. */
+		39  => array('Vie associative', 'AS Marly-Gomont'),
+		31  => array('Vie associative', 'Harmonie Municipale de Marly-Gomont'),
+		50  => array('Vie associative', 'Harmonie Municipale de Marly-Gomont'),
+		52  => array('Vie associative', 'Harmonie Municipale de Marly-Gomont'),
+		/* Le bulletin municipal n'est pas un souvenir : il vit sous la
+		   rubrique de la vie municipale, avec les comptes rendus. */
+		89  => array('Vie municipale', 'La voix du village'),
+		116 => array('Vie municipale', 'La voix du village'),
 	);
 	if (isset($reroutes[$id])) {
 		$chemin = $reroutes[$id];
@@ -554,8 +572,10 @@ foreach ($ids as $id) {
 		$cible_txt = 'rubrique du Comité d\'animation';
 	}
 	if (!$id_rubrique and !$cible_txt) {
-		$nom = $rubrique_origine !== '' ? $rubrique_origine : 'Archives du village';
-		$chemin = array('Mémoire du village', $nom);
+		/* Tout le reste part A PLAT dans << Memoire du village >> : pas de
+		   sous-tiroirs, choix valide — le gabarit rubrique regroupe deja
+		   les articles par annee, la chronologie fait la navigation. */
+		$chemin = array('Mémoire du village');
 		$cible_txt = implode(' > ', $chemin);
 		$id_rubrique = rubrique_chemin($chemin, false);
 		$chemin_a_creer = $chemin;
