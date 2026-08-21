@@ -53,6 +53,17 @@ include_spip('inc/marly_associations');
 include_spip('inc/marly_geocodage');
 include_spip('inc/marly_outils');
 
+/* En ligne de commande, personne n'est connecte : SPIP refuse alors en
+   silence le passage en << publie >> des objets crees (les rubriques des
+   associations sont restees en << prepa >>, l'import des comptes rendus
+   l'a revele). On se presente en webmestre avant d'ecrire. */
+$GLOBALS['visiteur_session'] = array(
+	'id_auteur' => 1,
+	'statut'    => '0minirezo',
+	'webmestre' => 'oui',
+	'nom'       => 'import CLI',
+);
+
 $fiches = array(
 	array(
 		'nom'       => 'AS Marly-Gomont',

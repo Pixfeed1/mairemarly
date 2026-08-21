@@ -77,6 +77,18 @@ include_spip('inc/distant');
 include_spip('action/editer_objet');
 include_spip('inc/marly_outils');
 
+/* En ligne de commande, personne n'est connecte : SPIP refuse alors
+   silencieusement le passage en << publie >> (autoriser('publierdans')
+   echoue), et tout reste en << prepa >>, invisible. Le premier import l'a
+   montre : 30 articles crees, 0 publie. On se presente donc en webmestre
+   avant d'ecrire quoi que ce soit. */
+$GLOBALS['visiteur_session'] = array(
+	'id_auteur' => 1,
+	'statut'    => '0minirezo',
+	'webmestre' => 'oui',
+	'nom'       => 'import CLI',
+);
+
 define('ANCIEN', 'http://marlygomont.free.fr');
 
 /** Va chercher une page de l'ancien site, poliment. */
@@ -319,8 +331,20 @@ foreach ($ids as $id) {
 	}
 
 	$total++;
-	$deja = sql_countsel('spip_articles', 'titre = ' . sql_quote($titre)
+	$deja = sql_fetsel('id_article, statut', 'spip_articles', 'titre = ' . sql_quote($titre)
 		. ($date ? ' AND date = ' . sql_quote($date) : ''));
+
+	/* Un article deja la mais reste en << prepa >> (le premier import,
+	   avant la session webmestre) est REPUBLIE au passage : le sauter le
+	   laisserait invisible pour toujours. */
+	$mention = '';
+	if ($deja) {
+		$mention = ' DEJA LA, saute';
+		if ($importer and $deja['statut'] !== 'publie') {
+			objet_modifier('article', $deja['id_article'], array('statut' => 'publie'));
+			$mention = ' DEJA LA, republie';
+		}
+	}
 
 	printf("article%-4d %-46s %s %-18s [%s] -> %s%s%s\n", $id,
 		mb_substr($titre . ($soustitre !== '' ? ' // ' . $soustitre : ''), 0, 46),
@@ -329,7 +353,7 @@ foreach ($ids as $id) {
 		$rubrique_origine !== '' ? mb_substr($rubrique_origine, 0, 22) : 'origine ?',
 		$cible_txt,
 		$pieces ? ' [' . count($pieces) . ' fichier(s)]' : '',
-		$deja ? ' DEJA LA, saute' : '');
+		$mention);
 
 	if (!$importer or $deja) {
 		continue;

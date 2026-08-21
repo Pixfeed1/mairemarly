@@ -516,6 +516,19 @@ for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', 'formulair
                  'ecrit en base sans appeler marly_invalider_cache() : le site public '
                  'ressert les anciennes pages jusqu au prochain deploiement')
 
+# 29. Un script en ligne de commande qui cree ou modifie des objets SPIP
+#     doit d'abord se presenter en webmestre. Sans visiteur_session, SPIP
+#     refuse EN SILENCE le passage en << publie >> (autoriser('publierdans')
+#     echoue faute de connecte) : le premier import des comptes rendus a
+#     cree 30 articles, tous restes en << prepa >>, invisibles.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    if re.search(r'objet_inserer\(|objet_modifier\(|marly_rubrique_association\(', _src) \
+            and 'visiteur_session' not in _src:
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), 1,
+                 "cree ou modifie des objets SPIP sans poser visiteur_session (webmestre) : "
+                 "la publication sera refusee en silence, tout restera en << prepa >>")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
