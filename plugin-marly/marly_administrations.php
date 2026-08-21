@@ -128,8 +128,57 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('marly_lier_sites_nommes'),
 	);
 
+	/* 3.36.3 — une passe d'ecriture : les textes les plus abrupts gagnent
+	   une transition. Seules les fiches restees au texte connu bougent. */
+	$maj['3.36.3'] = array(
+		array('marly_adoucir_textes'),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
+}
+
+/**
+ * Réapplique les textes adoucis du socle aux fiches restées à la version
+ * précédente exacte du champ. Une fiche retouchée par la mairie ne bouge
+ * jamais : la garde est l'égalité stricte avec l'ancien texte.
+ */
+function marly_adoucir_textes() {
+	include_spip('inc/marly_demarches');
+
+	$anciens = array(
+		'Demander un acte de naissance, de mariage ou de décès' => array('comment' => 'Sur place, par courrier, ou en ligne. Précisez la date de l’événement et les noms et prénoms des parents.'),
+		'Déclarer un décès' => array('comment' => 'En vous présentant à la mairie avec le certificat médical de décès.'),
+		'Se marier' => array('comment' => 'Retirez le dossier au secrétariat, puis déposez-le complet. La date est fixée avec la mairie une fois le dossier reçu.'),
+		'Conclure un PACS' => array('comment' => 'Prenez rendez-vous au secrétariat avec la convention et le dossier complet.'),
+		'Se faire recenser à 16 ans' => array('comment' => 'À la mairie du domicile. Un parent peut faire la démarche si le jeune est mineur.'),
+		'S’inscrire sur les listes électorales' => array('comment' => 'En ligne en quelques minutes, ou au secrétariat de la mairie.'),
+		'Demander une attestation d’accueil' => array('comment' => 'Sur place, au secrétariat. La demande est instruite avant délivrance.'),
+		'Permis de construire' => array('comment' => 'Dépôt du dossier à la mairie, sur place ou par voie électronique.'),
+		'Certificat d’urbanisme' => array('comment' => 'Dépôt du formulaire à la mairie, sur place ou par voie électronique.'),
+		'Carte grise (certificat d’immatriculation)' => array(
+			'comment' => 'Entièrement en ligne, sur [le site de l’ANTS->https://immatriculation.ants.gouv.fr/]. Méfiez-vous des sites payants qui imitent le site officiel.',
+			'ou'      => 'En ligne uniquement.',
+		),
+		'Permis de conduire' => array(
+			'comment' => 'En ligne sur [le site de l’ANTS->https://permisdeconduire.ants.gouv.fr/].',
+			'ou'      => 'En ligne uniquement.',
+		),
+		'Consulter le cadastre' => array('comment' => 'Sur le site officiel du cadastre, en cherchant la commune puis la parcelle.'),
+		'Impôts et taxes' => array('comment' => 'Depuis votre espace particulier sur [le site des impôts->https://www.impots.gouv.fr/].'),
+	);
+
+	foreach (marly_socle_demarches() as $fiche) {
+		if (!isset($anciens[$fiche['titre']])) {
+			continue;
+		}
+		foreach ($anciens[$fiche['titre']] as $champ => $ancien) {
+			sql_updateq('spip_demarches', array($champ => $fiche[$champ]),
+				'titre = ' . sql_quote($fiche['titre'])
+				. ' AND ' . $champ . ' = ' . sql_quote($ancien));
+		}
+	}
+	spip_log('marly : textes adoucis sur les fiches non retouchees', 'marly.' . _LOG_INFO_IMPORTANTE);
 }
 
 /**
