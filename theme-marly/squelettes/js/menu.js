@@ -454,3 +454,40 @@
 
 	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
 })();
+
+/**
+ * Le sommaire << Dans cet article >>.
+ * ---------------------------------------------------------------------------
+ * Pose avant le texte quand l'article compte au moins trois intertitres :
+ * en dessous, un sommaire fait plus d'encombrement que de service. Sans
+ * JavaScript, pas de sommaire, et rien ne manque a la lecture.
+ */
+(function () {
+	'use strict';
+
+	var texte = document.querySelector('.fiche-demarche .texte');
+	if (!texte || !document.querySelector('.article-signature')) { return; }
+
+	var titres = texte.querySelectorAll('h2, h3');
+	if (titres.length < 3) { return; }
+
+	var nav = document.createElement('nav');
+	nav.className = 'article-sommaire';
+	nav.setAttribute('aria-label', 'Sommaire');
+	var b = document.createElement('b');
+	b.textContent = 'Dans cet article';
+	nav.appendChild(b);
+	var ol = document.createElement('ol');
+
+	Array.prototype.forEach.call(titres, function (t, i) {
+		if (!t.id) { t.id = 'section-' + (i + 1); }
+		var li = document.createElement('li');
+		var a = document.createElement('a');
+		a.href = '#' + t.id;
+		a.textContent = t.textContent;
+		li.appendChild(a);
+		ol.appendChild(li);
+	});
+	nav.appendChild(ol);
+	texte.parentNode.insertBefore(nav, texte);
+})();

@@ -1257,6 +1257,78 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   width:2px; background:var(--trait);
 }
 
+/* ===========================================================================
+   L'article et la rubrique — le gabarit unique de tout ce qui s'ecrit.
+   Valide maquette en main : apercu-article-fete, version sobre retenue.
+   =========================================================================== */
+.article-rubrique{ font-family:var(--texte); font-size:12.5px; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+.article-signature{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); margin:14px 0 0; }
+.article-signature b{ font-weight:600; color:var(--encre); }
+.article-photo{ margin:26px 0 30px; }
+.article-photo img{ display:block; width:100%; height:auto; border-radius:6px; }
+.article-photo figcaption{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin-top:8px; }
+
+/* <quote> de SPIP : la citation posee sur un filet vert. */
+.texte blockquote{ margin:26px 0; padding:6px 0 6px 22px; border-left:4px solid var(--accent); }
+.texte blockquote p{ font-family:var(--serif); font-size:19px; line-height:1.55; font-style:italic; margin:0 0 6px; }
+
+/* L'encadre pratique de la redaction : la secretaire tape <pratique> autour
+   du passage, et il prend l'habit du << A savoir >> des demarches. Un
+   element inconnu du navigateur se style comme un autre ; il faut juste le
+   poser en bloc. */
+.texte pratique{ display:block; background:var(--creme-sombre);
+  border:1px solid var(--trait); border-radius:6px; padding:18px 22px; margin:26px 0; }
+.texte pratique::before{ content:"En pratique"; display:block;
+  font-family:var(--serif); font-weight:700; color:var(--accent); margin-bottom:8px; }
+
+/* Le sommaire << Dans cet article >>, pose par menu.js des trois intertitres. */
+.article-sommaire{ background:var(--creme-sombre); border-radius:6px;
+  padding:18px 22px; margin:26px 0; max-width:560px; }
+.article-sommaire b{ font-family:var(--texte); font-size:12.5px; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--encre-doux);
+  display:block; margin-bottom:8px; }
+.article-sommaire a{ color:var(--encre); text-decoration:none; }
+.article-sommaire a:hover{ color:var(--accent); text-decoration:underline; }
+
+/* La carte d'un document a telecharger. */
+.doc-joint{ display:flex; align-items:center; gap:16px; border:1px solid var(--trait);
+  border-radius:6px; background:#fff; padding:16px 20px; margin:10px 0; max-width:560px; }
+.doc-joint .rond{ flex-shrink:0; width:44px; height:44px; border-radius:50%;
+  background:var(--creme-sombre); display:flex; align-items:center; justify-content:center; }
+.doc-joint .rond .ico{ width:20px; height:20px; fill:var(--accent); }
+.doc-texte{ flex:1; min-width:0; }
+.doc-texte b{ display:block; font-family:var(--texte); font-size:15px; }
+.doc-texte span{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
+
+/* La galerie : trois vignettes, cliquables vers l'image en grand. */
+.galerie{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:10px 0 6px; }
+.galerie figure{ margin:0; border-radius:6px; overflow:hidden; }
+.galerie a{ display:block; }
+.galerie img{ display:block; width:100%; height:auto; }
+.galerie figcaption{ font-family:var(--texte); font-size:12px; color:var(--encre-doux); padding:6px 2px; }
+@media(max-width:700px){ .galerie{ grid-template-columns:1fr; } }
+
+/* La fin d'article : actualites liees, navigation, invitation a la lettre. */
+.article-suite{ margin-top:44px; padding-top:30px; border-top:1px solid var(--trait); }
+.toutes-actus{ margin-top:18px; text-align:right; }
+.article-voisinage{ display:flex; justify-content:space-between; gap:16px; margin-top:34px; }
+.article-voisinage a{ display:block; max-width:47%; font-family:var(--texte); text-decoration:none; }
+.article-voisinage .sens{ display:block; font-size:12.5px; font-weight:700; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--encre-doux); margin-bottom:4px; }
+.article-voisinage .quoi{ font-size:15px; font-weight:600; color:var(--accent); }
+.article-voisinage a:hover .quoi{ text-decoration:underline; }
+.article-voisinage .suivant{ text-align:right; margin-left:auto; }
+.article-lettre{ display:flex; align-items:center; justify-content:space-between; gap:18px;
+  background:var(--accent); border-radius:6px; padding:20px 24px; margin-top:36px; flex-wrap:wrap; }
+.article-lettre p{ margin:0; font-family:var(--texte); color:#fff; font-size:15.5px; }
+.article-lettre .pilule{ background:#fff; color:var(--accent); border-color:#fff; }
+.article-lettre .pilule:hover{ background:var(--creme); }
+
+/* La pagination d'une rubrique fournie. */
+.pagination{ font-family:var(--texte); font-size:14.5px; text-align:center; margin:26px 0 0; }
+.pagination a{ color:var(--accent); }
+
 /* --- les outils d'une fiche : signaler, imprimer, partager ---------------- */
 .fil-rangee{ display:flex; align-items:center; justify-content:space-between; gap:14px; }
 .fil-rangee .fil{ margin:0; }

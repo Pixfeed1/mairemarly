@@ -1,0 +1,56 @@
+[(#REM)
+  Une rubrique : son texte d'introduction, ses sous-rubriques, puis ses
+  articles du plus recent au plus ancien, pagines par douze pour que la
+  page des trente-sept comptes rendus reste maniable.
+]
+<BOUCLE_rub(RUBRIQUES){id_rubrique}>
+<div class="page-simple fiche-demarche">
+
+	<nav class="fil-ariane" aria-label="Fil d’Ariane">
+		<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+		<BOUCLE_chemin(HIERARCHIE){tout}>
+		<span aria-hidden="true">›</span>
+		<a href="#URL_RUBRIQUE">#TITRE</a>
+		</BOUCLE_chemin>
+		<span aria-hidden="true">›</span>
+		<span aria-current="page">#TITRE</span>
+	</nav>
+
+	<h1>#TITRE</h1>
+	[<div class="chapo">(#TEXTE)</div>]
+
+	<B_sousrub>
+	<h2><:marly:dans_cette_rubrique:></h2>
+	<ul class="fiches">
+		<BOUCLE_sousrub(RUBRIQUES){id_parent}{par titre}>
+		<li><a href="#URL_RUBRIQUE">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
+			<span class="fiche-texte">
+				<b>#TITRE</b>
+				[<span>(#DESCRIPTIF|textebrut|couper{120})</span>]
+			</span>
+		</a></li>
+		</BOUCLE_sousrub>
+	</ul>
+	</B_sousrub>
+
+	<B_arts>
+	<ul class="fiches">
+		<BOUCLE_arts(ARTICLES){id_rubrique}{!par date}{pagination 12}>
+		<li><a href="#URL_ARTICLE">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+			<span class="fiche-texte">
+				<b>#TITRE</b>
+				<span>[(#DATE|affdate)][ · (#SOUSTITRE)][ · (#INTRODUCTION|couper{110})]</span>
+			</span>
+		</a></li>
+		</BOUCLE_arts>
+	</ul>
+	[<p class="pagination">(#PAGINATION{prive})</p>]
+	</B_arts>
+	<//B_arts>
+	[(#REM) Une rubrique sans article ni sous-rubrique n'est de toute facon
+	        pas publiee par SPIP : pas de message a prevoir ici. ]
+
+</div>
+</BOUCLE_rub>

@@ -340,3 +340,23 @@ alors sur sa fiche.
 
 L'article proposé apparaît à la mairie dans `Publication ▸ Suivi de la
 publication`. Elle le lit, corrige si besoin, et publie.
+
+## Écrire un article
+
+Tout article, de la mairie ou d'une association, prend automatiquement
+l'habillage du site : rien à régler. Trois gestes suffisent pour enrichir
+le texte :
+
+| Vous tapez | Vous obtenez |
+|---|---|
+| `{{{Le programme}}}` | un intertitre vert |
+| `<quote>Merci aux bénévoles.</quote>` | une citation posée sur un filet vert |
+| `<pratique>La demande se fait en mairie.</pratique>` | un encadré « En pratique » sur fond crème |
+
+Le reste vient tout seul : l'image jointe à l'article s'affiche en grand
+sous le titre, les autres images font la galerie « En images », les PDF
+deviennent des cartes « Télécharger », et quand l'article a trois
+intertitres ou plus, un sommaire « Dans cet article » apparaît de lui-même.
+La date affichée est celle de la publication ; pour un texte ancien,
+choisissez « Afficher une date de rédaction antérieure » dans la colonne
+de gauche de l'article.

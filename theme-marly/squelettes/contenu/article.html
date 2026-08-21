@@ -1,0 +1,136 @@
+[(#REM)
+  Un article : le gabarit unique qui habille tout ce que la mairie et les
+  associations ecrivent. Valide maquette en main, element par element.
+
+  L'ordre de lecture : fil d'ariane, rubrique et outils, titre, sous-titre,
+  chapo, signature datee, image legendee, texte, galerie, documents, puis la
+  suite — actualites liees, toute la rubrique, precedent et suivant, et
+  l'invitation a la lettre. Le sommaire << Dans cet article >> est pose par
+  menu.js quand l'article a au moins trois intertitres : sans JavaScript, il
+  n'y a simplement pas de sommaire, et rien ne manque a la lecture.
+]
+<BOUCLE_art(ARTICLES){id_article}>
+<div class="page-simple fiche-demarche">
+
+	<nav class="fil-ariane" aria-label="Fil d’Ariane">
+		<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+		<BOUCLE_chemin(HIERARCHIE){tout}>
+		<span aria-hidden="true">›</span>
+		<a href="#URL_RUBRIQUE">#TITRE</a>
+		</BOUCLE_chemin>
+		<span aria-hidden="true">›</span>
+		<span aria-current="page">#TITRE</span>
+	</nav>
+
+	<div class="fil-rangee">
+		<p class="article-rubrique"><BOUCLE_r(RUBRIQUES){id_rubrique}>#TITRE</BOUCLE_r></p>
+		<p class="page-outils">
+			<button type="button" class="outil" data-imprimer title="<:marly:outil_imprimer:>">
+				<svg class="ico" aria-hidden="true"><use href="#ri-printer-line"/></svg>
+				<span class="cache"><:marly:outil_imprimer:></span></button>
+			<button type="button" class="outil" data-partager data-copie="<:marly:lien_copie:>" title="<:marly:outil_partager:>">
+				<svg class="ico" aria-hidden="true"><use href="#ri-share-line"/></svg>
+				<span class="cache"><:marly:outil_partager:></span></button>
+		</p>
+	</div>
+
+	<h1>#TITRE</h1>
+	[<p class="chapo">(#SOUSTITRE)</p>]
+	[<p class="chapo">(#CHAPO|propre)</p>]
+
+	[(#REM) La date de mise a jour ne s'affiche que si elle differe du jour de
+	        publication : SPIP la fait bouger a chaque enregistrement, et
+	        << mis a jour le jour meme >> ne dirait rien. ]
+	#SET{pub,#DATE|affdate}
+	#SET{maj,#DATE_MODIF|affdate}
+	<p class="article-signature"><:marly:publie_le:> #GET{pub}<B_qui>, <:marly:par:>
+		<BOUCLE_qui(AUTEURS){id_article}{", "}><b>#NOM</b></BOUCLE_qui></B_qui>[(#GET{maj}|=={#GET{pub}}|non)
+		· <:marly:mis_a_jour_le:> #GET{maj}]</p>
+
+	[<figure class="article-photo">
+		<img src="(#LOGO_ARTICLE|image_reduire{760,0}|extraire_attribut{src})" alt="">
+	</figure>]
+
+	<div class="texte">#TEXTE</div>
+
+	[(#REM) Le portfolio : les images jointes sans etre inserees dans le
+	        texte. Chaque vignette ouvre l'image en grand. ]
+	<B_galerie>
+	<h2><:marly:en_images:></h2>
+	<div class="galerie">
+		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{par num titre, date}>
+		<figure><a href="#URL_DOCUMENT" title="<:marly:voir_la_photo:>">
+			<img src="[(#FICHIER|image_reduire{400,260}|extraire_attribut{src})]" alt="[(#TITRE|attribut_html)]">
+		</a>[<figcaption>(#TITRE)</figcaption>]</figure>
+		</BOUCLE_galerie>
+	</div>
+	</B_galerie>
+
+	<B_docs>
+	<h2><:marly:documents_joints:></h2>
+	<BOUCLE_docs(DOCUMENTS){id_article}{mode=document}{par num titre, date}>
+	<div class="doc-joint">
+		<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+		<span class="doc-texte">
+			<b>[(#TITRE|sinon{#FICHIER|basename})]</b>
+			<span>[(#EXTENSION|majuscules)][ · (#TAILLE|taille_en_octets)][ · <:marly:publie_le_min:> (#DATE|affdate)]</span>
+		</span>
+		<a class="pilule plein" href="#URL_DOCUMENT"><:marly:telecharger:></a>
+	</div>
+	</BOUCLE_docs>
+	</B_docs>
+
+	<section class="article-suite">
+
+		<B_liees>
+		<h2><:marly:actus_liees:></h2>
+		<div class="cartes">
+			<BOUCLE_liees(ARTICLES){id_rubrique}{id_article!=#ID_ARTICLE}{!par date}{0,3}>
+			<article class="carte">
+				[<div class="carte-photo"><a href="#URL_ARTICLE">
+					<img src="(#LOGO_ARTICLE|image_reduire{420,240}|extraire_attribut{src})" alt=""></a></div>]
+				<div class="carte-corps">
+					<p class="carte-quand"><BOUCLE_lr(RUBRIQUES){id_rubrique}>#TITRE</BOUCLE_lr></p>
+					<h3 class="carte-titre"><a href="#URL_ARTICLE">#TITRE</a></h3>
+					<p class="carte-lieu"><:marly:publie_le:> [(#DATE|affdate)]</p>
+				</div>
+			</article>
+			</BOUCLE_liees>
+		</div>
+		<p class="toutes-actus"><a class="lien-fleche" href="#URL_RUBRIQUE"><:marly:toutes_actus_rubrique:>
+			<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a></p>
+		</B_liees>
+
+		[(#REM) La navigation chronologique dans la rubrique : sur un compte
+		        rendu de conseil, passer a la seance voisine est le geste
+		        naturel. ]
+		<div class="article-voisinage">
+			<B_prec>
+			<BOUCLE_prec(ARTICLES){id_rubrique}{date<#DATE}{!par date}{0,1}>
+			<a href="#URL_ARTICLE"><span class="sens">‹ <:marly:article_precedent:></span>
+				<span class="quoi">#TITRE</span></a>
+			</BOUCLE_prec>
+			</B_prec>
+			<B_suiv>
+			<BOUCLE_suiv(ARTICLES){id_rubrique}{date>#DATE}{par date}{0,1}>
+			<a class="suivant" href="#URL_ARTICLE"><span class="sens"><:marly:article_suivant:> ›</span>
+				<span class="quoi">#TITRE</span></a>
+			</BOUCLE_suiv>
+			</B_suiv>
+		</div>
+
+		[(#REM) L'invitation a la lettre, la ou un lecteur qui vient de finir
+		        un article est le plus enclin a s'abonner. Posee seulement si
+		        une lettre existe, comme le bouton de l'en-tete. ]
+		<B_lettre_cta>
+		<BOUCLE_lettre_cta(LETTRES){0,1}><!-- une lettre existe --></BOUCLE_lettre_cta>
+		<div class="article-lettre">
+			<p><:marly:lettre_invite:></p>
+			<a class="pilule" href="#URL_PAGE{newsletter}" data-ouvre-newsletter><:marly:lettre_sinscrire:></a>
+		</div>
+		</B_lettre_cta>
+
+	</section>
+
+</div>
+</BOUCLE_art>
