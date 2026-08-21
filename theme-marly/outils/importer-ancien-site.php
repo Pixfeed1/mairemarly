@@ -331,18 +331,38 @@ foreach ($ids as $id) {
 	}
 
 	$total++;
-	$deja = sql_fetsel('id_article, statut', 'spip_articles', 'titre = ' . sql_quote($titre)
+	$deja = sql_fetsel('id_article, statut, date', 'spip_articles', 'titre = ' . sql_quote($titre)
 		. ($date ? ' AND date = ' . sql_quote($date) : ''));
+	if (!$deja and $id_rubrique) {
+		/* SPIP retimbre la date a la publication (<< maintenant >>, sauf
+		   date future) : un article deja importe peut donc porter la
+		   mauvaise date et echapper au couple titre+date. On le retrouve
+		   par titre et rubrique, et on lui rend sa date plus bas. */
+		$deja = sql_fetsel('id_article, statut, date', 'spip_articles', 'titre = ' . sql_quote($titre)
+			. ' AND id_rubrique = ' . intval($id_rubrique));
+	}
 
-	/* Un article deja la mais reste en << prepa >> (le premier import,
-	   avant la session webmestre) est REPUBLIE au passage : le sauter le
-	   laisserait invisible pour toujours. */
+	/* Un article deja la mais abime (reste en prepa, ou date retimbree
+	   par la publication) est repare au passage : le sauter le laisserait
+	   invisible, ou date d'aujourd'hui pour toujours. La date se rend
+	   APRES la republication, puisque c'est elle qui la retimbre. */
 	$mention = '';
 	if ($deja) {
 		$mention = ' DEJA LA, saute';
-		if ($importer and $deja['statut'] !== 'publie') {
-			objet_modifier('article', $deja['id_article'], array('statut' => 'publie'));
-			$mention = ' DEJA LA, republie';
+		if ($importer) {
+			$gestes = array();
+			if ($deja['statut'] !== 'publie') {
+				objet_modifier('article', $deja['id_article'], array('statut' => 'publie'));
+				$gestes[] = 'republie';
+			}
+			if ($date and $deja['date'] !== $date) {
+				sql_updateq('spip_articles', array('date' => $date),
+					'id_article = ' . intval($deja['id_article']));
+				$gestes[] = 'date rendue';
+			}
+			if ($gestes) {
+				$mention = ' DEJA LA, ' . implode(' et ', $gestes);
+			}
 		}
 	}
 

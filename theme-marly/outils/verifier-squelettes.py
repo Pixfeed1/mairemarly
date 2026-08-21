@@ -529,6 +529,19 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "cree ou modifie des objets SPIP sans poser visiteur_session (webmestre) : "
                  "la publication sera refusee en silence, tout restera en << prepa >>")
 
+# 30. Publier un article retimbre sa date : SPIP la remet a << maintenant >>
+#     sauf date future (ecrire/action/editer_article.php, article_instituer).
+#     Un script qui publie des articles historiques doit donc leur RENDRE
+#     leur date apres coup, par sql_updateq. Le deuxieme import l'a paye :
+#     21 comptes rendus de 2016-2020 dates du jour de l'import.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    if re.search(r"objet_modifier\('article'", _src) and "'publie'" in _src \
+            and not re.search(r"sql_updateq\('spip_articles',\s*array\('date'", _src):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), 1,
+                 "publie des articles sans leur rendre leur date : SPIP retimbre la date "
+                 "a la publication, les articles historiques seraient dates du jour")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
