@@ -151,8 +151,13 @@ function rapatrier_piece($u, $dossier_img) {
  * Le premier import les deposait dans IMG/ancien-site/ sans les JOINDRE :
  * les cartes << Telecharger >> du gabarit, qui lisent les DOCUMENTS de
  * l'article, restaient vides — le PDF de l'ancien site vivait dans la
- * marge de l'article, pas dans son texte. Rejouable : un fichier deja
- * attache (meme nom) n'est pas rattache.
+ * marge de l'article, pas dans son texte.
+ *
+ * L'association ne passe PAS par le champ << parents >> de medias : sur
+ * trente appels identiques, il n'a relie qu'un document, cause jamais
+ * elucidee. On associe nous-memes (objet_associer, qui ne cree jamais de
+ * doublon), et un document deja cree mais relie a rien — les rates du
+ * passage precedent — est ADOPTE plutot que recree. Rejouable.
  */
 function attacher_pieces($id_article, $pieces, $dossier_img) {
 	/* La fonction vit dans le plugin medias (action/ajouter_documents.php)
@@ -161,6 +166,8 @@ function attacher_pieces($id_article, $pieces, $dossier_img) {
 	static $ajouter = null;
 	if ($ajouter === null) {
 		include_spip('action/ajouter_documents');
+		include_spip('action/editer_liens');
+		include_spip('inc/charsets');
 		$ajouter = charger_fonction('ajouter_un_document', 'action', true);
 		if (!$ajouter) {
 			fwrite(STDERR, "Le plugin medias ne repond pas : pieces non attachees.\n");
@@ -176,34 +183,72 @@ function attacher_pieces($id_article, $pieces, $dossier_img) {
 		if ($nomf === '') {
 			continue;
 		}
-		$attache = sql_getfetsel('D.id_document',
-			'spip_documents AS D, spip_documents_liens AS L',
-			'D.id_document = L.id_document'
-			. " AND L.objet = 'article' AND L.id_objet = " . intval($id_article)
-			. ' AND D.fichier LIKE ' . sql_quote('%' . $nomf));
-		if ($attache) {
+
+		/* Retrouver les documents deja en base pour ce fichier : meme
+		   normalisation du nom que medias (minuscules, sans accents), et
+		   la base du nom sans extension pour attraper aussi les copies
+		   suffixees -2 nees des collisions. Les jokers de LIKE ( % _ )
+		   sont echappes : nos noms de fichiers sont pleins de _ . */
+		$propre = strtolower(translitteration($nomf));
+		$base = preg_replace('#\.[^.]+$#', '', $propre);
+		$motif = '%' . str_replace(array('\\', '%', '_'), array('\\\\', '\\%', '\\_'), $base) . '%';
+
+		$lie_ici = 0;
+		$orphelin = 0;
+		foreach (sql_allfetsel('id_document', 'spip_documents',
+				'fichier LIKE ' . sql_quote($motif)) as $doc) {
+			$id_doc = intval($doc['id_document']);
+			$liens = sql_allfetsel('objet, id_objet', 'spip_documents_liens',
+				'id_document = ' . $id_doc);
+			$ici = false;
+			foreach ($liens as $l) {
+				if ($l['objet'] === 'article' and intval($l['id_objet']) === intval($id_article)) {
+					$ici = true;
+				}
+			}
+			if ($ici) {
+				$lie_ici = $id_doc;
+			} elseif (!$liens and !$orphelin) {
+				$orphelin = $id_doc;
+			}
+		}
+
+		if ($lie_ici) {
+			/* Deja attache a cet article : juste s'assurer qu'il est visible. */
+			sql_updateq('spip_documents', array('statut' => 'publie'),
+				"id_document = $lie_ici AND statut <> 'publie'");
 			continue;
 		}
-		/* ajouter_un_document DEPLACE le fichier qu'on lui donne : on lui
-		   tend une copie, l'original reste dans IMG/ancien-site/ pour les
-		   liens deja recrits dans les textes. */
-		$copie = $dossier_img . 'copie-' . $nomf;
-		if (!copy($dossier_img . $nomf, $copie)) {
-			continue;
+
+		$id_doc = $orphelin;
+		if (!$id_doc) {
+			/* Rien en base : creation par medias. La fonction DEPLACE le
+			   fichier qu'on lui donne : on lui tend une copie, l'original
+			   reste dans IMG/ancien-site/ pour les liens des textes. */
+			$copie = $dossier_img . 'copie-' . $nomf;
+			if (!copy($dossier_img . $nomf, $copie)) {
+				continue;
+			}
+			$mode = preg_match('#\.(jpe?g|png|gif|webp)$#i', $nomf) ? 'image' : 'document';
+			$id_doc = $ajouter('new', array(
+				'name'     => $nomf,
+				'tmp_name' => $copie,
+				'titre'    => '',
+				'distant'  => false,
+			), 'article', $id_article, $mode);
+			if (file_exists($copie)) {
+				@unlink($copie);
+			}
+			if (!is_numeric($id_doc) or $id_doc <= 0) {
+				fwrite(STDERR, "  piece $nomf : $id_doc\n");
+				continue;
+			}
 		}
-		$mode = preg_match('#\.(jpe?g|png|gif|webp)$#i', $nomf) ? 'image' : 'document';
-		$id_doc = $ajouter('new', array(
-			'name'     => $nomf,
-			'tmp_name' => $copie,
-			'titre'    => '',
-			'distant'  => false,
-		), 'article', $id_article, $mode);
-		if (is_numeric($id_doc) and $id_doc > 0) {
-			$faits++;
-		}
-		if (file_exists($copie)) {
-			@unlink($copie);
-		}
+
+		objet_associer(array('document' => intval($id_doc)), array('article' => intval($id_article)));
+		sql_updateq('spip_documents', array('statut' => 'publie'),
+			'id_document = ' . intval($id_doc));
+		$faits++;
 	}
 	return $faits;
 }
