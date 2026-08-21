@@ -313,7 +313,8 @@ function signer_article($id_article, $auteur) {
 		objet_modifier('auteur', $id_auteur, array('nom' => $auteur, 'statut' => '1comite'));
 		$gestes[] = 'auteur cree';
 	} elseif ($fiche['statut'] === '5poubelle') {
-		objet_modifier('auteur', $id_auteur, array('statut' => '1comite'));
+		sql_updateq('spip_auteurs', array('statut' => '1comite'),
+			'id_auteur = ' . $id_auteur);
 		$gestes[] = 'signature reparee';
 	}
 	if (!sql_countsel('spip_auteurs_liens', 'id_auteur = ' . $id_auteur
@@ -616,7 +617,8 @@ foreach ($ids as $id) {
 				$gestes[] = 'texte rendu';
 			}
 			if ($deja['statut'] !== 'publie') {
-				objet_modifier('article', $deja['id_article'], array('statut' => 'publie'));
+				sql_updateq('spip_articles', array('statut' => 'publie'),
+					'id_article = ' . intval($deja['id_article']));
 				$gestes[] = 'republie';
 			}
 			/* Apres une republication, la date se rend TOUJOURS : SPIP vient
@@ -678,7 +680,8 @@ foreach ($ids as $id) {
 	   meme demande, seule, passe juste apres. On verifie le statut REEL et
 	   on republie dans la meme passe : plus de deuxieme relance a prevoir. */
 	if (sql_getfetsel('statut', 'spip_articles', 'id_article = ' . intval($id_article)) !== 'publie') {
-		objet_modifier('article', $id_article, array('statut' => 'publie'));
+		sql_updateq('spip_articles', array('statut' => 'publie'),
+			'id_article = ' . intval($id_article));
 	}
 	if ($date) {
 		sql_updateq('spip_articles', array('date' => $date),
@@ -700,6 +703,10 @@ foreach ($ids as $id) {
 }
 
 if ($importer) {
+	/* Les statuts poses en direct se propagent aux rubriques : SPIP publie
+	   lui-meme toute rubrique qui abrite du contenu publie. */
+	include_spip('inc/rubriques');
+	calculer_rubriques();
 	marly_invalider_cache();
 }
 echo "\n$total article(s) lu(s)"
