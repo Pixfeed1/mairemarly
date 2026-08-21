@@ -1,0 +1,270 @@
+<?php
+/**
+ * Importe les articles de l'ancien site (marlygomont.free.fr).
+ * ---------------------------------------------------------------------------
+ *   php theme-marly/outils/importer-ancien-site.php /racine-web           # essai
+ *   php theme-marly/outils/importer-ancien-site.php /racine-web importer  # pour de vrai
+ *
+ * L'ESSAI est le mode par défaut : il lit tout, montre article par article ce
+ * qu'il extraira (titre, date, rubrique de destination, pièces jointes), et
+ * n'écrit RIEN. On regarde sa sortie, et seulement ensuite on lance
+ * « importer ». C'est la règle des mesures avant les gestes.
+ *
+ * Choix assumés :
+ *  - les articles gardent leur DATE D'ORIGINE : un compte rendu de 2017
+ *    reste daté de 2017, c'est ce qui fait la profondeur du site ;
+ *  - les rubriques de l'ancien site sont recréées, sauf trois cas mieux
+ *    logés : les comptes rendus vont dans « Vie municipale > Comptes rendus
+ *    du conseil », et les articles des associations dans la rubrique de LEUR
+ *    association, celle que le site crée déjà pour elles ;
+ *  - les images et PDF sont rapatriés dans IMG/ancien-site/ et les liens
+ *    récrits : le jour où free.fr ferme, rien ne casse ;
+ *  - REJOUABLE : un article déjà importé (même titre, même date) est sauté.
+ *
+ * Une requête par seconde vers l'ancien site : il est chez free, il est
+ * vieux, on le ménage.
+ */
+
+error_reporting(E_ALL);
+ini_set('display_errors', 'stderr');
+
+if (PHP_SAPI !== 'cli') {
+	die("Ce script ne s'utilise qu'en ligne de commande.\n");
+}
+
+$racine = isset($argv[1]) ? rtrim($argv[1], '/') : getcwd();
+$importer = (isset($argv[2]) and $argv[2] === 'importer');
+$ecrire = $racine . '/ecrire';
+if (!is_file($ecrire . '/inc_version.php') or !is_file($racine . '/vendor/autoload.php')) {
+	fwrite(STDERR, "Racine SPIP introuvable : $racine\n");
+	exit(1);
+}
+
+chdir($ecrire);
+$_SERVER['DOCUMENT_ROOT']   = $racine;
+$_SERVER['SCRIPT_FILENAME'] = $ecrire . '/index.php';
+$_SERVER['SCRIPT_NAME']     = '/ecrire/index.php';
+$_SERVER['PHP_SELF']        = '/ecrire/index.php';
+$_SERVER['REQUEST_URI']     = '/ecrire/';
+$_SERVER['REQUEST_METHOD']  = 'GET';
+$_SERVER['REMOTE_ADDR']     = '127.0.0.1';
+$_SERVER['HTTP_HOST']       = basename($racine);
+
+require_once $racine . '/vendor/autoload.php';
+define('_ESPACE_PRIVE', true);
+include $ecrire . '/inc_version.php';
+if (!function_exists('include_spip')) {
+	fwrite(STDERR, "SPIP n'a pas demarre.\n");
+	exit(1);
+}
+include_spip('base/abstract_sql');
+include_spip('inc/distant');
+include_spip('action/editer_objet');
+include_spip('inc/marly_outils');
+
+define('ANCIEN', 'http://marlygomont.free.fr');
+
+/** Va chercher une page de l'ancien site, poliment. */
+function ancien_page($url) {
+	static $dernier = 0;
+	$attente = 1 - (microtime(true) - $dernier);
+	if ($attente > 0) {
+		usleep((int) ($attente * 1000000));
+	}
+	$dernier = microtime(true);
+	$r = recuperer_url($url, array('taille_max' => 4194304, 'transcoder' => true));
+	return $r['page'] ?? '';
+}
+
+/** « Le 22 février 2018 » -> 2018-02-22, sinon ''. */
+function ancien_date($texte) {
+	$mois = array('janvier'=>1,'février'=>2,'fevrier'=>2,'mars'=>3,'avril'=>4,'mai'=>5,
+	              'juin'=>6,'juillet'=>7,'août'=>8,'aout'=>8,'septembre'=>9,
+	              'octobre'=>10,'novembre'=>11,'décembre'=>12,'decembre'=>12);
+	if (preg_match(',(1er|\d{1,2})\s+(' . implode('|', array_keys($mois)) . ')\s+(\d{4}),iu',
+			$texte, $m)) {
+		$jour = ($m[1] === '1er') ? 1 : intval($m[1]);
+		return sprintf('%04d-%02d-%02d 12:00:00', $m[3], $mois[mb_strtolower($m[2])], $jour);
+	}
+	return '';
+}
+
+/** Trouve (ou cree, en mode importer) une rubrique par son chemin. */
+function rubrique_chemin($chemin, $importer) {
+	$id_parent = 0;
+	foreach ($chemin as $titre) {
+		$id = sql_getfetsel('id_rubrique', 'spip_rubriques',
+			'titre = ' . sql_quote($titre) . ' AND id_parent = ' . intval($id_parent));
+		if (!$id) {
+			if (!$importer) {
+				return 0;
+			}
+			$id = objet_inserer('rubrique', $id_parent);
+			if (!$id) {
+				return 0;
+			}
+			objet_modifier('rubrique', $id, array('titre' => $titre, 'statut' => 'publie'));
+		}
+		$id_parent = $id;
+	}
+	return $id_parent;
+}
+
+/** La rubrique d'une association, retrouvee par sa fiche. */
+function rubrique_association($morceau) {
+	return intval(sql_getfetsel('id_rubrique', 'spip_associations',
+		'nom LIKE ' . sql_quote('%' . $morceau . '%') . ' AND id_rubrique > 0'));
+}
+
+/* ------------------------------------------------------------------ le plan */
+echo "Lecture du plan de l'ancien site...\n";
+$plan = ancien_page(ANCIEN . '/spip.php?page=plan');
+if (!$plan) {
+	fwrite(STDERR, "Le plan ne repond pas. L'ancien site est-il joignable depuis ce serveur ?\n");
+	exit(1);
+}
+
+/* Les sections du plan : un titre de rubrique, puis des liens d'articles. */
+preg_match_all(',spip\.php\?article(\d+),', $plan, $m);
+$ids = array_values(array_unique(array_map('intval', $m[1])));
+sort($ids);
+echo count($ids) . " articles reperes dans le plan.\n\n";
+
+$dossier_img = $racine . '/IMG/ancien-site/';
+
+$total = $faits = 0;
+foreach ($ids as $id) {
+	$page = ancien_page(ANCIEN . "/spip.php?article$id");
+	if (!$page) {
+		echo "article$id : INJOIGNABLE\n";
+		continue;
+	}
+
+	/* Le titre. */
+	$titre = '';
+	if (preg_match(',<h1[^>]*>(.*?)</h1>,s', $page, $m)
+	or preg_match(',<title>(.*?)</title>,s', $page, $m)) {
+		$titre = trim(preg_replace(',\s+,', ' ', strip_tags($m[1])));
+		$titre = preg_replace(',\s*[-|].{0,40}(Marly[- ]Gomont|village).*$,i', '', $titre);
+	}
+	if ($titre === '') {
+		echo "article$id : SANS TITRE, saute\n";
+		continue;
+	}
+
+	/* La date et la rubrique d'origine : « Le 22 février 2018, par X, dans Y ». */
+	$date = ancien_date($page);
+	$rubrique_origine = '';
+	if (preg_match(',dans\s+<a[^>]*rubrique[^>]*>(.*?)</a>,si', $page, $m)) {
+		$rubrique_origine = trim(strip_tags($m[1]));
+	}
+
+	/* Le corps : le bloc texte du squelette d'epoque, sinon le plus grand
+	   <div> apres le h1. On garde le HTML tel quel. */
+	$texte = '';
+	foreach (array(',<div[^>]*class="[^"]*\btexte\b[^"]*"[^>]*>(.*?)</div>,s',
+	               ',<div[^>]*id="texte"[^>]*>(.*?)</div>,s') as $motif) {
+		if (preg_match($motif, $page, $m)) {
+			$texte = trim($m[1]);
+			break;
+		}
+	}
+
+	/* Les fichiers du site d'epoque : images et documents sous IMG/. */
+	$pieces = array();
+	preg_match_all(',(?:href|src)="([^"]*IMG/[^"]+)",i', $page, $mm);
+	foreach (array_unique($mm[1]) as $u) {
+		$pieces[] = $u;
+	}
+
+	/* La destination. */
+	$cible_txt = '';
+	$id_rubrique = 0;
+	if (preg_match(',^(r[ée]union de conseil|élection du maire),iu', $titre)
+	or ($rubrique_origine === 'Mairie' and stripos($titre, 'conseil') !== false)) {
+		$chemin = array('Vie municipale', 'Comptes rendus du conseil');
+		$cible_txt = implode(' > ', $chemin);
+		$id_rubrique = rubrique_chemin($chemin, $importer);
+	} elseif ($rubrique_origine === 'Du coté des associations de Marly'
+	or $rubrique_origine === 'SECTEUR PAROISSIAL DE MARLY GOMONT') {
+		foreach (array('ASMG' => 'AS Marly', 'TTMG' => 'TTMG', 'armonie' => 'Harmonie',
+		               'PAROISS' => 'Paroisse', 'SECTEUR' => 'Paroisse') as $indice => $morceau) {
+			if (stripos($titre . ' ' . $rubrique_origine, $indice) !== false) {
+				$id_rubrique = rubrique_association($morceau);
+				$cible_txt = 'rubrique de l\'association ' . $morceau;
+				break;
+			}
+		}
+		if (!$id_rubrique) {
+			$chemin = array('Vie associative');
+			$cible_txt = 'Vie associative';
+			$id_rubrique = rubrique_chemin($chemin, $importer);
+		}
+	} elseif ($rubrique_origine === 'Comité d’animation' or $rubrique_origine === "Comité d'animation") {
+		$id_rubrique = rubrique_association('animation');
+		$cible_txt = 'rubrique du Comité d\'animation';
+	}
+	if (!$id_rubrique and !$cible_txt) {
+		$nom = $rubrique_origine !== '' ? $rubrique_origine : 'Archives du village';
+		$chemin = array('Mémoire du village', $nom);
+		$cible_txt = implode(' > ', $chemin);
+		$id_rubrique = rubrique_chemin($chemin, $importer);
+	}
+
+	$total++;
+	$deja = sql_countsel('spip_articles', 'titre = ' . sql_quote($titre)
+		. ($date ? ' AND date = ' . sql_quote($date) : ''));
+
+	printf("article%-4d %-58s %s -> %s%s%s\n", $id, mb_substr($titre, 0, 58),
+		$date ? substr($date, 0, 10) : 'sans date ',
+		$cible_txt,
+		$pieces ? ' [' . count($pieces) . ' fichier(s)]' : '',
+		$deja ? ' DEJA LA, saute' : '');
+
+	if (!$importer or $deja) {
+		continue;
+	}
+
+	/* Rapatrier les fichiers et recrire les liens. */
+	if ($pieces and !is_dir($dossier_img)) {
+		@mkdir($dossier_img, 0755, true);
+	}
+	foreach ($pieces as $u) {
+		$absolu = (strpos($u, 'http') === 0) ? $u : ANCIEN . '/' . ltrim($u, '/');
+		$nomf = basename(parse_url($absolu, PHP_URL_PATH));
+		if ($nomf === '') {
+			continue;
+		}
+		if (!file_exists($dossier_img . $nomf)) {
+			$r = recuperer_url($absolu, array('taille_max' => 20971520, 'transcoder' => false));
+			if (!empty($r['page'])) {
+				file_put_contents($dossier_img . $nomf, $r['page']);
+			}
+		}
+		$texte = str_replace($u, 'IMG/ancien-site/' . $nomf, $texte);
+	}
+
+	$id_article = objet_inserer('article', $id_rubrique);
+	if (!$id_article) {
+		echo "  ECHEC de creation\n";
+		continue;
+	}
+	objet_modifier('article', $id_article, array(
+		'titre'  => $titre,
+		'texte'  => $texte,
+		'statut' => 'publie',
+	));
+	if ($date) {
+		sql_updateq('spip_articles', array('date' => $date),
+			'id_article = ' . intval($id_article));
+	}
+	$faits++;
+}
+
+if ($importer) {
+	marly_invalider_cache();
+}
+echo "\n$total article(s) lu(s)" . ($importer ? ", $faits importe(s)." : ". RIEN n'a ete ecrit : mode essai.") . "\n";
+if (!$importer) {
+	echo "Pour importer vraiment : php " . basename(__FILE__) . " $racine importer\n";
+}
