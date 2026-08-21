@@ -121,8 +121,60 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('marly_completer_socle_2026'),
 	);
 
+	/* 3.36.2 — chaque site nomme dans une fiche devient cliquable la ou il
+	   est nomme. Rattrape une base passee par 3.36.0, dont le texte en
+	   etapes ne portait pas encore les liens. */
+	$maj['3.36.2'] = array(
+		array('marly_lier_sites_nommes'),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
+}
+
+/**
+ * Reapplique les textes du socle qui viennent de gagner leurs liens, mais
+ * UNIQUEMENT sur les fiches restees a une version connue du texte : une
+ * fiche retouchee par la mairie ne bouge pas. Les versions connues sont
+ * l'originale et celle de la 3.36.0.
+ */
+function marly_lier_sites_nommes() {
+	include_spip('inc/marly_demarches');
+
+	$anciens = array(
+		'Carte d’identité ou passeport' => array(
+			'comment' => array(
+				'Faites d’abord la pré-demande en ligne sur le site de l’ANTS, puis prenez rendez-vous dans une mairie équipée. Vous pouvez vous rendre dans n’importe laquelle, quel que soit votre domicile.',
+				"-# Faites la pré-demande en ligne sur le site de l'ANTS. Elle est gratuite : seul le timbre fiscal du passeport est payant.\n-# Prenez rendez-vous dans une mairie équipée. N'importe laquelle, quel que soit votre domicile : les plus proches sont sur la carte de l'ANTS.\n-# Déposez le dossier au rendez-vous. La personne concernée doit être présente, ses empreintes sont recueillies.\n-# Un SMS vous prévient quand le titre est prêt : retirez-le, sans rendez-vous, là où vous avez déposé le dossier.",
+			),
+			'pieces' => array('Photo d’identité récente, justificatif de domicile, timbre fiscal pour un passeport, et ancien titre s’il s’agit d’un renouvellement.'),
+			'ou' => array('Dans une mairie équipée d’un dispositif de recueil. La carte des mairies habilitées est sur le site de l’ANTS.'),
+		),
+		'Carte grise (certificat d’immatriculation)' => array(
+			'comment' => array('Entièrement en ligne, sur le site de l’ANTS. Méfiez-vous des sites payants qui imitent le site officiel.'),
+		),
+		'Permis de conduire' => array(
+			'comment' => array('En ligne sur le site de l’ANTS.'),
+		),
+		'Impôts et taxes' => array(
+			'comment' => array('Depuis votre espace particulier sur le site des impôts.'),
+		),
+	);
+
+	foreach (marly_socle_demarches() as $fiche) {
+		if (!isset($anciens[$fiche['titre']])) {
+			continue;
+		}
+		foreach ($anciens[$fiche['titre']] as $champ => $versions_connues) {
+			foreach ($versions_connues as $version_connue) {
+				sql_updateq('spip_demarches', array($champ => $fiche[$champ]),
+					'titre = ' . sql_quote($fiche['titre'])
+					. ' AND ' . $champ . ' = ' . sql_quote($version_connue));
+			}
+		}
+	}
+	spip_log('marly : liens poses sur les sites nommes des fiches non retouchees',
+		'marly.' . _LOG_INFO_IMPORTANTE);
 }
 
 /**
