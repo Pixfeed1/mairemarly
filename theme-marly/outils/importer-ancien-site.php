@@ -140,11 +140,17 @@ foreach ($ids as $id) {
 		continue;
 	}
 
-	/* Le titre. */
-	$titre = '';
-	if (preg_match(',<h1[^>]*>(.*?)</h1>,s', $page, $m)
-	or preg_match(',<title>(.*?)</title>,s', $page, $m)) {
-		$titre = trim(preg_replace(',\s+,', ' ', strip_tags($m[1])));
+	/* Le titre, et le sous-titre que l'ancien theme imbrique DANS le h1
+	   (d'ou les << Proces verbal >> colles aux titres du premier essai). */
+	$titre = $soustitre = '';
+	if (preg_match('#<h1[^>]*>(.*?)</h1>#s', $page, $m)
+	or preg_match('#<title>(.*?)</title>#s', $page, $m)) {
+		$brut = $m[1];
+		if (preg_match('#<(span|small|em|i|div)[^>]*>(.*?)</\1>#s', $brut, $ss)) {
+			$soustitre = trim(preg_replace('#\s+#', ' ', strip_tags($ss[2])));
+			$brut = str_replace($ss[0], ' ', $brut);
+		}
+		$titre = trim(preg_replace('#\s+#', ' ', strip_tags($brut)));
 		$titre = preg_replace('#\s*[-|].{0,40}(Marly[- ]Gomont|village).*$#i', '', $titre);
 	}
 	if ($titre === '') {
@@ -186,7 +192,7 @@ foreach ($ids as $id) {
 	/* La destination. */
 	$cible_txt = '';
 	$id_rubrique = 0;
-	if (preg_match(',^(r[ée]union de conseil|élection du maire),iu', $titre)
+	if (preg_match('#^(r[ée]union\s+(de\s+)?(du\s+)?conseil|[ée]lection du maire)#iu', $titre)
 	or ($rubrique_origine === 'Mairie' and stripos($titre, 'conseil') !== false)) {
 		$chemin = array('Vie municipale', 'Comptes rendus du conseil');
 		$cible_txt = implode(' > ', $chemin);
@@ -221,7 +227,8 @@ foreach ($ids as $id) {
 	$deja = sql_countsel('spip_articles', 'titre = ' . sql_quote($titre)
 		. ($date ? ' AND date = ' . sql_quote($date) : ''));
 
-	printf("article%-4d %-52s %s %-18s -> %s%s%s\n", $id, mb_substr($titre, 0, 52),
+	printf("article%-4d %-52s %s %-18s -> %s%s%s\n", $id,
+		mb_substr($titre . ($soustitre !== '' ? ' // ' . $soustitre : ''), 0, 52),
 		$date ? substr($date, 0, 10) : 'SANS DATE ',
 		$auteur !== '' ? 'par ' . mb_substr($auteur, 0, 14) : 'SANS AUTEUR',
 		$cible_txt,
@@ -257,9 +264,10 @@ foreach ($ids as $id) {
 		continue;
 	}
 	objet_modifier('article', $id_article, array(
-		'titre'  => $titre,
-		'texte'  => $texte,
-		'statut' => 'publie',
+		'titre'     => $titre,
+		'soustitre' => $soustitre,
+		'texte'     => $texte,
+		'statut'    => 'publie',
 	));
 	if ($date) {
 		sql_updateq('spip_articles', array('date' => $date),
