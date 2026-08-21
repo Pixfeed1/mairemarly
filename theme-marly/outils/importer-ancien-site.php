@@ -253,6 +253,47 @@ function attacher_pieces($id_article, $pieces, $dossier_img) {
 	return $faits;
 }
 
+/**
+ * Relie la signature d'origine a l'article, et veille au statut de la fiche.
+ *
+ * Un auteur SPIP peut exister sans aucun compte de connexion : juste un nom,
+ * relie a ses articles — c'est ce qu'on avait convenu. MAIS un auteur cree
+ * par l'API nait en << 5poubelle >>, que les boucles AUTEURS excluent : la
+ * signature n'apparaitrait jamais (Severine, premiere fournee). On pose donc
+ * redactrice (1comite), toujours sans login : une signature, pas un acces.
+ * Rejouable : fiche, statut et lien ne sont refaits que s'ils manquent.
+ */
+function signer_article($id_article, $auteur) {
+	if ($auteur === '') {
+		return array();
+	}
+	$gestes = array();
+	$fiche = sql_fetsel('id_auteur, statut', 'spip_auteurs', 'nom = ' . sql_quote($auteur));
+	$id_auteur = $fiche ? intval($fiche['id_auteur']) : 0;
+	if (!$id_auteur) {
+		$id_auteur = objet_inserer('auteur');
+		if (!$id_auteur) {
+			return array();
+		}
+		objet_modifier('auteur', $id_auteur, array('nom' => $auteur, 'statut' => '1comite'));
+		$gestes[] = 'auteur cree';
+	} elseif ($fiche['statut'] === '5poubelle') {
+		objet_modifier('auteur', $id_auteur, array('statut' => '1comite'));
+		$gestes[] = 'signature reparee';
+	}
+	if (!sql_countsel('spip_auteurs_liens', 'id_auteur = ' . $id_auteur
+			. " AND objet = 'article' AND id_objet = " . intval($id_article))) {
+		sql_insertq('spip_auteurs_liens', array(
+			'id_auteur' => $id_auteur,
+			'objet'     => 'article',
+			'id_objet'  => intval($id_article),
+			'vu'        => 'non',
+		));
+		$gestes[] = 'signature liee';
+	}
+	return $gestes;
+}
+
 /** Trouve (ou cree, en mode importer) une rubrique par son chemin. */
 function rubrique_chemin($chemin, $importer) {
 	$id_parent = 0;
@@ -493,6 +534,7 @@ foreach ($ids as $id) {
 			if ($pieces and ($n = attacher_pieces($deja['id_article'], $pieces, $dossier_img))) {
 				$gestes[] = $n . ' piece(s) attachee(s)';
 			}
+			$gestes = array_merge($gestes, signer_article($deja['id_article'], $auteur));
 			if ($gestes) {
 				$mention = ' DEJA LA, ' . implode(' et ', $gestes);
 			}
@@ -546,29 +588,7 @@ foreach ($ids as $id) {
 		ANCIEN . "/spip.php?article$id  ->  https://marlygomont.pixfeed.net/spip.php?article$id_article  ($titre)\n",
 		FILE_APPEND);
 
-	/* La signature d'origine. Un auteur SPIP peut exister sans aucun compte
-	   de connexion : juste un nom, relie a ses articles. C'est ce qu'on
-	   avait convenu pour Paul Gosset, et ca vaut pour tous. */
-	if ($auteur !== '') {
-		$id_auteur = sql_getfetsel('id_auteur', 'spip_auteurs',
-			'nom = ' . sql_quote($auteur));
-		if (!$id_auteur) {
-			$id_auteur = objet_inserer('auteur');
-			if ($id_auteur) {
-				objet_modifier('auteur', $id_auteur, array('nom' => $auteur));
-			}
-		}
-		if ($id_auteur and !sql_countsel('spip_auteurs_liens',
-				'id_auteur = ' . intval($id_auteur)
-				. " AND objet = 'article' AND id_objet = " . intval($id_article))) {
-			sql_insertq('spip_auteurs_liens', array(
-				'id_auteur' => $id_auteur,
-				'objet'     => 'article',
-				'id_objet'  => $id_article,
-				'vu'        => 'non',
-			));
-		}
-	}
+	signer_article($id_article, $auteur);
 	$faits++;
 }
 

@@ -554,6 +554,18 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "rapatrie des fichiers sans les attacher comme documents SPIP : "
                  "les cartes Telecharger et la galerie resteront vides")
 
+# 32. Un auteur cree par l'API nait en << 5poubelle >>, que les boucles
+#     AUTEURS excluent : sa signature n'apparait jamais sur le site. Un
+#     script qui cree des auteurs doit poser leur statut lui-meme (1comite,
+#     sans login). Severine, premiere fournee : 30 articles signes d'une
+#     fiche invisible.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    if "objet_inserer('auteur')" in _src and "'1comite'" not in _src:
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), 1,
+                 "cree des auteurs sans poser leur statut : nes en 5poubelle, "
+                 "leurs signatures resteront invisibles sur le site")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
