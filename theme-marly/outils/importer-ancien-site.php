@@ -249,7 +249,9 @@ foreach ($ids as $id) {
 		$assignes = array(26 => 'Paroisse', 83 => 'TTMG');
 		if (isset($assignes[$id])) {
 			$id_rubrique = rubrique_association($assignes[$id]);
-			$cible_txt = "rubrique de l'association " . $assignes[$id];
+			$cible_txt = $id_rubrique
+				? "rubrique de l'association " . $assignes[$id]
+				: 'RUBRIQUE ' . $assignes[$id] . ' INTROUVABLE EN BASE';
 		}
 		if (!$id_rubrique)
 		foreach (array('ASMG' => 'AS Marly', 'TTMG' => 'TTMG', 'armonie' => 'Harmonie',
@@ -327,6 +329,12 @@ foreach ($ids as $id) {
 		sql_updateq('spip_articles', array('date' => $date),
 			'id_article = ' . intval($id_article));
 	}
+
+	/* La correspondance, pour la verification finale url par url. */
+	$paires = $racine . '/tmp/import-correspondances.txt';
+	file_put_contents($paires,
+		ANCIEN . "/spip.php?article$id  ->  https://marlygomont.pixfeed.net/spip.php?article$id_article  ($titre)\n",
+		FILE_APPEND);
 
 	/* La signature d'origine. Un auteur SPIP peut exister sans aucun compte
 	   de connexion : juste un nom, relie a ses articles. C'est ce qu'on
