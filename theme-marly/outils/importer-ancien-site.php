@@ -205,7 +205,10 @@ foreach ($ids as $id) {
 		   Le nom de famille, lui, ne s'invente pas — quand la mairie nous
 		   le donnera, une seule correction de la fiche auteur signera d'un
 		   coup ses 45 articles. */
-		$propres = array('severine' => 'Séverine');
+		$propres = array(
+			'severine' => 'Séverine',
+			'secretaire de mairie' => 'Secrétariat de mairie',
+		);
 		$cle = mb_strtolower($auteur);
 		$auteur = $propres[$cle] ?? mb_convert_case($auteur, MB_CASE_TITLE, 'UTF-8');
 	}
@@ -239,6 +242,16 @@ foreach ($ids as $id) {
 		$id_rubrique = rubrique_chemin($chemin, $importer);
 	} elseif ($rubrique_origine === 'Du coté des associations de Marly'
 	or $rubrique_origine === 'SECTEUR PAROISSIAL DE MARLY GOMONT') {
+		/* Deux articles que les mots-cles ne peuvent pas trouver : le texte
+		   fondateur de la paroisse s'appelle << Nouvel article >>, et la
+		   naissance du TTMG ne nomme le club que dans son corps. Assignes
+		   par leur numero, verifie a l'essai. */
+		$assignes = array(26 => 'Paroisse', 83 => 'TTMG');
+		if (isset($assignes[$id])) {
+			$id_rubrique = rubrique_association($assignes[$id]);
+			$cible_txt = "rubrique de l'association " . $assignes[$id];
+		}
+		if (!$id_rubrique)
 		foreach (array('ASMG' => 'AS Marly', 'TTMG' => 'TTMG', 'armonie' => 'Harmonie',
 		               'PAROISS' => 'Paroisse', 'SECTEUR' => 'Paroisse') as $indice => $morceau) {
 			if (stripos($titre . ' ' . $rubrique_origine, $indice) !== false) {
