@@ -355,7 +355,9 @@ foreach ($ids as $id) {
 				objet_modifier('article', $deja['id_article'], array('statut' => 'publie'));
 				$gestes[] = 'republie';
 			}
-			if ($date and $deja['date'] !== $date) {
+			/* Apres une republication, la date se rend TOUJOURS : SPIP vient
+			   de la retimbrer, comparer la date lue avant ne dit plus rien. */
+			if ($date and ($gestes or $deja['date'] !== $date)) {
 				sql_updateq('spip_articles', array('date' => $date),
 					'id_article = ' . intval($deja['id_article']));
 				$gestes[] = 'date rendue';
