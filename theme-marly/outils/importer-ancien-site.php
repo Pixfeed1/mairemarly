@@ -125,6 +125,75 @@ function ancien_date($texte) {
 	return '';
 }
 
+/** Rapatrie un fichier de l'ancien site dans IMG/ancien-site/ ; rend son
+    nom local, ou '' si rien n'a pu etre recupere. */
+function rapatrier_piece($u, $dossier_img) {
+	$absolu = (strpos($u, 'http') === 0) ? $u : ANCIEN . '/' . ltrim($u, '/');
+	$nomf = basename(parse_url($absolu, PHP_URL_PATH));
+	if ($nomf === '') {
+		return '';
+	}
+	if (!is_dir($dossier_img)) {
+		@mkdir($dossier_img, 0755, true);
+	}
+	if (!file_exists($dossier_img . $nomf)) {
+		$r = recuperer_url($absolu, array('taille_max' => 20971520, 'transcoder' => false));
+		if (empty($r['page'])) {
+			return '';
+		}
+		file_put_contents($dossier_img . $nomf, $r['page']);
+	}
+	return $nomf;
+}
+
+/**
+ * Attache a l'article, comme vrais documents SPIP, les fichiers rapatries.
+ * Le premier import les deposait dans IMG/ancien-site/ sans les JOINDRE :
+ * les cartes << Telecharger >> du gabarit, qui lisent les DOCUMENTS de
+ * l'article, restaient vides — le PDF de l'ancien site vivait dans la
+ * marge de l'article, pas dans son texte. Rejouable : un fichier deja
+ * attache (meme nom) n'est pas rattache.
+ */
+function attacher_pieces($id_article, $pieces, $dossier_img) {
+	include_spip('action/ajouter_documents');
+	$faits = 0;
+	foreach ($pieces as $u) {
+		$nomf = rapatrier_piece($u, $dossier_img);
+		if ($nomf === '') {
+			continue;
+		}
+		$attache = sql_getfetsel('D.id_document',
+			'spip_documents AS D, spip_documents_liens AS L',
+			'D.id_document = L.id_document'
+			. " AND L.objet = 'article' AND L.id_objet = " . intval($id_article)
+			. ' AND D.fichier LIKE ' . sql_quote('%' . $nomf));
+		if ($attache) {
+			continue;
+		}
+		/* ajouter_un_document DEPLACE le fichier qu'on lui donne : on lui
+		   tend une copie, l'original reste dans IMG/ancien-site/ pour les
+		   liens deja recrits dans les textes. */
+		$copie = $dossier_img . 'copie-' . $nomf;
+		if (!copy($dossier_img . $nomf, $copie)) {
+			continue;
+		}
+		$mode = preg_match('#\.(jpe?g|png|gif|webp)$#i', $nomf) ? 'image' : 'document';
+		$id_doc = ajouter_un_document('new', array(
+			'name'     => $nomf,
+			'tmp_name' => $copie,
+			'titre'    => '',
+			'distant'  => false,
+		), 'article', $id_article, $mode);
+		if (is_numeric($id_doc) and $id_doc > 0) {
+			$faits++;
+		}
+		if (file_exists($copie)) {
+			@unlink($copie);
+		}
+	}
+	return $faits;
+}
+
 /** Trouve (ou cree, en mode importer) une rubrique par son chemin. */
 function rubrique_chemin($chemin, $importer) {
 	$id_parent = 0;
@@ -362,6 +431,9 @@ foreach ($ids as $id) {
 					'id_article = ' . intval($deja['id_article']));
 				$gestes[] = 'date rendue';
 			}
+			if ($pieces and ($n = attacher_pieces($deja['id_article'], $pieces, $dossier_img))) {
+				$gestes[] = $n . ' piece(s) attachee(s)';
+			}
 			if ($gestes) {
 				$mention = ' DEJA LA, ' . implode(' et ', $gestes);
 			}
@@ -381,23 +453,12 @@ foreach ($ids as $id) {
 		continue;
 	}
 
-	/* Rapatrier les fichiers et recrire les liens. */
-	if ($pieces and !is_dir($dossier_img)) {
-		@mkdir($dossier_img, 0755, true);
-	}
+	/* Rapatrier les fichiers et recrire les liens du texte. */
 	foreach ($pieces as $u) {
-		$absolu = (strpos($u, 'http') === 0) ? $u : ANCIEN . '/' . ltrim($u, '/');
-		$nomf = basename(parse_url($absolu, PHP_URL_PATH));
-		if ($nomf === '') {
-			continue;
+		$nomf = rapatrier_piece($u, $dossier_img);
+		if ($nomf !== '') {
+			$texte = str_replace($u, 'IMG/ancien-site/' . $nomf, $texte);
 		}
-		if (!file_exists($dossier_img . $nomf)) {
-			$r = recuperer_url($absolu, array('taille_max' => 20971520, 'transcoder' => false));
-			if (!empty($r['page'])) {
-				file_put_contents($dossier_img . $nomf, $r['page']);
-			}
-		}
-		$texte = str_replace($u, 'IMG/ancien-site/' . $nomf, $texte);
 	}
 
 	$id_article = objet_inserer('article', $id_rubrique);
@@ -415,6 +476,10 @@ foreach ($ids as $id) {
 		sql_updateq('spip_articles', array('date' => $date),
 			'id_article = ' . intval($id_article));
 	}
+
+	/* Les fichiers rapatries deviennent de vrais documents de l'article :
+	   PDF en carte << Telecharger >>, images dans la galerie. */
+	attacher_pieces($id_article, $pieces, $dossier_img);
 
 	/* La correspondance, pour la verification finale url par url. */
 	$paires = $racine . '/tmp/import-correspondances.txt';

@@ -542,6 +542,18 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "publie des articles sans leur rendre leur date : SPIP retimbre la date "
                  "a la publication, les articles historiques seraient dates du jour")
 
+# 31. Un script qui rapatrie des fichiers d'un autre site doit les ATTACHER
+#     aux articles (ajouter_un_document), pas seulement les poser dans IMG/.
+#     Les gabarits montrent les DOCUMENTS d'un article ; un PDF simplement
+#     copie sur le disque reste invisible. Le premier import l'a montre :
+#     30 comptes rendus en ligne, aucun PDF a telecharger.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    if 'IMG/ancien-site' in _src and 'ajouter_un_document' not in _src:
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), 1,
+                 "rapatrie des fichiers sans les attacher comme documents SPIP : "
+                 "les cartes Telecharger et la galerie resteront vides")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
