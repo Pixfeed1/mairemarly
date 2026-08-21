@@ -133,9 +133,36 @@ if (!$plan) {
 	exit(1);
 }
 
-/* Les sections du plan : un titre de rubrique, puis des liens d'articles. */
-preg_match_all(',spip\.php\?article(\d+),', $plan, $m);
-$ids = array_values(array_unique(array_map('intval', $m[1])));
+/* La carte article -> rubrique d'origine, construite depuis le PLAN : il
+   liste chaque article sous sa rubrique. C'est la source fiable — la
+   detection page par page echouait en silence, et l'essai l'a montre :
+   tout partait au fourre-tout, y compris les articles des associations. */
+$noms_rubriques = array(
+	'ça se passe en thiérache', 'Comité d’animation', 'Commerces et Services',
+	'Du coté des associations de Marly', 'SECTEUR PAROISSIAL DE MARLY GOMONT',
+	'Evènements', 'Forums des artisans et des produits du terroir',
+	'Mairie', 'Marly en Images',
+);
+$origines = array();
+$section = '';
+foreach (preg_split('#(spip\.php\?article\d+)#', $plan, -1, PREG_SPLIT_DELIM_CAPTURE) as $morceau) {
+	if (preg_match('#spip\.php\?article(\d+)#', $morceau, $m)) {
+		$origines[intval($m[1])] = $section;
+		continue;
+	}
+	$texte_brut = strip_tags($morceau);
+	unset($pos_section);
+	foreach ($noms_rubriques as $nom) {
+		/* si plusieurs noms figurent dans le morceau, garder le DERNIER
+		   nomme avant les articles qui suivent */
+		$pos = mb_strripos($texte_brut, $nom);
+		if ($pos !== false and (!isset($pos_section) or $pos > $pos_section)) {
+			$section = $nom;
+			$pos_section = $pos;
+		}
+	}
+}
+$ids = array_keys($origines);
 sort($ids);
 echo count($ids) . " articles reperes dans le plan.\n\n";
 
@@ -182,10 +209,7 @@ foreach ($ids as $id) {
 		$cle = mb_strtolower($auteur);
 		$auteur = $propres[$cle] ?? mb_convert_case($auteur, MB_CASE_TITLE, 'UTF-8');
 	}
-	$rubrique_origine = '';
-	if (preg_match('#dans\s+<a[^>]*rubrique[^>]*>(.*?)</a>#si', $page, $m)) {
-		$rubrique_origine = trim(strip_tags($m[1]));
-	}
+	$rubrique_origine = $origines[$id] ?? '';
 
 	/* Le corps : le bloc texte du squelette d'epoque, sinon le plus grand
 	   <div> apres le h1. On garde le HTML tel quel. */
@@ -228,7 +252,7 @@ foreach ($ids as $id) {
 			$cible_txt = 'Vie associative';
 			$id_rubrique = rubrique_chemin($chemin, $importer);
 		}
-	} elseif ($rubrique_origine === 'Comité d’animation' or $rubrique_origine === "Comité d'animation") {
+	} elseif (mb_stripos($rubrique_origine, 'animation') !== false) {
 		$id_rubrique = rubrique_association('animation');
 		$cible_txt = 'rubrique du Comité d\'animation';
 	}
@@ -243,10 +267,11 @@ foreach ($ids as $id) {
 	$deja = sql_countsel('spip_articles', 'titre = ' . sql_quote($titre)
 		. ($date ? ' AND date = ' . sql_quote($date) : ''));
 
-	printf("article%-4d %-52s %s %-18s -> %s%s%s\n", $id,
-		mb_substr($titre . ($soustitre !== '' ? ' // ' . $soustitre : ''), 0, 52),
+	printf("article%-4d %-46s %s %-18s [%s] -> %s%s%s\n", $id,
+		mb_substr($titre . ($soustitre !== '' ? ' // ' . $soustitre : ''), 0, 46),
 		$date ? substr($date, 0, 10) : 'SANS DATE ',
 		$auteur !== '' ? 'par ' . mb_substr($auteur, 0, 14) : 'SANS AUTEUR',
+		$rubrique_origine !== '' ? mb_substr($rubrique_origine, 0, 22) : 'origine ?',
 		$cible_txt,
 		$pieces ? ' [' . count($pieces) . ' fichier(s)]' : '',
 		$deja ? ' DEJA LA, saute' : '');
