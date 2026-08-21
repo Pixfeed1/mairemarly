@@ -67,7 +67,8 @@
 	</B_galerie>
 
 	<B_docs>
-	<h2><:marly:documents_joints:></h2>
+	[(#REM) Le titre s'accorde : << Document >> seul, << Documents >> des deux. ]
+	<h2>[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:document_joint,marly:documents_joints})]</h2>
 	<BOUCLE_docs(DOCUMENTS){id_article}{mode=document}{par num titre, date}>
 	<div class="doc-joint">
 		<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>

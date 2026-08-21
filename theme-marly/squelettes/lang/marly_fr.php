@@ -151,6 +151,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'publie_le'            => 'Publié le',
 	'mis_a_jour_le'        => 'Mis à jour le',
 	'par_auteur'           => 'par',
+	'document_joint'       => 'Document à télécharger',
 	'documents_joints'     => 'Documents à télécharger',
 	'dans_la_rubrique'     => 'Dans la même rubrique',
 	'aucun_article'        => 'Aucun article dans cette rubrique pour le moment.',
