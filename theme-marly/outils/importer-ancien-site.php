@@ -616,14 +616,17 @@ foreach ($ids as $id) {
 	$ecarte = $ecartes[$id] ?? '';
 	$deja = null;
 	if (!$ecarte) {
-	$deja = sql_fetsel('id_article, statut, date, texte', 'spip_articles', 'titre = ' . sql_quote($titre)
+	/* Comparaison EXACTE (BINARY) : MySQL ignore la casse, et l'ancien site
+	   a << La voix du village >> ET << LA VOIX DU VILLAGE >> — deux articles
+	   distincts que le garde-fou prenait l'un pour l'autre, date au ping-pong. */
+	$deja = sql_fetsel('id_article, statut, date, texte', 'spip_articles', 'titre = BINARY ' . sql_quote($titre)
 		. ($date ? ' AND date = ' . sql_quote($date) : ''));
 	if (!$deja and $id_rubrique) {
 		/* SPIP retimbre la date a la publication (<< maintenant >>, sauf
 		   date future) : un article deja importe peut donc porter la
 		   mauvaise date et echapper au couple titre+date. On le retrouve
 		   par titre et rubrique, et on lui rend sa date plus bas. */
-		$deja = sql_fetsel('id_article, statut, date, texte', 'spip_articles', 'titre = ' . sql_quote($titre)
+		$deja = sql_fetsel('id_article, statut, date, texte', 'spip_articles', 'titre = BINARY ' . sql_quote($titre)
 			. ' AND id_rubrique = ' . intval($id_rubrique));
 	}
 
