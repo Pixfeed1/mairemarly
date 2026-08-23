@@ -1,0 +1,85 @@
+[(#REM)
+  L'annuaire des commerces et services.
+  ---------------------------------------------------------------------------
+  Une seule liste alphabetique, et non quatre sections. La categorie est dite
+  par l'etiquette posee au-dessus de chaque nom : elle informe sans decouper
+  la page, et l'ordre alphabetique suffit a retrouver un nom qu'on connait
+  deja — ce qui est le cas neuf fois sur dix dans un village de 483 habitants.
+
+  DEUX LIENS PAR ENTREE, ET NON UN SEUL. La vignette et le nom menent a la
+  fiche ; le numero est un lien tel: qui appelle. Envelopper toute la ligne
+  dans un seul lien aurait interdit le second (un lien ne s'imbrique pas dans
+  un lien) et aurait coute ce qui fait tout l'interet d'un annuaire structure :
+  sur un telephone, on appuie sur le numero et ca compose. Deux gestes
+  distincts meritent deux cibles distinctes.
+
+  La vignette porte le sceau de la commune tant qu'il n'y a pas de
+  photographie. Ce sera le cas courant : la mairie n'a pas de photo de chaque
+  commerce, et un trou a chaque ligne casserait la colonne de gauche.
+]
+<div class="page-simple">
+
+	<nav class="fil-ariane" aria-label="Fil d’Ariane">
+		<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+		<span aria-hidden="true">›</span>
+		<span aria-current="page"><:marly:titre_commerces:></span>
+	</nav>
+
+	<h1 class="annuaire-titre"><:marly:titre_commerces:></h1>
+	<p class="chapo annuaire-intro"><:marly:commerces_intro:></p>
+
+	<B_commerces>
+	<ul class="commerces">
+		<BOUCLE_commerces(COMMERCES){par nom}>
+		<li>
+			[(#REM) La photographie si la mairie en a depose une, le sceau
+			        sinon. Le sceau n'est pas une image d'attente qui signale
+			        un manque : il tient la colonne, et la liste garde sa
+			        regularite qu'il y ait une photo ou non.
+
+			        L'identifiant du sceau est celui de la fiche : sans lui,
+			        dix-neuf vignettes porteraient le meme, et le texte en arc
+			        d'une seule serait trace. ]
+			<a class="com-tuile" href="[(#URL_PAGE{commerce}|parametre_url{id_commerce,#ID_COMMERCE})]"
+			   tabindex="-1" aria-hidden="true">
+				[(#LOGO_COMMERCE|non)<INCLURE{fond=inc/sceau-tuile}{n=#ID_COMMERCE}>]
+				[<img class="com-photo" src="(#LOGO_COMMERCE|image_reduire{248,248}|extraire_attribut{src})" alt="" width="124" height="124">]
+			</a>
+
+			<span class="com-texte">
+				<span class="com-etiquette">[(#CATEGORIE|marly_categorie_commerce)]</span>
+				<a class="com-nom" href="[(#URL_PAGE{commerce}|parametre_url{id_commerce,#ID_COMMERCE})]">#NOM</a>
+				[<span class="com-quoi">(#ACTIVITE|couper{180})</span>]
+				[<span class="com-contact">
+					<a href="tel:[(#TELEPHONE|replace{' ',''}|attribut_html)]">(#TELEPHONE)</a>
+					[<span class="sep" aria-hidden="true">·</span><span class="ou">(#LIEU)</span>]
+				</span>]
+				[<span class="com-horaires">(#HORAIRES|textebrut|couper{90})</span>]
+			</span>
+		</li>
+		</BOUCLE_commerces>
+	</ul>
+	</B_commerces>
+
+	[(#REM) Aucun commerce publie : on le dit, plutot que de laisser une page
+	        qui parait cassee. Le corps de la boucle DOIT produire un texte :
+	        l'alternative s'affiche quand la boucle n'a rien PRODUIT, pas
+	        quand elle n'a rien trouve. ]
+	<B_aucun>
+	<BOUCLE_aucun(COMMERCES){0,1}><!-- annuaire non vide --></BOUCLE_aucun>
+	</B_aucun>
+	<p class="explication"><:marly:aucun_commerce_publie:></p>
+	<//B_aucun>
+
+	[(#REM) Le chemin d'entree dans l'annuaire. Sans cette ligne, un
+	        commercant absent ne sait pas comment y entrer, et un horaire
+	        faux le reste. C'est par la qu'une correction arrive. ]
+	[<p class="explication asso-entree"><:marly:commerce_absent:>
+		<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)?subject=[(#VAL{marly:commerce_absent_objet}|_T|urlencode)]"><:marly:commerce_absent_lien:></a></p>]
+
+	<p class="fiche-liens">
+		<a class="pilule" href="#URL_PAGE{lieux}">
+			<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> <:marly:voir_la_carte:></a>
+	</p>
+
+</div>

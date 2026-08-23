@@ -165,6 +165,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'plan_services'        => 'Services',
 	'plan_demarches_quoi'  => 'toutes les fiches, classées selon l’endroit où la démarche se fait',
 	'plan_annuaire'        => 'Annuaire des associations',
+	'plan_commerces_quoi'  => 'les commerçants, professionnels de santé et artisans du village',
 	'plan_annuaire_quoi'   => 'les associations du village, avec leurs contacts',
 	'plan_reserver'        => 'Réserver une salle',
 	'plan_reserver_quoi'   => 'la salle des fêtes et le matériel de la commune',

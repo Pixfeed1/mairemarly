@@ -1,0 +1,74 @@
+[(#REM)
+  La fiche d'un commerce.
+  ---------------------------------------------------------------------------
+  Meme moule que la fiche d'une association, pour que le site reste d'une
+  seule main. Ce qu'on vient chercher ici, c'est le numero et les horaires :
+  ils passent donc AVANT tout le reste, jamais en bas de page.
+
+  Sans photographie, un bandeau au sceau tient la place de l'image. Ce sera
+  le cas courant au depart : la mairie n'a pas de photo de chaque commerce,
+  et une fiche qui commencerait par un trou aurait l'air cassee.
+]
+<BOUCLE_com(COMMERCES){id_commerce}>
+<div class="page-simple fiche-demarche">
+
+	[(#REM) Le retour a gauche, les outils a droite : signaler une correction
+	        a la mairie, imprimer, partager. C'est par le premier qu'un
+	        commercant fait corriger ses horaires sans avoir de compte. Le
+	        courriel est celui des reglages ; sans lui, le bouton n'a pas de
+	        destinataire et ne s'affiche pas. ]
+	<div class="fil-rangee">
+	<p class="fil"><a class="lien-fleche" href="#URL_PAGE{commerces}"><:marly:retour_commerces:>
+		<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a></p>
+	<p class="page-outils">
+		[<a class="outil" href="mailto:(#CONFIG{marly/courriel}|attribut_html)?subject=[(#NOM|attribut_html|urlencode)]"
+		   title="<:marly:outil_signaler:>">
+			<svg class="ico" aria-hidden="true"><use href="#ri-pencil-line"/></svg>
+			<span class="cache"><:marly:outil_signaler:></span></a>]
+		<button type="button" class="outil" data-imprimer title="<:marly:outil_imprimer:>">
+			<svg class="ico" aria-hidden="true"><use href="#ri-printer-line"/></svg>
+			<span class="cache"><:marly:outil_imprimer:></span></button>
+		<button type="button" class="outil" data-partager data-copie="<:marly:lien_copie:>" title="<:marly:outil_partager:>">
+			<svg class="ico" aria-hidden="true"><use href="#ri-share-line"/></svg>
+			<span class="cache"><:marly:outil_partager:></span></button>
+	</p>
+	</div>
+
+	[(#LOGO_COMMERCE|non)
+	<div class="com-bandeau" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{n=fiche}></div>
+	]
+	[<img class="asso-photo-fiche" src="(#LOGO_COMMERCE|image_reduire{760,420}|extraire_attribut{src})" alt="">]
+
+	<p class="com-etiquette">[(#CATEGORIE|marly_categorie_commerce)]</p>
+	<h1>#NOM</h1>
+	[<p class="chapo">(#ACTIVITE|propre)</p>]
+
+	<dl class="fiche-chiffres">
+		[<div><dt><:marly:champ_telephone:></dt><dd><a href="tel:[(#TELEPHONE|replace{' ',''}|attribut_html)]">(#TELEPHONE)</a></dd></div>]
+		[<div><dt><:marly:champ_courriel:></dt><dd><a href="mailto:[(#COURRIEL|attribut_html)]">(#COURRIEL)</a></dd></div>]
+		[<div><dt><:marly:champ_responsable:></dt><dd>(#RESPONSABLE)</dd></div>]
+	</dl>
+
+	[(#REM) L'adresse, puis la carte si elle a pu etre localisee. Sans
+	        JavaScript le cadre reste masque et l'adresse ecrite au-dessus
+	        porte l'information. ]
+	[<section><h2><:marly:commerce_ou:></h2>
+		<p>(#LIEU)</p>
+		[<div class="carte-cadre" data-carte
+		      data-lat="(#LATITUDE|attribut_html)" data-lon="[(#LONGITUDE|attribut_html)]"
+		      data-nom="[(#NOM|attribut_html)]"></div>]
+		[(#LATITUDE|oui)
+		<link rel="stylesheet" href="#CHEMIN{js/leaflet/leaflet.css}">
+		<script src="#CHEMIN{js/leaflet/leaflet.js}"></script>
+		<script src="#CHEMIN{js/carte.js}"></script>
+		]
+	</section>]
+	[<section><h2><:marly:commerce_quand:></h2>(#HORAIRES|propre)</section>]
+
+	[<p class="fiche-liens">
+		<a class="pilule" href="(#SITE|attribut_html)" rel="noopener">
+			<svg class="ico" aria-hidden="true"><use href="#ri-external-link-line"/></svg> <:marly:commerce_site:></a>
+	</p>]
+
+</div>
+</BOUCLE_com>

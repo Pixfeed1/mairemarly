@@ -55,6 +55,14 @@
 					<BOUCLE_assos_pied(ASSOCIATIONS){0,1}></BOUCLE_assos_pied>
 					<li><a href="#URL_PAGE{associations}"><:marly:titre_vie_associative:></a></li>
 					</B_assos_pied>
+
+					[(#REM) L'annuaire des commerces, s'il est rempli. Meme
+					        garde que les deux precedents : un lien du pied de
+					        page ne doit jamais mener a une page vide. ]
+					<B_commerces_pied>
+					<BOUCLE_commerces_pied(COMMERCES){0,1}></BOUCLE_commerces_pied>
+					<li><a href="#URL_PAGE{commerces}"><:marly:titre_commerces:></a></li>
+					</B_commerces_pied>
 				</ul>
 			</div>
 

@@ -290,6 +290,69 @@ function marly_declarer_tables_objets_sql($tables) {
 		'info_aucun_objet'  => 'marly:aucune_association',
 	);
 
+	/* COMMERCES ET SERVICES — l'annuaire des professionnels du village.
+	   ------------------------------------------------------------------------
+	   Une table a part, et non des lignes de plus dans les LIEUX, bien que les
+	   champs se ressemblent. Deux raisons, toutes deux du cote de la mairie :
+	   la page << Ou nous trouver >> liste les batiments de la commune et n'a
+	   aucune raison d'y meler vingt entreprises privees ; et dans l'espace
+	   prive, la secretaire qui cherche l'ecole ne doit pas la chercher parmi
+	   les couvreurs. Un objet = une idee, comme les associations, qui
+	   dupliquent deja adresse et coordonnees pour la meme raison.
+
+	   Ce que la mairie saisit est le minimum : un nom, une categorie, une
+	   phrase, un contact. Tout le reste est facultatif — beaucoup de ces
+	   professionnels n'ont ni site, ni courriel, ni horaires fixes. */
+	$tables['spip_commerces'] = array(
+		'field' => array(
+			'id_commerce' => 'bigint(21) NOT NULL',
+			'nom'         => 'varchar(180) NOT NULL DEFAULT ""',
+			'categorie'   => 'varchar(40) NOT NULL DEFAULT "commerce"',
+			'activite'    => 'text NOT NULL DEFAULT ""',
+			'responsable' => 'varchar(180) NOT NULL DEFAULT ""',
+			'telephone'   => 'varchar(60) NOT NULL DEFAULT ""',
+			'courriel'    => 'varchar(255) NOT NULL DEFAULT ""',
+			'site'        => 'varchar(255) NOT NULL DEFAULT ""',
+
+			/* L'adresse ecrite en clair, et les coordonnees qui en sont
+			   tirees a l'enregistrement. La mairie ne saisit qu'une chose. */
+			'lieu'        => 'varchar(255) NOT NULL DEFAULT ""',
+			'latitude'    => 'varchar(24) NOT NULL DEFAULT ""',
+			'longitude'   => 'varchar(24) NOT NULL DEFAULT ""',
+			'horaires'    => 'text NOT NULL DEFAULT ""',
+
+			'rang'        => 'int(11) NOT NULL DEFAULT 100',
+			'statut'      => 'varchar(20) NOT NULL DEFAULT "publie"',
+			'maj'         => 'TIMESTAMP',
+		),
+		'key' => array(
+			'PRIMARY KEY'   => 'id_commerce',
+			'KEY statut'    => 'statut',
+			'KEY categorie' => 'categorie',
+		),
+		'titre'      => 'nom AS titre, "" AS lang',
+		'principale' => 'oui',
+		'type'       => 'commerce',
+		'texte_objet'  => 'marly:objet_commerce',
+		'texte_objets' => 'marly:objets_commerces',
+		'editable'   => 'oui',
+		'champs_editables'  => array('nom', 'categorie', 'activite', 'responsable',
+		                             'telephone', 'courriel', 'site', 'lieu',
+		                             'horaires', 'rang'),
+		'rechercher_champs' => array('nom' => 8, 'activite' => 4, 'responsable' => 2),
+		'statut' => array(
+			array(
+				'champ'     => 'statut',
+				'publie'    => 'publie',
+				'previsu'   => 'publie,prepa',
+				'exception' => 'statut',
+			),
+		),
+		'texte_modifier'    => 'marly:modifier_commerce',
+		'texte_creer'       => 'marly:creer_commerce',
+		'info_aucun_objet'  => 'marly:aucun_commerce',
+	);
+
 	/* RACCOURCIS — les six ronds de la page d'accueil.
 	   ------------------------------------------------------------------------
 	   Ils venaient de mots-cles poses sur des articles : un groupe pour les
@@ -700,5 +763,6 @@ function marly_declarer_tables_interfaces($interfaces) {
 	$interfaces['table_des_tables']['raccourcis'] = 'raccourcis';
 	$interfaces['table_des_tables']['associations'] = 'associations';
 	$interfaces['table_des_tables']['lieux'] = 'lieux';
+	$interfaces['table_des_tables']['commerces'] = 'commerces';
 	return $interfaces;
 }

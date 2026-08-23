@@ -294,6 +294,57 @@ Le compte créé est un compte **rédacteur** : l'association écrit ses
 articles dans sa rubrique, et c'est vous qui publiez, comme pour tout ce qui
 paraît sur le site.
 
+## L'annuaire des commerces et services
+
+`Édition ▸ Commerces`. Une fiche par commerçant, professionnel de santé,
+artisan ou service du village.
+
+| Champ | Ce qu'on met |
+|---|---|
+| Nom du commerce | Le nom sous lequel les habitants le connaissent, pas la raison sociale |
+| Catégorie | Commerces, Santé, Artisans ou Services. Elle s'affiche en étiquette jaune au-dessus du nom |
+| Activité | Ce qu'on y trouve, en une ou deux phrases |
+| Responsable | Facultatif |
+| Téléphone | **Le champ qui compte.** Il devient cliquable : depuis un téléphone, on appuie et l'appel part |
+| Adresse | La rue et le numéro. La carte se place toute seule à l'enregistrement |
+| Horaires | Écrits comme vous les diriez : « Du mardi au dimanche, de 7h à 13h » |
+
+Il faut **au moins un moyen de contact** — téléphone, courriel ou site — sinon
+la fiche est refusée. Ce n'est pas une chicane : un annuaire sans numéro ne
+répond à aucune des questions qu'on lui pose.
+
+La photographie est facultative. Sans elle, la fiche affiche le sceau de la
+commune sur fond vert, et la liste garde sa régularité.
+
+### Les dix-neuf fiches de départ
+
+L'ancien site donnait dix-neuf noms et rien d'autre : ni téléphone, ni
+adresse, ni horaires. Ces dix-neuf fiches ont été créées **en brouillon**,
+avec le nom, la catégorie et l'activité.
+
+Elles n'apparaissent pas sur le site tant qu'elles sont en brouillon, et
+c'est voulu : une fiche sans numéro ne sert à rien. La liste dans
+`Édition ▸ Commerces` est donc une liste de travail. Pour chacune : appeler
+le commerçant, noter le numéro et les horaires, choisir « Publiée »,
+enregistrer.
+
+Cette liste date d'au moins dix ans. Certains commerces ont sans doute fermé,
+d'autres ouvert : c'est aussi ce que ce tour d'appels permet de vérifier. Une
+fiche d'un commerce fermé se supprime.
+
+### Une correction signalée par un commerçant
+
+Chaque fiche du site porte, en haut à droite, un bouton crayon qui écrit à la
+mairie avec le nom du commerce en objet. Le bas de l'annuaire porte le même
+lien. C'est par là qu'un horaire faux se fait corriger, sans que le
+commerçant ait besoin d'un compte.
+
+**Listez tous les commerces, sans exception, et laissez l'ordre
+alphabétique faire le tri.** Le jour où un commerçant demande pourquoi son
+voisin y est et pas lui, la réponse doit être « tout le monde y est,
+appelez-nous ». Mettre un commerce en avant, c'est de la publicité faite par
+une collectivité, et ça se retourne contre elle.
+
 ## Donner un compte à une association
 
 Une association qui veut publier ses actualités écrit ses propres articles.

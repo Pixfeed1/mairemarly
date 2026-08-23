@@ -1,0 +1,23 @@
+[(#AUTORISER{modifier,salle}|sinon_interdire_acces)]
+<INCLURE{fond=prive/squelettes/inc/marly-styles}>
+
+<h1 class="grostitre">[(#ENV{id_commerce}|=={new}|?{'marly:creer_commerce','marly:modifier_commerce'}|_T)]</h1>
+
+[(#FORMULAIRE_EDITER_COMMERCE{#ENV{id_commerce,new}})]
+
+[(#REM)
+  La photographie du commerce, confiee a la mediatheque de SPIP : elle gere
+  les vignettes, les droits et le nettoyage. Elle n'apparait qu'apres le
+  premier enregistrement, SPIP ayant besoin d'un identifiant pour rattacher
+  une image a quelque chose.
+
+  Facultative, et elle le restera : la mairie n'aura pas de photo de chaque
+  commerce, et la fiche est concue pour tenir sans.
+]
+[(#ENV{id_commerce}|=={new}|non)
+<div class="marly-photo">
+	<h2><:marly:photo_commerce:></h2>
+	<p class="explication"><:marly:photo_commerce_aide:></p>
+	[(#FORMULAIRE_ILLUSTRER_DOCUMENT{commerce,#ENV{id_commerce}})]
+</div>
+]

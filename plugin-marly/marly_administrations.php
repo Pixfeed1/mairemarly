@@ -141,6 +141,14 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('marly_completer_liens_2026'),
 	);
 
+	/* 3.37.0 — l'annuaire des commerces et services. Table a part et non
+	   des lignes de plus dans les lieux : la page << Ou nous trouver >>
+	   liste les batiments de la commune, et la secretaire ne doit pas
+	   chercher l'ecole parmi les couvreurs. */
+	$maj['3.37.0'] = array(
+		array('maj_tables', array('spip_commerces')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }

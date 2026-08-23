@@ -245,6 +245,18 @@ function filtre_marly_icone_theme_dist($theme) {
 	return $icones[$theme] ?? 'ri-team-line';
 }
 
+/** L'intitule d'une categorie de commerce. */
+function filtre_marly_categorie_commerce_dist($categorie) {
+	include_spip('inc/marly_commerces');
+	return marly_categorie_commerce($categorie);
+}
+
+/** L'icone d'une categorie de commerce. */
+function filtre_marly_icone_commerce_dist($categorie) {
+	include_spip('inc/marly_commerces');
+	return marly_icone_commerce($categorie);
+}
+
 /** L'intitule d'une nature de lieu. */
 function filtre_marly_type_lieu_dist($type) {
 	include_spip('inc/marly_lieux');
