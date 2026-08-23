@@ -627,6 +627,39 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                      f"{_nom}() cherche des mois accentues dans du HTML aspire sans "
                      "appeler html_entity_decode : les entites (ao&ucirc;t) ne matcheront jamais")
 
+# 35. Chercher une ligne de signature dans du HTML aspire SANS ecarter
+#     d'abord le <title> et le <h1>. L'ancien SPIP ecrit sa balise titre
+#     << TITRE, par AUTEUR - Site du village >> : quand le titre de
+#     l'article finit par une date, cette balise prend la forme EXACTE
+#     d'une signature, et comme elle vient ligne 4 le motif ancre la mord
+#     bien avant la vraie signature du corps. Mesure : article103 de
+#     l'ancien site, << FETE DE L'ATTELAGE LE 24 SEPTEMBRE 2017 >>, publie
+#     le 7 septembre 2017, importe au 24. Le h1 est ecarte pour la meme
+#     raison : il porte le titre, donc parfois une date, que le repli
+#     attraperait.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    if 'recuperer_url' not in _src:
+        continue
+    # Meme portee que la regle 34 : la FONCTION, pas le fichier. Un retrait
+    # du titre fait ailleurs (a l'extraction du corps) ne protege pas la
+    # lecture de la date. Et meme reperage : la fonction qui nomme des mois
+    # accentues est celle qui lit les dates.
+    _bornes = [_d.start() for _d in re.finditer(r'(?m)^function\s+\w+', _src)] + [len(_src)]
+    for _i in range(len(_bornes) - 1):
+        _corps = _src[_bornes[_i]:_bornes[_i + 1]]
+        if not any(_a in _m for _m in re.findall(r"'[^']*'|\"[^\"]*\"", _corps)
+                   for _a in _MOIS_ACCENTUES):
+            continue
+        _manque = [_b for _b in ('<title', '<h1') if _b not in _corps]
+        if _manque:
+            _nom = re.match(r'function\s+(\w+)', _corps).group(1)
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                     _src[:_bornes[_i]].count(chr(10)) + 1,
+                     f"{_nom}() lit une date dans du HTML aspire sans ecarter "
+                     f"{' ni '.join(_manque)}> : la balise titre de l'ancien SPIP "
+                     "(<< TITRE, par AUTEUR >>) se fait passer pour une signature")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

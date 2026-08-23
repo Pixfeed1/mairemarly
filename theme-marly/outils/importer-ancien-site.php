@@ -117,7 +117,22 @@ function ancien_date($texte) {
 	   forme signee ne matchait jamais pour fevrier, aout et decembre, et on
 	   retombait sur la premiere date venue du corps — la date de la reunion
 	   au lieu de celle de la publication. Trois mois sur douze : une
-	   quinzaine d'articles dates de travers, vus en comparant page a page. */
+	   quinzaine d'articles dates de travers, vus en comparant page a page.
+
+	   Et la balise <title> de l'ancien SPIP s'ecrit << TITRE, par AUTEUR -
+	   Site du village >>. Quand le titre finit par une date, elle prend la
+	   forme EXACTE d'une signature, et comme elle vient ligne 4 le motif
+	   ancre la mordait bien avant la vraie signature du corps. Le h1 est
+	   ecarte pour la meme raison : il porte le titre, donc parfois une
+	   date, que le repli attraperait. On cherche une signature, elle n'est
+	   ni dans l'entete du document ni dans son titre.
+
+	   Mesure : article103 de l'ancien site. Ligne 4 << FETE DE L'ATTELAGE
+	   LE 24 SEPTEMBRE 2017, par severine - Site du village >>, ligne 84
+	   << Le 7 septembre 2017, par severine >>. L'import retenait le 24
+	   septembre, date de la fete, au lieu du 7, date de publication. */
+	$texte = preg_replace('#<title[^>]*>.*?</title>#is', ' ', $texte);
+	$texte = preg_replace('#<h1[^>]*>.*?</h1>#is', ' ', $texte);
 	$texte = html_entity_decode($texte, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 	$mois = array('janvier'=>1,'février'=>2,'fevrier'=>2,'mars'=>3,'avril'=>4,'mai'=>5,
 	              'juin'=>6,'juillet'=>7,'août'=>8,'aout'=>8,'septembre'=>9,
