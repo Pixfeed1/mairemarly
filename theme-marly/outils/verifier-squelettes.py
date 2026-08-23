@@ -598,6 +598,35 @@ if os.path.isfile(_css):
                              f'qui est deja une classe du theme : ses proprietes '
                              f's appliqueront ici aussi, en silence. Choisir un autre nom')
 
+# 34. Chercher du texte accentue dans du HTML aspire SANS decoder les
+#     entites. L'ancien SPIP ecrit << Le 5 ao&ucirc;t 2021, par ... >> : le
+#     motif ancre sur la ligne de signature ne matchait donc jamais pour
+#     fevrier, aout et decembre, et l'import retombait sur la premiere date
+#     du corps — la date de la reunion au lieu de celle de publication.
+#     Trois mois sur douze, une quinzaine d'articles dates de travers, et
+#     rien qui se voyait a la lecture du code.
+_MOIS_ACCENTUES = ('février', 'août', 'décembre')
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    # Seuls les scripts qui ASPIRENT du HTML distant sont concernes : ailleurs,
+    # un mois accentue n'est que du texte (la description d'une association
+    # parlait d'aout, et se faisait signaler pour rien).
+    if 'recuperer_url' not in _src:
+        continue
+    # Le controle porte sur la FONCTION, pas sur le fichier : un decodage fait
+    # ailleurs (sur les titres) ne protege en rien la lecture des dates.
+    _bornes = [_d.start() for _d in re.finditer(r'(?m)^function\s+\w+', _src)] + [len(_src)]
+    for _i in range(len(_bornes) - 1):
+        _corps = _src[_bornes[_i]:_bornes[_i + 1]]
+        _accentue = any(_a in _m for _m in re.findall(r"'[^']*'|\"[^\"]*\"", _corps)
+                        for _a in _MOIS_ACCENTUES)
+        if _accentue and 'html_entity_decode' not in _corps:
+            _nom = re.match(r'function\s+(\w+)', _corps).group(1)
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                     _src[:_bornes[_i]].count(chr(10)) + 1,
+                     f"{_nom}() cherche des mois accentues dans du HTML aspire sans "
+                     "appeler html_entity_decode : les entites (ao&ucirc;t) ne matcheront jamais")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

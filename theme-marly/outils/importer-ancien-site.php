@@ -112,6 +112,13 @@ function ancien_page($url) {
  * l'a montré, avant toute écriture.
  */
 function ancien_date($texte) {
+	/* L'ancien SPIP ecrit les mois accentues en ENTITES dans la ligne de
+	   signature : << Le 5 ao&ucirc;t 2021, par ... >>. Sans decodage, la
+	   forme signee ne matchait jamais pour fevrier, aout et decembre, et on
+	   retombait sur la premiere date venue du corps — la date de la reunion
+	   au lieu de celle de la publication. Trois mois sur douze : une
+	   quinzaine d'articles dates de travers, vus en comparant page a page. */
+	$texte = html_entity_decode($texte, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 	$mois = array('janvier'=>1,'février'=>2,'fevrier'=>2,'mars'=>3,'avril'=>4,'mai'=>5,
 	              'juin'=>6,'juillet'=>7,'août'=>8,'aout'=>8,'septembre'=>9,
 	              'octobre'=>10,'novembre'=>11,'décembre'=>12,'decembre'=>12);
