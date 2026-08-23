@@ -484,14 +484,29 @@ foreach ($ids as $id) {
 	/* La date, l'auteur et la rubrique d'origine :
 	   « Le 22 février 2018, par X, dans Y ». */
 	$date = ancien_date($page);
-	/* Les dates posees a la main, quand la page n'en donne aucune : le 91
-	   (<< Ouverture special Noel >>) est coince entre novembre et decembre
-	   2016 dans le plan, on le date du 1er decembre 2016. */
-	$redates = array(
-		91 => '2016-12-01 12:00:00',
-	);
+	/* Les dates posees a la main, pour les pages qui n'en donnent AUCUNE.
+	   A DEFAUT seulement, jamais par-dessus : une valeur en dur qui ecrase
+	   l'extraction survit en silence aux corrections de l'extracteur, et
+	   masque la vraie date pour toujours.
+
+	   C'est exactement ce qui est arrive au 91 (<< Ouverture special
+	   Noel >>). Sa page signe << Le 15 d&eacute;cembre 2016, par ... >>,
+	   mais tant que les entites n'etaient pas decodees l'extracteur ne
+	   voyait rien, et je l'avais date du 1er decembre d'apres sa place
+	   dans le plan. Les entites decodees, la page a repris la main : la
+	   date en dur n'avait plus lieu d'etre, et la table est vide.
+
+	   Le jour ou une page n'en donne vraiment aucune, remettre une entree
+	   ici : elle ne servira que dans ce cas-la, et le script annoncera de
+	   lui-meme qu'il l'ecarte si la page finit par parler. */
+	$redates = array();
 	if (isset($redates[$id])) {
-		$date = $redates[$id];
+		if ($date === '') {
+			$date = $redates[$id];
+		} elseif ($date !== $redates[$id]) {
+			echo "article$id : date posee a la main (" . $redates[$id]
+				. ") ecartee, la page signe $date\n";
+		}
 	}
 	$auteur = '';
 	if (preg_match('#par\s+<a[^>]*auteur[^>]*>(.*?)</a>#si', $page, $m)

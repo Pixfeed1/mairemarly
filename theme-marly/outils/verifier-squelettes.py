@@ -660,6 +660,34 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                      f"{' ni '.join(_manque)}> : la balise titre de l'ancien SPIP "
                      "(<< TITRE, par AUTEUR >>) se fait passer pour une signature")
 
+# 36. Une DATE posee a la main qui ecrase la date extraite. Le script
+#     d'import garde une table de rattrapage pour les pages qui ne signent
+#     pas leur publication. Appliquee sans condition, elle survit en
+#     silence aux corrections de l'extracteur : la vraie date redevient
+#     lisible, la valeur en dur continue de la masquer, et la comparaison
+#     avant/apres ne voit rien puisque l'essai applique la meme table que
+#     l'import. Mesure : article91, fige au 1er decembre 2016 d'apres sa
+#     place dans le plan, alors que sa page signe << Le 15 d&eacute;cembre
+#     2016, par ... >> — invisible tant que les entites n'etaient pas
+#     decodees, invisible encore apres, a cause de la valeur en dur.
+#
+#     La regle ne vise QUE les dates, et c'est voulu. Une date posee a la
+#     main comble un vide : le jour ou l'extracteur sait lire, elle n'a
+#     plus lieu d'etre. Un retitrage ou un reroutage, lui, corrige une
+#     donnee bien presente et parfaitement lue — << Nouvel article >> est
+#     vraiment le titre de la page. Ceux-la doivent ecraser.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    if 'recuperer_url' not in _src:
+        continue
+    for _c in re.finditer(r'if\s*\(isset\(\$(\w+)\[\$id\]\)\)\s*\{\s*'
+                          r'\$date\s*=\s*\$\1\[\$id\]\s*;', _src):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_c.start()].count(chr(10)) + 1,
+                 f"${_c.group(1)} ecrase la date extraite sans condition : une date "
+                 "posee a la main ne doit servir qu'a defaut, sinon elle masquera "
+                 "pour toujours celle que l'extracteur finira par savoir lire")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
