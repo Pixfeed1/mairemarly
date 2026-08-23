@@ -13,7 +13,12 @@
 	]
 
 	[(#ENV{editable}|oui)
-	<form method="post" action="#ENV{action}">
+	[(#REM) L'adresse d'envoi reporte l'identifiant de la fiche. Sans lui,
+	        un refus de validation reaffichait une fiche NEUVE et vide au
+	        lieu de la fiche en cours avec son message d'erreur : on
+	        croyait sa saisie perdue, et on ne voyait jamais ce qui
+	        clochait. Mesure : POST /ecrire/?exec=demarche, sans id_demarche. ]
+	<form method="post" action="[(#ENV{action}|parametre_url{id_demarche,#ENV{id_demarche}})]">
 		#ACTION_FORMULAIRE{#ENV{action}}
 
 		<fieldset>

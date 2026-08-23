@@ -9,7 +9,12 @@
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
 
 	[(#ENV{editable}|oui)
-	<form method="post" action="#ENV{action}">
+	[(#REM) L'adresse d'envoi reporte l'identifiant de la fiche. Sans lui,
+	        un refus de validation reaffichait une fiche NEUVE et vide au
+	        lieu de la fiche en cours avec son message d'erreur : on
+	        croyait sa saisie perdue, et on ne voyait jamais ce qui
+	        clochait. Mesure : POST /ecrire/?exec=lettre, sans id_lettre. ]
+	<form method="post" action="[(#ENV{action}|parametre_url{id_lettre,#ENV{id_lettre}})]">
 		#ACTION_FORMULAIRE{#ENV{action}}
 		<ul>
 			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">

@@ -708,6 +708,26 @@ for _f in sorted(glob.glob(os.path.join(_FORMS37, 'editer_*.php'))):
                  "fiche : le bloc photographie et le compte rendu de localisation "
                  "s'affichent sur la fiche, et ne seront jamais vus")
 
+# 38. Un formulaire d'edition dont l'adresse d'ENVOI ne reporte pas
+#     l'identifiant de la fiche. Tant que la saisie est valide, rien ne se
+#     voit : SPIP redirige et l'adresse d'envoi n'est jamais affichee. Le
+#     jour ou la validation REFUSE, SPIP reaffiche le formulaire a cette
+#     adresse-la — sans identifiant, il reaffiche une fiche NEUVE et VIDE au
+#     lieu de la fiche en cours avec son message d'erreur.
+#
+#     Effet sur la mairie : la saisie parait perdue, la fiche parait
+#     effacee, et la raison du refus n'est jamais lue. Mesure dans le
+#     journal HTTPS : << POST /ecrire/?exec=commerce 200 >>, referer
+#     << ?exec=commerce&id_commerce=10 >>. L'identifiant tombe en route.
+for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', 'formulaires', 'editer_*.html'))):
+    _src = open(_f, encoding='utf-8').read()
+    for _c in re.finditer(r'<form[^>]*action="#ENV\{action\}"', _src):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_c.start()].count(chr(10)) + 1,
+                 "l'adresse d'envoi ne reporte pas l'identifiant de la fiche : "
+                 "un refus de validation reaffichera une fiche neuve et vide, "
+                 "et le message d'erreur ne sera jamais lu")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
