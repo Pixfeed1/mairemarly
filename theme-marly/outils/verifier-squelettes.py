@@ -566,6 +566,38 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "cree des auteurs sans poser leur statut : nes en 5poubelle, "
                  "leurs signatures resteront invisibles sur le site")
 
+# 33. Une classe du theme reprise comme MODIFICATEUR : le piege silencieux.
+#     Le plan du site a d'abord porte .plan-bloc.large ; or .large existe
+#     deja (le conteneur pleine largeur, qui porte margin-inline:auto), et
+#     ce margin auto a recentre le bloc en le retrecissant de 79px. Rien
+#     n'etait casse a la lecture du code : c'est la mesure des positions
+#     dans le navigateur qui l'a montre. La regle rend la collision visible
+#     avant le rendu.
+_css = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.isfile(_css):
+    _brut = open(_css, encoding='utf-8').read()
+    # Les commentaires sont remplaces par AUTANT de sauts de ligne qu'ils en
+    # contenaient : sans cela les numeros de ligne annonces seraient decales.
+    _sans = re.sub(r'/\*.*?\*/', lambda _c: '\n' * _c.group(0).count('\n'), _brut, flags=re.S)
+    _seuls = set()
+    for _m in re.finditer(r'([^{}]+)\{', _sans):
+        for _sel in _m.group(1).split(','):
+            _s = _sel.strip()
+            if re.fullmatch(r'\.[A-Za-z0-9_-]+', _s):
+                _seuls.add(_s[1:])
+    for _m in re.finditer(r'([^{}]+)\{', _sans):
+        # Le motif happe aussi les blancs qui suivent la regle precedente :
+        # on se cale sur le premier caractere reel du selecteur.
+        _debut = _m.start() + len(_m.group(1)) - len(_m.group(1).lstrip())
+        _ligne = _sans[:_debut].count(chr(10)) + 1
+        for _sel in _m.group(1).split(','):
+            for _c in re.finditer(r'\.([A-Za-z0-9_-]+)\.([A-Za-z0-9_-]+)', _sel):
+                if _c.group(2) in _seuls:
+                    signaler('squelettes/css/theme.css', _ligne,
+                             f'.{_c.group(1)}.{_c.group(2)} reprend .{_c.group(2)}, '
+                             f'qui est deja une classe du theme : ses proprietes '
+                             f's appliqueront ici aussi, en silence. Choisir un autre nom')
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

@@ -1,0 +1,153 @@
+[(#REM)
+  Le plan du site.
+  ---------------------------------------------------------------------------
+  Jusqu'ici ce gabarit n'existait pas : le pied de page renvoyait vers la
+  page « plan », SPIP servait donc le sien, hors charte. Celui-ci est a
+  notre main, et surtout il se remplit TOUT SEUL depuis la base — rubriques,
+  sous-rubriques, demarches. Le jour ou la mairie cree une rubrique, le plan
+  la connait sans que personne y touche.
+
+  Une liste franche plutot que des cartes : c'est ce qu'on attend d'un plan.
+  Chaque lien porte sa phrase — le descriptif de la rubrique, sinon son
+  texte d'introduction — et le compte de ses articles.
+
+  Le sceau est pose en fond du haut de page, tres pale : c'est un decor, il
+  est donc masque aux lecteurs d'ecran.
+]
+<div class="plan-page">
+
+	[(#REM) Le sceau en filigrane. Recopie ici plutot qu'inclus depuis
+	        inc/embleme : celui-la porte des tailles et un role d'image,
+	        celui-ci n'est qu'un fond. Le partager forcerait l'un des deux
+	        a mentir sur ce qu'il est. ]
+	<svg class="plan-fond" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+		<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M26 74 V54"/><path d="M38 74 V54"/><path d="M25 54 L32 43 L39 54"/>
+			<path d="M26 62 L23 74 M38 62 L41 74"/>
+			<path d="M62 74 V54"/><path d="M74 74 V54"/><path d="M61 54 L68 43 L75 54"/>
+			<path d="M62 62 L59 74 M74 62 L77 74"/>
+			<path d="M38 74 V52 L50 36 L62 52 v22"/>
+			<path d="M46 45 v5 M50 44 v6 M54 45 v5"/>
+			<circle cx="50" cy="58" r="4.6"/>
+			<path d="M45 74 V65 Q45 60 50 59 Q55 60 55 65 v9"/>
+			<path d="M50 36 V29 M47 32 h6"/>
+			<path d="M22 74 H78"/>
+		</g>
+		<path id="arcPlan" d="M 16 52 A 34 34 0 0 1 84 52" fill="none"/>
+		<text font-family="Alegreya Sans, Georgia, sans-serif" font-size="11" font-weight="700"
+		      letter-spacing="1" fill="currentColor">
+			<textPath href="#arcPlan" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
+		</text>
+		<circle cx="50" cy="50" r="47.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+		<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.9"/>
+	</svg>
+
+	<div class="page-simple">
+
+		<nav class="fil-ariane" aria-label="Fil d’Ariane">
+			<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+			<span aria-hidden="true">›</span>
+			<span aria-current="page"><:marly:plan_du_site:></span>
+		</nav>
+
+		<h1><:marly:plan_du_site:></h1>
+		<p class="chapo"><:marly:plan_intro:></p>
+
+		<div class="plan-liste">
+
+			[(#REM) LES RUBRIQUES. Les racines, puis leurs filles en retrait.
+			        Rien n'est ecrit en dur : ni les noms, ni l'ordre. ]
+			<B_racines>
+			<h2><:marly:plan_rubriques:></h2>
+			<ul>
+				<BOUCLE_racines(RUBRIQUES){racine}{par num titre, titre}>
+				<li>
+					<a href="#URL_RUBRIQUE">#TITRE</a>[
+					<span class="quoi">— (#DESCRIPTIF|sinon{#TEXTE}|textebrut|couper{120})</span>]
+					<B_compte_racine>
+					<span class="compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_article,marly:des_articles})]</span>
+					<BOUCLE_compte_racine(ARTICLES){id_rubrique}><!-- on ne fait que compter --></BOUCLE_compte_racine>
+					</B_compte_racine>
+				</li>
+				<BOUCLE_sous(RUBRIQUES){id_parent}{par num titre, titre}>
+				<li class="sous">
+					<a href="#URL_RUBRIQUE">#TITRE</a>[
+					<span class="quoi">— (#DESCRIPTIF|sinon{#TEXTE}|textebrut|couper{110})</span>]
+					<B_compte_sous>
+					<span class="compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_article,marly:des_articles})]</span>
+					<BOUCLE_compte_sous(ARTICLES){id_rubrique}><!-- on ne fait que compter --></BOUCLE_compte_sous>
+					</B_compte_sous>
+				</li>
+				</BOUCLE_sous>
+				</BOUCLE_racines>
+			</ul>
+			</B_racines>
+
+			[(#REM) LES DEMARCHES. La fiche recapitulative d'abord, puis les
+			        fiches elles-memes en deux colonnes : leurs intitules se
+			        suffisent, pas de phrase a leur ajouter. ]
+			<B_demarches>
+			<h2><:marly:demarches:></h2>
+			<ul>
+				<li><a href="#URL_PAGE{demarches}"><:marly:toutes_les_demarches:></a>
+					<span class="quoi">— <:marly:plan_demarches_quoi:></span></li>
+			</ul>
+			<ul class="colonnes">
+				<BOUCLE_demarches(DEMARCHES){par famille, rang, titre}>
+				<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">#TITRE</a></li>
+				</BOUCLE_demarches>
+			</ul>
+			</B_demarches>
+
+			[(#REM) LES SERVICES. Chaque lien n'apparait que si la page a
+			        quelque chose a montrer : meme regle que le menu, pour ne
+			        jamais mener a une page vide. ]
+			<h2><:marly:plan_services:></h2>
+			<ul>
+				<B_plan_assos>
+				<li><a href="#URL_PAGE{associations}"><:marly:plan_annuaire:></a>
+					<span class="quoi">— <:marly:plan_annuaire_quoi:></span></li>
+				<BOUCLE_plan_assos(ASSOCIATIONS){0,1}><!-- au moins une --></BOUCLE_plan_assos>
+				</B_plan_assos>
+
+				<B_plan_salles>
+				<li><a href="#URL_PAGE{reservation}"><:marly:plan_reserver:></a>
+					<span class="quoi">— <:marly:plan_reserver_quoi:></span></li>
+				<BOUCLE_plan_salles(SALLES){statut=publie}{0,1}><!-- au moins une --></BOUCLE_plan_salles>
+				</B_plan_salles>
+
+				<B_plan_lieux>
+				<li><a href="#URL_PAGE{lieux}"><:marly:plan_lieux:></a>
+					<span class="quoi">— <:marly:plan_lieux_quoi:></span></li>
+				<BOUCLE_plan_lieux(LIEUX){0,1}><!-- au moins un --></BOUCLE_plan_lieux>
+				</B_plan_lieux>
+
+				<B_plan_lettre>
+				<li><a href="#URL_PAGE{newsletter}"><:marly:plan_lettre:></a>
+					<span class="quoi">— <:marly:plan_lettre_quoi:></span></li>
+				<BOUCLE_plan_lettre(LETTRES){0,1}><!-- au moins une --></BOUCLE_plan_lettre>
+				</B_plan_lettre>
+
+				<li><a href="#URL_PAGE{login}"><:marly:espace_citoyen:></a>
+					<span class="quoi">— <:marly:plan_citoyen_quoi:></span></li>
+				<li><a href="#URL_PAGE{recherche}"><:marly:rechercher_site:></a>
+					<span class="quoi">— <:marly:plan_recherche_quoi:></span></li>
+			</ul>
+
+			[(#REM) LE SITE : l'accueil et les pages obligatoires. ]
+			<h2><:marly:le_site:></h2>
+			<ul>
+				<li><a href="#URL_SITE_SPIP/"><:marly:accueil:></a></li>
+				<li><a href="#URL_PAGE{mentions-legales}"><:marly:mentions_legales:></a>
+					<span class="quoi">— <:marly:plan_mentions_quoi:></span></li>
+				<li><a href="#URL_PAGE{confidentialite}"><:marly:confidentialite:></a>
+					<span class="quoi">— <:marly:plan_confidentialite_quoi:></span></li>
+				<li><a href="#URL_PAGE{accessibilite}"><:marly:accessibilite:></a>
+					<span class="quoi">— <:marly:plan_accessibilite_quoi:></span></li>
+				<li><a href="#URL_PAGE{plan}"><:marly:plan_du_site:></a>
+					<span class="quoi">— <:marly:plan_ici_quoi:></span></li>
+			</ul>
+
+		</div>
+	</div>
+</div>

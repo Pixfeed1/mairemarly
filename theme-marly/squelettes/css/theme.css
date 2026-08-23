@@ -1403,6 +1403,56 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .pagination{ font-family:var(--texte); font-size:14.5px; text-align:center; margin:26px 0 0; }
 .pagination a{ color:var(--accent); }
 
+/* ===========================================================================
+   Le plan du site
+   ---------------------------------------------------------------------------
+   Une liste franche : c'est ce qu'on attend d'un plan, et ce qui se lit le
+   mieux. Le seul geste graphique est le sceau pose en fond du haut de page,
+   assez grand pour se reconnaitre, assez pale pour laisser lire. Chaque lien
+   porte sa phrase, et le compte de ses articles.
+
+   Le nom des classes : PAS de .large ici. Ce nom appartient deja au theme
+   (le conteneur pleine largeur, qui porte margin-inline:auto) ; s'en servir
+   comme modificateur recentrait le bloc et le retrecissait de 79px. Mesure
+   faite au navigateur, pas devinee. D'ou .colonnes, qui n'appartient a
+   personne d'autre — et la regle 33 du verificateur, pour que la collision
+   ne puisse plus passer inapercue.
+   =========================================================================== */
+.plan-page{ position:relative; overflow:hidden; }
+/* Le sceau en fond. Decor : le gabarit le pose en aria-hidden. */
+.plan-fond{
+  position:absolute; z-index:0; pointer-events:none;
+  top:96px; left:calc(50% + 120px); width:470px; height:470px;
+  color:var(--accent); opacity:.06;
+}
+.plan-page .page-simple{ position:relative; z-index:1; }
+@media(max-width:1100px){
+  .plan-fond{ left:auto; right:-150px; top:60px; width:360px; height:360px; }
+}
+
+.plan-liste{ margin-top:6px; }
+.plan-liste h2{ font-family:var(--serif); color:var(--accent);
+  font-size:clamp(22px,2.6vw,28px); margin:38px 0 4px; padding-bottom:12px;
+  border-bottom:1px solid var(--trait); }
+.plan-liste ul{ list-style:none; margin:0; padding:0; }
+.plan-liste li{ font-family:var(--texte); font-size:15.5px; line-height:1.5; padding:11px 0;
+  border-bottom:1px solid var(--creme-sombre); }
+.plan-liste li:last-child{ border-bottom:0; }
+.plan-liste a{ font-weight:600; color:var(--accent); text-decoration:none;
+  border-bottom:1px solid var(--trait); }
+.plan-liste a:hover{ border-bottom-color:var(--accent); }
+.plan-liste .quoi,
+.plan-liste .compte{ color:var(--encre-doux); }
+.plan-liste .compte{ font-size:13.5px; }
+/* les sous-rubriques : en retrait, marquees d'un tiret */
+.plan-liste li.sous{ padding-left:26px; position:relative; font-size:15px; }
+.plan-liste li.sous::before{ content:""; position:absolute; left:4px; top:20px;
+  width:12px; height:1px; background:var(--trait); }
+/* la liste des demarches : deux colonnes, sans phrase, elles parlent seules */
+.plan-liste ul.colonnes{ columns:2; column-gap:44px; }
+.plan-liste ul.colonnes li{ break-inside:avoid; }
+@media(max-width:640px){ .plan-liste ul.colonnes{ columns:1; } }
+
 /* --- les outils d'une fiche : signaler, imprimer, partager ---------------- */
 .fil-rangee{ display:flex; align-items:center; justify-content:space-between; gap:14px; }
 .fil-rangee .fil{ margin:0; }
