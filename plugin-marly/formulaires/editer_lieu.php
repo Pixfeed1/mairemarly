@@ -148,5 +148,5 @@ function formulaires_editer_lieu_traiter_dist($id_lieu = 'new') {
 	marly_invalider_cache();
 
 	return array('message_ok' => $message,
-	             'redirect' => generer_url_ecrire('lieux'));
+	             'redirect' => generer_url_ecrire('lieu', 'id_lieu=' . $id_lieu));
 }

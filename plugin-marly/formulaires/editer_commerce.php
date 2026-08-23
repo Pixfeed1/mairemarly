@@ -165,5 +165,5 @@ function formulaires_editer_commerce_traiter_dist($id_commerce = 'new') {
 	marly_invalider_cache();
 
 	return array('message_ok' => $message,
-	             'redirect' => generer_url_ecrire('commerces'));
+	             'redirect' => generer_url_ecrire('commerce', 'id_commerce=' . $id_commerce));
 }

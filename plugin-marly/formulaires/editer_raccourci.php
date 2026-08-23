@@ -130,5 +130,5 @@ function formulaires_editer_raccourci_traiter_dist($id_raccourci = 'new') {
 	marly_invalider_cache();
 
 	return array('message_ok' => _T('marly:raccourci_enregistre'),
-	             'redirect' => generer_url_ecrire('raccourcis'));
+	             'redirect' => generer_url_ecrire('raccourci', 'id_raccourci=' . $id_raccourci));
 }

@@ -148,6 +148,6 @@ function formulaires_editer_demarche_traiter_dist($id_demarche = 'new') {
 
 	return array(
 		'message_ok' => _T('marly:demarche_enregistree'),
-		'redirect'   => generer_url_ecrire('demarches'),
+		'redirect'   => generer_url_ecrire('demarche', 'id_demarche=' . $id_demarche),
 	);
 }

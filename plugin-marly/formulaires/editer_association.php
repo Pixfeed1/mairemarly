@@ -233,5 +233,5 @@ function formulaires_editer_association_traiter_dist($id_association = 'new') {
 	marly_invalider_cache();
 
 	return array('message_ok' => $message,
-	             'redirect' => generer_url_ecrire('associations'));
+	             'redirect' => generer_url_ecrire('association', 'id_association=' . $id_association));
 }

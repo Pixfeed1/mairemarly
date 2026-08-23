@@ -142,6 +142,6 @@ function formulaires_editer_manifestation_traiter_dist($id_manifestation = 'new'
 
 	return array(
 		'message_ok' => _T('marly:manifestation_enregistree'),
-		'redirect'   => generer_url_ecrire('manifestations'),
+		'redirect'   => generer_url_ecrire('manifestation', 'id_manifestation=' . $id_manifestation),
 	);
 }

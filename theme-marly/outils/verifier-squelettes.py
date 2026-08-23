@@ -688,6 +688,26 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "posee a la main ne doit servir qu'a defaut, sinon elle masquera "
                  "pour toujours celle que l'extracteur finira par savoir lire")
 
+# 37. Un formulaire d'edition qui, une fois enregistre, renvoie vers la LISTE
+#     au lieu de la fiche. Deux choses se perdent en chemin, et les deux
+#     comptent au moment precis ou elles disparaissent :
+#       - le bloc photographie n'apparait qu'APRES le premier enregistrement,
+#         SPIP ayant besoin d'un identifiant pour rattacher une image ; renvoye
+#         a la liste, on ne le voit jamais sur une fiche qu'on vient de creer ;
+#       - le compte rendu de localisation (<< l'adresse a ete localisee >>,
+#         << la carte sera centree sur le village >>) s'affiche sur la fiche.
+#     Et c'est desoriente : on enregistre une fiche, on se retrouve ailleurs.
+#     Le retour a la liste reste a un clic, dans le fil d'Ariane.
+_FORMS37 = os.path.join(RACINE, '..', 'plugin-marly', 'formulaires')
+for _f in sorted(glob.glob(os.path.join(_FORMS37, 'editer_*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    for _c in re.finditer(r"'redirect'\s*=>\s*generer_url_ecrire\(\s*'(\w+)'\s*\)", _src):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_c.start()].count(chr(10)) + 1,
+                 f"l'enregistrement renvoie vers la liste ({_c.group(1)}) et non vers la "
+                 "fiche : le bloc photographie et le compte rendu de localisation "
+                 "s'affichent sur la fiche, et ne seront jamais vus")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
