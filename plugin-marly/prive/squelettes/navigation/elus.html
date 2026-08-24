@@ -1,0 +1,21 @@
+[(#REM)
+  La colonne de gauche de la liste des elus.
+  ---------------------------------------------------------------------------
+  On ne compte QUE ce que cet ecran connait ; la presentation est commune,
+  dans inc/marly-compte. Le type d'une boucle est fixe a la compilation par
+  SPIP : il ne peut donc pas etre un parametre, et chaque ecran compte
+  lui-meme. Ce qui est partage est ce qui divergeait — la mise en forme et
+  les mots.
+]
+<B_elu_pub>
+#SET{publies,#TOTAL_BOUCLE}
+<BOUCLE_elu_pub(ELUS){statut=publie}><!-- on ne fait que compter --></BOUCLE_elu_pub>
+</B_elu_pub>
+
+<B_elu_bro>
+#SET{brouillons,#TOTAL_BOUCLE}
+<BOUCLE_elu_bro(ELUS){statut=prepa}><!-- on ne fait que compter --></BOUCLE_elu_bro>
+</B_elu_bro>
+
+<INCLURE{fond=prive/squelettes/inc/marly-compte}
+        {publies=#GET{publies,0}}{brouillons=#GET{brouillons,0}}{page=conseil}>

@@ -1,0 +1,38 @@
+[(#REM)
+  L'encart de tete d'une liste, dans la colonne de gauche.
+  ---------------------------------------------------------------------------
+  Meme boite que celle que SPIP pose sur une rubrique. Ecrit UNE fois : il
+  etait recopie sur chaque ecran, et le troisieme l'a oublie — c'est
+  exactement ce que la copie finit toujours par produire.
+
+  Le type d'objet ne peut pas etre un parametre : SPIP fixe la table d'une
+  boucle a la compilation. Chaque ecran compte donc lui-meme, en deux boucles
+  courtes, et ne passe ici que des NOMBRES. C'est la presentation qui est
+  partagee, pas le comptage — et c'est la presentation qui divergeait.
+
+  Parametres : publies, brouillons, page (le gabarit public a montrer).
+
+  Pas de case logo : un annuaire n'en porte pas, et une case vide qui ne
+  recoit rien est pire qu'une case absente.
+]
+#BOITE_OUVRIR{'','info'}
+<div class="marly-compte">
+
+	[(#ENV{publies,0}|>{0}|oui)
+	<p class="compte"><b>#ENV{publies}</b> <:marly:compte_en_ligne:></p>
+	<p class="voir"><a href="[(#ENV{page}|marly_url_publique|attribut_html)]"
+	   target="_blank" rel="noopener"><:marly:voir_en_ligne:></a></p>
+	]
+	[(#ENV{publies,0}|>{0}|non)
+	<p class="compte vide"><:marly:aucune_en_ligne:></p>
+	]
+
+	[(#REM) Le nombre exact de brouillons, et non le fait qu'il y en ait :
+	        cette liste est une liste de travail, on veut savoir ce qu'il
+	        reste a faire, pas qu'il en reste. ]
+	[(#ENV{brouillons,0}|>{0}|oui)
+	<p class="brouillons"><b>#ENV{brouillons}</b> <:marly:compte_brouillons:></p>
+	]
+
+</div>
+#BOITE_FERMER
