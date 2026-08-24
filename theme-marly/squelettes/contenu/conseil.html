@@ -16,6 +16,13 @@
   Une secretaire de mairie n'entre dans aucun des trois, et c'est voulu :
   elle n'est pas elue et n'a rien a faire sur la page du conseil.
 
+  L'ORDRE VIENT DE LA FONCTION, et non d'un numero a saisir. Un champ
+  << ordre d'affichage >> oblige a comprendre qu'il existe, a se souvenir de
+  ce qu'on y a mis, et a le renumeroter quand une personne s'en va. Or la
+  fonction porte deja l'ordre : << 1re adjointe >> passe avant << 2e adjoint >>,
+  et le tri alphabetique suffit. Un champ de moins a remplir, un de moins a
+  tenir a jour.
+
   La delegation est la vraie information de cette page. Le nom du premier
   adjoint ne sert a rien ; savoir qu'il a la charge de la voirie evite un
   appel a la mauvaise personne.
@@ -58,7 +65,7 @@
 
 	<B_maire>
 	<h2 class="titre-bloc"><:marly:conseil_maire:></h2>
-	<BOUCLE_maire(ELUS){statut=publie}{fonction==^Maire}{par rang, nom}{0,1}>
+	<BOUCLE_maire(ELUS){statut=publie}{fonction==^Maire}{par fonction, nom}{0,1}>
 	<div class="elu-carte">
 		<span class="elu-tuile" aria-hidden="true">
 			[(#LOGO_ELU|non)<INCLURE{fond=inc/sceau-tuile}{classe=elu-sceau}{n=#ID_ELU}>]
@@ -78,7 +85,7 @@
 	<B_adjoints>
 	<h2 class="titre-bloc"><:marly:conseil_adjoints:></h2>
 	<div class="elu-adjoints">
-		<BOUCLE_adjoints(ELUS){statut=publie}{fonction==[Aa]djoint}{par rang, nom}>
+		<BOUCLE_adjoints(ELUS){statut=publie}{fonction==[Aa]djoint}{par fonction, nom}>
 		<div class="elu-carte">
 			<span class="elu-tuile" aria-hidden="true">
 				[(#LOGO_ELU|non)<INCLURE{fond=inc/sceau-tuile}{classe=elu-sceau}{n=#ID_ELU}>]
@@ -101,7 +108,7 @@
 	<B_conseillers>
 	<h2 class="titre-bloc"><:marly:conseil_conseillers:></h2>
 	<ul class="elu-conseillers">
-		<BOUCLE_conseillers(ELUS){statut=publie}{fonction==[Cc]onseill}{par rang, nom}>
+		<BOUCLE_conseillers(ELUS){statut=publie}{fonction==[Cc]onseill}{par fonction, nom}>
 		<li>[(#PRENOM) ]#NOM[<span class="elu-quoi"> — (#DELEGATION)</span>]</li>
 		</BOUCLE_conseillers>
 	</ul>
