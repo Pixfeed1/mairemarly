@@ -700,6 +700,8 @@ resterez abonné.
 	'modifier_commerce'    => 'Modifier',
 	'aucun_commerce'       => 'Aucun commerce enregistré.',
 	'aucun_commerce_publie' => 'L’annuaire des commerces n’est pas encore rempli.',
+	'confirmer_suppression_elu'  => 'Supprimer définitivement cette fiche d’élu ?',
+	'confirmer_suppression_lieu' => 'Supprimer définitivement ce lieu ?',
 	'confirmer_suppression_commerce' => 'Supprimer définitivement cette fiche ?',
 	'intro_commerces'      => 'L’annuaire des commerçants, professionnels de santé et artisans du village. Ce que les habitants viennent y chercher est un numéro de téléphone : il compte plus que la présentation.',
 	'commerces_intro'      => 'Les commerçants, professionnels de santé et artisans installés à Marly-Gomont. Un numéro se compose d’un doigt depuis un téléphone.',

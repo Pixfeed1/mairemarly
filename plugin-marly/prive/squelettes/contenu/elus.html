@@ -17,6 +17,7 @@
 			<th><:marly:col_delegation:></th>
 			<th><:marly:champ_telephone:></th>
 			<th><:marly:col_etat:></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -27,6 +28,11 @@
 			<td>[(#DELEGATION)]</td>
 			<td>[(#TELEPHONE)]</td>
 			<td>[(#STATUT|=={publie}|?{'marly:publication_oui','marly:publication_non'}|_T)]</td>
+			<td class="actions">
+				<a class="btn" href="[(#URL_ECRIRE{elu,id_elu=#ID_ELU})]"><:marly:modifier:></a>
+				<a class="btn" href="[(#URL_ACTION_AUTEUR{supprimer_elu,#ID_ELU,#URL_ECRIRE{elus}})]"
+				   onclick="return confirm('[(#VAL{marly:confirmer_suppression_elu}|_T|attribut_html)]');"><:marly:supprimer:></a>
+			</td>
 		</tr>
 		</BOUCLE_elus>
 	</tbody>
