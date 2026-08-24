@@ -1,0 +1,102 @@
+[(#REM)
+  La fiche d'un elu.
+  ---------------------------------------------------------------------------
+  La page du conseil dit qui fait quoi ; celle-ci dit qui est la personne.
+  On y arrive en cliquant sur son nom, et on y trouve ce que la delegation
+  ne pouvait pas dire en une ligne.
+
+  LE ROLE DU MAIRE est ecrit dans le gabarit et non dans la base. C'est la
+  meme information pour les 34 000 communes de France : elle vient du code
+  general des collectivites territoriales, pas de Marly-Gomont. La faire
+  saisir par la mairie serait lui demander de recopier la loi, et elle
+  n'aurait aucun moyen de savoir si elle l'a bien recopiee.
+
+  Elle ne parait donc QUE sur la fiche du maire : un conseiller municipal
+  n'est ni officier d'etat civil ni chef du personnel communal.
+]
+<BOUCLE_elu(ELUS){id_elu}{statut=publie}>
+<div class="bandeau-illustre">
+	<B_banniere>
+	<BOUCLE_banniere(ARTICLES){titre_mot=Bannière ma mairie}{par date}{inverse}{0,1}>
+	<div class="bandeau-image">[(#LOGO_ARTICLE|image_reduire{1920,0})]</div>
+	</BOUCLE_banniere>
+	</B_banniere>
+	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
+	     width="1440" height="260" alt="" aria-hidden="true">
+	<//B_banniere>
+
+	<div class="bandeau-carton">
+		<div>
+			<nav class="fil-ariane" aria-label="Fil d’Ariane">
+				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+				<span aria-hidden="true">/</span>
+				<:marly:ma_mairie:>
+				<span aria-hidden="true">/</span>
+				<a href="#URL_PAGE{conseil}"><:marly:titre_conseil:></a>
+			</nav>
+			<h1>[(#PRENOM) ]#NOM</h1>
+		</div>
+	</div>
+</div>
+
+<div class="page-simple page-sous-carton fiche-demarche">
+
+	<div class="fil-rangee">
+	<p class="fil"><a class="lien-fleche" href="#URL_PAGE{conseil}"><:marly:retour_conseil:>
+		<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a></p>
+	<p class="page-outils">
+		<button type="button" class="outil" data-imprimer title="<:marly:outil_imprimer:>">
+			<svg class="ico" aria-hidden="true"><use href="#ri-printer-line"/></svg>
+			<span class="cache"><:marly:outil_imprimer:></span></button>
+		<button type="button" class="outil" data-partager data-copie="<:marly:lien_copie:>" title="<:marly:outil_partager:>">
+			<svg class="ico" aria-hidden="true"><use href="#ri-share-line"/></svg>
+			<span class="cache"><:marly:outil_partager:></span></button>
+	</p>
+	</div>
+
+	[(#REM) Le portrait a droite du texte : le nom et la charge se lisent en
+	        premier, la photographie accompagne. Sans photographie, le sceau
+	        tient la colonne — un trou la casserait. ]
+	<div class="elu-tete">
+		<div class="elu-tete-texte">
+			<p class="elu-fonction">#FONCTION</p>
+			[<p class="chapo">(#DELEGATION)</p>]
+		</div>
+		<div class="elu-portrait">
+			<div class="elu-cadre">
+				[(#LOGO_ELU|non)<INCLURE{fond=inc/sceau-tuile}{classe=elu-sceau-fiche}{n=#ID_ELU}>]
+				[<img class="elu-photo" src="(#LOGO_ELU|image_reduire{380,460}|extraire_attribut{src})" alt="">]
+			</div>
+			[(#LOGO_ELU|non)<span class="elu-credit"><:marly:photo_a_venir:></span>]
+		</div>
+	</div>
+
+	<dl class="fiche-chiffres">
+		[<div><dt><:marly:champ_telephone:></dt><dd><a href="tel:[(#TELEPHONE|replace{' ',''}|attribut_html)]">(#TELEPHONE)</a></dd></div>]
+		[<div><dt><:marly:champ_courriel:></dt><dd><a href="mailto:[(#COURRIEL|attribut_html)]">(#COURRIEL)</a></dd></div>]
+		[<div><dt><:marly:champ_permanence:></dt><dd>(#PERMANENCE|propre)</dd></div>]
+	</dl>
+
+	[<section><h2><:marly:elu_parcours:></h2>(#BIOGRAPHIE|propre)</section>]
+
+	[(#REM) Le role du maire, et de lui seul. ]
+	[(#FONCTION|match{^Maire}|oui)
+	<section class="elu-role">
+		<h2><:marly:role_maire:></h2>
+		<p><:marly:role_maire_intro:></p>
+		<h3><:marly:role_etat:></h3>
+		<p><:marly:role_etat_texte:></p>
+		<h3><:marly:role_commune:></h3>
+		<p><:marly:role_commune_texte:></p>
+		<h3><:marly:role_seul:></h3>
+		<p><:marly:role_seul_texte:></p>
+	</section>
+	]
+
+	[(#REM) Quand la fiche a ete modifiee. Sur un site de commune, savoir si
+	        l'information est fraiche vaut mieux que de le deviner — et SPIP
+	        tient cette date tout seul, il n'y a rien a saisir. ]
+	[<p class="elu-maj"><:marly:fiche_maj:> (#MAJ|affdate{'j F Y'}).</p>]
+
+</div>
+</BOUCLE_elu>

@@ -178,6 +178,25 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'conseil_prochaine'    => 'Prochaine séance :',
 	'conseil_comptes_rendus' => 'Les comptes rendus des séances',
 	'conseil_ecrire'       => 'Écrire à la mairie',
+	'retour_conseil'       => 'Retour au conseil municipal',
+	'elu_parcours'         => 'Son parcours',
+	'photo_a_venir'        => 'Photographie à venir',
+	'fiche_maj'            => 'Fiche mise à jour le',
+
+	// Le rôle du maire : la même information pour les 34 000 communes de
+	// France. Elle vient du code général des collectivités territoriales, pas
+	// de Marly-Gomont, et n'a donc rien à faire dans la base — la faire saisir
+	// par la mairie reviendrait à lui demander de recopier la loi, sans qu'elle
+	// ait le moyen de vérifier qu'elle l'a bien recopiée.
+	'role_maire'           => 'Le rôle du maire',
+	'role_maire_intro'     => 'Le maire est à la fois l’élu de la commune et le représentant de l’État. Ces deux casquettes expliquent l’essentiel de ce qu’il fait.',
+	'role_etat'            => 'Au nom de l’État',
+	'role_etat_texte'      => 'Il est officier d’état civil : c’est lui, ou un adjoint, qui célèbre les mariages et signe les actes de naissance et de décès. Il organise les élections et tient le recensement citoyen.',
+	'role_commune'         => 'Au nom de la commune',
+	'role_commune_texte'   => 'Il prépare et exécute les décisions du conseil municipal : il engage les dépenses votées, signe les contrats, et représente la commune en justice comme dans les cérémonies.',
+	'role_seul'            => 'Seul, parfois',
+	'role_seul_texte'      => 'Dans certains domaines il décide sans le conseil : il prend les arrêtés municipaux, dirige le personnel communal et exerce les pouvoirs de police du maire, qui vont de la circulation aux animaux errants.',
+
 	'plan_conseil_quoi'    => 'le maire, les adjoints et leurs délégations',
 
 	'plan_commerces_quoi'  => 'les commerçants, professionnels de santé et artisans du village',

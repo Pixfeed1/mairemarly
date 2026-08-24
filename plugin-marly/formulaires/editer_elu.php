@@ -11,7 +11,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 function marly_champs_elu() {
 	return array('nom', 'prenom', 'fonction', 'delegation',
-	             'telephone', 'courriel', 'permanence', 'rang', 'statut');
+	             'telephone', 'courriel', 'permanence', 'biographie', 'rang', 'statut');
 }
 
 function formulaires_editer_elu_charger_dist($id_elu = 'new') {
@@ -20,7 +20,7 @@ function formulaires_editer_elu_charger_dist($id_elu = 'new') {
 	}
 
 	$valeurs = array('id_elu' => $id_elu, 'rang' => 100, 'statut' => 'publie');
-	foreach (array('nom', 'prenom', 'fonction', 'delegation', 'telephone', 'courriel', 'permanence') as $c) {
+	foreach (array('nom', 'prenom', 'fonction', 'delegation', 'telephone', 'courriel', 'permanence', 'biographie') as $c) {
 		$valeurs[$c] = '';
 	}
 

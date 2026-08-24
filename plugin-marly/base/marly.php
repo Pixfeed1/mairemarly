@@ -424,6 +424,11 @@ function marly_declarer_tables_objets_sql($tables) {
 			'telephone'   => 'varchar(60) NOT NULL DEFAULT ""',
 			'courriel'    => 'varchar(255) NOT NULL DEFAULT ""',
 			'permanence'  => 'text NOT NULL DEFAULT ""',
+
+			/* Le parcours de la personne, ecrit par la mairie. Un texte long
+			   et non une ligne : c'est ce qui remplit sa fiche, et la fiche
+			   est ce qu'on ouvre quand la delegation ne suffit pas. */
+			'biographie'  => 'text NOT NULL DEFAULT ""',
 			'rang'        => 'int(11) NOT NULL DEFAULT 100',
 			'statut'      => 'varchar(20) NOT NULL DEFAULT "publie"',
 			'maj'         => 'TIMESTAMP',
@@ -443,8 +448,9 @@ function marly_declarer_tables_objets_sql($tables) {
 		'texte_objets' => 'marly:objets_elus',
 		'editable'   => 'oui',
 		'champs_editables'  => array('nom', 'prenom', 'fonction', 'delegation',
-		                             'telephone', 'courriel', 'permanence', 'rang'),
-		'rechercher_champs' => array('nom' => 8, 'prenom' => 6, 'fonction' => 4, 'delegation' => 3),
+		                             'telephone', 'courriel', 'permanence', 'biographie'),
+		'rechercher_champs' => array('nom' => 8, 'prenom' => 6, 'fonction' => 4,
+		                             'delegation' => 3, 'biographie' => 2),
 		'statut' => array(
 			array(
 				'champ'     => 'statut',

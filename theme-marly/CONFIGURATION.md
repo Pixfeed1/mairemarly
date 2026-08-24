@@ -320,6 +320,26 @@ voirie et bâtiments communaux ».
 La photographie est facultative. Sans elle, la fiche affiche le sceau de la
 commune sur fond vert.
 
+### La fiche d'un élu
+
+Chaque élu a sa page, atteinte en cliquant sur son nom depuis la page du
+conseil. On y trouve sa fonction, sa délégation, ses contacts, sa
+photographie si vous en déposez une, et le champ **Parcours**.
+
+Le Parcours est facultatif et c'est vous qui l'écrivez : depuis quand la
+personne est élue, ce qu'elle a porté, ce qui lui tient à cœur. Quelques
+lignes suffisent. Sans lui, la fiche reste correcte : elle affiche ce qu'elle
+sait.
+
+Sur la fiche du maire, et sur elle seule, un bloc explique le rôle du maire :
+officier d'état civil, exécutant des décisions du conseil, détenteur des
+pouvoirs de police. **Ce texte n'est pas à saisir** : il est le même pour
+toutes les communes de France, il vient de la loi, et il est écrit dans le
+site. Vous n'avez rien à en faire.
+
+La date de mise à jour affichée en bas de fiche est tenue par SPIP : elle
+change toute seule à chaque enregistrement.
+
 ### La date de la prochaine séance
 
 Elle n'est pas à saisir sur cette page : elle vient de l'agenda. Créez

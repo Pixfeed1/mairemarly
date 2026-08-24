@@ -157,6 +157,13 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('marly_autoriser_documents'),
 	);
 
+	/* 3.39.0 — le parcours d'un elu, ecrit par la mairie. La fiche portait
+	   son nom, sa fonction et ses contacts, mais aucun texte : il n'y avait
+	   donc rien a lire en ouvrant la fiche de quelqu'un. */
+	$maj['3.39.0'] = array(
+		array('maj_tables', array('spip_elus')),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }

@@ -73,7 +73,7 @@
 		</span>
 		<span class="elu-corps">
 			<span class="elu-fonction">#FONCTION</span>
-			<span class="elu-nom">[(#PRENOM) ]#NOM</span>
+			<a class="elu-nom" href="[(#URL_PAGE{elu}|parametre_url{id_elu,#ID_ELU})]">[(#PRENOM) ]#NOM</a>
 			[<span class="elu-delegation">(#DELEGATION)</span>]
 			[<span class="elu-contact"><a href="tel:(#TELEPHONE|replace{' ',''}|attribut_html)">#TELEPHONE</a></span>]
 			[<span class="elu-permanence">(#PERMANENCE|propre)</span>]
@@ -93,7 +93,7 @@
 			</span>
 			<span class="elu-corps">
 				<span class="elu-fonction">#FONCTION</span>
-				<span class="elu-nom">[(#PRENOM) ]#NOM</span>
+				<a class="elu-nom" href="[(#URL_PAGE{elu}|parametre_url{id_elu,#ID_ELU})]">[(#PRENOM) ]#NOM</a>
 				[<span class="elu-delegation">(#DELEGATION)</span>]
 				[<span class="elu-contact"><a href="tel:(#TELEPHONE|replace{' ',''}|attribut_html)">#TELEPHONE</a></span>]
 				[<span class="elu-permanence">(#PERMANENCE|propre)</span>]
@@ -109,7 +109,7 @@
 	<h2 class="titre-bloc"><:marly:conseil_conseillers:></h2>
 	<ul class="elu-conseillers">
 		<BOUCLE_conseillers(ELUS){statut=publie}{fonction==[Cc]onseill}{par fonction, nom}>
-		<li>[(#PRENOM) ]#NOM[<span class="elu-quoi"> — (#DELEGATION)</span>]</li>
+		<li><a href="[(#URL_PAGE{elu}|parametre_url{id_elu,#ID_ELU})]">[(#PRENOM) ]#NOM</a>[<span class="elu-quoi"> — (#DELEGATION)</span>]</li>
 		</BOUCLE_conseillers>
 	</ul>
 	</B_conseillers>
