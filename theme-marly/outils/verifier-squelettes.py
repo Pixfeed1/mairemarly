@@ -728,6 +728,38 @@ for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', 'formulair
                  "un refus de validation reaffichera une fiche neuve et vide, "
                  "et le message d'erreur ne sera jamais lu")
 
+# 39. Un bloc << Photographie >> pose sur une fiche que le plugin medias
+#     n'autorise pas a porter des documents. Le formulaire d'illustration
+#     s'efface alors EN SILENCE : l'ecran affiche le titre et son
+#     explication, et aucun bouton. Rien ne dit qu'il manque quelque chose,
+#     et le bloc peut donc vivre des mois sans jamais fonctionner. C'est ce
+#     qui est arrive aux associations, aux elus et aux evenements, decouvert
+#     seulement en posant le meme bloc sur les commerces.
+#
+#     medias n'ouvre le depot qu'aux objets nommes dans le reglage
+#     << documents_objets >>, et n'y met que spip_articles a l'installation.
+#     Le plugin doit donc les y ajouter lui-meme, a la mise a jour.
+_ADMIN = os.path.join(RACINE, '..', 'plugin-marly', 'marly_administrations.php')
+_ECRANS = os.path.join(RACINE, '..', 'plugin-marly', 'prive', 'squelettes', 'contenu')
+if os.path.isfile(_ADMIN) and os.path.isdir(_ECRANS):
+    _admin = open(_ADMIN, encoding='utf-8').read()
+    # Le controle porte sur la FONCTION qui ecrit le reglage, pas sur le
+    # fichier : les memes noms de tables y figurent ailleurs, dans les etapes
+    # de creation de tables, et le controle passait alors pour de mauvaises
+    # raisons — verifie en retirant une table, sans que rien ne soit signale.
+    _m = re.search(r'function\s+marly_autoriser_documents.*?\n\}', _admin, re.S)
+    _admin = _m.group(0) if _m else ''
+    for _f in sorted(glob.glob(os.path.join(_ECRANS, '*.html'))):
+        _src = open(_f, encoding='utf-8').read()
+        for _c in re.finditer(r'#FORMULAIRE_ILLUSTRER_DOCUMENT\{\s*(\w+)', _src):
+            _table = 'spip_' + _c.group(1) + 's'
+            if _table not in _admin:
+                signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                         _src[:_c.start()].count(chr(10)) + 1,
+                         f"le bloc photographie porte sur {_c.group(1)}, mais {_table} "
+                         "n'est jamais ajoute au reglage documents_objets : le formulaire "
+                         "s'effacera en silence et le bloc restera vide")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

@@ -149,6 +149,14 @@ function marly_upgrade($nom_meta_base_version, $version_cible) {
 		array('maj_tables', array('spip_commerces')),
 	);
 
+	/* 3.38.0 — nos fiches peuvent enfin porter une photographie. Le bloc
+	   existait sur quatre ecrans et n'affichait RIEN : le formulaire de la
+	   mediatheque s'efface en silence quand l'objet n'est pas autorise, et
+	   rien dans la page ne le signale. */
+	$maj['3.38.0'] = array(
+		array('marly_autoriser_documents'),
+	);
+
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
@@ -436,4 +444,38 @@ function marly_vider_tables($nom_meta_base_version) {
 	sql_drop_table('spip_salles');
 
 	effacer_meta($nom_meta_base_version);
+}
+
+/**
+ * Autorise nos fiches à porter des documents, donc une photographie.
+ * ---------------------------------------------------------------------------
+ * Le plugin « medias » n'ouvre le dépôt de fichiers qu'aux objets nommés dans
+ * le réglage « documents_objets », et n'y met que spip_articles à
+ * l'installation. Le formulaire d'illustration s'efface alors en silence :
+ * l'écran affiche le titre « Photographie » et son explication, mais aucun
+ * bouton. Rien ne dit qu'il manque quelque chose, et le bloc a donc pu vivre
+ * des mois sans jamais fonctionner — c'est ce qui est arrivé.
+ *
+ * On AJOUTE nos tables, on ne remplace jamais la liste : la mairie a pu
+ * cocher d'autres objets dans Configuration, et une mise à jour de plugin
+ * n'a pas à défaire un réglage qu'elle a choisi.
+ */
+function marly_autoriser_documents() {
+	include_spip('inc/config');
+
+	$nos_tables = array('spip_associations', 'spip_commerces',
+	                    'spip_elus', 'spip_manifestations');
+
+	$actuel = array_filter(array_map('trim',
+		explode(',', (string) lire_config('documents_objets', 'spip_articles'))));
+
+	$ajoutees = array_diff($nos_tables, $actuel);
+	if (!$ajoutees) {
+		spip_log('marly : documents deja autorises sur nos fiches', 'marly.' . _LOG_INFO_IMPORTANTE);
+		return;
+	}
+
+	ecrire_meta('documents_objets', implode(',', array_merge($actuel, $ajoutees)));
+	spip_log('marly : documents autorises sur ' . implode(', ', $ajoutees),
+		'marly.' . _LOG_INFO_IMPORTANTE);
 }
