@@ -680,6 +680,13 @@ resterez abonné.
 	'erreur_adresse'   => 'L’adresse doit commencer par https:// Copiez-la depuis la barre du navigateur.',
 	'erreur_courriel'  => 'Cette adresse électronique ne semble pas valide.',
 	'erreur_un_contact' => 'Indiquez au moins un moyen de contact : téléphone, courriel ou site. C’est la seule chose qu’on vient chercher dans un annuaire.',
+	// --- L'encart de tete d'une liste -----------------------------------------
+	'aucune_en_ligne'               => 'Rien n’est encore en ligne.',
+	'compte_commerces'              => 'en ligne sur le site',
+	'compte_commerces_brouillon'    => 'et des brouillons, invisibles du public',
+	'compte_associations'           => 'en ligne sur le site',
+	'compte_associations_brouillon' => 'et des brouillons, invisibles du public',
+
 	// --- Une fiche est-elle en ligne ------------------------------------------
 	'fiche_en_ligne'  => 'Publiée, visible sur le site.',
 	'fiche_brouillon' => 'Brouillon : cette fiche n’apparaît pas sur le site.',

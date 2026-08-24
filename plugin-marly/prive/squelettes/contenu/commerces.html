@@ -4,6 +4,29 @@
 <h1 class="grostitre"><:marly:titre_commerces:></h1>
 <p class="explication"><:marly:intro_commerces:></p>
 
+[(#REM) L'encart de tete, sur le modele de celui que SPIP pose sur une
+        rubrique : le compte et le lien vers la page publique. Pas de case
+        logo — un annuaire n'en porte pas, et une case vide qui ne sert a
+        rien est pire qu'une case absente.
+
+        Le lien ne parait que s'il y a quelque chose a voir : un lien vers
+        un annuaire vide fait douter de tout le reste. ]
+<div class="marly-encart">
+	<B_commerces_publies>
+	<p class="compte"><b>#TOTAL_BOUCLE</b> <:marly:compte_commerces:></p>
+	<p class="voir"><a href="[(#VAL{commerces}|marly_url_publique|attribut_html)]"
+	   target="_blank" rel="noopener"><:marly:voir_en_ligne:></a></p>
+	<BOUCLE_commerces_publies(COMMERCES){statut=publie}><!-- on ne fait que compter --></BOUCLE_commerces_publies>
+	</B_commerces_publies>
+	<p class="compte vide"><:marly:aucune_en_ligne:></p>
+	<//B_commerces_publies>
+
+	<B_commerces_brouillons>
+	<p class="brouillons"><:marly:compte_commerces_brouillon:></p>
+	<BOUCLE_commerces_brouillons(COMMERCES){statut=prepa}><!-- on ne fait que compter --></BOUCLE_commerces_brouillons>
+	</B_commerces_brouillons>
+</div>
+
 <p class="boutons">
 	<a class="btn" href="[(#URL_ECRIRE{commerce,id_commerce=new})]"><:marly:creer_commerce:></a>
 </p>
