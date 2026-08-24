@@ -776,6 +776,50 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "elle compose son compte rendu avec typo() et mourra, mais seulement "
                  "les fois ou un plugin a du retard, c'est-a-dire aux montees de version")
 
+# 41. Un objet qu'on peut creer et modifier, mais pas supprimer. Les elus,
+#     les lieux, les salles, les evenements et les raccourcis etaient dans ce
+#     cas : une fiche saisie par erreur restait la pour toujours, et rien a
+#     l'ecran ne disait pourquoi.
+#
+#     L'invariant : tout ecran d'edition (#FORMULAIRE_EDITER_X) doit avoir son
+#     action/supprimer_x.php, ET un ecran de liste qui l'appelle. Une action
+#     de suppression qu'aucun bouton n'atteint ne sert a personne.
+#
+#     UNE exception, et elle est voulue : la lettre d'information. Une lettre
+#     partie est partie, chez tous ses destinataires. Pouvoir l'effacer du
+#     site donnerait l'illusion de la rattraper.
+_SANS_SUPPRESSION = {
+    'lettre': "une lettre envoyee est partie chez ses destinataires ; "
+              "l'effacer du site donnerait l'illusion de la rattraper",
+}
+_PRIVE = os.path.join(RACINE, '..', 'plugin-marly', 'prive', 'squelettes', 'contenu')
+_ACTIONS = os.path.join(RACINE, '..', 'plugin-marly', 'action')
+if os.path.isdir(_PRIVE):
+    _tous_ecrans = ''
+    for _f in glob.glob(os.path.join(_PRIVE, '*.html')):
+        _tous_ecrans += open(_f, encoding='utf-8').read()
+    for _f in sorted(glob.glob(os.path.join(_PRIVE, '*.html'))):
+        _src = open(_f, encoding='utf-8').read()
+        for _c in re.finditer(r'#FORMULAIRE_EDITER_(\w+)\{', _src):
+            _objet = _c.group(1).lower()
+            # Nos objets seulement : #FORMULAIRE_EDITER_LOGO est celui de SPIP,
+            # et un logo ne se supprime pas par une action a nous.
+            if not os.path.isfile(os.path.join(RACINE, '..', 'plugin-marly',
+                                               'formulaires', 'editer_%s.php' % _objet)):
+                continue
+            if _objet in _SANS_SUPPRESSION:
+                continue
+            _quoi = None
+            if not os.path.isfile(os.path.join(_ACTIONS, 'supprimer_%s.php' % _objet)):
+                _quoi = "action/supprimer_%s.php n'existe pas" % _objet
+            elif ('supprimer_%s,' % _objet) not in _tous_ecrans:
+                _quoi = ("action/supprimer_%s.php existe mais aucun ecran ne l'appelle : "
+                         "une suppression qu'aucun bouton n'atteint ne sert a personne" % _objet)
+            if _quoi:
+                signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                         _src[:_c.start()].count(chr(10)) + 1,
+                         f"on peut creer et modifier un {_objet}, pas le supprimer : {_quoi}")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

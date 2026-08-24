@@ -31,6 +31,8 @@
 			<td>[(#STATUT|=={publie}|?{'marly:publication_oui','marly:publication_non'}|_T)]</td>
 			<td class="actions">
 				<a class="btn" href="[(#URL_ECRIRE{raccourci,id_raccourci=#ID_RACCOURCI})]"><:marly:modifier:></a>
+				<a class="btn" href="[(#URL_ACTION_AUTEUR{supprimer_raccourci,#ID_RACCOURCI,#URL_ECRIRE{raccourcis}})]"
+				   onclick="return confirm('[(#VAL{marly:confirmer_suppression_raccourci}|_T|attribut_html)]');"><:marly:supprimer:></a>
 			</td>
 		</tr>
 		</BOUCLE_raccourcis>
