@@ -1,14 +1,19 @@
 [(#REM)
   Le sceau, en blanc sur la vignette d'un commerce.
   ---------------------------------------------------------------------------
-  Une copie de plus du trace, et c'est assume : inc/embleme porte des tailles
-  et un role d'image, celui-ci n'est qu'un aplat decoratif. Les partager
-  forcerait l'un des deux a mentir sur ce qu'il est. Le jour ou le trace
-  change, il change ici aussi : c'est le prix, il est connu.
+  LE SEUL exemplaire decoratif du trace. inc/embleme reste a part : il porte
+  des tailles fixes et un role d'image, et le fondre avec celui-ci forcerait
+  l'un des deux a mentir sur ce qu'il est. Mais entre decors, on ne recopie
+  plus : la vignette d'un commerce, le filigrane du plan et celui des
+  demarches sont le meme dessin, et le jour ou il change il ne doit changer
+  qu'a un seul endroit.
+
+  Parametres : classe (celle du svg) et n (le suffixe des identifiants, pour
+  que deux sceaux dans la meme page ne se disputent pas leur texte en arc).
 
   Decor : masque aux lecteurs d'ecran par l'element qui l'inclut.
 ]
-<svg viewBox="0 0 100 100" class="com-sceau" aria-hidden="true" focusable="false">
+<svg viewBox="0 0 100 100" class="[(#ENV{classe,com-sceau})]" aria-hidden="true" focusable="false">
 	<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 		<path d="M26 74 V54"/><path d="M38 74 V54"/><path d="M25 54 L32 43 L39 54"/>
 		<path d="M26 62 L23 74 M38 62 L41 74"/>

@@ -16,31 +16,9 @@
 ]
 <div class="plan-page">
 
-	[(#REM) Le sceau en filigrane. Recopie ici plutot qu'inclus depuis
-	        inc/embleme : celui-la porte des tailles et un role d'image,
-	        celui-ci n'est qu'un fond. Le partager forcerait l'un des deux
-	        a mentir sur ce qu'il est. ]
-	<svg class="plan-fond" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-		<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-			<path d="M26 74 V54"/><path d="M38 74 V54"/><path d="M25 54 L32 43 L39 54"/>
-			<path d="M26 62 L23 74 M38 62 L41 74"/>
-			<path d="M62 74 V54"/><path d="M74 74 V54"/><path d="M61 54 L68 43 L75 54"/>
-			<path d="M62 62 L59 74 M74 62 L77 74"/>
-			<path d="M38 74 V52 L50 36 L62 52 v22"/>
-			<path d="M46 45 v5 M50 44 v6 M54 45 v5"/>
-			<circle cx="50" cy="58" r="4.6"/>
-			<path d="M45 74 V65 Q45 60 50 59 Q55 60 55 65 v9"/>
-			<path d="M50 36 V29 M47 32 h6"/>
-			<path d="M22 74 H78"/>
-		</g>
-		<path id="arcPlan" d="M 16 52 A 34 34 0 0 1 84 52" fill="none"/>
-		<text font-family="Alegreya Sans, Georgia, sans-serif" font-size="11" font-weight="700"
-		      letter-spacing="1" fill="currentColor">
-			<textPath href="#arcPlan" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
-		</text>
-		<circle cx="50" cy="50" r="47.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
-		<circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.9"/>
-	</svg>
+	[(#REM) Le sceau en filigrane, pris a la source commune : le meme
+	        dessin sert de vignette aux commerces et de fond ici. ]
+	<INCLURE{fond=inc/sceau-tuile}{classe=plan-fond}{n=plan}>
 
 	<div class="page-simple">
 
