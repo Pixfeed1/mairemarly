@@ -45,6 +45,14 @@
 					[(#REM) L'annuaire des associations n'est pas une rubrique :
 					        c'est une page a lui. Sans ce lien, il n'etait
 					        atteignable que par son adresse. ]
+					[(#REM) Le conseil municipal, des qu'un elu est saisi. Meme
+					        garde que les autres : un lien du pied de page ne
+					        doit jamais mener a une page vide. ]
+					<B_conseil_pied>
+					<BOUCLE_conseil_pied(ELUS){statut=publie}{0,1}></BOUCLE_conseil_pied>
+					<li><a href="#URL_PAGE{conseil}"><:marly:titre_conseil:></a></li>
+					</B_conseil_pied>
+
 					[(#REM) La carte des batiments de la commune, s'il y en a. ]
 					<B_lieux_pied>
 					<BOUCLE_lieux_pied(LIEUX){0,1}></BOUCLE_lieux_pied>

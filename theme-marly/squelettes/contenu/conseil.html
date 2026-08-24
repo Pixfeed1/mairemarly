@@ -1,0 +1,144 @@
+[(#REM)
+  Le conseil municipal.
+  ---------------------------------------------------------------------------
+  Les elus etaient saisissables depuis longtemps, mais AUCUNE page publique ne
+  les affichait : ils n'apparaissaient que sur les fiches de demarches. Or
+  << qui est le maire, qui sont les adjoints et de quoi chacun s'occupe >> est
+  l'une des trois questions les plus posees a une commune. Le site n'y
+  repondait pas.
+
+  LE CLASSEMENT SE FAIT SUR LE CHAMP << fonction >>, qui est libre mais dont
+  le formulaire propose les valeurs courantes :
+    - le maire : la fonction commence par << Maire >>. Ancre en debut de
+      chaine, sans quoi << Adjoint au maire >> serait pris pour le maire ;
+    - les adjoints : la fonction contient << adjoint >> ;
+    - les conseillers : elle contient << conseill >>.
+  Une secretaire de mairie n'entre dans aucun des trois, et c'est voulu :
+  elle n'est pas elue et n'a rien a faire sur la page du conseil.
+
+  La delegation est la vraie information de cette page. Le nom du premier
+  adjoint ne sert a rien ; savoir qu'il a la charge de la voirie evite un
+  appel a la mauvaise personne.
+]
+<div class="bandeau-illustre">
+	[(#REM) La photographie si la mairie en a publie une sous le mot-cle
+	        << Banniere ma mairie >>, la banniere d'accueil sinon, et le
+	        paysage dessine a defaut. Le site n'est jamais nu. ]
+	<B_banniere>
+	<BOUCLE_banniere(ARTICLES){titre_mot=Bannière ma mairie}{par date}{inverse}{0,1}>
+	<div class="bandeau-image">[(#LOGO_ARTICLE|image_reduire{1920,0})]</div>
+	[<p class="bandeau-credit">(#DESCRIPTIF|textebrut|couper{120})</p>]
+	</BOUCLE_banniere>
+	</B_banniere>
+	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
+	     width="1440" height="260" alt="" aria-hidden="true">
+	<//B_banniere>
+
+	[(#REM) Le titre vit dans un carton pose sur l'image et debordant. Un titre
+	        ecrit a meme une photographie est lisible ou non selon la
+	        photographie ; dans un carton il l'est toujours, quelle que soit
+	        celle que la mairie deposera. Il est cale a gauche sur la colonne
+	        de texte : tout le site l'est, et un titre centre serait le seul
+	        de la page a ne pas l'etre. ]
+	<div class="bandeau-carton">
+		<div>
+			<nav class="fil-ariane" aria-label="Fil d’Ariane">
+				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+				<span aria-hidden="true">/</span>
+				<:marly:ma_mairie:>
+			</nav>
+			<h1><:marly:titre_conseil:></h1>
+		</div>
+	</div>
+</div>
+
+<div class="page-simple page-sous-carton">
+
+	<p class="chapo"><:marly:conseil_intro:></p>
+
+	<B_maire>
+	<h2 class="titre-bloc"><:marly:conseil_maire:></h2>
+	<BOUCLE_maire(ELUS){statut=publie}{fonction==^Maire}{par rang, nom}{0,1}>
+	<div class="elu-carte">
+		<span class="elu-tuile" aria-hidden="true">
+			[(#LOGO_ELU|non)<INCLURE{fond=inc/sceau-tuile}{classe=elu-sceau}{n=#ID_ELU}>]
+			[<img class="elu-photo" src="(#LOGO_ELU|image_reduire{208,208}|extraire_attribut{src})" alt="" width="104" height="104">]
+		</span>
+		<span class="elu-corps">
+			<span class="elu-fonction">#FONCTION</span>
+			<span class="elu-nom">[(#PRENOM) ]#NOM</span>
+			[<span class="elu-delegation">(#DELEGATION)</span>]
+			[<span class="elu-contact"><a href="tel:(#TELEPHONE|replace{' ',''}|attribut_html)">#TELEPHONE</a></span>]
+			[<span class="elu-permanence">(#PERMANENCE|propre)</span>]
+		</span>
+	</div>
+	</BOUCLE_maire>
+	</B_maire>
+
+	<B_adjoints>
+	<h2 class="titre-bloc"><:marly:conseil_adjoints:></h2>
+	<div class="elu-adjoints">
+		<BOUCLE_adjoints(ELUS){statut=publie}{fonction==[Aa]djoint}{par rang, nom}>
+		<div class="elu-carte">
+			<span class="elu-tuile" aria-hidden="true">
+				[(#LOGO_ELU|non)<INCLURE{fond=inc/sceau-tuile}{classe=elu-sceau}{n=#ID_ELU}>]
+				[<img class="elu-photo" src="(#LOGO_ELU|image_reduire{152,152}|extraire_attribut{src})" alt="" width="76" height="76">]
+			</span>
+			<span class="elu-corps">
+				<span class="elu-fonction">#FONCTION</span>
+				<span class="elu-nom">[(#PRENOM) ]#NOM</span>
+				[<span class="elu-delegation">(#DELEGATION)</span>]
+				[<span class="elu-contact"><a href="tel:(#TELEPHONE|replace{' ',''}|attribut_html)">#TELEPHONE</a></span>]
+				[<span class="elu-permanence">(#PERMANENCE|propre)</span>]
+			</span>
+		</div>
+		</BOUCLE_adjoints>
+	</div>
+	</B_adjoints>
+
+	[(#REM) Les conseillers : des noms, rien de plus. On veut savoir qui siege,
+	        pas les joindre un par un — c'est le secretariat qu'on appelle. ]
+	<B_conseillers>
+	<h2 class="titre-bloc"><:marly:conseil_conseillers:></h2>
+	<ul class="elu-conseillers">
+		<BOUCLE_conseillers(ELUS){statut=publie}{fonction==[Cc]onseill}{par rang, nom}>
+		<li>[(#PRENOM) ]#NOM[<span class="elu-quoi"> — (#DELEGATION)</span>]</li>
+		</BOUCLE_conseillers>
+	</ul>
+	</B_conseillers>
+
+	[(#REM) Aucun elu saisi : on le dit, plutot que de laisser une page qui
+	        parait cassee. Le corps de la boucle DOIT produire un texte. ]
+	<B_aucun>
+	<BOUCLE_aucun(ELUS){statut=publie}{0,1}><!-- au moins un elu --></BOUCLE_aucun>
+	</B_aucun>
+	<p class="explication"><:marly:conseil_vide:></p>
+	<//B_aucun>
+
+	[(#REM) Les seances du conseil sont publiques : c'est la loi, presque
+	        personne ne le sait, et presque aucun site de commune ne le dit.
+	        La date de la prochaine vient de l'agenda si elle y est annoncee :
+	        rien a saisir deux fois. ]
+	<div class="elu-seances">
+		<h2><:marly:conseil_seances:></h2>
+		<p><:marly:conseil_seances_texte:></p>
+		<B_prochaine>
+		<BOUCLE_prochaine(MANIFESTATIONS){statut=publie}{titre==[Cc]onseil municipal}
+		                                 {date_debut>#DATE}{par date_debut}{0,1}>
+		<p class="quand"><:marly:conseil_prochaine:>
+			[(#DATE_DEBUT|affdate{'l j F Y'})][, (#DATE_DEBUT|heures)h(#DATE_DEBUT|minutes)][, (#LIEU)].</p>
+		</BOUCLE_prochaine>
+		</B_prochaine>
+	</div>
+
+	<p class="fiche-liens">
+		<B_pv>
+		<a class="pilule" href="#URL_RUBRIQUE">
+			<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:conseil_comptes_rendus:></a>
+		<BOUCLE_pv(RUBRIQUES){titre==[Cc]omptes rendus}{0,1}></BOUCLE_pv>
+		</B_pv>
+		[<a class="pilule" href="mailto:(#CONFIG{marly/courriel}|attribut_html)">
+			<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:conseil_ecrire:></a>]
+	</p>
+
+</div>

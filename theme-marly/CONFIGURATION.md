@@ -294,6 +294,46 @@ Le compte créé est un compte **rédacteur** : l'association écrit ses
 articles dans sa rubrique, et c'est vous qui publiez, comme pour tout ce qui
 paraît sur le site.
 
+## Le conseil municipal
+
+`Édition ▸ Élus`. Une fiche par élu. La page publique les range toute seule,
+et c'est le champ **Fonction** qui décide :
+
+| Ce que vous écrivez dans Fonction | Où la personne apparaît |
+|---|---|
+| Commence par « Maire » | En tête, seule et en grand |
+| Contient « adjoint » | Dans « Les adjoints », avec sa délégation |
+| Contient « conseill » | Dans « Les conseillers », en simple liste |
+| Autre chose, « Secrétaire de mairie » par exemple | Nulle part : la page est celle du conseil, et la secrétaire n'est pas élue |
+
+Le formulaire propose les formulations courantes dans une liste déroulante :
+servez-vous en, elles sont écrites pour tomber juste.
+
+L'ordre à l'intérieur de chaque groupe suit le champ **Rang** : mettez 1 pour
+le premier adjoint, 2 pour le deuxième, et ainsi de suite.
+
+**Le champ Délégation est le plus important de la page.** Le nom du premier
+adjoint ne sert à rien à un habitant ; savoir qu'il a la charge de la voirie
+lui évite d'appeler la mauvaise personne. Écrivez-la en clair : « Travaux,
+voirie et bâtiments communaux ».
+
+La photographie est facultative. Sans elle, la fiche affiche le sceau de la
+commune sur fond vert.
+
+### La date de la prochaine séance
+
+Elle n'est pas à saisir sur cette page : elle vient de l'agenda. Créez
+l'événement dans `Édition ▸ Réservations ▸ Événements` avec « Conseil
+municipal » dans le titre, et la page l'annonce d'elle-même. Rien à tenir à
+jour à deux endroits.
+
+### La photographie du bandeau
+
+Comme la bannière d'accueil : publiez un article, mettez-lui le mot-clé
+**Bannière ma mairie**, déposez-y la photo. Le crédit du photographe se met
+dans le descriptif de l'article. Sans article, la page reprend la bannière
+d'accueil ; sans elle, le paysage dessiné. La page n'est jamais nue.
+
 ## L'annuaire des commerces et services
 
 `Édition ▸ Commerces`. Une fiche par commerçant, professionnel de santé,

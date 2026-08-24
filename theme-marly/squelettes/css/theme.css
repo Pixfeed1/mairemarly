@@ -1553,3 +1553,109 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   .com-bandeau{ height:150px; }
   .com-bandeau .com-sceau{ width:98px; height:98px; }
 }
+
+/* ===========================================================================
+   LE BANDEAU D'UNE PAGE DE SECTION, ET SON CARTOUCHE
+   ---------------------------------------------------------------------------
+   Le titre ne s'ecrit pas SUR l'image : il vit dans un carton pose dessus et
+   debordant. Un titre a meme une photographie est lisible ou non selon la
+   photographie ; dans un carton il l'est toujours, quelle que soit celle que
+   la mairie deposera un jour.
+
+   Le carton est cale a GAUCHE, sur la colonne de texte. Tout le site l'est,
+   et un titre centre serait le seul de la page a ne pas l'etre : l'oeil
+   devrait le rattraper a chaque changement de bloc.
+
+   Rectangle, et non forme arrondie : dans le vocabulaire du site, le rond
+   est une icone, la pilule est une action, et le rectangle a peine adouci
+   est un bloc de contenu. Ce carton porte du texte, il n'est pas cliquable.
+   =========================================================================== */
+.bandeau-illustre{
+	position:relative; min-height:230px; overflow:hidden;
+	background:linear-gradient(to bottom,#3A7D5C 0%,#1E5B41 55%,#123F2D 100%);
+}
+/* Le paysage est un element et non un fond : un fond dimensionne se maitrise
+   mal quand le rapport du bloc varie, un element pose obeit. */
+.bandeau-paysage{ position:absolute; left:0; right:0; bottom:0; width:100%; height:auto; }
+.bandeau-image{ position:absolute; inset:0; }
+.bandeau-image:empty{ display:none; }
+.bandeau-image img{ width:100%; height:100%; object-fit:cover; }
+.bandeau-credit{
+	position:absolute; right:0; top:0; z-index:1; margin:0;
+	background:rgba(29,26,26,.72); color:#fff; font-size:12px; padding:6px 14px;
+}
+.bandeau-carton{
+	position:relative; z-index:1;
+	width:min(820px,calc(100% - 44px)); margin:120px auto -46px; padding:0 22px;
+}
+.bandeau-carton > div{
+	background:var(--creme); padding:24px 30px 22px; border-radius:3px;
+	border-left:4px solid var(--accent);
+	box-shadow:0 10px 40px rgba(18,63,45,.18);
+}
+.bandeau-carton .fil-ariane{
+	margin:0 0 8px; font-family:var(--titre); font-size:12px;
+	letter-spacing:.12em; text-transform:uppercase; color:var(--encre-doux);
+}
+.bandeau-carton h1{ margin:0; font-family:var(--serif);
+	font-size:clamp(28px,3.8vw,44px); line-height:1.12; }
+.page-sous-carton{ padding-top:74px; }
+@media(max-width:640px){
+	.bandeau-illustre{ min-height:170px; }
+	.bandeau-carton{ margin:92px auto -34px; }
+	.bandeau-carton > div{ padding:20px 22px 18px; }
+	.page-sous-carton{ padding-top:58px; }
+}
+
+/* ===========================================================================
+   LE CONSEIL MUNICIPAL
+   ---------------------------------------------------------------------------
+   Le maire seul et en grand : c'est la personne qu'on cherche neuf fois sur
+   dix. Les adjoints ensuite, avec leur DELEGATION — c'est elle qui dit a qui
+   s'adresser, et c'est la vraie utilite de la page. Les conseillers en simple
+   liste de noms : on veut savoir qui siege, pas les joindre un par un.
+   =========================================================================== */
+.elu-carte{ display:flex; align-items:flex-start; gap:26px; margin:0 0 14px; }
+.elu-tuile{ flex:0 0 auto; width:104px; height:104px; display:flex;
+	align-items:center; justify-content:center; background:var(--accent);
+	border-radius:3px; color:#fff; overflow:hidden; }
+.elu-sceau{ width:78px; height:78px; opacity:.9; }
+.elu-photo{ width:100%; height:100%; object-fit:cover; display:block; }
+.elu-corps{ min-width:0; padding-top:2px; }
+.elu-fonction{ display:inline-block; background:var(--jaune); color:var(--encre);
+	font-family:var(--titre); font-size:11px; font-weight:700; letter-spacing:.08em;
+	text-transform:uppercase; padding:3px 7px; margin:0 0 8px; }
+.elu-nom{ display:block; font-family:var(--titre); font-weight:800;
+	font-size:1.3em; color:var(--encre); margin:0 0 4px; line-height:1.2; }
+.elu-delegation{ display:block; color:var(--encre-doux); line-height:1.6; max-width:60ch; }
+.elu-contact{ display:block; margin-top:8px; font-size:.95em; }
+.elu-contact a{ color:var(--accent); font-weight:700; text-decoration:none;
+	border-bottom:2px solid var(--accent); }
+.elu-contact a:hover{ color:var(--accent-sombre); border-bottom-color:var(--accent-sombre); }
+.elu-permanence{ display:block; margin-top:3px; font-size:.9em; color:var(--encre-doux); }
+
+.elu-adjoints{ display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+	column-gap:40px; row-gap:26px; margin:0 0 10px; }
+.elu-adjoints .elu-carte{ gap:18px; margin:0; }
+.elu-adjoints .elu-tuile{ width:76px; height:76px; }
+.elu-adjoints .elu-sceau{ width:56px; height:56px; }
+.elu-adjoints .elu-nom{ font-size:1.12em; }
+
+.elu-conseillers{ list-style:none; margin:0 0 10px; padding:0;
+	columns:2; column-gap:44px; font-family:var(--texte); }
+.elu-conseillers li{ padding:6px 0; break-inside:avoid; line-height:1.5; }
+.elu-quoi{ color:var(--encre-doux); }
+
+/* Les seances sont publiques : c'est la loi, et personne ne le sait. */
+.elu-seances{ background:var(--creme-sombre); border-top:3px solid var(--accent);
+	padding:22px 26px; margin:34px 0 0; }
+.elu-seances h2{ margin-top:0; }
+.elu-seances p{ margin:0 0 8px; }
+.elu-seances .quand{ font-weight:700; color:var(--accent); margin-bottom:0; }
+
+@media(max-width:640px){
+	.elu-conseillers{ columns:1; }
+	.elu-carte{ gap:16px; }
+	.elu-tuile{ width:72px; height:72px; }
+	.elu-sceau{ width:54px; height:54px; }
+}
