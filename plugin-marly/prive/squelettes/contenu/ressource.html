@@ -3,4 +3,10 @@
 
 <h1 class="grostitre">[(#ENV{id_salle}|=={new}|?{'marly:creer_ressource','marly:modifier_ressource'}|_T)]</h1>
 
+[(#ENV{id_salle}|=={new}|non)
+<BOUCLE_en_ligne(SALLES){id_salle=#ENV{id_salle}}{statut IN publie,prepa}>
+<INCLURE{fond=prive/squelettes/inc/marly-en-ligne}{page=salle}{cle=id_salle}{id=#ID_SALLE}{statut=#STATUT}>
+</BOUCLE_en_ligne>
+]
+
 [(#FORMULAIRE_EDITER_SALLE{#ENV{id_salle,new}})]

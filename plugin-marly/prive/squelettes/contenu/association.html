@@ -3,6 +3,12 @@
 
 <h1 class="grostitre">[(#ENV{id_association}|=={new}|?{'marly:creer_association','marly:modifier_association'}|_T)]</h1>
 
+[(#ENV{id_association}|=={new}|non)
+<BOUCLE_en_ligne(ASSOCIATIONS){id_association=#ENV{id_association}}{statut IN publie,prepa}>
+<INCLURE{fond=prive/squelettes/inc/marly-en-ligne}{page=association}{cle=id_association}{id=#ID_ASSOCIATION}{statut=#STATUT}>
+</BOUCLE_en_ligne>
+]
+
 [(#FORMULAIRE_EDITER_ASSOCIATION{#ENV{id_association,new}})]
 
 [(#REM)

@@ -680,6 +680,11 @@ resterez abonné.
 	'erreur_adresse'   => 'L’adresse doit commencer par https:// Copiez-la depuis la barre du navigateur.',
 	'erreur_courriel'  => 'Cette adresse électronique ne semble pas valide.',
 	'erreur_un_contact' => 'Indiquez au moins un moyen de contact : téléphone, courriel ou site. C’est la seule chose qu’on vient chercher dans un annuaire.',
+	// --- Une fiche est-elle en ligne ------------------------------------------
+	'fiche_en_ligne'  => 'Publiée, visible sur le site.',
+	'fiche_brouillon' => 'Brouillon : cette fiche n’apparaît pas sur le site.',
+	'voir_en_ligne'   => 'Voir la page',
+
 	// --- Commerces et services ------------------------------------------------
 	'titre_commerces'      => 'Commerces et services',
 	'objet_commerce'       => 'Commerce',

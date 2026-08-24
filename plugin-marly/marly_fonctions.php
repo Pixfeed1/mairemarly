@@ -245,6 +245,22 @@ function filtre_marly_icone_theme_dist($theme) {
 	return $icones[$theme] ?? 'ri-team-line';
 }
 
+/**
+ * L'adresse PUBLIQUE d'une fiche, vue depuis l'espace prive.
+ *
+ * Ecrite ici et non avec #URL_PAGE dans le gabarit : dans l'espace prive,
+ * #URL_PAGE rend une adresse relative a /ecrire/, et le lien menait donc
+ * nulle part. On passe par le generateur d'adresses publiques, puis on rend
+ * l'adresse absolue — le lien s'ouvre dans un autre onglet, il doit porter
+ * le nom du site.
+ */
+function filtre_marly_url_publique_dist($page, $cle = '', $id = 0) {
+	include_spip('inc/urls');
+	include_spip('inc/filtres');
+	$args = ($cle !== '' and intval($id)) ? $cle . '=' . intval($id) : '';
+	return url_absolue(generer_url_public($page, $args));
+}
+
 /** L'intitule d'une categorie de commerce. */
 function filtre_marly_categorie_commerce_dist($categorie) {
 	include_spip('inc/marly_commerces');

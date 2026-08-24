@@ -1,0 +1,25 @@
+[(#REM)
+  Une fiche est-elle en ligne, et ou la voir.
+  ---------------------------------------------------------------------------
+  SPIP le fait pour ses articles, nous ne le faisions pour aucune de nos
+  fiches : on ne savait ni si elle etait publiee, ni comment aller la
+  regarder. Il fallait deviner l'adresse ou passer par le site public et la
+  chercher.
+
+  Le lien s'ouvre dans un autre onglet : on garde l'ecran de saisie ouvert
+  pendant qu'on verifie le rendu, ce qui est tout l'interet du geste.
+
+  Parametres : page (le gabarit public), cle (le nom du parametre), id, statut.
+]
+[(#ENV{id}|=={new}|non)
+<p class="marly-en-ligne">
+	[(#ENV{statut}|=={publie}|oui)
+	<span class="pastille publiee" aria-hidden="true"></span><:marly:fiche_en_ligne:>
+	<a href="[(#ENV{page}|marly_url_publique{#ENV{cle},#ENV{id}}|attribut_html)]"
+	   target="_blank" rel="noopener"><:marly:voir_en_ligne:></a>
+	]
+	[(#ENV{statut}|=={publie}|non)
+	<span class="pastille brouillon" aria-hidden="true"></span><:marly:fiche_brouillon:>
+	]
+</p>
+]

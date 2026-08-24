@@ -3,6 +3,12 @@
 
 <h1 class="grostitre">[(#ENV{id_manifestation}|=={new}|?{'marly:creer_manifestation','marly:modifier_manifestation'}|_T)]</h1>
 
+[(#ENV{id_manifestation}|=={new}|non)
+<BOUCLE_en_ligne(MANIFESTATIONS){id_manifestation=#ENV{id_manifestation}}{statut IN publie,prepa}>
+<INCLURE{fond=prive/squelettes/inc/marly-en-ligne}{page=evenement}{cle=id_manifestation}{id=#ID_MANIFESTATION}{statut=#STATUT}>
+</BOUCLE_en_ligne>
+]
+
 [(#FORMULAIRE_EDITER_MANIFESTATION{#ENV{id_manifestation,new}})]
 
 [(#ENV{id_manifestation}|=={new}|non)

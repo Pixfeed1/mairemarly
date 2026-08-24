@@ -30,6 +30,16 @@
 .marly-onglets a:hover{ background:#e9e9e9; }
 .marly-onglets a.actif{ background:#fff; border-bottom:2px solid #fff; margin-bottom:-2px; color:#1E5B41; }
 
+/* --- Une fiche est-elle en ligne, et ou la voir ------------------------- */
+.marly-en-ligne{ margin:-8px 0 22px; font-size:14px; color:#555; }
+.marly-en-ligne .pastille{
+	display:inline-block; width:9px; height:9px; border-radius:50%;
+	margin-right:7px; vertical-align:baseline;
+}
+.marly-en-ligne .pastille.publiee{ background:#1E5B41; }
+.marly-en-ligne .pastille.brouillon{ background:#bbb; }
+.marly-en-ligne a{ margin-left:10px; font-weight:600; color:#1E5B41; }
+
 /* --- Le bloc d'envoi d'une lettre, qu'on ne doit pas confondre avec le
        reste de la page : appuyer dessus est irreversible. ----------------- */
 .marly-envoi{ border:1px solid #ccc; border-left:4px solid #1E5B41; padding:16px 20px; margin:24px 0; background:#fafafa; }

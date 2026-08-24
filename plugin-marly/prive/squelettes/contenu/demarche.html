@@ -3,4 +3,10 @@
 
 <h1 class="grostitre">[(#ENV{id_demarche}|=={new}|?{'marly:creer_demarche','marly:modifier_demarche'}|_T)]</h1>
 
+[(#ENV{id_demarche}|=={new}|non)
+<BOUCLE_en_ligne(DEMARCHES){id_demarche=#ENV{id_demarche}}{statut IN publie,prepa}>
+<INCLURE{fond=prive/squelettes/inc/marly-en-ligne}{page=demarche}{cle=id_demarche}{id=#ID_DEMARCHE}{statut=#STATUT}>
+</BOUCLE_en_ligne>
+]
+
 [(#FORMULAIRE_EDITER_DEMARCHE{#ENV{id_demarche,new}})]

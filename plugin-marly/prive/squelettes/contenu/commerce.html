@@ -3,6 +3,12 @@
 
 <h1 class="grostitre">[(#ENV{id_commerce}|=={new}|?{'marly:creer_commerce','marly:modifier_commerce'}|_T)]</h1>
 
+[(#ENV{id_commerce}|=={new}|non)
+<BOUCLE_en_ligne(COMMERCES){id_commerce=#ENV{id_commerce}}{statut IN publie,prepa}>
+<INCLURE{fond=prive/squelettes/inc/marly-en-ligne}{page=commerce}{cle=id_commerce}{id=#ID_COMMERCE}{statut=#STATUT}>
+</BOUCLE_en_ligne>
+]
+
 [(#FORMULAIRE_EDITER_COMMERCE{#ENV{id_commerce,new}})]
 
 [(#REM)
