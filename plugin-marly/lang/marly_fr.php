@@ -682,10 +682,8 @@ resterez abonné.
 	'erreur_un_contact' => 'Indiquez au moins un moyen de contact : téléphone, courriel ou site. C’est la seule chose qu’on vient chercher dans un annuaire.',
 	// --- L'encart de tete d'une liste -----------------------------------------
 	'aucune_en_ligne'               => 'Rien n’est encore en ligne.',
-	'compte_commerces'              => 'en ligne sur le site',
-	'compte_commerces_brouillon'    => 'et des brouillons, invisibles du public',
-	'compte_associations'           => 'en ligne sur le site',
-	'compte_associations_brouillon' => 'et des brouillons, invisibles du public',
+	'compte_en_ligne'   => 'en ligne sur le site',
+	'compte_brouillons' => 'en brouillon, invisibles du public',
 
 	// --- Une fiche est-elle en ligne ------------------------------------------
 	'fiche_en_ligne'  => 'Publiée, visible sur le site.',

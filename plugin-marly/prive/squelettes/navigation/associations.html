@@ -1,0 +1,33 @@
+[(#REM)
+  La colonne de gauche de la liste des associations.
+  ---------------------------------------------------------------------------
+  Meme boite que celle que SPIP pose sur une rubrique : #BOITE_OUVRIR{'','info'}.
+  On ne redessine pas un encart a nous en pleine page — l'espace prive a sa
+  colonne, et une information rangee ailleurs que la ou l'oeil la cherche
+  n'est pas une information mieux mise en valeur, c'est une information
+  deplacee.
+
+  Pas de case logo : un annuaire n'en porte pas, et une case vide qui ne
+  recoit rien est pire qu'une case absente.
+]
+#BOITE_OUVRIR{'','info'}
+<div class="marly-compte">
+
+	<B_asso_pub>
+	<p class="compte"><b>#TOTAL_BOUCLE</b> <:marly:compte_en_ligne:></p>
+	<p class="voir"><a href="[(#VAL{associations}|marly_url_publique|attribut_html)]"
+	   target="_blank" rel="noopener"><:marly:voir_en_ligne:></a></p>
+	<BOUCLE_asso_pub(ASSOCIATIONS){statut=publie}><!-- on ne fait que compter --></BOUCLE_asso_pub>
+	</B_asso_pub>
+	<p class="compte vide"><:marly:aucune_en_ligne:></p>
+	<//B_asso_pub>
+
+	[(#REM) Le nombre exact de brouillons, et non le fait qu'il y en ait :
+	        c'est une liste de travail, on veut savoir ce qu'il reste. ]
+	<B_asso_bro>
+	<p class="brouillons"><b>#TOTAL_BOUCLE</b> <:marly:compte_brouillons:></p>
+	<BOUCLE_asso_bro(ASSOCIATIONS){statut=prepa}><!-- on ne fait que compter --></BOUCLE_asso_bro>
+	</B_asso_bro>
+
+</div>
+#BOITE_FERMER

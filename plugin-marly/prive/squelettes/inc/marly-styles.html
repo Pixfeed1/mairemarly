@@ -30,19 +30,15 @@
 .marly-onglets a:hover{ background:#e9e9e9; }
 .marly-onglets a.actif{ background:#fff; border-bottom:2px solid #fff; margin-bottom:-2px; color:#1E5B41; }
 
-/* --- L'encart de tete d'une liste, sur le modele de celui que SPIP pose
-       sur une rubrique : le compte et le lien vers la page publique. ---- */
-.marly-encart{
-	float:right; width:250px; margin:0 0 20px 24px;
-	border:1px solid #ccc; border-top:3px solid #1E5B41;
-	padding:14px 18px; background:#fafafa; text-align:center;
-}
-.marly-encart p{ margin:0 0 6px; }
-.marly-encart .compte{ font-size:15px; color:#333; }
-.marly-encart .compte b{ display:block; font-size:34px; line-height:1.1; color:#1E5B41; }
-.marly-encart .brouillons{ font-size:13px; color:#777; }
-.marly-encart .voir a{ font-weight:600; color:#1E5B41; }
-@media(max-width:900px){ .marly-encart{ float:none; width:auto; margin:0 0 20px; } }
+/* --- Le compte, dans la boite native de la colonne de gauche. SPIP dessine
+       la boite ; on ne regle que ce qu'il y a dedans. -------------------- */
+.marly-compte{ text-align:center; }
+.marly-compte p{ margin:0 0 8px; }
+.marly-compte .compte{ font-size:14px; color:#333; line-height:1.3; }
+.marly-compte .compte b{ display:block; font-size:34px; line-height:1.1; color:#1E5B41; }
+.marly-compte .brouillons{ font-size:13px; color:#777; line-height:1.3; }
+.marly-compte .brouillons b{ font-size:17px; color:#555; }
+.marly-compte .voir a{ font-weight:600; color:#1E5B41; }
 
 /* --- Une fiche est-elle en ligne, et ou la voir ------------------------- */
 .marly-en-ligne{ margin:-8px 0 22px; font-size:14px; color:#555; }

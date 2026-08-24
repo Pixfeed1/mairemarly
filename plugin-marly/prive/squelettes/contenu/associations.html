@@ -4,29 +4,6 @@
 <h1 class="grostitre"><:marly:titre_associations:></h1>
 <p class="explication"><:marly:intro_associations:></p>
 
-[(#REM) L'encart de tete, sur le modele de celui que SPIP pose sur une
-        rubrique : le compte et le lien vers la page publique. Pas de case
-        logo — un annuaire n'en porte pas, et une case vide qui ne sert a
-        rien est pire qu'une case absente.
-
-        Le lien ne parait que s'il y a quelque chose a voir : un lien vers
-        un annuaire vide fait douter de tout le reste. ]
-<div class="marly-encart">
-	<B_associations_publies>
-	<p class="compte"><b>#TOTAL_BOUCLE</b> <:marly:compte_associations:></p>
-	<p class="voir"><a href="[(#VAL{associations}|marly_url_publique|attribut_html)]"
-	   target="_blank" rel="noopener"><:marly:voir_en_ligne:></a></p>
-	<BOUCLE_associations_publies(ASSOCIATIONS){statut=publie}><!-- on ne fait que compter --></BOUCLE_associations_publies>
-	</B_associations_publies>
-	<p class="compte vide"><:marly:aucune_en_ligne:></p>
-	<//B_associations_publies>
-
-	<B_associations_brouillons>
-	<p class="brouillons"><:marly:compte_associations_brouillon:></p>
-	<BOUCLE_associations_brouillons(ASSOCIATIONS){statut=prepa}><!-- on ne fait que compter --></BOUCLE_associations_brouillons>
-	</B_associations_brouillons>
-</div>
-
 <p class="boutons">
 	<a class="btn" href="[(#URL_ECRIRE{association,id_association=new})]"><:marly:creer_association:></a>
 </p>
