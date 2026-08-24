@@ -760,6 +760,31 @@ if os.path.isfile(_ADMIN) and os.path.isdir(_ECRANS):
                          "n'est jamais ajoute au reglage documents_objets : le formulaire "
                          "s'effacera en silence et le bloc restera vide")
 
+# 40. plugin_installes_meta() appele avant que inc/texte soit charge.
+#     Cette fonction compose son compte rendu avec typo(), qui vit dans
+#     inc/texte : chargee apres, elle arrive trop tard et l'appel meurt sur
+#     << Call to undefined function typo() >>.
+#
+#     Le piege est qu'elle n'appelle typo() que lorsqu'elle a quelque chose a
+#     RACONTER. Tant qu'aucun plugin n'a de retard, elle se tait et rien ne
+#     plante : le defaut ne se montrait qu'aux montees de version, donc
+#     exactement quand le deploiement compte, et il faisait croire que la
+#     mise a jour avait echoue alors qu'elle venait de reussir.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    # L'APPEL, et non une mention : une ligne qui n'est que cet appel suivi
+    # d'un point-virgule. Le nom figure aussi dans un commentaire d'en-tete et
+    # dans une garde function_exists, qui ne declenchent rien.
+    _c = re.search(r'(?m)^[ \t]*plugin_installes_meta\(\)[ \t]*;', _src)
+    if not _c:
+        continue
+    if "include_spip('inc/texte')" not in _src[:_c.start()]:
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_c.start()].count(chr(10)) + 1,
+                 "plugin_installes_meta() est appele avant include_spip('inc/texte') : "
+                 "elle compose son compte rendu avec typo() et mourra, mais seulement "
+                 "les fois ou un plugin a du retard, c'est-a-dire aux montees de version")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

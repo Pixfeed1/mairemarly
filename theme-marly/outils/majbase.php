@@ -93,10 +93,22 @@ $avant = isset($GLOBALS['meta']['marly_base_version']) ? $GLOBALS['meta']['marly
    declenche pas ici, parce qu'on lui a pose un REQUEST_URI pour satisfaire
    le kernel. Plutot que de deviner sa condition exacte et de dependre
    d'elle, on ramene la trace au texte nous-memes. */
+/* AVANT l'appel, et non apres : plugin_installes_meta() compose son compte
+   rendu avec typo(), qui vit dans inc/texte. Charges apres, ces fichiers
+   arrivent trop tard et l'appel meurt sur << Call to undefined function
+   typo() >>.
+
+   Le piege est que la fonction n'appelle typo() que lorsqu'elle a quelque
+   chose a RACONTER : tant qu'aucun plugin n'a de retard, elle se tait et
+   rien ne plante. Le defaut ne se montrait donc qu'aux montees de version,
+   c'est-a-dire exactement quand le deploiement compte, et il faisait croire
+   que la mise a jour avait echoue alors qu'elle venait de reussir. */
+include_spip('inc/texte');
+include_spip('inc/filtres');
+
 ob_start();
 plugin_installes_meta();
 $trace = ob_get_clean();
-include_spip('inc/filtres');
 if (function_exists('textebrut')) {
 	$trace = textebrut($trace);
 }
