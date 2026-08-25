@@ -46,7 +46,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'lettre_invite' => 'Recevez les actualités du village par courriel, quelques lettres par an, rien de plus.',
 	'lettre_sinscrire' => 'S’inscrire à la lettre',
 	'dans_cette_rubrique' => 'Dans cette rubrique',
-	'dans_cet_article' => 'Dans cet article',
 	'accueil'              => 'Accueil',
 	'attention'            => 'Attention :',
 	'derniere_maj'         => 'Dernière mise à jour :',

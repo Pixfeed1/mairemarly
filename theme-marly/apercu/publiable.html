@@ -153,7 +153,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{ outline:3px solid var(
             stroke-linecap:round; stroke-linejoin:round; }
 
 .pilule .ico{ width:16px; height:16px; }
-.pied .coord .ico{ width:17px; height:17px; margin-right:4px; color:var(--accent); }
 .menu-mobile .fermer .ico, .panneau-recherche .fermer .ico{ width:22px; height:22px; }
 
 /* ---- photos : dégradé de secours si le fichier manque ------------------- */
@@ -604,16 +603,83 @@ section{ padding-block:70px; position:relative; }
 .lettre button{ border:0; background:var(--accent); color:#fff; border-radius:3px; padding:13px 24px; font-weight:700; cursor:pointer; font-family:var(--texte); }
 
 /* ---- PIED --------------------------------------------------------------- */
-.pied{ background:var(--creme); border-top:3px solid var(--accent); padding-block:56px 26px; }
-.pied-grille{ display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:48px; }
-.pied h3{ font-family:var(--titre); font-weight:800; font-size:20px; margin-bottom:14px; }
-.pied ul{ list-style:none; margin:0; padding:0; }
-.pied li{ margin-bottom:9px; font-size:15px; }
-.pied .coord{ font-size:15px; line-height:1.9; }
-.pied .coord i{ color:var(--accent); width:20px; }
-.pied-bas{ border-top:1px solid var(--trait); margin-top:42px; padding-top:20px; display:flex; gap:22px; flex-wrap:wrap; font-size:13px; color:var(--encre-doux); }
-.pied-bas a{ text-decoration:none; }
-.pied-bas a:hover{ text-decoration:underline; }
+/* ---- PIED DE PAGE ------------------------------------------------------- */
+/* Batî sur ce que font les mairies : des coordonnees d'abord, pas un plan du
+   site. Les horaires ont leur colonne, avec son titre — c'est la premiere
+   chose qu'on cherche sur le site d'une commune. Le filet dore sous chaque
+   titre est le trait cyan de Franconville, dans notre couleur. */
+.pied{ position:relative; overflow:hidden; border-top:0; }
+.pied{ background:var(--creme); color:var(--encre); padding-bottom:20px; text-align:center; }
+.pied-paysage{ display:block; width:100%; height:112px; object-fit:cover; object-position:bottom; }
+
+.pied-embleme{ padding-top:32px; }
+.pied-embleme .sceau{ color:var(--accent); width:104px; height:104px; }
+.pied-nom{ font-family:var(--serif); font-size:36px; color:var(--accent); margin:8px 0 0; line-height:1.1; }
+.pied-sous{ font-family:var(--titre); font-weight:700; font-size:13.5px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--encre-doux); margin:5px 0 0; }
+
+.pied-quatre{ display:grid; grid-template-columns:repeat(4,1fr); gap:34px; margin:42px 0 0; }
+.pied-quatre h3{ font-family:var(--titre); font-size:14px; font-weight:800; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); margin:0 0 4px; }
+.pied-quatre h3::after{ content:""; display:block; width:34px; height:2px; background:var(--jaune);
+  margin:11px auto 16px; }
+.pied-quatre p{ margin:0 0 13px; font-weight:600; font-size:16px; line-height:1.75; }
+.pied-quatre ul{ list-style:none; margin:0; padding:0; }
+.pied-quatre li{ margin:0 0 10px; font-weight:600; font-size:16px; line-height:1.5; }
+.pied-quatre a{ color:var(--encre); }
+.pied-quatre a:hover{ color:var(--accent); }
+.pied-note{ font-size:15px; color:var(--encre-doux); }
+/* Un lien, pas un bouton. Le cadre faisait trois pastilles alignees dans un
+   pied de page qui n'a que quatre colonnes : trop d'appel pour trois actions
+   qui ne sont pas des appels a l'action.
+
+   LE SOULIGNEMENT SE TRACE DE LA DROITE VERS LA GAUCHE au survol, comme les
+   liens du pied de page de la Ville de Paris. transform-origin:right, et non
+   left : c'est ce seul mot qui donne le sens du geste.
+
+   Il etait ecrit .pied-quatre a:hover{ color:var(--accent) } plus haut, plus
+   specifique que .pied-bouton:hover : le texte du bouton virait au vert sur
+   un fond devenu vert, et disparaissait. Le lien n'a plus de fond, la
+   collision n'existe plus, et la couleur au survol est posee ici. */
+.pied-lien{
+	position:relative; display:inline-flex; align-items:center; gap:9px;
+	margin-top:6px; padding-bottom:3px;
+	color:var(--accent); font-weight:700; font-size:15.5px; letter-spacing:.02em;
+	text-decoration:none;
+}
+.pied-quatre .pied-lien:hover{ color:var(--accent-sombre); }
+.pied-lien::after{
+	content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+	background:var(--jaune);
+	transform:scaleX(0); transform-origin:right;
+	transition:transform .3s ease;
+}
+.pied-lien:hover::after,
+.pied-lien:focus-visible::after{ transform:scaleX(1); }
+/* Certains reglent leur systeme pour ne plus voir d'animation. On respecte :
+   le trait apparaît, il ne se trace pas. */
+@media (prefers-reduced-motion:reduce){
+	.pied-lien::after{ transition:none; }
+}
+.pied-lien .ico{ width:17px; height:17px; }
+
+.pied-reseaux{ display:flex; justify-content:center; gap:16px; margin-top:10px; }
+.pied-reseaux a{ color:var(--encre-doux); }
+.pied-reseaux .ico{ width:23px; height:23px; }
+
+.pied-bas{ margin-top:44px; padding-top:18px; border-top:1px solid var(--trait);
+  display:flex; justify-content:center; flex-wrap:wrap; gap:24px;
+  font-weight:600; font-size:13.5px; }
+/* Pas de soulignement au survol : la barre en compte cinq cote a cote, et
+   cinq traits qui apparaissent l'un apres l'autre font clignoter le bas de
+   page. La couleur suffit a dire que c'est cliquable, et elle change assez
+   pour se voir : du gris de lecture au vert de la commune. */
+.pied-bas a{ color:var(--encre-doux); text-decoration:none; transition:color .2s ease; }
+.pied-bas a:hover,
+.pied-bas a:focus-visible{ color:var(--accent); }
+@media (prefers-reduced-motion:reduce){ .pied-bas a{ transition:none; } }
+@media(max-width:900px){ .pied-quatre{ grid-template-columns:repeat(2,1fr); gap:30px; } }
+@media(max-width:560px){ .pied-quatre{ grid-template-columns:1fr; } }
 
 /* ---- responsive --------------------------------------------------------- */
 @media (max-width:1080px){
@@ -621,7 +687,7 @@ section{ padding-block:70px; position:relative; }
   .actu-vedette .ph{ width:100%; }
   .actu-vedette .txt{ margin-left:0; margin-top:-60px; max-width:none; margin-inline:20px; }
   .evt-grille{ grid-template-columns:1fr; gap:64px; }
-  .conseil-grille,.lire-grille,.pied-grille{ grid-template-columns:1fr; gap:34px; }
+  .conseil-grille,.lire-grille{ grid-template-columns:1fr; gap:34px; }
   .assos{ grid-template-columns:1fr 1fr; }
   .gravure{ display:none; }
 }
@@ -1434,15 +1500,6 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   .texte encart h2,.texte encart h3{ padding-top:18px; }
   .texte encart > :last-child{ padding-bottom:20px; }
 }
-
-/* Le sommaire << Dans cet article >>, pose par menu.js des trois intertitres. */
-.article-sommaire{ background:var(--creme-sombre); border-radius:6px;
-  padding:18px 22px; margin:26px 0; max-width:560px; }
-.article-sommaire b{ font-family:var(--texte); font-size:12.5px; font-weight:700;
-  letter-spacing:.08em; text-transform:uppercase; color:var(--encre-doux);
-  display:block; margin-bottom:8px; }
-.article-sommaire a{ color:var(--encre); text-decoration:none; }
-.article-sommaire a:hover{ color:var(--accent); text-decoration:underline; }
 
 /* La carte d'un document a telecharger. */
 .doc-joint{ display:flex; align-items:center; gap:16px; border:1px solid var(--trait);
@@ -2660,43 +2717,6 @@ a.elu-nom:hover{ text-decoration:underline; }
 	}
 
 	if ('inert' in HTMLElement.prototype) { panneau.inert = true; }
-})();
-
-/**
- * Le sommaire << Dans cet article >>.
- * ---------------------------------------------------------------------------
- * Pose avant le texte quand l'article compte au moins trois intertitres :
- * en dessous, un sommaire fait plus d'encombrement que de service. Sans
- * JavaScript, pas de sommaire, et rien ne manque a la lecture.
- */
-(function () {
-	'use strict';
-
-	var texte = document.querySelector('.fiche-demarche .texte');
-	if (!texte || !document.querySelector('.article-signature')) { return; }
-
-	var titres = texte.querySelectorAll('h2, h3');
-	if (titres.length < 3) { return; }
-
-	var nav = document.createElement('nav');
-	nav.className = 'article-sommaire';
-	nav.setAttribute('aria-label', 'Sommaire');
-	var b = document.createElement('b');
-	b.textContent = 'Dans cet article';
-	nav.appendChild(b);
-	var ol = document.createElement('ol');
-
-	Array.prototype.forEach.call(titres, function (t, i) {
-		if (!t.id) { t.id = 'section-' + (i + 1); }
-		var li = document.createElement('li');
-		var a = document.createElement('a');
-		a.href = '#' + t.id;
-		a.textContent = t.textContent;
-		li.appendChild(a);
-		ol.appendChild(li);
-	});
-	nav.appendChild(ol);
-	texte.parentNode.insertBefore(nav, texte);
 })();
 
 </script>
