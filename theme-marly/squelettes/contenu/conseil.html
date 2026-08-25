@@ -104,11 +104,18 @@
 	</B_adjoints>
 
 	[(#REM) Les conseillers : des noms, rien de plus. On veut savoir qui siege,
-	        pas les joindre un par un — c'est le secretariat qu'on appelle. ]
+	        pas les joindre un par un — c'est le secretariat qu'on appelle.
+
+	        TRI PAR NOM SEUL, et non par fonction puis nom comme les adjoints.
+	        La fonction est accordee — << Conseillere municipale >> pour les
+	        unes, << Conseiller municipal >> pour les autres — et MySQL range
+	        le e accentue avant le r : trier sur elle couperait la liste en
+	        deux paquets, les femmes puis les hommes. Personne n'a demande
+	        cela, et l'ordre alphabetique est le seul qui ne dise rien. ]
 	<B_conseillers>
 	<h2 class="titre-bloc"><:marly:conseil_conseillers:></h2>
 	<ul class="elu-conseillers">
-		<BOUCLE_conseillers(ELUS){statut=publie}{fonction==[Cc]onseill}{par fonction, nom}>
+		<BOUCLE_conseillers(ELUS){statut=publie}{fonction==[Cc]onseill}{par nom, prenom}>
 		<li><a href="[(#URL_PAGE{elu}|parametre_url{id_elu,#ID_ELU})]">[(#PRENOM) ]#NOM</a>[<span class="elu-quoi"> — (#DELEGATION)</span>]</li>
 		</BOUCLE_conseillers>
 	</ul>
