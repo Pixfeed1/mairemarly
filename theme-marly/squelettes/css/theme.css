@@ -1196,7 +1196,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 	width:100%;
 	max-width:760px;
 	height:auto;
-	margin:0 0 22px;
+	margin:26px 0 22px;
 	border-radius:3px;
 }
 
@@ -1664,7 +1664,11 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    Le portrait a droite du texte, comme sur une fiche de presse : le nom et
    la charge se lisent en premier, la photographie accompagne. Sur telephone
    elle repasse au-dessus, faute de largeur pour deux colonnes. */
-.elu-tete{ display:flex; align-items:flex-start; gap:34px; margin:0 0 8px; }
+/* L'ecart avec la rangee de retour et d'outils au-dessus n'est pas un
+   confort : sans lui il valait ZERO, mesure, et les deux boutons ronds
+   venaient se coller au haut du portrait comme s'ils lui appartenaient.
+   La fiche d'un commerce prend la meme marge au meme endroit. */
+.elu-tete{ display:flex; align-items:flex-start; gap:34px; margin:26px 0 8px; }
 .elu-tete-texte{ min-width:0; }
 .elu-portrait{ flex:0 0 auto; width:190px; }
 .elu-cadre{ width:190px; height:230px; display:flex; align-items:center;

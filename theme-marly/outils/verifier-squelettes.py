@@ -850,6 +850,32 @@ for _rep in ('theme-marly', 'plugin-marly'):
                          "d'un autre alphabet qui imite une lettre latine. Indiscernable a "
                          "l'oeil, mais ce n'est pas le meme caractere")
 
+# 43. Un bloc pose juste sous la rangee de retour et d'outils, sans marge
+#     haute. Mesure : sur la fiche d'un elu, l'ecart entre le bas des deux
+#     boutons ronds et le haut du portrait valait ZERO. Les boutons venaient
+#     se coller a l'image comme s'ils lui appartenaient — on croyait a une
+#     barre d'outils de la photographie, alors qu'ils agissent sur la page.
+#
+#     La regle porte sur le CSS : un selecteur qui suit .fil-rangee dans un
+#     gabarit de fiche doit declarer une marge haute non nulle. On la
+#     controle sur les blocs nommes qui ouvrent une fiche.
+_OUVREURS = ('.elu-tete', '.com-bandeau', '.asso-photo-fiche')
+_CSS43 = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.isfile(_CSS43):
+    _src = open(_CSS43, encoding='utf-8').read()
+    for _nom in _OUVREURS:
+        _m = re.search(re.escape(_nom) + r'\{([^}]*)\}', _src)
+        if not _m:
+            continue
+        _marge = re.search(r'margin\s*:\s*([^;]+);', _m.group(1))
+        _haut = _marge.group(1).split()[0].strip() if _marge else '0'
+        if _haut in ('0', '0px'):
+            signaler('squelettes/css/theme.css',
+                     _src[:_m.start()].count(chr(10)) + 1,
+                     f"{_nom} ouvre une fiche sans marge haute : il viendra se coller "
+                     "a la rangee de retour et d'outils qui le precede, et les boutons "
+                     "ronds paraitront appartenir a l'image")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
