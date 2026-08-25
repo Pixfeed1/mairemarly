@@ -215,7 +215,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 	// --- Urbanisme et travaux -----------------------------------------------
 	'titre_urbanisme'      => 'Urbanisme et travaux',
-	'urba_intro'           => 'Un abri de jardin, des fenêtres neuves, une clôture, une extension : la plupart des travaux se déclarent en mairie, même dans un village. Ce qu’il faut déposer dépend d’abord de la surface.',
+	'urba_intro'           => 'Un abri de jardin, des fenêtres neuves, une clôture, une extension : la plupart des travaux se déclarent en mairie avant d’être commencés. Ce qu’il faut déposer dépend d’abord de la surface.',
 	'urba_titre_cas'       => 'Ce que demande votre projet',
 
 	'urba_z1_seuil'        => 'jusqu’à 5 m²',
