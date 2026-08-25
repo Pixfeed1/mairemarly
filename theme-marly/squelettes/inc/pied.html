@@ -1,86 +1,66 @@
 [(#REM)
   inc/pied.html — pied de page commun.
   ---------------------------------------------------------------------------
-  Les coordonnées de la mairie sont des PARAMÈTRES DU SITE, pas du contenu et
-  pas des libellés. Elles sont donc lues en configuration via CONFIG, et non
-  écrites dans ce gabarit : le jour où la mairie change de numéro, personne
-  n'ouvre un fichier.
+  BATI SUR CE QUE FONT LES MAIRIES, et non sur ce qui se fait ailleurs. Les
+  pieds de page de Franconville, de Bidart et de Paris ont ete regardes : tous
+  les trois donnent d'abord des COORDONNEES — adresse, telephone, horaires
+  d'ouverture, un bouton pour ecrire, la lettre d'information — et gardent les
+  mentions obligatoires pour une barre en bas. Aucun ne fait ce que faisait
+  celui-ci : trois colonnes de liens, c'est-a-dire un plan du site deguise.
+  Les horaires ont donc leur colonne a eux, avec son titre : c'est la premiere
+  chose qu'on cherche sur le site d'une commune.
 
-  Chaque valeur porte un repli, pour que le site reste correct tant que la
-  configuration n'est pas renseignée.
+  L'EMBLEME EST CELUI DU HAUT DE PAGE, au trace pres. Ce n'est pas un ajout,
+  c'est un rappel : le jour ou la mairie fournira ses vraies armes, les deux
+  changeront ensemble. Et ce n'est pas un blason — Marly-Gomont n'en a pas
+  fourni, le presenter comme tel serait faux.
 
-  RESTE À FAIRE : le formulaire qui renseigne ces valeurs dans l'espace privé.
-  Tant qu'il n'existe pas, elles se posent à la main dans config/mes_options.php.
+  Les coordonnees sont des PARAMETRES DU SITE, pas du contenu et pas des
+  libelles. Elles sont lues en configuration : le jour ou la mairie change de
+  numero, personne n'ouvre un fichier. Chaque valeur porte un repli, pour que
+  le site reste correct tant que la configuration n'est pas renseignee.
 
-  Le second menu ne duplique pas le premier : il liste les rubriques racines
-  par une boucle, exactement comme l'en-tête.
+  Les liens du bas ne mènent jamais a une page vide : chacun est garde par une
+  boucle qui verifie qu'il y a quelque chose a montrer.
 ]
 <footer class="pied" id="pied">
+
+	[(#REM) Le paysage de l'accueil vient fermer la page comme il l'a ouverte. ]
+	<img class="pied-paysage" src="#CHEMIN{img/paysage.svg}" alt="" aria-hidden="true">
+
 	<div class="large">
 
-		<div class="pied-grille">
+		<div class="pied-embleme">
+			<INCLURE{fond=inc/embleme}>
+			<p class="pied-nom">#NOM_SITE_SPIP</p>
+			<p class="pied-sous"><:marly:pied_sous_titre:></p>
+		</div>
+
+		<div class="pied-quatre">
 
 			<div>
-				<h3>#NOM_SITE_SPIP</h3>
-				<p class="coord">
-					[(#REM) L'adresse est saisie en trois champs distincts dans les
-					        reglages — rue, code postal, commune — pour pouvoir un
-					        jour la reutiliser autrement : une carte, un contact
-					        structure, une fiche etablissement. On la recompose ici. ]
-					<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg>
-					[(#CONFIG{marly/adresse}) ]
-					[(#CONFIG{marly/code_postal}|sinon{'02120'}) ][(#CONFIG{marly/ville}|sinon{'Marly-Gomont'})]<br>
-					[<svg class="ico" aria-hidden="true"><use href="#ri-phone-line"/></svg> <a href="tel:[(#CONFIG{marly/telephone}|sinon{'0323602269'}|replace{' ',''})]">(#CONFIG{marly/telephone}|sinon{'03 23 60 22 69'})</a><br>]
-					[<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <a href="mailto:(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'})">(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'})</a>]
-				</p>
-				[<p class="horaires">(#CONFIG{marly/horaires})</p>]
+				<h3><:marly:pied_la_mairie:></h3>
+				<p>[(#CONFIG{marly/adresse}|sinon{'4 rue de la Poterie'})<br>]
+				[(#CONFIG{marly/code_postal}|sinon{'02120'}) ][(#CONFIG{marly/ville}|sinon{'Marly-Gomont'})]</p>
+				<p>[<a href="tel:[(#CONFIG{marly/telephone}|sinon{'0323602185'}|replace{' ',''})]">(#CONFIG{marly/telephone}|sinon{'03 23 60 21 85'})</a><br>]
+				[<a href="mailto:(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'}|attribut_html)">(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'})</a>]</p>
+				<p><a class="pied-bouton" href="mailto:[(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'}|attribut_html)]">
+					<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:pied_nous_ecrire:></a></p>
 			</div>
 
 			<div>
-				<h3><:marly:le_site:></h3>
-				<ul>
-					<BOUCLE_pied_menu(RUBRIQUES){racine}{par num titre, titre}>
-					<li><a href="#URL_RUBRIQUE">#TITRE</a></li>
-					</BOUCLE_pied_menu>
-					[(#REM) L'annuaire des associations n'est pas une rubrique :
-					        c'est une page a lui. Sans ce lien, il n'etait
-					        atteignable que par son adresse. ]
-					[(#REM) Le conseil municipal, des qu'un elu est saisi. Meme
-					        garde que les autres : un lien du pied de page ne
-					        doit jamais mener a une page vide. ]
-					<B_conseil_pied>
-					<BOUCLE_conseil_pied(ELUS){statut=publie}{0,1}></BOUCLE_conseil_pied>
-					<li><a href="#URL_PAGE{conseil}"><:marly:titre_conseil:></a></li>
-					</B_conseil_pied>
-
-					[(#REM) La carte des batiments de la commune, s'il y en a. ]
-					<B_lieux_pied>
-					<BOUCLE_lieux_pied(LIEUX){0,1}></BOUCLE_lieux_pied>
-					<li><a href="#URL_PAGE{lieux}"><:marly:titre_ou_nous_trouver:></a></li>
-					</B_lieux_pied>
-
-					<B_assos_pied>
-					<BOUCLE_assos_pied(ASSOCIATIONS){0,1}></BOUCLE_assos_pied>
-					<li><a href="#URL_PAGE{associations}"><:marly:titre_vie_associative:></a></li>
-					</B_assos_pied>
-
-					[(#REM) L'annuaire des commerces, s'il est rempli. Meme
-					        garde que les deux precedents : un lien du pied de
-					        page ne doit jamais mener a une page vide. ]
-					<B_commerces_pied>
-					<BOUCLE_commerces_pied(COMMERCES){0,1}></BOUCLE_commerces_pied>
-					<li><a href="#URL_PAGE{commerces}"><:marly:titre_commerces:></a></li>
-					</B_commerces_pied>
-				</ul>
+				<h3><:marly:pied_horaires:></h3>
+				[<p>(#CONFIG{marly/horaires}|propre)</p>]
 			</div>
 
+			[(#REM) Ce que l'ancien pied faisait de mieux, et qu'il ne faut pas
+			        perdre : les demarches les plus demandees, en clair, sur
+			        toutes les pages du site. Trois suffisent ici, la liste
+			        complete est juste dessous. ]
 			<div>
 				<h3><:marly:demarches:></h3>
-				[(#REM) Les six premieres fiches, prises dans la table des
-				        demarches. Elles venaient d'articles portant un mot-cle,
-				        du temps ou les demarches etaient des articles. ]
 				<ul>
-					<BOUCLE_demarches(DEMARCHES){par famille, rang, titre}{0,6}>
+					<BOUCLE_demarches(DEMARCHES){par famille, rang, titre}{0,3}>
 					<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">#TITRE</a></li>
 					</BOUCLE_demarches>
 					<li><a href="#URL_PAGE{demarches}"><:marly:toutes_les_demarches:></a></li>
@@ -94,12 +74,67 @@
 				</ul>
 			</div>
 
+			<div>
+				<h3><:marly:pied_rester_informe:></h3>
+				<p><:marly:pied_lettre_texte:></p>
+				<p><a class="pied-bouton" href="#URL_PAGE{newsletter}">
+					<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:pied_sinscrire:></a></p>
+				<p class="pied-reseaux">
+					[<a href="(#CONFIG{marly/facebook}|attribut_html)" rel="noopener">
+						<svg class="ico" aria-hidden="true"><use href="#ri-facebook-circle-fill"/></svg>
+						<span class="sr">Facebook</span></a>]
+					[<a href="(#CONFIG{marly/instagram}|attribut_html)" rel="noopener">
+						<svg class="ico" aria-hidden="true"><use href="#ri-instagram-line"/></svg>
+						<span class="sr">Instagram</span></a>]
+					[<a href="(#CONFIG{marly/youtube}|attribut_html)" rel="noopener">
+						<svg class="ico" aria-hidden="true"><use href="#ri-youtube-fill"/></svg>
+						<span class="sr">YouTube</span></a>]
+				</p>
+			</div>
+
 		</div>
+
+		[(#REM) Une seule ligne pour les pages de service. Chacune n'apparaît
+		        que si elle a quelque chose a montrer. ]
+		<p class="pied-raccourcis">
+			<B_conseil_pied>
+			<BOUCLE_conseil_pied(ELUS){statut=publie}{0,1}></BOUCLE_conseil_pied>
+			<a href="#URL_PAGE{conseil}"><:marly:titre_conseil:></a>
+			</B_conseil_pied>
+
+			<BOUCLE_urba_pied(RUBRIQUES){titre==^Urbanisme}{0,1}>
+			<a href="#URL_RUBRIQUE">#TITRE</a>
+			</BOUCLE_urba_pied>
+
+			<B_commerces_pied>
+			<BOUCLE_commerces_pied(COMMERCES){0,1}></BOUCLE_commerces_pied>
+			<a href="#URL_PAGE{commerces}"><:marly:titre_commerces:></a>
+			</B_commerces_pied>
+
+			<B_assos_pied>
+			<BOUCLE_assos_pied(ASSOCIATIONS){0,1}></BOUCLE_assos_pied>
+			<a href="#URL_PAGE{associations}"><:marly:titre_vie_associative:></a>
+			</B_assos_pied>
+
+			<B_salles_pied>
+			<BOUCLE_salles_pied(SALLES){0,1}></BOUCLE_salles_pied>
+			<a href="#URL_PAGE{reservation}"><:marly:reserver_salle:></a>
+			</B_salles_pied>
+
+			<B_lieux_pied>
+			<BOUCLE_lieux_pied(LIEUX){0,1}></BOUCLE_lieux_pied>
+			<a href="#URL_PAGE{lieux}"><:marly:titre_ou_nous_trouver:></a>
+			</B_lieux_pied>
+		</p>
 
 		<div class="pied-bas">
 			<a href="#URL_PAGE{mentions-legales}"><:marly:mentions_legales:></a>
 			<a href="#URL_PAGE{confidentialite}"><:marly:confidentialite:></a>
-			<a href="#URL_PAGE{accessibilite}"><:marly:accessibilite:></a>
+			[(#REM) Le niveau de conformite doit figurer sur chaque page. Il
+			        n'est pas ecrit en dur : tant qu'aucun audit n'a ete fait,
+			        annoncer un niveau serait une declaration fausse. Le champ
+			        est dans les reglages, et le lien reste correct sans lui. ]
+			<a href="#URL_PAGE{accessibilite}"><:marly:accessibilite:>[ : (#CONFIG{marly/accessibilite_niveau})]</a>
 			<a href="#URL_PAGE{plan}"><:marly:plan_du_site:></a>
 		</div>
 

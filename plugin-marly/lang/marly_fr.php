@@ -758,4 +758,11 @@ resterez abonné.
 	'urbanisme_clotures'   => 'Les clôtures',
 	'urbanisme_clotures_aide' => 'Une déclaration préalable pour une clôture n’est obligatoire que si le conseil municipal l’a décidé par délibération. Écrivez ici ce que le conseil a voté, ou que rien n’a été voté.',
 
+
+	// --- Accessibilite (reglages) --------------------------------------------
+	'legende_accessibilite' => 'Accessibilité',
+	'accessibilite_aide'   => 'La loi impose d’afficher le niveau de conformité du site sur chaque page. Tant que ce champ est vide, le pied de page affiche simplement « Accessibilité » : mieux vaut ne rien annoncer que d’annoncer un niveau qui n’a pas été mesuré.',
+	'accessibilite_niveau' => 'Niveau de conformité',
+	'accessibilite_niveau_aide' => 'Trois valeurs possibles, et elles seules : « non conforme », « partiellement conforme », « totalement conforme ». Elles se décident après un audit, pas avant. Le texte s’affiche à la suite du mot Accessibilité, en bas de chaque page.',
+
 );

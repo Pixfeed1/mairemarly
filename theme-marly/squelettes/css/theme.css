@@ -71,7 +71,6 @@ a:focus-visible,button:focus-visible,input:focus-visible{ outline:3px solid var(
             stroke-linecap:round; stroke-linejoin:round; }
 
 .pilule .ico{ width:16px; height:16px; }
-.pied .coord .ico{ width:17px; height:17px; margin-right:4px; color:var(--accent); }
 .menu-mobile .fermer .ico, .panneau-recherche .fermer .ico{ width:22px; height:22px; }
 
 /* ---- photos : dégradé de secours si le fichier manque ------------------- */
@@ -522,16 +521,52 @@ section{ padding-block:70px; position:relative; }
 .lettre button{ border:0; background:var(--accent); color:#fff; border-radius:3px; padding:13px 24px; font-weight:700; cursor:pointer; font-family:var(--texte); }
 
 /* ---- PIED --------------------------------------------------------------- */
-.pied{ background:var(--creme); border-top:3px solid var(--accent); padding-block:56px 26px; }
-.pied-grille{ display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:48px; }
-.pied h3{ font-family:var(--titre); font-weight:800; font-size:20px; margin-bottom:14px; }
-.pied ul{ list-style:none; margin:0; padding:0; }
-.pied li{ margin-bottom:9px; font-size:15px; }
-.pied .coord{ font-size:15px; line-height:1.9; }
-.pied .coord i{ color:var(--accent); width:20px; }
-.pied-bas{ border-top:1px solid var(--trait); margin-top:42px; padding-top:20px; display:flex; gap:22px; flex-wrap:wrap; font-size:13px; color:var(--encre-doux); }
-.pied-bas a{ text-decoration:none; }
-.pied-bas a:hover{ text-decoration:underline; }
+/* ---- PIED DE PAGE ------------------------------------------------------- */
+/* Batî sur ce que font les mairies : des coordonnees d'abord, pas un plan du
+   site. Les horaires ont leur colonne, avec son titre — c'est la premiere
+   chose qu'on cherche sur le site d'une commune. Le filet dore sous chaque
+   titre est le trait cyan de Franconville, dans notre couleur. */
+.pied{ position:relative; overflow:hidden; border-top:0; }
+.pied{ background:var(--creme); color:var(--encre); padding-bottom:20px; text-align:center; }
+.pied-paysage{ display:block; width:100%; height:112px; object-fit:cover; object-position:bottom; }
+
+.pied-embleme{ padding-top:32px; }
+.pied-embleme .sceau{ color:var(--accent); }
+.pied-nom{ font-family:var(--serif); font-size:31px; color:var(--accent); margin:8px 0 0; line-height:1.1; }
+.pied-sous{ font-size:12.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--encre-doux); margin:5px 0 0; }
+
+.pied-quatre{ display:grid; grid-template-columns:repeat(4,1fr); gap:34px; margin:42px 0 0; }
+.pied-quatre h3{ font-family:var(--titre); font-size:13px; font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); margin:0 0 4px; }
+.pied-quatre h3::after{ content:""; display:block; width:34px; height:2px; background:var(--jaune);
+  margin:11px auto 16px; }
+.pied-quatre p{ margin:0 0 12px; font-size:15px; line-height:1.75; }
+.pied-quatre ul{ list-style:none; margin:0; padding:0; }
+.pied-quatre li{ margin:0 0 9px; font-size:15px; line-height:1.5; }
+.pied-quatre a{ color:var(--encre); }
+.pied-quatre a:hover{ color:var(--accent); }
+.pied-note{ font-size:13.5px; color:var(--encre-doux); }
+.pied-bouton{ display:inline-flex; align-items:center; gap:8px; margin-top:4px;
+  border:1px solid var(--accent); color:var(--accent); border-radius:22px; padding:9px 20px;
+  font-size:13.5px; font-weight:600; letter-spacing:.04em; text-decoration:none; }
+.pied-bouton:hover{ background:var(--accent); color:#fff; }
+.pied-bouton .ico{ width:15px; height:15px; }
+.pied-reseaux{ display:flex; justify-content:center; gap:14px; margin-top:6px; }
+.pied-reseaux a{ color:var(--encre-doux); }
+.pied-reseaux .ico{ width:19px; height:19px; }
+
+.pied-raccourcis{ margin:44px 0 0; padding-top:22px; border-top:1px solid var(--trait);
+  display:flex; justify-content:center; flex-wrap:wrap; gap:0 24px; font-size:14px; }
+.pied-raccourcis a{ color:var(--encre); text-decoration:none; padding:4px 0; }
+.pied-raccourcis a:hover{ color:var(--accent); text-decoration:underline; }
+
+.pied-bas{ margin-top:14px; padding-top:16px; border-top:1px solid var(--trait);
+  display:flex; justify-content:center; flex-wrap:wrap; gap:22px; font-size:12.5px; }
+.pied-bas a{ color:var(--encre-doux); text-decoration:none; }
+.pied-bas a:hover{ color:var(--accent); text-decoration:underline; }
+@media(max-width:900px){ .pied-quatre{ grid-template-columns:repeat(2,1fr); gap:30px; } }
+@media(max-width:560px){ .pied-quatre{ grid-template-columns:1fr; } }
 
 /* ---- responsive --------------------------------------------------------- */
 @media (max-width:1080px){
@@ -539,7 +574,7 @@ section{ padding-block:70px; position:relative; }
   .actu-vedette .ph{ width:100%; }
   .actu-vedette .txt{ margin-left:0; margin-top:-60px; max-width:none; margin-inline:20px; }
   .evt-grille{ grid-template-columns:1fr; gap:64px; }
-  .conseil-grille,.lire-grille,.pied-grille{ grid-template-columns:1fr; gap:34px; }
+  .conseil-grille,.lire-grille{ grid-template-columns:1fr; gap:34px; }
   .assos{ grid-template-columns:1fr 1fr; }
   .gravure{ display:none; }
 }

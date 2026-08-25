@@ -39,6 +39,10 @@ function marly_champs_texte() {
 		   faut un. Vides, la page publique n'affiche pas le bloc — mieux vaut
 		   ne rien dire que d'envoyer les gens frapper à la mauvaise porte. */
 		'urbanisme_document', 'urbanisme_decide', 'urbanisme_clotures',
+		/* Le niveau de conformité affiché en pied de page. Vide tant qu'aucun
+		   audit n'a eu lieu : annoncer un niveau qu'on n'a pas mesuré est une
+		   déclaration fausse, et c'est une déclaration légale. */
+		'accessibilite_niveau',
 	);
 }
 

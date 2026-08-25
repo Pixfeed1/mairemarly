@@ -152,6 +152,18 @@
 			</ul>
 		</fieldset>
 
+		<fieldset>
+			<legend><:marly:legende_accessibilite:></legend>
+			<p class="explication"><:marly:accessibilite_aide:></p>
+			<ul>
+				<li class="marly-champ marly-accessibilite_niveau">
+					<label for="accessibilite_niveau"><:marly:accessibilite_niveau:></label>
+					<input type="text" class="text" name="accessibilite_niveau" id="accessibilite_niveau" value="[(#ENV{accessibilite_niveau}|attribut_html)]" placeholder="partiellement conforme">
+					<small><:marly:accessibilite_niveau_aide:></small>
+				</li>
+			</ul>
+		</fieldset>
+
 		<p class="boutons">
 			<input type="submit" class="submit" value="<:marly:enregistrer:>">
 		</p>

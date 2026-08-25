@@ -276,4 +276,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'urba_lien_formulaires' => 'Les formulaires à remplir',
 	'urba_lien_ecrire'     => 'Écrire à la mairie',
 
+	// --- Pied de page --------------------------------------------------------
+	'pied_sous_titre'      => 'Commune de l’Aisne · Thiérache',
+	'pied_la_mairie'       => 'La mairie',
+	'pied_horaires'        => 'Horaires d’ouverture',
+	'pied_nous_ecrire'     => 'Nous écrire',
+	'pied_rester_informe'  => 'Rester informé',
+	'pied_lettre_texte'    => 'Les nouvelles de la commune dans votre boîte, une fois par mois.',
+	'pied_sinscrire'       => 'S’inscrire',
+
 );
