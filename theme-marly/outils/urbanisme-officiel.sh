@@ -6,8 +6,8 @@
 # Trois reponses possibles, et elles ne se devinent pas :
 #   - un PLU ou un PLUi, et c'est le maire qui signe les autorisations ;
 #   - une carte communale, et c'est le maire aussi si le conseil l'a decide ;
-#   - aucun document, donc le reglement national d'urbanisme (RNU), et la
-#     c'est l'Etat qui decide, le maire ne donnant qu'un avis.
+#   - aucun document, donc le reglement national d'urbanisme (RNU), et la le
+#     maire signe AU NOM DE L'ETAT, apres avis conforme du prefet.
 #
 # Les annuaires en ligne recopient cette information et se trompent : plusieurs
 # communes d'une meme intercommunalite peuvent etre couvertes par un PLUi quand
@@ -45,8 +45,11 @@ rnu=$(echo "$reponse" | grep -o '"is_rnu"[[:space:]]*:[[:space:]]*[a-z]*' | head
 
 if [ "$rnu" = "true" ]; then
 	echo "Aucun document local : la commune releve du reglement national"
-	echo "d'urbanisme. Les autorisations sont delivrees au nom de l'Etat, le"
-	echo "maire donnant son avis, et l'instruction revient a la DDT de l'Aisne."
+	echo "d'urbanisme. Le maire delivre les autorisations AU NOM DE L'ETAT et"
+	echo "non au nom de la commune, apres avis conforme du prefet (L422-1 et"
+	echo "L422-5 du code de l'urbanisme). L'instruction est assuree par les"
+	echo "services de l'Etat. Le seuil de la declaration prealable reste a"
+	echo "20 m2 : le relevement a 40 m2 suppose une zone urbaine d'un PLU."
 elif [ -n "$partition" ]; then
 	echo "Document en vigueur : $partition"
 	echo "La commune est couverte par un document local. Le maire delivre les"
