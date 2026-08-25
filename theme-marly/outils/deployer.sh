@@ -36,6 +36,26 @@ if [ -z "$SITE" ] || [ ! -f "$SITE/ecrire/inc_version.php" ]; then
 	exit 1
 fi
 
+# Le depot est-il ecrivable par l'utilisateur courant ?
+# ---------------------------------------------------------------------------
+# Un deploiement lance en root laisse des fichiers lui appartenant dans .git/.
+# Le pull suivant, lance sous l'utilisateur du site, echoue alors sur
+# << cannot open '.git/FETCH_HEAD': Permission denied >> — et comme le pull est
+# une commande SEPAREE de ce script, son echec n'empeche rien : on recopie
+# fidelement un depot reste a l'ancien commit, et le site ne bouge pas.
+#
+# On l'a vecu : trois deploiements de suite ont annonce << Deploye >> en
+# copiant du vieux code. Le script le dit desormais avant de commencer.
+if [ -d "$DEPOT/.git" ] && [ ! -w "$DEPOT/.git" ]; then
+	echo "  ================================================================"
+	echo "  LE DEPOT N'EST PAS ECRIVABLE par $(id -un)."
+	echo "  git pull echouera, et ce script recopiera du code perime sans"
+	echo "  que rien ne le signale. A rendre a son proprietaire, en root :"
+	echo "      chown -R $(stat -c %U "$DEPOT"):$(stat -c %G "$DEPOT") $DEPOT"
+	echo "  ================================================================"
+	echo
+fi
+
 echo "Depot : $DEPOT"
 echo "Site  : $SITE"
 echo
@@ -92,6 +112,13 @@ fi
 
 echo
 echo "Deploye. Version du plugin : $APRES"
+
+# Quel commit vient d'etre copie. Sans cette ligne, rien a l'ecran ne
+# distingue un deploiement a jour d'un deploiement qui recopie du vieux code :
+# les deux affichent exactement le meme compte rendu.
+if [ -d "$DEPOT/.git" ] && command -v git >/dev/null 2>&1; then
+	echo "Code deploye     : $(git -C "$DEPOT" log -1 --format='%h du %ad — %s' --date=format:'%d/%m %H:%M' 2>/dev/null)"
+fi
 
 # SPIP verifie l'existence des tables A LA COMPILATION du squelette, pas a
 # l'execution. Une version qui ajoute une table casse donc TOUT le site
