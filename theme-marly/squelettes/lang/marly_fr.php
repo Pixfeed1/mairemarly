@@ -145,6 +145,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'mentions_legales'     => 'Mentions légales',
 	'confidentialite'      => 'Politique de confidentialité',
 	'accessibilite'        => 'Accessibilité',
+	'credits'              => 'Crédits',
 	'plan_du_site'         => 'Plan du site',
 
 	// --- Articles et rubriques ---------------------------------------------
@@ -208,7 +209,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'plan_lettre_quoi'     => 'recevoir les actualités de la commune par courriel',
 	'plan_citoyen_quoi'    => 'suivre ses demandes et ses réservations',
 	'plan_recherche_quoi'  => 'retrouver un article, une démarche, une association',
-	'plan_mentions_quoi'   => 'éditeur, hébergeur et crédits',
+	'plan_mentions_quoi'   => 'éditeur, hébergeur et directeur de la publication',
+	'plan_credits_quoi'    => 'polices, photographies et logiciels utilisés par le site',
 	'plan_confidentialite_quoi' => 'ce que le site enregistre, et vos droits',
 	'plan_accessibilite_quoi'   => 'niveau de conformité et contact',
 	'plan_ici_quoi'        => 'la page que vous lisez',

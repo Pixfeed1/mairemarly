@@ -363,6 +363,31 @@ Comme la bannière d'accueil : publiez un article, mettez-lui le mot-clé
 dans le descriptif de l'article. Sans article, la page reprend la bannière
 d'accueil ; sans elle, le paysage dessiné. La page n'est jamais nue.
 
+## Les quatre pages légales
+
+Mentions légales, politique de confidentialité, déclaration d'accessibilité,
+crédits. Toutes les quatre marchent pareil : **un article portant le mot-clé
+du même nom.**
+
+| La page | Le mot-clé de l'article | Ce qu'on y écrit |
+|---|---|---|
+| Mentions légales | `Mentions légales` | éditeur, directeur de la publication, hébergeur |
+| Politique de confidentialité | `Confidentialité` | ce que le site enregistre, et les droits des visiteurs |
+| Déclaration d'accessibilité | `Accessibilité` | le niveau de conformité et comment signaler un obstacle |
+| Crédits | `Crédits` | polices, photographies, logiciels, prestataires |
+
+Tant que l'article n'existe pas, la page dit franchement qu'elle est en cours
+de rédaction. **C'est voulu et il ne faut pas y toucher** : une mention légale
+approximative est pire qu'absente, elle a l'air d'engager la commune sur des
+informations fausses. Ces textes-là engagent la mairie, ils ne peuvent pas
+être posés par un prestataire à sa place.
+
+Pour les crédits, voici ce qu'il y a à déclarer aujourd'hui : les polices
+Alegreya, Alegreya Sans, Open Sans et Caveat, sous licence SIL Open Font ;
+les pictogrammes Remix Icon, sous licence Apache 2.0 ; le moteur SPIP, sous
+licence GNU GPL. Les photographies restent à créditer au fur et à mesure que
+la mairie en dépose.
+
 ## La photographie d'une rubrique
 
 Chaque rubrique s'ouvre désormais sur un bandeau, comme les pages du conseil
