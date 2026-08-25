@@ -363,6 +363,27 @@ Comme la bannière d'accueil : publiez un article, mettez-lui le mot-clé
 dans le descriptif de l'article. Sans article, la page reprend la bannière
 d'accueil ; sans elle, le paysage dessiné. La page n'est jamais nue.
 
+## La photographie d'une rubrique
+
+Chaque rubrique s'ouvre désormais sur un bandeau, comme les pages du conseil
+municipal ou de l'urbanisme. L'image de ce bandeau, **c'est le logo de la
+rubrique** : `Édition ▸ Rubriques`, ouvrez-en une, et déposez une image dans
+« Logo ».
+
+| Rubrique | Ce qu'on y met |
+|---|---|
+| Comptes rendus | la façade de la mairie |
+| Travaux et projets | un chantier en cours |
+| Actualités | la fête du village, la brocante |
+
+Sans logo, le bandeau affiche le paysage dessiné du site. La page n'est jamais
+nue, mais elle n'est pas non plus identique partout : une rubrique avec sa
+photo se reconnaît d'un coup d'œil.
+
+Prenez des images **larges**, au moins 1600 pixels de côté : le bandeau occupe
+toute la largeur de l'écran et n'affiche qu'une bande horizontale. Une photo
+verticale y sera coupée en haut et en bas.
+
 ## Urbanisme et travaux
 
 La page répond à la question qui arrive vraiment au guichet : *« je veux poser

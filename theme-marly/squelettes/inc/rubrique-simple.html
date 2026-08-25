@@ -1,28 +1,46 @@
 [(#REM)
-  Une rubrique ordinaire : son texte d'introduction, ses sous-rubriques, puis
-  ses articles du plus recent au plus ancien.
-  Valide maquette en main : apercu-rubrique-sobre.
+  Une rubrique ordinaire : son bandeau, son introduction, ses sous-rubriques,
+  puis ses articles du plus recent au plus ancien.
+
+  LE BANDEAU EST VENU APRES COUP, et il repare la derniere incoherence du
+  site. Les pages baties une par une — le conseil, l'urbanisme, l'annuaire des
+  commerces — avaient toutes leur bandeau et leur titre dans un carton ; les
+  rubriques, non. Un visiteur qui passait de l'une a l'autre le sentait sans
+  savoir le nommer.
+
+  CHAQUE RUBRIQUE PORTE SA PROPRE PHOTOGRAPHIE : c'est son logo, depose dans
+  l'espace prive. Les comptes rendus prennent la mairie, les travaux un
+  chantier, les actualites la fete du village. Le paysage dessine ne sert que
+  si aucune image n'a ete deposee — le site n'est jamais nu, mais il n'est pas
+  identique partout non plus.
 ]
 <BOUCLE_rub(RUBRIQUES){id_rubrique}>
-<div class="page-simple fiche-demarche">
 
-	<nav class="fil-ariane" aria-label="Fil d’Ariane">
-		<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
-		<BOUCLE_chemin(HIERARCHIE){tout}>
-		<span aria-hidden="true">›</span>
-		<a href="#URL_RUBRIQUE">#TITRE</a>
-		</BOUCLE_chemin>
-		<span aria-hidden="true">›</span>
-		<span aria-current="page">#TITRE</span>
-	</nav>
+<div class="bandeau-illustre">
+	[(#REM) L'un OU l'autre, jamais les deux : les deux sont poses en absolu,
+	        et le dernier ecrit couvrirait le premier. ]
+	[<div class="bandeau-image">(#LOGO_RUBRIQUE||image_reduire{1920,0})</div>]
+	[(#LOGO_RUBRIQUE|non)
+	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
+	     width="1440" height="260" alt="" aria-hidden="true">
+	]
 
-	[(#REM) Le nom de la rubrique mere en sur-titre, comme sur un article.
-	        Une rubrique de premier niveau n'a pas de mere : rien ne s'affiche. ]
-	<BOUCLE_mere(RUBRIQUES){id_rubrique=#ID_PARENT}>
-	<p class="article-rubrique">#TITRE</p>
-	</BOUCLE_mere>
+	<div class="bandeau-carton">
+		<div>
+			<nav class="fil-ariane" aria-label="Fil d’Ariane">
+				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+				<BOUCLE_chemin(HIERARCHIE){tout}>
+				<span aria-hidden="true">›</span>
+				<a href="#URL_RUBRIQUE">#TITRE</a>
+				</BOUCLE_chemin>
+			</nav>
+			<h1>#TITRE</h1>
+		</div>
+	</div>
+</div>
 
-	<h1>#TITRE</h1>
+<div class="page-simple page-sous-carton">
+
 	[<div class="chapo">(#TEXTE)</div>]
 
 	<INCLURE{fond=inc/rubrique-articles}{id_rubrique=#ID_RUBRIQUE}{env}>
