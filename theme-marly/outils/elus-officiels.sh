@@ -22,11 +22,25 @@ echo
 
 # L'adresse du fichier change a chaque mise a jour du repertoire. On ne la met
 # donc pas en dur : on demande a data.gouv.fr celle du jour.
-url=$(curl -sSL "$API" | grep -o 'https://[^"]*elus-conseillers-municipaux-cm\.csv' | head -1)
+#
+# ON NE DEDUIT PAS L'ADRESSE DU TITRE. Mesure faite le 25 aout 2026 : la fiche
+# du jeu de donnees annonce un fichier intitule
+#   elus-conseillers-municipaux-cm.csv        (pluriel des deux cotes)
+# servi a l'adresse
+#   .../elus-conseiller-municipal-cm.csv      (singulier des deux cotes)
+# Chercher le titre dans l'adresse ne trouvait donc rien, et le script
+# renvoyait << fichier introuvable >> sur un jeu de donnees parfaitement en
+# ligne. Ce qui distingue vraiment les cinq fichiers, c'est leur suffixe : cm
+# pour les conseillers municipaux, ca pour les conseillers d'arrondissement,
+# cd pour les departementaux, cr pour les regionaux, epci pour les
+# communautaires. On s'appuie sur lui.
+url=$(curl -sSL "$API" | grep -o 'https://[^"]*-cm\.csv' | head -1)
 if [ -z "$url" ]; then
-	echo "Le fichier des conseillers municipaux est introuvable dans la fiche du jeu"
-	echo "de donnees. Ouvrir $API"
-	echo "et relever l'adresse du fichier elus-conseillers-municipaux-cm.csv."
+	echo "Aucun fichier en -cm.csv dans la fiche du jeu de donnees. Les fichiers"
+	echo "publies aujourd'hui sont :"
+	curl -sSL "$API" | grep -o 'https://[^"]*\.csv' | sed 's/^/  /'
+	echo
+	echo "Reprendre celui des conseillers municipaux et l'indiquer a la main."
 	exit 1
 fi
 echo "Fichier : $url"
