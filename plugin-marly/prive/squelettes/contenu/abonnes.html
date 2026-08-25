@@ -29,7 +29,7 @@
 			<td><a href="mailto:#COURRIEL">#COURRIEL</a></td>
 			<td>[(#PRENOM)] [(#NOM)]</td>
 			<td>[(#CODE_POSTAL)] [(#VILLE)]</td>
-			<td>[(#DATE_CONFIRMATION|affdate{'j F Y'})]</td>
+			<td>[(#DATE_CONFIRMATION|affdate)]</td>
 		</tr>
 	</BOUCLE_confirmes>
 	</tbody>
@@ -56,7 +56,7 @@
 	<BOUCLE_attente(ABONNES){statut=attente}{par date}{inverse}{0,50}>
 		<tr>
 			<td>#COURRIEL</td>
-			<td>[(#DATE|affdate{'j F Y'})]</td>
+			<td>[(#DATE|affdate)]</td>
 		</tr>
 	</BOUCLE_attente>
 	</tbody>

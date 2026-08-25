@@ -74,7 +74,7 @@
 
 				[(#ENV{jour}|oui)
 				<p class="cal-filtre-actif">
-					<:marly:filtre_du_jour:> <strong>[(#ENV{jour}|affdate{'j F Y'})]</strong>
+					<:marly:filtre_du_jour:> <strong>[(#ENV{jour}|affdate)]</strong>
 					<a href="#URL_PAGE{reservation}"><:marly:retirer_le_filtre:></a>
 				</p>
 				]
@@ -98,7 +98,7 @@
 				<a class="carte" href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
 					[<span class="carte-photo">(#LOGO_MANIFESTATION||image_reduire{560,315})</span>]
 					<span class="carte-corps">
-						<span class="carte-quand">[(#DATE_DEBUT|affdate{'l j F'})] · [(#DATE_DEBUT|affdate{'H\hi'})]</span>
+						<span class="carte-quand">[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate_jourcourt)] · [(#DATE_DEBUT|affdate{'H\hi'})]</span>
 						<span class="carte-titre">#TITRE</span>
 						[<span class="carte-lieu">(#LIEU)</span>]
 						[<span class="carte-places">(#ID_MANIFESTATION|marly_places_restantes) <:marly:places_libres:></span>]

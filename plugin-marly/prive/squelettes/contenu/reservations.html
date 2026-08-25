@@ -36,7 +36,7 @@
 	<BOUCLE_attente(RESERVATIONS){statut=demande}{id_salle>0}{par date_debut}{pagination 20}>
 		<tr>
 			<td>
-				<strong>[(#DATE_DEBUT|affdate{'l j F Y'})]</strong><br>
+				<strong>[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate)]</strong><br>
 				[(#DATE_DEBUT|heures):(#DATE_DEBUT|minutes)] – [(#DATE_FIN|heures):(#DATE_FIN|minutes)]
 			</td>
 			<td>
@@ -93,7 +93,7 @@
 	<BOUCLE_prises(RESERVATIONS){statut=acceptee}{id_salle>0}{date_debut>#DATE}{par date_debut}{pagination 20}>
 		<tr>
 			<td>
-				<strong>[(#DATE_DEBUT|affdate{'l j F Y'})]</strong><br>
+				<strong>[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate)]</strong><br>
 				[(#DATE_DEBUT|heures):(#DATE_DEBUT|minutes)] – [(#DATE_FIN|heures):(#DATE_FIN|minutes)]
 			</td>
 			<td><BOUCLE_s2(SALLES){id_salle}>#TITRE</BOUCLE_s2></td>

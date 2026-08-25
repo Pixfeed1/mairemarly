@@ -29,7 +29,7 @@
 				<a href="[(#URL_ECRIRE{manifestation,id_manifestation=#ID_MANIFESTATION})]">#TITRE</a>
 				[<br><small>(#LIEU)</small>]
 			</td>
-			<td>[(#DATE_DEBUT|affdate{'l j F Y à H\hi'})]</td>
+			<td>[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate)][ à (#DATE_DEBUT|affdate{'H\hi'})]</td>
 			<td>
 				[(#PLACES|=={0}|oui)<:marly:sans_limite:>][(#PLACES|=={0}|non)#PLACES]
 			</td>

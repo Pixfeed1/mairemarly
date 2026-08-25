@@ -133,7 +133,7 @@
 		<BOUCLE_prochaine(MANIFESTATIONS){statut=publie}{titre==[Cc]onseil municipal}
 		                                 {date_debut>#DATE}{par date_debut}{0,1}>
 		<p class="quand"><:marly:conseil_prochaine:>
-			[(#DATE_DEBUT|affdate{'l j F Y'})][, (#DATE_DEBUT|heures)h(#DATE_DEBUT|minutes)][, (#LIEU)].</p>
+			[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate)][, (#DATE_DEBUT|heures)h(#DATE_DEBUT|minutes)][, (#LIEU)].</p>
 		</BOUCLE_prochaine>
 		</B_prochaine>
 	</div>

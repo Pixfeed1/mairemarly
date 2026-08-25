@@ -75,7 +75,7 @@
 <BOUCLE_faite(LETTRES){id_lettre}{statut=envoyee}>
 <div class="marly-envoi">
 	<p><strong>#NB_ENVOYES</strong> <:marly:envois_effectues:></p>
-	<p><:marly:envoi_termine:> [(#DATE_ENVOI|affdate{'j F Y à H\hi'})]</p>
+	<p><:marly:envoi_termine:> [(#DATE_ENVOI|affdate)][ à (#DATE_ENVOI|affdate{'H\hi'})]</p>
 </div>
 </BOUCLE_faite>
 

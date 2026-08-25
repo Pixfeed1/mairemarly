@@ -876,6 +876,59 @@ if os.path.isfile(_CSS43):
                      "a la rangee de retour et d'outils qui le precede, et les boutons "
                      "ronds paraitront appartenir a l'image")
 
+# 44. Un format de date passe a affdate. SPIP traduit les mois et les jours
+#     lui-meme, mais seulement quand on le laisse faire : des qu'on lui donne
+#     un format, les lettres partent chez la fonction date() de PHP, qui
+#     repond dans la langue du serveur. Mesure : la fiche du maire affichait
+#     << Fiche mise a jour le 24 August 2026 >> sur un site de commune
+#     francaise, parce que le squelette demandait affdate{'j F Y'}.
+#
+#     Les lettres en cause sont celles qui produisent un MOT et non un
+#     nombre : D et l (le jour de la semaine), F et M (le mois), S (le
+#     suffixe ordinal, anglais par construction). Les formats purement
+#     chiffres, comme 'H\\hi' pour une heure, ne risquent rien.
+#
+#     A la place : |affdate tout nu rend << 24 aout 2026 >>, |affdate_jourcourt
+#     rend << 24 aout >>, |nom_jour rend << lundi >>, |nom_mois rend << aout >>.
+_LETTRES_TRADUITES = {'D': 'le jour de la semaine abrege',
+                      'l': 'le jour de la semaine',
+                      'F': 'le nom du mois',
+                      'M': 'le nom du mois abrege',
+                      'S': "le suffixe ordinal (st, nd, th : anglais par construction)"}
+for _rep in ('theme-marly', 'plugin-marly'):
+    _base = os.path.join(RACINE, '..', _rep)
+    if not os.path.isdir(_base):
+        continue
+    for _racine, _, _fichiers in os.walk(_base):
+        for _nom in _fichiers:
+            if not _nom.endswith('.html'):
+                continue
+            _f = os.path.join(_racine, _nom)
+            try:
+                _src = open(_f, encoding='utf-8').read()
+            except (UnicodeDecodeError, OSError):
+                continue
+            for _c in re.finditer(r"affdate\{'([^']*)'\}", _src):
+                _format = _c.group(1)
+                _i = 0
+                _vues = []
+                while _i < len(_format):
+                    if _format[_i] == chr(92):      # une lettre echappee est litterale
+                        _i += 2
+                        continue
+                    if _format[_i] in _LETTRES_TRADUITES and _format[_i] not in _vues:
+                        _vues.append(_format[_i])
+                    _i += 1
+                if not _vues:
+                    continue
+                _quoi = ', '.join("%s (%s)" % (_l, _LETTRES_TRADUITES[_l]) for _l in _vues)
+                signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                         _src[:_c.start()].count(chr(10)) + 1,
+                         "affdate{'%s'} : %s. SPIP ne traduit pas un format, il le "
+                         "passe a date() de PHP, qui repond en anglais. Utiliser "
+                         "|affdate seul, |affdate_jourcourt, |nom_jour ou |nom_mois"
+                         % (_format, _quoi))
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

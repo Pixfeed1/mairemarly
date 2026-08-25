@@ -36,7 +36,7 @@
 				<ul>
 					<BOUCLE_prises(RESERVATIONS){id_salle}{statut=acceptee}{date_debut>#DATE}{par date_debut}{0,25}>
 					<li>
-						<strong>[(#DATE_DEBUT|affdate{'l j F Y'})]</strong>
+						<strong>[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate)]</strong>
 						<span>[(#DATE_DEBUT|affdate{'H\hi'})] – [(#DATE_FIN|affdate{'H\hi'})]</span>
 					</li>
 					</BOUCLE_prises>

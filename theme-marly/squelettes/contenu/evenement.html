@@ -16,7 +16,7 @@
 		<div class="fiche-gauche">
 			[<div class="fiche-photo">(#LOGO_MANIFESTATION||image_reduire{960,540})</div>]
 
-			<p class="fiche-quand">[(#DATE_DEBUT|affdate{'l j F Y'})] · [(#DATE_DEBUT|affdate{'H\hi'})][ – (#DATE_FIN|affdate{'H\hi'})]</p>
+			<p class="fiche-quand">[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate)] · [(#DATE_DEBUT|affdate{'H\hi'})][ – (#DATE_FIN|affdate{'H\hi'})]</p>
 			<h1 class="fiche-titre">#TITRE</h1>
 			[<p class="fiche-lieu"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> (#LIEU)</p>]
 
@@ -60,7 +60,7 @@
 
 			<dl class="fiche-cles">
 				[<dt><:marly:tarif:></dt><dd>(#TARIF)</dd>]
-				[<dt><:marly:cloture_le:></dt><dd>(#CLOTURE|affdate{'j F Y'})</dd>]
+				[<dt><:marly:cloture_le:></dt><dd>(#CLOTURE|affdate)</dd>]
 			</dl>
 		</div>
 
