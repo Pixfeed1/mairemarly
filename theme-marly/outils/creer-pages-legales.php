@@ -254,6 +254,70 @@ $pages[] = array(
 . "droits : voir la page [Politique de confidentialité->spip.php?page=confidentialite].",
 );
 
+$pages[] = array(
+	'mot'   => 'Confidentialité',
+	'titre' => 'Données personnelles',
+	'texte' =>
+"{{{Responsable du traitement}}}\n\n"
+. "Commune de Marly-Gomont, représentée par Madame la Maire.\n"
+. "4 rue de la Poterie, 02120 Marly-Gomont — mairie.marlygomont@wanadoo.fr\n\n"
+. "{{{Délégué à la protection des données}}}\n\n"
+. "{{À COMPLÉTER}} : nom ou service, et adresse électronique.\n"
+. "Toute commune doit en désigner un. Il est souvent mutualisé, auprès du centre "
+. "de gestion départemental ou de la communauté de communes.\n\n"
+. "{{{Ce que ce site enregistre}}}\n\n"
+. "Le site n’enregistre rien tant que vous ne remplissez pas un formulaire. "
+. "Trois formulaires seulement collectent des données :\n\n"
+. "-* {{La lettre d’information}} : adresse électronique, nom, prénom, code postal, commune.\n"
+. "-* {{La réservation d’une salle ou l’inscription à un événement}} : nom, organisme "
+. "le cas échéant, adresse électronique, téléphone, motif de la demande, nombre de places.\n"
+. "-* {{Le compte d’une association}} : identifiant et adresse électronique du responsable.\n\n"
+. "S’y ajoutent les journaux techniques du serveur, tenus par l’hébergeur, qui "
+. "enregistrent les adresses IP de connexion. Ils servent à la sécurité et au "
+. "diagnostic de panne, à rien d’autre.\n\n"
+. "{{{Pourquoi, et sur quelle base}}}\n\n"
+. "La réservation d’une salle et l’inscription à un événement relèvent de la mission "
+. "de service public de la commune. L’inscription à la lettre d’information repose sur "
+. "votre consentement : vous vous désabonnez quand vous voulez, le lien est au bas de "
+. "chaque envoi.\n\n"
+. "{{{Qui y a accès}}}\n\n"
+. "Le secrétariat de mairie, et lui seul. Aucune donnée n’est vendue, cédée, ni "
+. "utilisée à des fins commerciales, et aucune n’est transmise à un tiers hors des "
+. "obligations légales.\n\n"
+. "{{{Combien de temps}}}\n\n"
+. "Les inscriptions à la lettre d’information sont conservées jusqu’au désabonnement. "
+. "Les demandes de réservation sont conservées le temps de la gestion de la salle et "
+. "de l’exercice comptable en cours. Les journaux du serveur sont conservés par "
+. "l’hébergeur pendant la durée prévue par la loi.\n\n"
+. "{{{Vos droits}}}\n\n"
+. "Vous pouvez demander à consulter vos données, à les corriger, à les effacer, à en "
+. "limiter l’usage, ou vous opposer à leur traitement. Écrivez à la mairie, par "
+. "courriel ou par courrier, en joignant une copie d’une pièce d’identité si votre "
+. "identité ne peut pas être établie autrement. La mairie répond dans un délai d’un "
+. "mois.\n\n"
+. "Si la réponse ne vous convient pas, vous pouvez saisir la CNIL : "
+. "[www.cnil.fr->https://www.cnil.fr].\n\n"
+. "{{{Cookies}}}\n\n"
+. "Ce site ne dépose {{aucun cookie de publicité ni de mesure d’audience}}. Il n’y a "
+. "donc pas de bandeau à accepter : il n’y a rien à consentir.\n\n"
+. "Un seul cookie technique est déposé, et seulement si vous vous connectez à un "
+. "espace personnel : il maintient votre session ouverte le temps de votre visite.\n\n"
+. "{{{Mesure d’audience}}}\n\n"
+. "La fréquentation est mesurée par les statistiques intégrées au moteur du site, sur "
+. "le serveur qui l’héberge. Aucune société extérieure ne reçoit ces informations.\n\n"
+. "{{{Les cartes}}}\n\n"
+. "Les plans affichés sur le site — la carte des lieux, celle d’un commerce — "
+. "utilisent les fonds de carte d’{{OpenStreetMap}}. Quand une carte s’affiche, votre "
+. "adresse IP est transmise à la fondation OpenStreetMap, qui sert les images. C’est "
+. "le seul appel à un service extérieur de tout le site.\n\n"
+. "{{{Ce que ce site ne fait pas}}}\n\n"
+. "-* aucune police de caractères appelée chez Google : elles sont hébergées ici ;\n"
+. "-* aucune vidéo intégrée depuis une plateforme extérieure ;\n"
+. "-* aucun bouton de réseau social traçant : le partage utilise la fonction de votre "
+. "propre navigateur, qui ne prévient personne ;\n"
+. "-* aucun profilage, aucune décision automatisée.",
+);
+
 $ecrits = 0;
 foreach ($pages as $page) {
 	$id_mot = marly_mot($page['mot']);
@@ -328,7 +392,6 @@ echo "page : le telephone de l'hebergeur, obligatoire au titre de l'article 6\n"
 echo "de la LCEN, et le delegue a la protection des donnees, que toute\n";
 echo "commune doit designer depuis 2018. Relancer avec --reecrire ecrase le\n";
 echo "texte des deux pages par celui du script.\n";
-echo "\nDeux pages restent vides, et c'est voulu : la politique de\n";
-echo "confidentialite et la declaration d'accessibilite engagent la commune\n";
-echo "sur ce que le site fait des donnees et sur un niveau mesure. Personne ne\n";
-echo "peut les ecrire a sa place.\n";
+echo "\nUne page reste vide, et c'est voulu : la declaration d'accessibilite\n";
+echo "annonce un niveau de conformite qui se mesure par un audit. Tant qu'il\n";
+echo "n'a pas eu lieu, personne ne peut l'ecrire.\n";
