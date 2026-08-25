@@ -295,8 +295,11 @@ $pages[] = array(
 . "courriel ou par courrier, en joignant une copie d’une pièce d’identité si votre "
 . "identité ne peut pas être établie autrement. La mairie répond dans un délai d’un "
 . "mois.\n\n"
-. "Si la réponse ne vous convient pas, vous pouvez saisir la CNIL : "
-. "[www.cnil.fr->https://www.cnil.fr].\n\n"
+. "Si la mairie ne vous a pas répondu dans ce délai, ou si sa réponse ne vous paraît "
+. "pas satisfaisante, vous pouvez vous adresser à la Commission nationale de "
+. "l’informatique et des libertés. C’est l’autorité chargée de faire respecter ces "
+. "droits en France. La démarche est gratuite et se fait en ligne, et son site "
+. "explique aussi chacun de vos droits en détail : [www.cnil.fr->https://www.cnil.fr].\n\n"
 . "{{{Cookies}}}\n\n"
 . "Ce site ne dépose {{aucun cookie de publicité ni de mesure d’audience}}. Il n’y a "
 . "donc pas de bandeau à accepter : il n’y a rien à consentir.\n\n"
@@ -311,11 +314,18 @@ $pages[] = array(
 . "adresse IP est transmise à la fondation OpenStreetMap, qui sert les images. C’est "
 . "le seul appel à un service extérieur de tout le site.\n\n"
 . "{{{Ce que ce site ne fait pas}}}\n\n"
-. "-* aucune police de caractères appelée chez Google : elles sont hébergées ici ;\n"
-. "-* aucune vidéo intégrée depuis une plateforme extérieure ;\n"
-. "-* aucun bouton de réseau social traçant : le partage utilise la fonction de votre "
-. "propre navigateur, qui ne prévient personne ;\n"
-. "-* aucun profilage, aucune décision automatisée.",
+. "Beaucoup de sites chargent, sans le dire, des éléments venus d’ailleurs : une "
+. "police de caractères prise chez Google, une vidéo hébergée sur une plateforme, un "
+. "bouton de partage fourni par un réseau social. Chacun de ces éléments transmet "
+. "votre adresse IP à l’entreprise qui le fournit, avant même que vous ayez cliqué "
+. "sur quoi que ce soit.\n\n"
+. "Ce site a été construit autrement. Les polices de caractères sont installées sur "
+. "le serveur du site et servies depuis lui. Aucune vidéo n’est intégrée depuis une "
+. "plateforme extérieure. Quant au bouton de partage, il appelle la fonction de "
+. "partage de votre propre navigateur, celle que vous utilisez déjà sur votre "
+. "téléphone : aucun réseau social n’est prévenu que vous avez lu cette page.\n\n"
+. "Enfin, la commune ne dresse aucun profil de ses visiteurs, et aucune décision "
+. "n’est prise automatiquement à partir de ce que vous faites sur ce site.",
 );
 
 $ecrits = 0;
