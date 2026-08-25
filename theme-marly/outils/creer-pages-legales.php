@@ -132,6 +132,47 @@ function marly_mot(string $titre): int {
 	return (int) $id_mot;
 }
 
+/**
+ * Verifie que l'article est REELLEMENT publie, et le publie sinon.
+ *
+ * Ce n'est pas de la ceinture et des bretelles : c'est mesure. Le script
+ * d'import de l'ancien site porte le meme garde-fou, ecrit apres que six
+ * articles d'associations soient restes en << prepa >> alors que SPIP n'avait
+ * signale aucune erreur. Aujourd'hui, 25 aout 2026, les deux pages legales
+ * ont subi exactement le meme sort. La demande de publication passe parfois
+ * au moment de la creation, parfois non ; la seule facon de le savoir est de
+ * relire la base.
+ */
+function marly_forcer_publication(int $id_article): void {
+	if (sql_getfetsel('statut', 'spip_articles', 'id_article = ' . $id_article) === 'publie') {
+		return;
+	}
+	sql_updateq('spip_articles', array('statut' => 'publie'), 'id_article = ' . $id_article);
+	echo "  (statut force en publie)\n";
+}
+
+/**
+ * Verifie que l'article a REELLEMENT change de rubrique, et le deplace sinon.
+ *
+ * Le secteur suit : c'est la rubrique racine dont depend l'article, SPIP s'en
+ * sert dans ses boucles. Un article deplace a la main sans son secteur se
+ * range dans la nouvelle rubrique tout en continuant de compter pour
+ * l'ancienne branche.
+ */
+function marly_forcer_rubrique(int $id_article, int $rubrique): void {
+	if (sql_getfetsel('id_rubrique', 'spip_articles', 'id_article = ' . $id_article) == $rubrique) {
+		return;
+	}
+	$secteur = $rubrique;
+	while ($parent = sql_getfetsel('id_parent', 'spip_rubriques', 'id_rubrique = ' . intval($secteur))) {
+		$secteur = $parent;
+	}
+	sql_updateq('spip_articles',
+		array('id_rubrique' => $rubrique, 'id_secteur' => $secteur),
+		'id_article = ' . $id_article);
+	echo "  (rubrique forcee, secteur $secteur)\n";
+}
+
 $rubrique = marly_rubrique_legale();
 
 $pages = array();
@@ -202,10 +243,18 @@ foreach ($pages as $page) {
 		   de la premiere version de ce script. */
 		$ou = sql_getfetsel('id_rubrique', 'spip_articles', 'id_article = ' . intval($deja));
 		if ($ou != $rubrique) {
-			objet_modifier('article', $deja, array('id_rubrique' => $rubrique));
+			objet_instituer('article', $deja, array('id_parent' => $rubrique));
+			marly_forcer_rubrique($deja, $rubrique);
 			echo 'DEPLACE : ' . $page['titre'] . " (article $deja, rubrique $ou -> $rubrique)\n";
 			$ecrits++;
-		} else {
+		}
+		$statut = sql_getfetsel('statut', 'spip_articles', 'id_article = ' . intval($deja));
+		if ($statut !== 'publie') {
+			objet_instituer('article', $deja, array('statut' => 'publie'));
+			marly_forcer_publication($deja);
+			echo 'PUBLIE : ' . $page['titre'] . " (article $deja, etait $statut)\n";
+			$ecrits++;
+		} elseif ($ou == $rubrique) {
 			echo 'DEJA LA, saute : ' . $page['titre'] . " (article $deja)\n";
 		}
 		continue;
@@ -217,10 +266,11 @@ foreach ($pages as $page) {
 		continue;
 	}
 	objet_modifier('article', $id_article, array(
-		'titre'  => $page['titre'],
-		'texte'  => $page['texte'],
-		'statut' => 'publie',
+		'titre' => $page['titre'],
+		'texte' => $page['texte'],
 	));
+	objet_instituer('article', $id_article, array('statut' => 'publie'));
+	marly_forcer_publication($id_article);
 	/* Publier retimbre la date de l'article. Ici elle doit bien être celle du
 	   jour — ces pages sont écrites aujourd'hui — mais on la pose quand même
 	   explicitement : c'est le seul moyen de dire que ce n'est pas un oubli.

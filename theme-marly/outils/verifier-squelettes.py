@@ -929,6 +929,46 @@ for _rep in ('theme-marly', 'plugin-marly'):
                          "|affdate seul, |affdate_jourcourt, |nom_jour ou |nom_mois"
                          % (_format, _quoi))
 
+# 45. Publier un article sans verifier qu'il l'est vraiment. SPIP accepte la
+#     demande, ne signale rien, et laisse parfois l'article en << prepa >> —
+#     invisible du public, alors que le script annonce avoir publie.
+#
+#     Deux mesures, a huit mois d'intervalle : six articles d'associations
+#     restes en prepa au premier import, puis les deux pages legales le
+#     25 aout 2026, creees et annoncees publiees, trouvees en prepa dans la
+#     base. Le script d'import porte le garde-fou depuis le premier incident ;
+#     le second script ne l'avait pas, faute d'avoir lu le premier.
+#
+#     La regle : tout script qui publie un article doit RELIRE le statut en
+#     base ensuite, et le forcer si besoin. C'est trois lignes, et c'est la
+#     seule facon de savoir.
+#
+#     Les commentaires sont neutralises avant lecture, sinon la phrase qui
+#     explique l'erreur declencherait la regle qui l'interdit.
+def _sans_commentaires_php(_texte):
+    """Vide les commentaires en gardant les sauts de ligne, pour que les
+    numeros de ligne signales restent ceux du fichier."""
+    def _blanchir(_m):
+        return re.sub(r'[^\n]', ' ', _m.group(0))
+    _texte = re.sub(r'/\*.*?\*/', _blanchir, _texte, flags=re.S)
+    return re.sub(r'//[^\n]*', _blanchir, _texte)
+
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = _sans_commentaires_php(open(_f, encoding='utf-8').read())
+    # Un script qui demande la publication d'un article, par l'une ou l'autre
+    # des deux fonctions de SPIP.
+    _publie = re.search(r"objet_(?:modifier|instituer)\(\s*'article'.{0,400}?'statut'\s*=>\s*'publie'",
+                        _src, re.S)
+    if not _publie:
+        continue
+    # A-t-il relu le statut en base ensuite ?
+    if not re.search(r"sql_getfetsel\(\s*'statut'\s*,\s*'spip_articles'", _src):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_publie.start()].count(chr(10)) + 1,
+                 "publie un article sans relire son statut en base ensuite : SPIP "
+                 "laisse parfois l'article en prepa sans signaler d'erreur, et le "
+                 "script annonce une publication qui n'a pas eu lieu")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
