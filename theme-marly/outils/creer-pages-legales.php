@@ -321,9 +321,7 @@ $pages[] = array(
 . "social.\n\n"
 . "Il en résulte une chose simple : hors l’affichage d’une carte, votre visite sur ce "
 . "site ne transmet votre adresse IP à personne d’autre qu’à la commune et à son "
-. "hébergeur.\n\n"
-. "Enfin, la commune ne dresse aucun profil de ses visiteurs, et aucune décision "
-. "n’est prise automatiquement à partir de ce que vous faites sur ce site.",
+. "hébergeur.",
 );
 
 $ecrits = 0;
