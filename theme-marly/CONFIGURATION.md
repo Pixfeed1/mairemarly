@@ -309,8 +309,17 @@ et c'est le champ **Fonction** qui décide :
 Le formulaire propose les formulations courantes dans une liste déroulante :
 servez-vous en, elles sont écrites pour tomber juste.
 
-L'ordre à l'intérieur de chaque groupe suit le champ **Rang** : mettez 1 pour
-le premier adjoint, 2 pour le deuxième, et ainsi de suite.
+L'ordre à l'intérieur de chaque groupe est donné par la **Fonction**
+elle-même : écrivez « 1re adjointe au maire », « 2e adjoint au maire », et les
+fiches se rangent dans cet ordre. Il n'y a pas de numéro à saisir à part.
+
+> **D'où vient l'ordre des adjoints ?** Du procès-verbal d'installation du
+> conseil, voté en séance. Ce n'est pas au site de le décider, et ce n'est pas
+> non plus à un annuaire en ligne : `outils/elus-officiels.sh` interroge le
+> Répertoire national des élus, tenu par les préfectures, et affiche la
+> composition officielle du conseil. Le répertoire donne le rang, jamais le
+> contenu de la délégation : celui-là ne figure que dans l'arrêté signé par le
+> maire.
 
 **Le champ Délégation est le plus important de la page.** Le nom du premier
 adjoint ne sert à rien à un habitant ; savoir qu'il a la charge de la voirie
