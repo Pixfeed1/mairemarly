@@ -1764,23 +1764,36 @@ a.elu-nom:hover{ text-decoration:underline; }
 .urba-depot p{ margin:0 0 8px; line-height:1.6; }
 .urba-precision{ font-size:14px; color:var(--encre-doux); }
 
-.urba-etapes{ list-style:none; counter-reset:etape; margin:0 0 36px; padding:0; }
-.urba-etapes li{
-	counter-increment:etape; position:relative;
-	margin:0 0 0 15px; padding:0 0 22px 44px; border-left:2px solid var(--trait);
-	line-height:1.6;
-}
-.urba-etapes li::before{
-	content:counter(etape); position:absolute; left:-16px; top:-4px;
-	display:flex; align-items:center; justify-content:center;
-	width:30px; height:30px; border-radius:50%;
-	background:var(--accent); color:#fff;
-	font-family:var(--titre); font-weight:700; font-size:14px;
-}
-.urba-etapes li:last-child{ border-left-color:transparent; padding-bottom:0; }
+/* Apres le depot : de la prose sous des intertitres, et non des pastilles
+   numerotees le long d'un trait. Cette figure-la, celle des pages « comment
+   ca marche », ment ici par sa forme : elle promet quatre etapes qui
+   s'enchainent toujours dans cet ordre, alors qu'un dossier incomplet renvoie
+   en arriere et que l'affichage n'arrive que si l'autorisation est accordee.
 
-/* Le local : encadre au sceau, pour que l'oeil voie tout de suite que cette
-   partie-la parle de Marly-Gomont et non du droit en general. */
+   Les intertitres ne reprennent pas le serif vert des titres de section :
+   deux niveaux qui se ressemblent ne font plus une hierarchie. */
+.urba-suite{ margin:0 0 34px; }
+.urba-suite h3{
+	font-family:var(--titre); color:var(--encre);
+	font-size:17px; font-weight:700; letter-spacing:.01em;
+	margin:24px 0 5px;
+}
+.urba-suite h3:first-child{ margin-top:4px; }
+.urba-suite p{ margin:0 0 10px; line-height:1.65; }
+
+/* Les delais en tableau : noyes dans un paragraphe, les trois durees etaient
+   illisibles, et c'est pourtant ce qu'on vient chercher. */
+.urba-delais{ border-collapse:collapse; width:100%; margin:4px 0 12px; }
+.urba-delais th,
+.urba-delais td{
+	text-align:left; padding:9px 2px; border-bottom:1px solid var(--trait);
+	font-weight:400;
+}
+.urba-delais th{ color:var(--encre); }
+.urba-delais td{ text-align:right; white-space:nowrap; font-weight:700; color:var(--accent); }
+.urba-delais tr:last-child th,
+.urba-delais tr:last-child td{ border-bottom:0; }
+
 .urba-local{
 	position:relative; overflow:hidden;
 	background:var(--creme); border:1px solid var(--trait);

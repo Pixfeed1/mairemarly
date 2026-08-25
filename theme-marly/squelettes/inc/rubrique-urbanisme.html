@@ -131,12 +131,35 @@
 
 	<h2 class="titre-bloc"><:marly:urba_titre_ensuite:></h2>
 
-	<ol class="urba-etapes">
-		<li><:marly:urba_etape_1:></li>
-		<li><:marly:urba_etape_2:></li>
-		<li><:marly:urba_etape_3:></li>
-		<li><:marly:urba_etape_4:></li>
-	</ol>
+	[(#REM) Pas de pastilles numerotees le long d'un trait : la figure des pages
+	        << comment ca marche >>, qu'aucune mairie n'emploie, et qui ment ici
+	        par sa forme meme. Elle promet quatre etapes qui s'enchainent
+	        toujours dans cet ordre, alors qu'un dossier incomplet renvoie en
+	        arriere et que l'affichage n'arrive que si l'autorisation est
+	        accordee. De la prose sous des intertitres le dit sans mentir.
+
+	        Les delais sortent en tableau : dans un paragraphe, les trois durees
+	        etaient noyees, et c'est pourtant ce qu'on vient chercher. ]
+	<div class="urba-suite">
+
+		<h3><:marly:urba_recepisse:></h3>
+		<p><:marly:urba_recepisse_texte:></p>
+
+		<h3><:marly:urba_delais:></h3>
+		<table class="urba-delais">
+			<tr><th><:marly:urba_delai_dp:></th><td><:marly:urba_delai_dp_duree:></td></tr>
+			<tr><th><:marly:urba_delai_maison:></th><td><:marly:urba_delai_maison_duree:></td></tr>
+			<tr><th><:marly:urba_delai_autres:></th><td><:marly:urba_delai_autres_duree:></td></tr>
+		</table>
+		<p><:marly:urba_incomplet:></p>
+
+		<h3><:marly:urba_decision:></h3>
+		<p><:marly:urba_decision_texte:></p>
+
+		<h3><:marly:urba_affichage:></h3>
+		<p><:marly:urba_affichage_texte:></p>
+
+	</div>
 
 	[(#REM) Les trois lignes locales. Le bloc entier ne paraît que si la mairie
 	        en a renseigne au moins une : mieux vaut ne rien dire que dire le
