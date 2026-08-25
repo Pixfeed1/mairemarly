@@ -969,6 +969,31 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "laisse parfois l'article en prepa sans signaler d'erreur, et le "
                  "script annonce une publication qui n'a pas eu lieu")
 
+# 46. Un nom de fichier affiche dans une carte, sans autorisation de coupure.
+#     Un navigateur ne coupe une ligne qu'aux espaces et aux traits d'union.
+#     Or un nom de fichier n'en a ni l'un ni l'autre :
+#     proces_verbal_conseil_municipal_du_09_10_23.pdf est UN SEUL MOT. Il
+#     deborde donc de sa colonne et passe sous le bouton de telechargement,
+#     mesure sur la fiche d'un compte rendu.
+#
+#     Les blocs qui portent un nom de fichier doivent declarer
+#     overflow-wrap:anywhere. La regle porte sur eux seuls : ailleurs, couper
+#     un mot n'importe ou est un defaut, pas une qualite.
+_PORTE_NOM_FICHIER = ('.doc-texte b',)
+_CSS46 = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.isfile(_CSS46):
+    _src = open(_CSS46, encoding='utf-8').read()
+    for _sel in _PORTE_NOM_FICHIER:
+        _m = re.search(re.escape(_sel) + r'\{([^}]*)\}', _src)
+        if not _m:
+            continue
+        if 'overflow-wrap' not in _m.group(1) and 'word-break' not in _m.group(1):
+            signaler('squelettes/css/theme.css',
+                     _src[:_m.start()].count(chr(10)) + 1,
+                     f"{_sel} affiche un nom de fichier sans autoriser la coupure : "
+                     "un nom sans espace ni trait d'union est un seul mot pour le "
+                     "navigateur, il debordera sous le bouton")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

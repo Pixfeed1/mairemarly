@@ -1422,11 +1422,18 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 /* La carte d'un document a telecharger. */
 .doc-joint{ display:flex; align-items:center; gap:16px; border:1px solid var(--trait);
   border-radius:6px; background:#fff; padding:16px 20px; margin:10px 0; max-width:560px; }
+.doc-joint > .pilule{ flex-shrink:0; }
 .doc-joint .rond{ flex-shrink:0; width:44px; height:44px; border-radius:50%;
   background:var(--creme-sombre); display:flex; align-items:center; justify-content:center; }
 .doc-joint .rond .ico{ width:20px; height:20px; fill:var(--accent); }
 .doc-texte{ flex:1; min-width:0; }
-.doc-texte b{ display:block; font-family:var(--texte); font-size:15px; }
+/* Un nom de fichier n'a pas d'espaces : proces_verbal_conseil_municipal_du_
+   09_10_23.pdf est UN SEUL MOT pour le navigateur, qui ne coupe qu'aux
+   espaces et aux traits d'union — pas aux tirets bas. Il debordait donc de sa
+   colonne et passait sous le bouton. overflow-wrap:anywhere l'autorise a
+   couper n'importe ou, faute de mieux. */
+.doc-texte b{ display:block; font-family:var(--texte); font-size:15px;
+  overflow-wrap:anywhere; }
 .doc-texte span{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
 
 /* La galerie : trois vignettes au format constant, cliquables vers l'image
