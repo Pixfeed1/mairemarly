@@ -173,6 +173,11 @@ function marly_forcer_rubrique(int $id_article, int $rubrique): void {
 	echo "  (rubrique forcee, secteur $secteur)\n";
 }
 
+/* Par defaut le script ne touche pas a un article deja pose : la mairie l'a
+   peut-etre relu. --reecrire force la reecriture du titre et du texte, et
+   n'a de sens que tant que personne n'a corrige la page a la main. */
+$reecrire = in_array('--reecrire', $argv, true);
+
 $rubrique = marly_rubrique_legale();
 
 $pages = array();
@@ -213,20 +218,40 @@ $pages[] = array(
 . "4 rue de la Poterie, 02120 Marly-Gomont\n"
 . "03 23 60 21 85 — mairie.marlygomont@wanadoo.fr\n\n"
 . "{{{Directrice de la publication}}}\n\n"
-. "Madame la Maire de Marly-Gomont.\n\n"
+. "Madame la Maire de Marly-Gomont, en sa qualité de représentante légale de la commune.\n\n"
 . "{{{Hébergement}}}\n\n"
 . "EX2.COM\n"
 . "CP 70161 Québec STN Québec-Centre, G2K 0A2, Québec, Canada\n"
+. "Téléphone : {{À COMPLÉTER}}\n"
 . "[ex2.com->https://ex2.com/]\n\n"
+. "{{{Délégué à la protection des données}}}\n\n"
+. "{{À COMPLÉTER}} : nom ou service, et adresse électronique.\n"
+. "Toute commune doit en désigner un. Il est souvent mutualisé, auprès du centre "
+. "de gestion départemental ou de la communauté de communes.\n\n"
 . "{{{Conception et réalisation}}}\n\n"
-. "Pixfeed, 1 rue des Morillons, 95130 Franconville. Voir la page [Crédits->spip.php?page=credits].\n\n"
+. "Pixfeed, 1 rue des Morillons, 95130 Franconville. "
+. "Le détail figure sur la page [Crédits->spip.php?page=credits].\n\n"
 . "{{{Propriété intellectuelle}}}\n\n"
 . "Les textes et les images de ce site appartiennent à la commune de Marly-Gomont, "
-. "sauf mention contraire. Leur reproduction est autorisée pour un usage personnel ou "
-. "d’information ; toute autre réutilisation demande l’accord écrit de la mairie.\n\n"
+. "sauf mention contraire portée à côté du document. Leur reproduction est autorisée "
+. "pour un usage personnel ou d’information, à condition d’en citer la source. Toute "
+. "autre réutilisation, notamment commerciale, demande l’accord écrit de la mairie.\n\n"
+. "{{{Liens vers d’autres sites}}}\n\n"
+. "Ce site renvoie vers des sites qu’il ne gère pas, notamment service-public.gouv.fr. "
+. "La commune n’est pas responsable de leur contenu.\n\n"
+. "{{{Exactitude des informations}}}\n\n"
+. "La mairie met à jour ce site avec soin, mais une information peut être devenue "
+. "inexacte entre-temps. Aucune information publiée ici ne remplace un acte officiel "
+. "ni une réponse écrite du secrétariat.\n\n"
+. "{{{Accessibilité}}}\n\n"
+. "Le niveau de conformité du site et la façon de signaler un obstacle figurent sur la "
+. "page [Accessibilité->spip.php?page=accessibilite].\n\n"
 . "{{{Signaler une erreur}}}\n\n"
-. "Une information inexacte, un lien mort, une page qui ne s’affiche pas : "
-. "écrivez à mairie.marlygomont@wanadoo.fr, la correction sera faite.",
+. "Une information inexacte, un lien mort, une page qui ne s’affiche pas : écrivez à "
+. "mairie.marlygomont@wanadoo.fr. La correction sera faite.\n\n"
+. "{{{Données personnelles}}}\n\n"
+. "Ce que le site enregistre, pourquoi, combien de temps, et comment exercer vos "
+. "droits : voir la page [Politique de confidentialité->spip.php?page=confidentialite].",
 );
 
 $ecrits = 0;
@@ -237,6 +262,13 @@ foreach ($pages as $page) {
 	   peut-etre ete relu et corrige par la mairie depuis. */
 	$deja = sql_getfetsel('l.id_objet', 'spip_mots_liens AS l',
 		'l.id_mot = ' . intval($id_mot) . ' AND l.objet = "article"');
+	if ($deja && $reecrire) {
+		objet_modifier('article', $deja, array(
+			'titre' => $page['titre'],
+			'texte' => $page['texte'],
+		));
+		echo 'REECRITE : ' . $page['titre'] . " (article $deja)\n";
+	}
 	if ($deja) {
 		/* On ne recrit pas l'article — il a peut-etre ete relu par la mairie —
 		   mais on le DEPLACE s'il est au mauvais endroit. C'est la reparation
@@ -291,6 +323,11 @@ foreach ($pages as $page) {
 marly_invalider_cache();
 echo "\n$ecrits page(s) ecrite(s).\n";
 echo "A relire dans Edition > Articles avant de montrer le site.\n";
+echo "\nDEUX MENTIONS RESTENT A COMPLETER, elles apparaissent en gras dans la\n";
+echo "page : le telephone de l'hebergeur, obligatoire au titre de l'article 6\n";
+echo "de la LCEN, et le delegue a la protection des donnees, que toute\n";
+echo "commune doit designer depuis 2018. Relancer avec --reecrire ecrase le\n";
+echo "texte des deux pages par celui du script.\n";
 echo "\nDeux pages restent vides, et c'est voulu : la politique de\n";
 echo "confidentialite et la declaration d'accessibilite engagent la commune\n";
 echo "sur ce que le site fait des donnees et sur un niveau mesure. Personne ne\n";
