@@ -284,5 +284,8 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'pied_rester_informe'  => 'Rester informé',
 	'pied_lettre_texte'    => 'Les nouvelles de la commune dans votre boîte, une fois par mois.',
 	'pied_sinscrire'       => 'S’inscrire',
+	'pied_demarches_texte' => 'Carte d’identité, acte de naissance, listes électorales : ce qui se fait en mairie et ce qui se fait ailleurs.',
+	'pied_voir_demarches'  => 'Voir les démarches',
+	'pied_ou'              => 'ou directement sur',
 
 );

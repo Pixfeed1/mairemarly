@@ -53,25 +53,18 @@
 				[<p>(#CONFIG{marly/horaires}|propre)</p>]
 			</div>
 
-			[(#REM) Ce que l'ancien pied faisait de mieux, et qu'il ne faut pas
-			        perdre : les demarches les plus demandees, en clair, sur
-			        toutes les pages du site. Trois suffisent ici, la liste
-			        complete est juste dessous. ]
+			[(#REM) UNE SEULE ACTION PAR COLONNE. La liste des demarches les
+			        plus demandees tenait ici : cinq liens, plus six autres en
+			        rangee dessous, quinze en tout. Franconville en a deux, et
+			        ce sont deux boutons. Un pied de page n'est pas un plan du
+			        site — celui-ci existe, il est en bas a droite. ]
 			<div>
 				<h3><:marly:demarches:></h3>
-				<ul>
-					<BOUCLE_demarches(DEMARCHES){par famille, rang, titre}{0,3}>
-					<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">#TITRE</a></li>
-					</BOUCLE_demarches>
-					<li><a href="#URL_PAGE{demarches}"><:marly:toutes_les_demarches:></a></li>
-					[(#REM) Toujours affiche, quel que soit le nombre de demarches
-					        publiees : ce n'est pas un repli, c'est la reference
-					        vers laquelle renvoyer quand la commune ne traite pas
-					        elle-meme la demarche. L'adresse a change en octobre
-					        2025 : service-public.fr est devenu
-					        service-public.gouv.fr. ]
-					<li><a href="https://www.service-public.gouv.fr" rel="noopener">service-public.gouv.fr</a></li>
-				</ul>
+				<p><:marly:pied_demarches_texte:></p>
+				<p><a class="pied-bouton" href="#URL_PAGE{demarches}">
+					<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:pied_voir_demarches:></a></p>
+				<p class="pied-note"><:marly:pied_ou:>
+					<a href="https://www.service-public.gouv.fr" rel="noopener">service-public.gouv.fr</a></p>
 			</div>
 
 			<div>
@@ -93,39 +86,6 @@
 			</div>
 
 		</div>
-
-		[(#REM) Une seule ligne pour les pages de service. Chacune n'apparaît
-		        que si elle a quelque chose a montrer. ]
-		<p class="pied-raccourcis">
-			<B_conseil_pied>
-			<BOUCLE_conseil_pied(ELUS){statut=publie}{0,1}></BOUCLE_conseil_pied>
-			<a href="#URL_PAGE{conseil}"><:marly:titre_conseil:></a>
-			</B_conseil_pied>
-
-			<BOUCLE_urba_pied(RUBRIQUES){titre==^Urbanisme}{0,1}>
-			<a href="#URL_RUBRIQUE">#TITRE</a>
-			</BOUCLE_urba_pied>
-
-			<B_commerces_pied>
-			<BOUCLE_commerces_pied(COMMERCES){0,1}></BOUCLE_commerces_pied>
-			<a href="#URL_PAGE{commerces}"><:marly:titre_commerces:></a>
-			</B_commerces_pied>
-
-			<B_assos_pied>
-			<BOUCLE_assos_pied(ASSOCIATIONS){0,1}></BOUCLE_assos_pied>
-			<a href="#URL_PAGE{associations}"><:marly:titre_vie_associative:></a>
-			</B_assos_pied>
-
-			<B_salles_pied>
-			<BOUCLE_salles_pied(SALLES){0,1}></BOUCLE_salles_pied>
-			<a href="#URL_PAGE{reservation}"><:marly:reserver_salle:></a>
-			</B_salles_pied>
-
-			<B_lieux_pied>
-			<BOUCLE_lieux_pied(LIEUX){0,1}></BOUCLE_lieux_pied>
-			<a href="#URL_PAGE{lieux}"><:marly:titre_ou_nous_trouver:></a>
-			</B_lieux_pied>
-		</p>
 
 		<div class="pied-bas">
 			<a href="#URL_PAGE{mentions-legales}"><:marly:mentions_legales:></a>
