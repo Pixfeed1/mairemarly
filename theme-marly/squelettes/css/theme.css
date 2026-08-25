@@ -547,11 +547,40 @@ section{ padding-block:70px; position:relative; }
 .pied-quatre a{ color:var(--encre); }
 .pied-quatre a:hover{ color:var(--accent); }
 .pied-note{ font-size:14.5px; color:var(--encre-doux); }
-.pied-bouton{ display:inline-flex; align-items:center; gap:9px; margin-top:6px;
-  border:1px solid var(--accent); color:var(--accent); border-radius:24px; padding:11px 22px;
-  font-size:15px; font-weight:600; letter-spacing:.04em; text-decoration:none; }
-.pied-bouton:hover{ background:var(--accent); color:#fff; }
-.pied-bouton .ico{ width:17px; height:17px; }
+/* Un lien, pas un bouton. Le cadre faisait trois pastilles alignees dans un
+   pied de page qui n'a que quatre colonnes : trop d'appel pour trois actions
+   qui ne sont pas des appels a l'action.
+
+   LE SOULIGNEMENT SE TRACE DE LA DROITE VERS LA GAUCHE au survol, comme les
+   liens du pied de page de la Ville de Paris. transform-origin:right, et non
+   left : c'est ce seul mot qui donne le sens du geste.
+
+   Il etait ecrit .pied-quatre a:hover{ color:var(--accent) } plus haut, plus
+   specifique que .pied-bouton:hover : le texte du bouton virait au vert sur
+   un fond devenu vert, et disparaissait. Le lien n'a plus de fond, la
+   collision n'existe plus, et la couleur au survol est posee ici. */
+.pied-lien{
+	position:relative; display:inline-flex; align-items:center; gap:9px;
+	margin-top:6px; padding-bottom:3px;
+	color:var(--accent); font-weight:700; font-size:15px; letter-spacing:.02em;
+	text-decoration:none;
+}
+.pied-quatre .pied-lien:hover{ color:var(--accent-sombre); }
+.pied-lien::after{
+	content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+	background:var(--jaune);
+	transform:scaleX(0); transform-origin:right;
+	transition:transform .3s ease;
+}
+.pied-lien:hover::after,
+.pied-lien:focus-visible::after{ transform:scaleX(1); }
+/* Certains reglent leur systeme pour ne plus voir d'animation. On respecte :
+   le trait apparaît, il ne se trace pas. */
+@media (prefers-reduced-motion:reduce){
+	.pied-lien::after{ transition:none; }
+}
+.pied-lien .ico{ width:17px; height:17px; }
+
 .pied-reseaux{ display:flex; justify-content:center; gap:16px; margin-top:10px; }
 .pied-reseaux a{ color:var(--encre-doux); }
 .pied-reseaux .ico{ width:23px; height:23px; }
