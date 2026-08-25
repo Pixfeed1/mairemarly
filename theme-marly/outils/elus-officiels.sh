@@ -73,6 +73,10 @@ NR == 1 {
 		else if (t ~ /^Lib/ && t ~ /fonction/) c_fonction = i
 		else if (t ~ /^Date/ && t ~ /naissance/) c_naissance = i
 		else if (t ~ /^Date/ && t ~ /mandat/)    c_mandat  = i
+		# Le sexe declare a la prefecture. On le lit pour ecrire << adjointe >>
+		# et << conseillere >> quand il le faut : le repertoire, lui, met tout
+		# au masculin, et un prenom ne dit pas le genre de la personne.
+		else if (t ~ /sexe/)                     c_sexe    = i
 	}
 	next
 }
@@ -80,7 +84,8 @@ $c_commune == commune {
 	n++
 	f = (c_fonction ? $c_fonction : "")
 	if (f == "") f = "Conseiller municipal"
-	printf "%-28s %-26s %s\n", f, $c_nom " " $c_prenom, (c_mandat ? "mandat depuis le " $c_mandat : "")
+	printf "%-28s %-2s %-26s %s\n", f, (c_sexe ? $c_sexe : "?"), $c_nom " " $c_prenom, \
+	       (c_mandat ? "mandat depuis le " $c_mandat : "")
 }
 END {
 	print ""
