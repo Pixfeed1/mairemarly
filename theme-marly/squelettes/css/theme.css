@@ -588,8 +588,14 @@ section{ padding-block:70px; position:relative; }
 .pied-bas{ margin-top:44px; padding-top:18px; border-top:1px solid var(--trait);
   display:flex; justify-content:center; flex-wrap:wrap; gap:24px;
   font-weight:600; font-size:13.5px; }
-.pied-bas a{ color:var(--encre-doux); text-decoration:none; }
-.pied-bas a:hover{ color:var(--accent); text-decoration:underline; }
+/* Pas de soulignement au survol : la barre en compte cinq cote a cote, et
+   cinq traits qui apparaissent l'un apres l'autre font clignoter le bas de
+   page. La couleur suffit a dire que c'est cliquable, et elle change assez
+   pour se voir : du gris de lecture au vert de la commune. */
+.pied-bas a{ color:var(--encre-doux); text-decoration:none; transition:color .2s ease; }
+.pied-bas a:hover,
+.pied-bas a:focus-visible{ color:var(--accent); }
+@media (prefers-reduced-motion:reduce){ .pied-bas a{ transition:none; } }
 @media(max-width:900px){ .pied-quatre{ grid-template-columns:repeat(2,1fr); gap:30px; } }
 @media(max-width:560px){ .pied-quatre{ grid-template-columns:1fr; } }
 
