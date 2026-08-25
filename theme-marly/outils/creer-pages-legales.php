@@ -6,8 +6,20 @@
  *
  * Les quatre pages légales du site sont des ARTICLES portant un mot-clé. Le
  * gabarit va chercher l'article par ce mot-clé, où qu'il soit rangé. Ce
- * script pose les deux qu'on peut écrire aujourd'hui, crée les mots-clés
- * s'ils manquent, et les range là où sont déjà les autres articles techniques.
+ * script pose les deux qu'on peut écrire aujourd'hui et crée les mots-clés
+ * s'ils manquent.
+ *
+ * OÙ LES RANGER : LA PREMIÈRE VERSION S'EST TROMPÉE. Elle cherchait « la
+ * rubrique où sont déjà les articles techniques », et elle est tombée sur
+ * Vie associative. Le fil d'Ariane annonçait donc « Accueil › Vie associative
+ * › Crédits », et surtout les deux articles s'affichaient dans la liste de
+ * cette rubrique, entre deux comptes rendus d'assemblée générale.
+ *
+ * Un article publié apparaît TOUJOURS dans la liste de sa rubrique : il n'y a
+ * pas de rangement discret. Il leur faut donc une rubrique à eux,
+ * « Informations légales », placée sous « Ma mairie » — c'est là qu'un
+ * habitant les cherche, et le fil d'Ariane devient vrai. Le script la crée si
+ * elle manque, et DÉPLACE les articles déjà posés au mauvais endroit.
  *
  * CE QUI EST VRAI AUJOURD'HUI, ET QUI CHANGERA. Le site est hébergé sur le
  * domaine du prestataire, derrière un mot de passe, le temps de la
@@ -74,20 +86,29 @@ $GLOBALS['visiteur_session'] = array(
 );
 
 /**
- * Où ranger ces articles. On suit ce qui existe : la rubrique où se trouvent
- * déjà les articles techniques du site, ceux qui portent un mot-clé. À défaut,
- * la première rubrique venue. Ces articles ne s'affichent jamais dans une
- * liste de rubrique — le gabarit les appelle par leur mot-clé — mais SPIP
- * exige qu'ils soient rangés quelque part.
+ * La rubrique des pages légales, créée au besoin.
+ *
+ * Sous « Ma mairie » quand elle existe, à la racine sinon. Elle n'est pas
+ * cachée et ne cherche pas à l'être : « Informations légales » sous « Ma
+ * mairie » est un chemin que quelqu'un peut suivre, et le fil d'Ariane des
+ * pages devient exact.
  */
-function marly_rubrique_technique() {
-	$id = sql_getfetsel('a.id_rubrique', 'spip_articles AS a
-		JOIN spip_mots_liens AS l ON l.id_objet = a.id_article AND l.objet = "article"',
-		'', '', 'a.id_article', '0,1');
+function marly_rubrique_legale(): int {
+	$titre = 'Informations légales';
+	$id = sql_getfetsel('id_rubrique', 'spip_rubriques', 'titre = ' . sql_quote($titre));
 	if ($id) {
-		return $id;
+		return (int) $id;
 	}
-	return sql_getfetsel('id_rubrique', 'spip_rubriques', '', '', 'id_rubrique', '0,1');
+	$parent = sql_getfetsel('id_rubrique', 'spip_rubriques',
+		'id_parent = 0 AND titre LIKE ' . sql_quote('%Ma mairie%'));
+	$id = sql_insertq('spip_rubriques', array(
+		'titre'      => $titre,
+		'descriptif' => 'Mentions légales, confidentialité, accessibilité et crédits du site.',
+		'id_parent'  => intval($parent),
+		'statut'     => 'publie',
+	));
+	echo "rubrique creee : $titre" . ($parent ? " (sous Ma mairie)" : " (a la racine)") . "\n";
+	return (int) $id;
 }
 
 /** Le mot-clé, cherché par son titre exact, créé s'il manque. */
@@ -111,11 +132,7 @@ function marly_mot(string $titre): int {
 	return (int) $id_mot;
 }
 
-$rubrique = marly_rubrique_technique();
-if (!$rubrique) {
-	fwrite(STDERR, "Aucune rubrique dans le site : en creer une d'abord.\n");
-	exit(1);
-}
+$rubrique = marly_rubrique_legale();
 
 $pages = array();
 
@@ -180,7 +197,17 @@ foreach ($pages as $page) {
 	$deja = sql_getfetsel('l.id_objet', 'spip_mots_liens AS l',
 		'l.id_mot = ' . intval($id_mot) . ' AND l.objet = "article"');
 	if ($deja) {
-		echo 'DEJA LA, saute : ' . $page['titre'] . " (article $deja)\n";
+		/* On ne recrit pas l'article — il a peut-etre ete relu par la mairie —
+		   mais on le DEPLACE s'il est au mauvais endroit. C'est la reparation
+		   de la premiere version de ce script. */
+		$ou = sql_getfetsel('id_rubrique', 'spip_articles', 'id_article = ' . intval($deja));
+		if ($ou != $rubrique) {
+			objet_modifier('article', $deja, array('id_rubrique' => $rubrique));
+			echo 'DEPLACE : ' . $page['titre'] . " (article $deja, rubrique $ou -> $rubrique)\n";
+			$ecrits++;
+		} else {
+			echo 'DEJA LA, saute : ' . $page['titre'] . " (article $deja)\n";
+		}
 		continue;
 	}
 
