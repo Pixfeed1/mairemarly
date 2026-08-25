@@ -1,0 +1,171 @@
+[(#REM)
+  Urbanisme et travaux.
+  ---------------------------------------------------------------------------
+  La question qui arrive vraiment en mairie n'est pas << consulter le
+  reglement >>, c'est << j'veux poser un abri de jardin, faut declarer ? >>.
+  La page repond a celle-la.
+
+  LA BANDE DES SEUILS. La regle est une echelle : rien jusqu'a 5 m2,
+  declaration jusqu'a 20, permis au-dela. Trois colonnes de largeurs
+  croissantes, de la crème au vert plein, disent cette progression avant
+  qu'on ait lu. Ce qui ne depend PAS de la surface — les fenetres, la
+  toiture, la teinte d'une facade — sort de la bande et prend sa propre
+  ligne : melange aux metres carres, on le lisait comme une exception a un
+  seuil, alors que c'est une autre regle.
+
+  CE QUI N'EST PAS ECRIT ICI. Trois choses varient d'une commune a l'autre et
+  changent tout : le document d'urbanisme applicable, qui delivre les
+  autorisations, et si le conseil a rendu la declaration obligatoire pour les
+  clotures. Elles viennent des reglages et le bloc DISPARAIT tant qu'elles
+  sont vides. Un site de mairie qui affirme que l'Etat delivre les permis
+  alors que c'est la maire envoie les gens frapper a la mauvaise porte.
+  outils/urbanisme-officiel.sh va chercher la reponse au Geoportail.
+
+  Le reste — les seuils, les delais, l'affichage, le certificat d'urbanisme —
+  est du droit national : vrai a Marly-Gomont comme partout.
+]
+<div class="urba-page">
+
+<div class="bandeau-illustre">
+	[(#REM) Meme regle que sur les autres pages de section : la photographie
+	        si la mairie en a depose une, le paysage dessine sinon. ]
+	<B_banniere>
+	<BOUCLE_banniere(ARTICLES){titre_mot=Bannière ma mairie}{par date}{inverse}{0,1}>
+	<div class="bandeau-image">[(#LOGO_ARTICLE|image_reduire{1920,0})]</div>
+	[<p class="bandeau-credit">(#DESCRIPTIF|textebrut|couper{120})</p>]
+	</BOUCLE_banniere>
+	</B_banniere>
+	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
+	     width="1440" height="260" alt="" aria-hidden="true">
+	<//B_banniere>
+
+	<div class="bandeau-carton">
+		<div>
+			<nav class="fil-ariane" aria-label="Fil d’Ariane">
+				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+				<span aria-hidden="true">/</span>
+				<:marly:ma_mairie:>
+			</nav>
+			<h1><:marly:titre_urbanisme:></h1>
+		</div>
+	</div>
+</div>
+
+[(#REM) Le sceau en filigrane : le meme trace que le plan du site et les
+        fiches, jamais un dessin de plus. ]
+<INCLURE{fond=inc/sceau-tuile}{classe=urba-filigrane}{n=urba}>
+
+<div class="page-simple page-sous-carton">
+
+	<p class="chapo"><:marly:urba_intro:></p>
+
+	<h2 class="titre-bloc"><:marly:urba_titre_cas:></h2>
+
+	<div class="urba-echelle">
+
+		<div class="urba-col urba-z1">
+			<div class="urba-tete">
+				<p class="urba-seuil"><:marly:urba_z1_seuil:></p>
+				<p class="urba-quoi"><:marly:urba_z1_quoi:></p>
+				<p class="urba-temps"><:marly:urba_z1_temps:></p>
+			</div>
+			<div class="urba-corps">
+				<ul>
+					<li><:marly:urba_z1_a:></li>
+					<li><:marly:urba_z1_b:></li>
+					<li><:marly:urba_z1_c:></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="urba-col urba-z2">
+			<div class="urba-tete">
+				<p class="urba-seuil"><:marly:urba_z2_seuil:></p>
+				<p class="urba-quoi"><:marly:urba_z2_quoi:></p>
+				<p class="urba-temps"><:marly:urba_z2_temps:></p>
+			</div>
+			<div class="urba-corps">
+				<ul>
+					<li><:marly:urba_z2_a:></li>
+					<li><:marly:urba_z2_b:></li>
+					<li><:marly:urba_z2_c:></li>
+					<li><:marly:urba_z2_d:></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="urba-col urba-z3">
+			<div class="urba-tete">
+				<p class="urba-seuil"><:marly:urba_z3_seuil:></p>
+				<p class="urba-quoi"><:marly:urba_z3_quoi:></p>
+				<p class="urba-temps"><:marly:urba_z3_temps:></p>
+			</div>
+			<div class="urba-corps">
+				<ul>
+					<li><:marly:urba_z3_a:></li>
+					<li><:marly:urba_z3_b:></li>
+					<li><:marly:urba_z3_c:></li>
+					<li><:marly:urba_z3_d:></li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+	<p class="urba-hors"><:marly:urba_hors:></p>
+
+	<p class="urba-note"><:marly:urba_note:></p>
+
+	<h2 class="titre-bloc"><:marly:urba_titre_depot:></h2>
+
+	<div class="urba-depot">
+		<div>
+			<p class="urba-ou"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> <:marly:urba_en_mairie:></p>
+			<p>[(#CONFIG{marly/adresse}|sinon{'4 rue de la Poterie'})<br>]
+			[(#CONFIG{marly/code_postal}|sinon{'02120'}) ][(#CONFIG{marly/ville}|sinon{'Marly-Gomont'})]</p>
+			[<p class="urba-horaires">(#CONFIG{marly/horaires}|propre)</p>]
+			<p class="urba-precision"><:marly:urba_precision_mairie:></p>
+		</div>
+		<div>
+			<p class="urba-ou"><svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:urba_par_courriel:></p>
+			<p>[<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a><br>]
+			[<a href="tel:[(#CONFIG{marly/telephone}|replace{' ',''}|attribut_html)]">(#CONFIG{marly/telephone})</a>]</p>
+			<p class="urba-precision"><:marly:urba_precision_courriel:></p>
+		</div>
+	</div>
+
+	<h2 class="titre-bloc"><:marly:urba_titre_ensuite:></h2>
+
+	<ol class="urba-etapes">
+		<li><:marly:urba_etape_1:></li>
+		<li><:marly:urba_etape_2:></li>
+		<li><:marly:urba_etape_3:></li>
+		<li><:marly:urba_etape_4:></li>
+	</ol>
+
+	[(#REM) Les trois lignes locales. Le bloc entier ne paraît que si la mairie
+	        en a renseigne au moins une : mieux vaut ne rien dire que dire le
+	        contraire de la loi applicable ici. ]
+	[(#CONFIG{marly/urbanisme_document}|sinon{#CONFIG{marly/urbanisme_decide}}|sinon{#CONFIG{marly/urbanisme_clotures}}|oui)
+	<div class="urba-local">
+		<INCLURE{fond=inc/sceau-tuile}{classe=urba-local-sceau}{n=urbaloc}>
+		<h2><:marly:urba_titre_local:></h2>
+		<dl>
+			[<dt><:marly:urba_document:></dt><dd>(#CONFIG{marly/urbanisme_document})</dd>]
+			[<dt><:marly:urba_decide:></dt><dd>(#CONFIG{marly/urbanisme_decide})</dd>]
+			[<dt><:marly:urba_clotures:></dt><dd>(#CONFIG{marly/urbanisme_clotures})</dd>]
+		</dl>
+	</div>
+	]
+
+	<p class="fiche-liens">
+		<a class="pilule" href="https://www.cadastre.gouv.fr/" rel="noopener">
+			<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> <:marly:urba_lien_cadastre:></a>
+		<a class="pilule" href="https://www.service-public.fr/particuliers/vosdroits/N319" rel="noopener">
+			<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:urba_lien_formulaires:></a>
+		[<a class="pilule" href="mailto:(#CONFIG{marly/courriel}|attribut_html)">
+			<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:urba_lien_ecrire:></a>]
+	</p>
+
+</div>
+</div>

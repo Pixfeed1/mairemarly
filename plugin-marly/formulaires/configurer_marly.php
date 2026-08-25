@@ -34,6 +34,11 @@ function marly_champs_texte() {
 	return array(
 		'telephone', 'courriel', 'adresse', 'code_postal', 'ville',
 		'horaires', 'appli_nom',
+		/* Les trois lignes d'urbanisme. Elles ne sont pas du décor : elles
+		   disent qui délivre les permis et à partir de quelle surface il en
+		   faut un. Vides, la page publique n'affiche pas le bloc — mieux vaut
+		   ne rien dire que d'envoyer les gens frapper à la mauvaise porte. */
+		'urbanisme_document', 'urbanisme_decide', 'urbanisme_clotures',
 	);
 }
 

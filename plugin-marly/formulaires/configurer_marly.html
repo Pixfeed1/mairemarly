@@ -126,6 +126,32 @@
 			</ul>
 		</fieldset>
 
+		[(#REM) L'urbanisme. Trois lignes seulement, mais ce sont les trois qui
+		        varient d'une commune a l'autre et que le site ne peut pas
+		        deviner : le reste de la page publique est du droit national.
+		        Laissees vides, le bloc n'apparaît pas du tout. ]
+		<fieldset>
+			<legend><:marly:legende_urbanisme:></legend>
+			<p class="explication"><:marly:urbanisme_aide:></p>
+			<ul>
+				<li class="marly-champ marly-urbanisme_document">
+					<label for="urbanisme_document"><:marly:urbanisme_document:></label>
+					<textarea name="urbanisme_document" id="urbanisme_document" rows="2">[(#ENV{urbanisme_document}|textebrut)]</textarea>
+					<small><:marly:urbanisme_document_aide:></small>
+				</li>
+				<li class="marly-champ marly-urbanisme_decide">
+					<label for="urbanisme_decide"><:marly:urbanisme_decide:></label>
+					<textarea name="urbanisme_decide" id="urbanisme_decide" rows="2">[(#ENV{urbanisme_decide}|textebrut)]</textarea>
+					<small><:marly:urbanisme_decide_aide:></small>
+				</li>
+				<li class="marly-champ marly-urbanisme_clotures">
+					<label for="urbanisme_clotures"><:marly:urbanisme_clotures:></label>
+					<textarea name="urbanisme_clotures" id="urbanisme_clotures" rows="2">[(#ENV{urbanisme_clotures}|textebrut)]</textarea>
+					<small><:marly:urbanisme_clotures_aide:></small>
+				</li>
+			</ul>
+		</fieldset>
+
 		<p class="boutons">
 			<input type="submit" class="submit" value="<:marly:enregistrer:>">
 		</p>

@@ -363,6 +363,39 @@ Comme la bannière d'accueil : publiez un article, mettez-lui le mot-clé
 dans le descriptif de l'article. Sans article, la page reprend la bannière
 d'accueil ; sans elle, le paysage dessiné. La page n'est jamais nue.
 
+## Urbanisme et travaux
+
+La page répond à la question qui arrive vraiment au guichet : *« je veux poser
+un abri de jardin, faut-il déclarer ? »* Les seuils, les délais, l'affichage du
+panneau, le certificat d'urbanisme : tout cela est du droit national, écrit
+dans le site, **vous n'avez rien à saisir** et rien ne se périme.
+
+### Les trois lignes que vous seuls connaissez
+
+`Configuration ▸ Réglages de la commune`, bloc **Urbanisme**. Trois champs, et
+ce sont les trois qui changent d'une commune à l'autre :
+
+| Champ | Pourquoi il compte |
+|---|---|
+| Le document d'urbanisme applicable | PLU, plan intercommunal, carte communale, ou aucun des trois |
+| Qui délivre les autorisations | Avec un document local, le maire. Sans document, l'État, et l'instruction part à la direction départementale des territoires |
+| Les clôtures | La déclaration n'est obligatoire que si le conseil l'a votée |
+
+**Tant que les trois sont vides, le bloc n'apparaît pas sur le site.** C'est
+voulu : écrire que l'État délivre les permis quand c'est le maire envoie les
+habitants frapper à la mauvaise porte, et rien n'est pire qu'une mairie qui se
+trompe sur sa propre compétence.
+
+> **Vous ne savez pas quoi mettre ?** `outils/urbanisme-officiel.sh` interroge
+> le Géoportail de l'urbanisme, qui publie le document en vigueur commune par
+> commune. Les clôtures, elles, ne sont écrites nulle part ailleurs que dans
+> vos délibérations.
+
+### Le raccourci
+
+La bande d'accès rapides de l'accueil prévoit une entrée **Urbanisme** :
+`Édition ▸ Raccourcis`, et faites-la pointer sur la page. Voir le chapitre 3.
+
 ## L'annuaire des commerces et services
 
 `Édition ▸ Commerces`. Une fiche par commerçant, professionnel de santé,

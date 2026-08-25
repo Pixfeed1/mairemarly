@@ -747,4 +747,15 @@ resterez abonné.
 	'commerce_absent_lien' => 'Signalez-le à la mairie',
 	'commerce_absent_objet' => 'Commerces et services : une correction à signaler',
 
+
+	// --- Urbanisme (reglages) ------------------------------------------------
+	'legende_urbanisme'    => 'Urbanisme',
+	'urbanisme_aide'       => 'La page Urbanisme du site explique les seuils, les délais et l’affichage : c’est la loi, elle est la même partout et vous n’avez rien à en saisir. Ces trois lignes-là, en revanche, changent d’une commune à l’autre. Tant qu’elles sont vides, le bloc n’apparaît pas sur le site.',
+	'urbanisme_document'   => 'Le document d’urbanisme applicable',
+	'urbanisme_document_aide' => 'Plan local d’urbanisme, plan intercommunal, carte communale, ou aucun des trois. Dans ce dernier cas, c’est le règlement national qui s’applique. En cas de doute, le Géoportail de l’urbanisme donne la réponse officielle.',
+	'urbanisme_decide'     => 'Qui délivre les autorisations',
+	'urbanisme_decide_aide' => 'Avec un document local, c’est le maire, au nom de la commune. Sans document, c’est l’État : le maire donne un avis et l’instruction revient à la direction départementale des territoires. La différence n’est pas un détail : elle dit à qui s’adresser.',
+	'urbanisme_clotures'   => 'Les clôtures',
+	'urbanisme_clotures_aide' => 'Une déclaration préalable pour une clôture n’est obligatoire que si le conseil municipal l’a décidé par délibération. Écrivez ici ce que le conseil a voté, ou que rien n’a été voté.',
+
 );
