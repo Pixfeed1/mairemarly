@@ -391,10 +391,22 @@ trompe sur sa propre compétence.
 > commune. Les clôtures, elles, ne sont écrites nulle part ailleurs que dans
 > vos délibérations.
 
-### Le raccourci
+### C'est une rubrique, et son titre compte
 
-La bande d'accès rapides de l'accueil prévoit une entrée **Urbanisme** :
-`Édition ▸ Raccourcis`, et faites-la pointer sur la page. Voir le chapitre 3.
+Créez une rubrique **Urbanisme** sous « Ma mairie ». Elle entre alors toute
+seule dans le menu du haut, et vous pouvez y publier des articles comme dans
+n'importe quelle rubrique : enquête publique, révision du plan intercommunal,
+réfection d'une rue. Ils s'affichent sous les explications.
+
+> **Le titre doit commencer par « Urbanisme ».** C'est à ça que le site la
+> reconnaît. « Urbanisme et travaux » convient, « L'urbanisme » non : la
+> rubrique retomberait sur la présentation ordinaire et perdrait les paliers,
+> les délais et le bloc local. Même mécanisme que la rubrique « Comptes
+> rendus », que la page du conseil municipal repère de la même façon.
+
+Le **texte** de la rubrique sert d'introduction, au-dessus des trois paliers.
+Laissé vide, le site met la sienne. Vous avez le dernier mot sans avoir à
+recopier quoi que ce soit.
 
 ## L'annuaire des commerces et services
 

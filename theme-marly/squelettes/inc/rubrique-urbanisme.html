@@ -1,29 +1,16 @@
 [(#REM)
-  Urbanisme et travaux.
+  Urbanisme et travaux, presente comme une rubrique.
   ---------------------------------------------------------------------------
-  La question qui arrive vraiment en mairie n'est pas << consulter le
-  reglement >>, c'est << j'veux poser un abri de jardin, faut declarer ? >>.
-  La page repond a celle-la.
+  La rubrique porte le titre, l'introduction et les articles ; le squelette
+  porte ce qui ne se retape pas : les seuils, les delais, l'affichage du
+  panneau. Le jour ou la loi change les 20 m2, un seul endroit bouge, et ce
+  n'est pas un article que personne ne pense a relire.
 
-  LA BANDE DES SEUILS. La regle est une echelle : rien jusqu'a 5 m2,
-  declaration jusqu'a 20, permis au-dela. Trois colonnes de largeurs
-  croissantes, de la crème au vert plein, disent cette progression avant
-  qu'on ait lu. Ce qui ne depend PAS de la surface — les fenetres, la
-  toiture, la teinte d'une facade — sort de la bande et prend sa propre
-  ligne : melange aux metres carres, on le lisait comme une exception a un
-  seuil, alors que c'est une autre regle.
-
-  CE QUI N'EST PAS ECRIT ICI. Trois choses varient d'une commune a l'autre et
-  changent tout : le document d'urbanisme applicable, qui delivre les
-  autorisations, et si le conseil a rendu la declaration obligatoire pour les
-  clotures. Elles viennent des reglages et le bloc DISPARAIT tant qu'elles
-  sont vides. Un site de mairie qui affirme que l'Etat delivre les permis
-  alors que c'est la maire envoie les gens frapper a la mauvaise porte.
-  outils/urbanisme-officiel.sh va chercher la reponse au Geoportail.
-
-  Le reste — les seuils, les delais, l'affichage, le certificat d'urbanisme —
-  est du droit national : vrai a Marly-Gomont comme partout.
+  Deux choses viennent des reglages et de la mairie seule : le document
+  d'urbanisme applicable et qui delivre les autorisations. Le bloc qui les
+  porte disparait tant qu'elles sont vides.
 ]
+<BOUCLE_rub(RUBRIQUES){id_rubrique}>
 <div class="urba-page">
 
 <div class="bandeau-illustre">
@@ -43,10 +30,14 @@
 		<div>
 			<nav class="fil-ariane" aria-label="Fil d’Ariane">
 				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+				<BOUCLE_chemin(HIERARCHIE){tout}>
 				<span aria-hidden="true">/</span>
-				<:marly:ma_mairie:>
+				<a href="#URL_RUBRIQUE">#TITRE</a>
+				</BOUCLE_chemin>
 			</nav>
-			<h1><:marly:titre_urbanisme:></h1>
+			[(#REM) Le titre est celui de la rubrique : la mairie peut la
+			        renommer sans que la page se contredise. ]
+			<h1>#TITRE</h1>
 		</div>
 	</div>
 </div>
@@ -57,7 +48,11 @@
 
 <div class="page-simple page-sous-carton">
 
-	<p class="chapo"><:marly:urba_intro:></p>
+	[(#REM) L'introduction ecrite par la mairie dans le texte de la rubrique,
+	        celle du site a defaut. Elle a le dernier mot sans avoir a
+	        recopier quoi que ce soit. ]
+	[<div class="chapo">(#TEXTE)</div>]
+	[(#TEXTE|non)<p class="chapo"><:marly:urba_intro:></p>]
 
 	<h2 class="titre-bloc"><:marly:urba_titre_cas:></h2>
 
@@ -167,5 +162,11 @@
 			<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:urba_lien_ecrire:></a>]
 	</p>
 
+	[(#REM) Ce que la mairie publie dans la rubrique : enquete publique,
+	        revision du plan intercommunal, travaux de voirie. La loi d'abord,
+	        l'actualite ensuite — c'est dans cet ordre qu'on vient lire. ]
+	<INCLURE{fond=inc/rubrique-articles}{id_rubrique=#ID_RUBRIQUE}{env}>
+
 </div>
 </div>
+</BOUCLE_rub>

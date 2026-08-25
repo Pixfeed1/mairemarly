@@ -1,0 +1,54 @@
+[(#REM)
+  Les sous-rubriques et les articles d'une rubrique.
+  ---------------------------------------------------------------------------
+  Sorti de contenu/rubrique.html le jour ou une rubrique a eu droit a une
+  presentation particuliere. Deux mises en page, une seule liste : le tri par
+  annee et la pagination ne peuvent pas diverger entre elles.
+
+  Parametres : id_rubrique. L'environnement est transmis en entier, la
+  pagination en depend.
+]
+<BOUCLE_r(RUBRIQUES){id_rubrique}>
+
+	<B_sousrub>
+	<h2><:marly:dans_cette_rubrique:></h2>
+	<ul class="fiches">
+		<BOUCLE_sousrub(RUBRIQUES){id_parent}{par titre}>
+		<li><a href="#URL_RUBRIQUE">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
+			<span class="fiche-texte">
+				<b>#TITRE</b>
+				[<span>(#DESCRIPTIF|textebrut|couper{120})</span>]
+			</span>
+		</a></li>
+		</BOUCLE_sousrub>
+	</ul>
+	</B_sousrub>
+
+	[(#REM)
+	  Les articles, groupes par annee : un titre d'annee s'insere chaque fois
+	  que l'annee change, et une nouvelle liste s'ouvre dessous. Le filtre
+	  |unique ne rend l'annee que la premiere fois qu'il la voit ; la liste
+	  precedente se ferme d'abord, sauf devant le tout premier article.
+	]
+	<B_arts>
+	<BOUCLE_arts(ARTICLES){id_rubrique}{!par date}{pagination 12}>
+	#SET{nouvelle_annee,#DATE|annee|unique{annees_rubrique}}
+	[(#GET{nouvelle_annee}|et{#COMPTEUR_BOUCLE|>{1}})</ul>]
+	[(#GET{nouvelle_annee}|oui)<h2 class="rubrique-annee">#GET{nouvelle_annee}</h2><ul class="fiches">]
+		<li><a href="#URL_ARTICLE">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+			<span class="fiche-texte">
+				<b>#TITRE</b>
+				<span>[(#DATE|affdate)][ · (#SOUSTITRE)][ · (#INTRODUCTION|couper{110})]</span>
+			</span>
+		</a></li>
+	</BOUCLE_arts>
+	</ul>
+	[<p class="pagination">(#PAGINATION{prive})</p>]
+	</B_arts>
+	<//B_arts>
+	[(#REM) Une rubrique sans article ni sous-rubrique n'est de toute facon
+	        pas publiee par SPIP : pas de message a prevoir ici. ]
+
+</BOUCLE_r>

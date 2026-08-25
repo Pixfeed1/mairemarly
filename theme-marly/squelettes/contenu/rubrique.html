@@ -1,71 +1,19 @@
 [(#REM)
-  Une rubrique : son texte d'introduction, ses sous-rubriques, puis ses
-  articles du plus recent au plus ancien, groupes par annee et pagines par
-  douze pour que la page des trente-sept comptes rendus reste maniable.
-  Valide maquette en main : apercu-rubrique-sobre.
+  Une rubrique, et le choix de sa mise en page.
+  ---------------------------------------------------------------------------
+  Presque toutes les rubriques se ressemblent : un titre, une introduction,
+  des articles. Une seule demande autre chose — l'urbanisme, dont l'essentiel
+  n'est pas ce que la mairie ecrit mais ce que la loi impose, et qui ne se
+  retape pas a la main.
+
+  LE CHOIX SE FAIT SUR LE TITRE, comme la page du conseil reconnait deja la
+  rubrique << Comptes rendus >>. Une rubrique dont le titre commence par
+  << Urbanisme >> recoit la presentation particuliere ; toutes les autres,
+  la presentation ordinaire. Renommer la rubrique << Urbanisme et travaux >>
+  ne change rien ; l'appeler << L'urbanisme >> la ferait retomber sur la
+  presentation ordinaire, et c'est ecrit dans CONFIGURATION.md.
 ]
-<BOUCLE_rub(RUBRIQUES){id_rubrique}>
-<div class="page-simple fiche-demarche">
-
-	<nav class="fil-ariane" aria-label="Fil d’Ariane">
-		<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
-		<BOUCLE_chemin(HIERARCHIE){tout}>
-		<span aria-hidden="true">›</span>
-		<a href="#URL_RUBRIQUE">#TITRE</a>
-		</BOUCLE_chemin>
-		<span aria-hidden="true">›</span>
-		<span aria-current="page">#TITRE</span>
-	</nav>
-
-	[(#REM) Le nom de la rubrique mere en sur-titre, comme sur un article.
-	        Une rubrique de premier niveau n'a pas de mere : rien ne s'affiche. ]
-	<BOUCLE_mere(RUBRIQUES){id_rubrique=#ID_PARENT}>
-	<p class="article-rubrique">#TITRE</p>
-	</BOUCLE_mere>
-
-	<h1>#TITRE</h1>
-	[<div class="chapo">(#TEXTE)</div>]
-
-	<B_sousrub>
-	<h2><:marly:dans_cette_rubrique:></h2>
-	<ul class="fiches">
-		<BOUCLE_sousrub(RUBRIQUES){id_parent}{par titre}>
-		<li><a href="#URL_RUBRIQUE">
-			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
-			<span class="fiche-texte">
-				<b>#TITRE</b>
-				[<span>(#DESCRIPTIF|textebrut|couper{120})</span>]
-			</span>
-		</a></li>
-		</BOUCLE_sousrub>
-	</ul>
-	</B_sousrub>
-
-	[(#REM)
-	  Les articles, groupes par annee : un titre d'annee s'insere chaque fois
-	  que l'annee change, et une nouvelle liste s'ouvre dessous. Le filtre
-	  |unique ne rend l'annee que la premiere fois qu'il la voit ; la liste
-	  precedente se ferme d'abord, sauf devant le tout premier article.
-	]
-	<B_arts>
-	<BOUCLE_arts(ARTICLES){id_rubrique}{!par date}{pagination 12}>
-	#SET{nouvelle_annee,#DATE|annee|unique{annees_rubrique}}
-	[(#GET{nouvelle_annee}|et{#COMPTEUR_BOUCLE|>{1}})</ul>]
-	[(#GET{nouvelle_annee}|oui)<h2 class="rubrique-annee">#GET{nouvelle_annee}</h2><ul class="fiches">]
-		<li><a href="#URL_ARTICLE">
-			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
-			<span class="fiche-texte">
-				<b>#TITRE</b>
-				<span>[(#DATE|affdate)][ · (#SOUSTITRE)][ · (#INTRODUCTION|couper{110})]</span>
-			</span>
-		</a></li>
-	</BOUCLE_arts>
-	</ul>
-	[<p class="pagination">(#PAGINATION{prive})</p>]
-	</B_arts>
-	<//B_arts>
-	[(#REM) Une rubrique sans article ni sous-rubrique n'est de toute facon
-	        pas publiee par SPIP : pas de message a prevoir ici. ]
-
-</div>
-</BOUCLE_rub>
+<BOUCLE_choix(RUBRIQUES){id_rubrique}>
+#SET{mise_en_page,#TITRE|match{'^Urbanisme'}|?{inc/rubrique-urbanisme,inc/rubrique-simple}}
+<INCLURE{fond=#GET{mise_en_page}}{id_rubrique=#ID_RUBRIQUE}{env}>
+</BOUCLE_choix>

@@ -1,0 +1,31 @@
+[(#REM)
+  Une rubrique ordinaire : son texte d'introduction, ses sous-rubriques, puis
+  ses articles du plus recent au plus ancien.
+  Valide maquette en main : apercu-rubrique-sobre.
+]
+<BOUCLE_rub(RUBRIQUES){id_rubrique}>
+<div class="page-simple fiche-demarche">
+
+	<nav class="fil-ariane" aria-label="Fil d’Ariane">
+		<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+		<BOUCLE_chemin(HIERARCHIE){tout}>
+		<span aria-hidden="true">›</span>
+		<a href="#URL_RUBRIQUE">#TITRE</a>
+		</BOUCLE_chemin>
+		<span aria-hidden="true">›</span>
+		<span aria-current="page">#TITRE</span>
+	</nav>
+
+	[(#REM) Le nom de la rubrique mere en sur-titre, comme sur un article.
+	        Une rubrique de premier niveau n'a pas de mere : rien ne s'affiche. ]
+	<BOUCLE_mere(RUBRIQUES){id_rubrique=#ID_PARENT}>
+	<p class="article-rubrique">#TITRE</p>
+	</BOUCLE_mere>
+
+	<h1>#TITRE</h1>
+	[<div class="chapo">(#TEXTE)</div>]
+
+	<INCLURE{fond=inc/rubrique-articles}{id_rubrique=#ID_RUBRIQUE}{env}>
+
+</div>
+</BOUCLE_rub>
