@@ -56,7 +56,19 @@
 
 	[(#REM) Le portrait a droite du texte : le nom et la charge se lisent en
 	        premier, la photographie accompagne. Sans photographie, le sceau
-	        tient la colonne — un trou la casserait. ]
+	        tient la colonne — un trou la casserait.
+
+	        PAS DE LIGNE DE CREDIT ICI, et c'est delibere. Une premiere
+	        version en affichait une quand il n'y avait PAS de photo
+	        (<< Photographie a venir >>) et se taisait quand il y en avait
+	        une : l'inverse de ce a quoi sert un credit, qui est de nommer un
+	        auteur. Et << a venir >> etait une promesse faite a la place de la
+	        mairie — si aucune photo n'arrive, la page annonce une attente qui
+	        ne finit pas.
+
+	        Le vrai credit reste a faire : il vit dans le champ << credits >>
+	        du document depose, et il faut une photo reelle pour verifier
+	        qu'on sait le lire. Tant que ce n'est pas mesure, rien. ]
 	<div class="elu-tete">
 		<div class="elu-tete-texte">
 			<p class="elu-fonction">#FONCTION</p>
@@ -67,7 +79,6 @@
 				[(#LOGO_ELU|non)<INCLURE{fond=inc/sceau-tuile}{classe=elu-sceau-fiche}{n=#ID_ELU}>]
 				[<img class="elu-photo" src="(#LOGO_ELU|image_reduire{380,460}|extraire_attribut{src})" alt="">]
 			</div>
-			[(#LOGO_ELU|non)<span class="elu-credit"><:marly:photo_a_venir:></span>]
 		</div>
 	</div>
 

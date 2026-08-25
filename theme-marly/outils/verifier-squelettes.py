@@ -820,6 +820,36 @@ if os.path.isdir(_PRIVE):
                          _src[:_c.start()].count(chr(10)) + 1,
                          f"on peut creer et modifier un {_objet}, pas le supprimer : {_quoi}")
 
+# 42. Une lettre d'un autre alphabet qui imite une lettre latine. Un << e >>
+#     cyrillique (U+0435) est indiscernable a l'oeil d'un << e >> latin, et
+#     pourtant ce n'est pas le meme caractere : un mot qui en contient un
+#     echappe a toute recherche, casse un identifiant, ou fait echouer une
+#     comparaison de chaine sans que rien ne l'explique.
+#
+#     C'est arrive dans un commentaire — la, sans consequence. Le meme
+#     accident dans un nom de classe CSS, une cle de langue ou un motif
+#     coute une soiree a comprendre, parce que le code A L'AIR juste.
+_ALPHABETS_ETRANGERS = re.compile('[\u0400-\u04FF\u0370-\u03FF]')
+for _rep in ('theme-marly', 'plugin-marly'):
+    _base = os.path.join(RACINE, '..', _rep)
+    if not os.path.isdir(_base):
+        continue
+    for _racine, _, _fichiers in os.walk(_base):
+        for _nom in _fichiers:
+            if not _nom.endswith(('.html', '.php', '.css', '.js', '.py', '.xml')):
+                continue
+            _f = os.path.join(_racine, _nom)
+            try:
+                _src = open(_f, encoding='utf-8').read()
+            except (UnicodeDecodeError, OSError):
+                continue
+            for _c in _ALPHABETS_ETRANGERS.finditer(_src):
+                signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                         _src[:_c.start()].count(chr(10)) + 1,
+                         f"caractere {_c.group(0)!r} (U+{ord(_c.group(0)):04X}) : une lettre "
+                         "d'un autre alphabet qui imite une lettre latine. Indiscernable a "
+                         "l'oeil, mais ce n'est pas le meme caractere")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

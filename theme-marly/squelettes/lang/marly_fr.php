@@ -180,7 +180,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'conseil_ecrire'       => 'Écrire à la mairie',
 	'retour_conseil'       => 'Retour au conseil municipal',
 	'elu_parcours'         => 'Son parcours',
-	'photo_a_venir'        => 'Photographie à venir',
 	'fiche_maj'            => 'Fiche mise à jour le',
 
 	// Le rôle du maire : la même information pour les 34 000 communes de

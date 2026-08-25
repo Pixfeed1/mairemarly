@@ -1671,6 +1671,10 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 	justify-content:center; background:var(--accent); border-radius:3px;
 	color:#fff; overflow:hidden; }
 .elu-sceau-fiche{ width:130px; height:130px; opacity:.9; }
+/* Le credit sous le portrait. Aucun gabarit ne s'en sert encore : une
+   premiere version l'affichait quand il n'y avait PAS de photo, ce qui est
+   l'inverse de ce a quoi sert un credit. La regle reste ici pour le jour ou
+   on saura lire le champ credits du document depose. */
 .elu-credit{ display:block; margin-top:7px; font-size:12px; color:var(--encre-doux); }
 .elu-role h2{ margin-top:34px; }
 .elu-maj{ margin-top:38px; padding-top:14px; border-top:1px solid var(--trait);
