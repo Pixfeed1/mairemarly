@@ -1277,6 +1277,39 @@ if os.path.exists(_CSS55):
                      "navigateurs le rempliraient et tous les envois seraient "
                      "refuses, sans message et sans trace")
 
+# 56. La bordure d'un champ dessinee avec la couleur du decor.
+#     WCAG 1.4.11, repris par le RGAA en 3.3, demande 3:1 pour ce qui identifie
+#     un composant d'interface. La bordure d'un champ de saisie EST cette
+#     information : rien d'autre ne dit ou commencer a taper. Un filet entre
+#     deux cartes, lui, est du decor, et le decor est explicitement exclu.
+#
+#     Mesure du 26 aout 2026, calcul sur la palette : --trait contre le blanc
+#     donne 1,44 pour 3 exiges. Onze bordures de controle etaient dans ce cas.
+#     --trait-champ donne 3,21 contre le blanc et 3,03 contre le creme.
+#
+#     Personne ne verrait la faute a l'oeil : un champ a bordure trop claire
+#     reste beau. Il devient seulement invisible a qui voit mal.
+_CTRL56 = ('input', 'select', 'textarea', '.fermer',
+           '.recherche-champ', '.filtre-recherche', '.champ-demarche')
+_CSS56 = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.exists(_CSS56):
+    _src = open(_CSS56, encoding='utf-8').read()
+    _masque = re.sub(r'/\*.*?\*/',
+                     lambda _m: ''.join(_c if _c == chr(10) else ' ' for _c in _m.group(0)),
+                     _src, flags=re.S)
+    for _m in re.finditer(r'([^{}]+)\{([^{}]*)\}', _masque):
+        _sel = ' '.join(_m.group(1).split())
+        if not any(_c in _sel for _c in _CTRL56):
+            continue
+        _corps = _src[_m.start(2):_m.end(2)]
+        if re.search(r'border(-[a-z]+)?\s*:[^;]*var\(--trait\)', _corps):
+            signaler('squelettes/css/theme.css',
+                     _masque[:_m.start()].count(chr(10)) + 1,
+                     f"<< {_sel[:70]} >> dessine la bordure d'un champ avec --trait, "
+                     "qui vaut 1,44 contre le blanc pour 3 exiges (WCAG 1.4.11, "
+                     "RGAA 3.3). Le champ reste beau et devient invisible a qui voit "
+                     "mal. Employer --trait-champ")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

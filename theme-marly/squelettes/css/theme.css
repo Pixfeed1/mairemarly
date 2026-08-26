@@ -27,6 +27,17 @@
   --encre:#1D1A1A;   --encre-doux:#55504A;
   --creme:#FDF8EE;   --trait:#DED6C6;   --creme-sombre:#F3EFE6;
 
+  /* --trait dessine des cartes et des filets : c'est un decor, et WCAG exclut
+     le decor de sa regle de contraste. --trait-champ dessine la BORDURE D'UN
+     CHAMP, et celle-la est la seule chose qui dit ou commencer a taper : elle
+     doit atteindre 3:1 (WCAG 1.4.11, RGAA 3.3).
+
+     Mesure du 26 aout 2026 : --trait contre le blanc donne 1,44. Tres loin du
+     compte. --trait-champ donne 3,21 contre le blanc et 3,03 contre le creme,
+     en restant dans la famille chaude du theme — un gris neutre jurerait avec
+     le --trait des cartes, juste a cote. */
+  --trait-champ:#958F85;
+
   --script:"Caveat",cursive;
   --serif:"Alegreya",Georgia,serif;
   --titre:"Alegreya Sans","Segoe UI",system-ui,sans-serif;
@@ -316,7 +327,7 @@ body::after{
 .panneau-recherche .fermer{
 	position:absolute; top:22px; right:22px;
 	width:48px; height:48px; border-radius:50%;
-	border:1px solid var(--trait); background:#fff; cursor:pointer;
+	border:1px solid var(--trait-champ); background:#fff; cursor:pointer;
 	display:flex; align-items:center; justify-content:center; color:var(--encre);
 }
 .panneau-recherche .aide{ margin-top:16px; font-size:14px; color:var(--encre-doux); }
@@ -345,7 +356,7 @@ body::after{
 .champ-demarche{ display:flex; }
 .champ-demarche select{
   flex:1; min-width:0; appearance:none;
-  border:1px solid var(--trait); border-right:0; border-radius:4px 0 0 4px;
+  border:1px solid var(--trait-champ); border-right:0; border-radius:4px 0 0 4px;
   background-color:#fff; padding:14px 44px 14px 16px;
   font-family:var(--texte); font-size:15px; color:var(--encre); cursor:pointer;
   /* Chevron dessiné en dégradés : aucune image à charger. */
@@ -517,7 +528,7 @@ section{ padding-block:70px; position:relative; }
 .couv{ width:160px; height:216px; flex-shrink:0; border-radius:2px; box-shadow:0 12px 30px rgba(29,26,26,.22); --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
 .lettre{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:30px; }
 .lettre form{ display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
-.lettre input{ flex:1; min-width:190px; border:1px solid var(--trait); border-radius:3px; padding:13px 15px; font-family:var(--texte); }
+.lettre input{ flex:1; min-width:190px; border:1px solid var(--trait-champ); border-radius:3px; padding:13px 15px; font-family:var(--texte); }
 .lettre button{ border:0; background:var(--accent); color:#fff; border-radius:3px; padding:13px 24px; font-weight:700; cursor:pointer; font-family:var(--texte); }
 
 /* ---- PIED --------------------------------------------------------------- */
@@ -527,7 +538,7 @@ section{ padding-block:70px; position:relative; }
    recherche. */
 .recherche-champ{
 	display:flex; align-items:center; gap:10px;
-	border:1px solid var(--trait); border-radius:30px;
+	border:1px solid var(--trait-champ); border-radius:30px;
 	background:#fff; padding:6px 8px 6px 22px; margin:0 0 30px;
 }
 .recherche-champ input{
@@ -801,7 +812,7 @@ section{ padding-block:70px; position:relative; }
 /* --- la colonne de filtres ------------------------------------------------ */
 .filtres-cote{ position:sticky; top:calc(var(--h-entete,90px) + 20px); }
 
-.filtre-recherche{ display:flex; align-items:center; gap:9px; border:1px solid var(--trait);
+.filtre-recherche{ display:flex; align-items:center; gap:9px; border:1px solid var(--trait-champ);
                    border-radius:40px; background:#fff; padding:10px 18px; margin-bottom:26px; }
 .filtre-recherche .ico{ width:17px; height:17px; color:var(--accent); flex-shrink:0; }
 .filtre-recherche input{ flex:1; min-width:0; border:0; background:none; font-family:var(--texte);
@@ -809,7 +820,7 @@ section{ padding-block:70px; position:relative; }
 
 .filtre-types{ display:flex; flex-direction:column; margin-bottom:30px; }
 .filtre-types a{ font-family:var(--titre); font-size:16px; font-weight:600; color:var(--encre);
-                 text-decoration:none; padding:9px 0; border-bottom:1px solid var(--trait); }
+                 text-decoration:none; padding:9px 0; border-bottom:1px solid var(--trait-champ); }
 .filtre-types a:last-child{ border-bottom:0; }
 .filtre-types a:hover{ color:var(--accent); }
 .filtre-types a.actif{ color:var(--accent); }
@@ -899,7 +910,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .fiche-droite li{ margin-bottom:15px; }
 .fiche-droite label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:5px; }
 .fiche-droite input, .fiche-droite textarea{
-  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+  width:100%; border:1px solid var(--trait-champ); border-radius:4px; background:#fff;
   padding:11px 13px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
 .fiche-droite small{ display:block; margin-top:5px; font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
@@ -992,7 +1003,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .nl-dedans .fermer{
   position:absolute; top:14px; right:14px;
   width:42px; height:42px; border-radius:50%;
-  border:1px solid var(--trait); background:#fff; color:var(--encre);
+  border:1px solid var(--trait-champ); background:#fff; color:var(--encre);
   display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
 .nl-dedans .fermer:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
@@ -1011,7 +1022,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .formulaire_signaler_association input[type="tel"],
 .formulaire_signaler_association select,
 .formulaire_signaler_association textarea{
-  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+  width:100%; border:1px solid var(--trait-champ); border-radius:4px; background:#fff;
   padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
 
@@ -2027,7 +2038,7 @@ body.page-login .page-simple{ max-width:1080px; }
 .connexion-carte input[type="text"],
 .connexion-carte input[type="email"],
 .connexion-carte input[type="password"]{
-	width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+	width:100%; border:1px solid var(--trait-champ); border-radius:4px; background:#fff;
 	padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
 /* SPIP remplit ce span par ajax avec le logo de l'auteur reconnu. Vide la
@@ -2170,7 +2181,7 @@ body.page-contact .page-simple{ max-width:1080px; }
 .contact-form .obligatoire{ font-weight:400; font-size:12px; color:var(--encre-doux); }
 .contact-form input[type="text"], .contact-form input[type="email"],
 .contact-form input[type="tel"], .contact-form select, .contact-form textarea{
-	width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+	width:100%; border:1px solid var(--trait-champ); border-radius:4px; background:#fff;
 	padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
 .contact-form textarea{ resize:vertical; min-height:150px; }
