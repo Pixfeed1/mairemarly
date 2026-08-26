@@ -95,22 +95,51 @@ foreach ($quoi as $q) {
  * ------------------------------------------------------------------------ */
 echo "\nIMAGES ATTACHEES AUX ARTICLES\n";
 if (sql_showtable('spip_documents_liens', true)) {
-	$roles = sql_allfetsel(
-		"role, COUNT(DISTINCT id_objet) AS objets, COUNT(*) AS documents",
-		'spip_documents_liens', "objet='article'", 'role', 'objets DESC');
-	if (!$roles) {
-		echo "  aucun document attache a aucun article.\n";
-	}
-	foreach ($roles as $r) {
-		printf("  role %-14s %4d article(s), %4d document(s)\n",
-			$r['role'], $r['objets'], $r['documents']);
-	}
+
+	/* ON DEMANDE D'ABORD LES COLONNES. La premiere version groupait sur une
+	   colonne « role » qui n'existe pas dans toutes les versions de SPIP : la
+	   requete echouait, sql_allfetsel rendait un tableau vide, et le script
+	   annoncait tranquillement « aucun document attache » deux lignes avant
+	   d'en compter cinquante-cinq. Une requete qui echoue doit se voir. */
+	$desc = sql_showtable('spip_documents_liens', true);
+	$colonnes = array_keys($desc['field']);
+	echo '  colonnes du lien : ' . implode(', ', $colonnes) . "\n";
+
+	$total = sql_countsel('spip_articles', "statut='publie'");
 	$avec = sql_countsel('spip_articles AS a', array(
 		"a.statut='publie'",
 		"EXISTS (SELECT 1 FROM spip_documents_liens AS l WHERE l.objet='article'"
 		. " AND l.id_objet = a.id_article)"));
-	$total = sql_countsel('spip_articles', "statut='publie'");
-	printf("  %d article(s) publie(s) sur %d ont au moins un document.\n", $avec, $total);
+	printf("  %d article(s) publie(s) sur %d portent au moins un document.\n", $avec, $total);
+
+	/* Ce que sont ces documents. C'est « media » qui distingue une image d'un
+	   fichier : un PDF joint ne fera jamais une vignette. */
+	$par = sql_allfetsel(
+		'd.media, d.extension, COUNT(*) AS n',
+		'spip_documents AS d INNER JOIN spip_documents_liens AS l ON l.id_document = d.id_document',
+		"l.objet='article'",
+		array('d.media', 'd.extension'),
+		'n DESC');
+	foreach ($par as $r) {
+		printf("    %-8s %-6s %4d\n", $r['media'], $r['extension'], $r['n']);
+	}
+
+	/* Les IMAGES seules, article par article : c'est ce chiffre qui decide si
+	   une mise en page riche en photographies est possible. */
+	$img = sql_countsel('spip_articles AS a', array(
+		"a.statut='publie'",
+		"EXISTS (SELECT 1 FROM spip_documents_liens AS l"
+		. " INNER JOIN spip_documents AS d ON d.id_document = l.id_document"
+		. " WHERE l.objet='article' AND l.id_objet = a.id_article AND d.media='image')"));
+	printf("  %d article(s) publie(s) sur %d portent au moins une IMAGE.\n", $img, $total);
+
+	if (in_array('vu', $colonnes, true)) {
+		$vus = sql_allfetsel("l.vu, COUNT(DISTINCT l.id_objet) AS n",
+			'spip_documents_liens AS l', "l.objet='article'", 'l.vu', 'n DESC');
+		foreach ($vus as $r) {
+			printf("    vu=%-10s %4d article(s)\n", $r['vu'], $r['n']);
+		}
+	}
 }
 
 /* Les brouillons comptent : ce sont eux qui attendent une relecture. */
