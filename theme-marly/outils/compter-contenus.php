@@ -85,6 +85,34 @@ foreach ($quoi as $q) {
 	printf("%-18s %8d %8d   %s\n", $nom, $publies, $total, $recent ?: '');
 }
 
+/* ---------------------------------------------------------------------------
+ * LES IMAGES. La question qui decide de la mise en page de l'accueil : un bloc
+ * d'actualites a la maniere des grandes communes suppose des photographies. Si
+ * les articles n'en ont pas, aucune mise en page ne les fera apparaitre, et
+ * reserver la place d'une image absente donne un trou.
+ *
+ * On ne suppose pas le nom du role : on demande a la base ceux qu'elle porte.
+ * ------------------------------------------------------------------------ */
+echo "\nIMAGES ATTACHEES AUX ARTICLES\n";
+if (sql_showtable('spip_documents_liens', true)) {
+	$roles = sql_allfetsel(
+		"role, COUNT(DISTINCT id_objet) AS objets, COUNT(*) AS documents",
+		'spip_documents_liens', "objet='article'", 'role', 'objets DESC');
+	if (!$roles) {
+		echo "  aucun document attache a aucun article.\n";
+	}
+	foreach ($roles as $r) {
+		printf("  role %-14s %4d article(s), %4d document(s)\n",
+			$r['role'], $r['objets'], $r['documents']);
+	}
+	$avec = sql_countsel('spip_articles AS a', array(
+		"a.statut='publie'",
+		"EXISTS (SELECT 1 FROM spip_documents_liens AS l WHERE l.objet='article'"
+		. " AND l.id_objet = a.id_article)"));
+	$total = sql_countsel('spip_articles', "statut='publie'");
+	printf("  %d article(s) publie(s) sur %d ont au moins un document.\n", $avec, $total);
+}
+
 /* Les brouillons comptent : ce sont eux qui attendent une relecture. */
 echo "\n";
 $prepa = sql_countsel('spip_elus', "statut!='publie'");
