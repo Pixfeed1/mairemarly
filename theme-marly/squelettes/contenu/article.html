@@ -14,6 +14,7 @@
   pastilles numerotees donnaient a un texte administratif l'air d'un mode
   d'emploi en six etapes.
 ]
+<B_art>
 <BOUCLE_art(ARTICLES){id_article}>
 <div class="page-simple fiche-demarche">
 
@@ -140,3 +141,20 @@
 
 </div>
 </BOUCLE_art>
+</B_art>
+
+[(#REM) L'ARTICLE N'EXISTE PAS. Sans ce bloc, la boucle vide rendait une page
+        a 200 avec du vide entre l'en-tete et le pied : un lien peri, une
+        adresse mal tapee, un article retire donnaient une coquille que les
+        moteurs indexaient comme une page du site.
+
+        Releve le 26 aout 2026 : ?id_article=999999 repondait 200. Les huit
+        pages de detail du site etaient dans ce cas.
+
+        On repond un vrai 404 et on affiche notre page introuvable, qui porte
+        la recherche et les quatre destinations utiles. ]
+#HTTP_HEADER{HTTP/1.0 404 Not Found}
+#HTTP_HEADER{"Cache-Control: no-store, no-cache, must-revalidate"}
+#HTTP_HEADER{Pragma: no-cache}
+<INCLURE{fond=contenu/404}{env}>
+<//B_art>
