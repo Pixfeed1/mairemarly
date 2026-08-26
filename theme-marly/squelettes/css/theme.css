@@ -1957,8 +1957,16 @@ a.elu-nom:hover{ text-decoration:underline; }
    editer_var_login : deux inventions. C'est la mesure qui a tranché, pas
    la mémoire.
    =========================================================================== */
+/* La page de connexion porte DEUX colonnes ; la largeur de lecture des pages
+   simples, 820 px, n'en laisse que 320 a la seconde et hache le texte en
+   lignes de six mots. On elargit — mais le carton du bandeau ET le corps
+   ensemble : ils partagent la meme largeur, les desaligner ferait un decroche
+   visible sous le titre. */
+body.page-login .bandeau-carton{ width:min(1080px,calc(100% - 44px)); }
+body.page-login .page-simple{ max-width:1080px; }
+
 .connexion-deux{
-	display:grid; grid-template-columns:minmax(0,400px) minmax(0,1fr); gap:0 56px;
+	display:grid; grid-template-columns:minmax(0,380px) minmax(0,1fr); gap:0 64px;
 	align-items:start; margin-top:8px;
 }
 .connexion-carte{
@@ -2024,34 +2032,56 @@ a.elu-nom:hover{ text-decoration:underline; }
 }
 .formulaire_login .erreur input{ border-color:#A32020; }
 
-.connexion-a-cote .titre-bloc{ font-size:clamp(26px,3vw,32px); margin:0 0 14px; }
+.connexion-a-cote .titre-bloc{ font-size:clamp(26px,3vw,32px); margin:0 0 4px; }
+/* Une section, trois questions : le nom du service en gros serif, les
+   questions en sans-serif plus petit. Deux tailles suffisent à dire le
+   niveau ; trois grands titres identiques feraient un mur. */
+.connexion-a-cote h3{
+	font-family:var(--titre); font-size:21px; font-weight:700; color:var(--accent);
+	margin:34px 0 10px;
+}
+.connexion-a-cote h3:first-of-type{ margin-top:22px; }
 .connexion-a-cote p{
 	font-family:var(--texte); font-size:16px; line-height:1.7; color:var(--encre-doux);
-	max-width:62ch; margin:0 0 26px;
+	max-width:62ch; margin:0 0 14px;
 }
 .connexion-a-cote a{ color:var(--accent); }
 
-/* Qui possède un compte : deux lignes séparées par un filet, pas une liste
-   à puces. Une puce annonce une marche à suivre ; ici on constate. */
-.connexion-roles{ margin:0 0 26px; }
-.connexion-roles div{
+/* Qui peut accéder : deux blocs séparés par un filet, pas une liste à
+   puces de premier niveau. Chacun porte son intitulé, sa phrase et ses
+   exemples. */
+.connexion-roles{ margin:6px 0 0; }
+.connexion-roles > div{
 	display:flex; gap:16px; align-items:flex-start;
-	padding:16px 0; border-top:1px solid var(--trait);
+	padding:18px 0; border-top:1px solid var(--trait);
 }
-.connexion-roles div:last-child{ border-bottom:1px solid var(--trait); }
+.connexion-roles > div:last-child{ border-bottom:1px solid var(--trait); }
 .connexion-roles .rond{
 	width:42px; height:42px; border-radius:50%; flex-shrink:0;
 	background:var(--creme); border:1px solid var(--trait); color:var(--accent);
 	display:flex; align-items:center; justify-content:center;
 }
 .connexion-roles .rond .ico{ width:20px; height:20px; }
-.connexion-roles b{ display:block; font-family:var(--titre); font-size:18px; color:var(--encre); margin-bottom:2px; }
-.connexion-roles span{ font-family:var(--texte); font-size:14.5px; line-height:1.6; color:var(--encre-doux); }
-.connexion-roles p{ margin:0; }
+.connexion-roles b{
+	display:block; font-family:var(--titre); font-size:18px;
+	color:var(--encre); margin-bottom:4px;
+}
+.connexion-roles p{ font-size:15px; line-height:1.65; margin:0 0 8px; }
+.connexion-roles ul{
+	list-style:none; margin:0; padding:0;
+	font-family:var(--texte); font-size:15px; line-height:1.65; color:var(--encre-doux);
+}
+.connexion-roles li{ padding-left:16px; position:relative; }
+/* Une puce dessinée plutôt que celle du navigateur : elle prend la couleur
+   de la commune et se cale sur la ligne de base du texte. */
+.connexion-roles li::before{
+	content:""; position:absolute; left:2px; top:.68em;
+	width:5px; height:5px; border-radius:50%; background:var(--accent);
+}
 
 .connexion-encart{
 	background:var(--creme); border-left:4px solid var(--jaune);
-	padding:18px 22px; margin:0;
+	padding:18px 22px; margin:18px 0 0;
 }
 .connexion-encart p{ margin:0; font-size:15px; }
 

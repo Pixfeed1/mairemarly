@@ -306,15 +306,35 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'404_sinon'            => 'Si vous ne trouvez toujours pas, écrivez à la mairie :',
 
 	// --- Connexion -----------------------------------------------------------
+	// Le texte de cette page a ete ecrit par la mairie, pas par le theme.
+	// Le registre est celui d'une collectivite qui s'adresse a un administre :
+	// phrases entieres, pas de raccourci, pas de ton de mode d'emploi.
 	'se_connecter'         => 'Se connecter',
 	'connexion_pour'       => 'Secrétariat de mairie, élus et associations de la commune.',
-	'connexion_besoin'     => 'Avez-vous besoin d’un compte ?',
-	'connexion_besoin_non' => 'Non, pour presque tout. Consulter une démarche, réserver une salle, s’inscrire à la lettre d’information ou signaler une association : tout cela se fait sans se connecter.',
-	'connexion_qui'        => 'Qui se connecte ici',
-	'connexion_mairie'     => 'Le secrétariat et les élus',
-	'connexion_mairie_quoi'=> 'Publier les actualités, les comptes rendus du conseil, les arrêtés et les documents d’urbanisme.',
+
+	'connexion_acces'      => 'Accès à l’espace personnel',
+
+	'connexion_q1'         => 'Faut-il créer un compte pour utiliser le site ?',
+	'connexion_q1_a'       => 'La plupart des services proposés sur le site sont accessibles sans création de compte.',
+	'connexion_q1_b'       => 'Vous pouvez notamment consulter les démarches, réserver une salle, vous inscrire à la lettre d’information ou transmettre des informations concernant une association sans avoir à vous connecter.',
+	'connexion_q1_c'       => 'L’espace personnel est réservé aux personnes disposant de droits particuliers pour administrer certains contenus du site.',
+
+	'connexion_q2'         => 'Qui peut accéder à l’espace personnel ?',
+	'connexion_mairie'     => 'Le secrétariat de mairie et les élus habilités',
+	'connexion_mairie_quoi'=> 'Cet espace leur permet de publier et de mettre à jour les informations utiles à la vie de la commune, notamment :',
+	'connexion_mairie_1'   => 'les actualités ;',
+	'connexion_mairie_2'   => 'les comptes rendus du conseil municipal ;',
+	'connexion_mairie_3'   => 'les arrêtés ;',
+	'connexion_mairie_4'   => 'les documents relatifs à l’urbanisme.',
 	'connexion_assos'      => 'Les associations de la commune',
-	'connexion_assos_quoi' => 'Tenir à jour leur fiche dans l’annuaire : contact, horaires, activités, prochaines dates.',
-	'connexion_creation'   => 'Les comptes sont créés par la mairie. Si vous représentez une association et n’avez pas encore d’accès, écrivez à',
+	'connexion_assos_quoi' => 'Les associations disposant d’un accès peuvent mettre à jour les informations de leur fiche dans l’annuaire, par exemple :',
+	'connexion_assos_1'    => 'leurs coordonnées ;',
+	'connexion_assos_2'    => 'leurs horaires ;',
+	'connexion_assos_3'    => 'leurs activités ;',
+	'connexion_assos_4'    => 'leurs prochaines dates et manifestations.',
+
+	'connexion_q3'         => 'Comment obtenir un accès ?',
+	'connexion_q3_a'       => 'Les comptes sont créés directement par la mairie afin de garantir que les accès sont attribués aux personnes habilitées.',
+	'connexion_creation'   => 'Si vous représentez une association de la commune et souhaitez obtenir un accès, vous pouvez contacter la mairie à l’adresse suivante :',
 
 );

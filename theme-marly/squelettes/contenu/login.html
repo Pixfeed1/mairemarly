@@ -37,29 +37,56 @@
 
 		<div class="connexion-a-cote">
 
-			<h2 class="titre-bloc"><:marly:connexion_besoin:></h2>
-			<p><:marly:connexion_besoin_non:></p>
+			[(#REM) Une section, trois questions. Le titre porte le nom du
+			        service, les h3 posent les questions dans l'ordre ou elles
+			        viennent : ai-je besoin d'un compte, qui en a un, comment
+			        en obtenir un. Le texte est celui de la mairie. ]
+			<h2 class="titre-bloc"><:marly:connexion_acces:></h2>
 
-			<h2 class="titre-bloc"><:marly:connexion_qui:></h2>
+			<h3><:marly:connexion_q1:></h3>
+			<p><:marly:connexion_q1_a:></p>
+			<p><:marly:connexion_q1_b:></p>
+			<p><:marly:connexion_q1_c:></p>
+
+			<h3><:marly:connexion_q2:></h3>
 			<div class="connexion-roles">
 				<div>
 					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-government-line"/></svg></span>
-					<p><b><:marly:connexion_mairie:></b>
-					<span><:marly:connexion_mairie_quoi:></span></p>
+					<div>
+						<b><:marly:connexion_mairie:></b>
+						<p><:marly:connexion_mairie_quoi:></p>
+						<ul>
+							<li><:marly:connexion_mairie_1:></li>
+							<li><:marly:connexion_mairie_2:></li>
+							<li><:marly:connexion_mairie_3:></li>
+							<li><:marly:connexion_mairie_4:></li>
+						</ul>
+					</div>
 				</div>
 				<div>
 					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>
-					<p><b><:marly:connexion_assos:></b>
-					<span><:marly:connexion_assos_quoi:></span></p>
+					<div>
+						<b><:marly:connexion_assos:></b>
+						<p><:marly:connexion_assos_quoi:></p>
+						<ul>
+							<li><:marly:connexion_assos_1:></li>
+							<li><:marly:connexion_assos_2:></li>
+							<li><:marly:connexion_assos_3:></li>
+							<li><:marly:connexion_assos_4:></li>
+						</ul>
+					</div>
 				</div>
 			</div>
+
+			<h3><:marly:connexion_q3:></h3>
+			<p><:marly:connexion_q3_a:></p>
 
 			[(#REM) L'adresse vient des reglages de la commune, jamais du
 			        squelette. Sans adresse renseignee, la phrase entiere
 			        disparait plutot que de renvoyer vers rien. ]
 			[<div class="connexion-encart">
-				<p><:marly:connexion_creation:>
-				<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a>.</p>
+				<p><:marly:connexion_creation:><br>
+				<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a></p>
 			</div>]
 
 		</div>
