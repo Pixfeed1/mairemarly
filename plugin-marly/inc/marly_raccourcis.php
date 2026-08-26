@@ -31,19 +31,37 @@ function marly_cibles_raccourcis() {
 		$cibles['demarche:' . $d['id_demarche']] = _T('marly:cible_demarche') . ' — ' . $d['titre'];
 	}
 
-	foreach (sql_allfetsel('id_rubrique, titre', 'spip_rubriques',
-	                       "statut = 'publie' AND id_parent = 0", '', '0+titre, titre') as $r) {
+	/* LES SOUS-RUBRIQUES AUSSI, et pas seulement celles de premier niveau.
+	   La premiere version ne proposait que les racines : le jour ou Urbanisme
+	   et Travaux et projets sont devenus des sous-rubriques de Ma mairie, ils
+	   ont disparu de la liste, et il ne restait qu'a taper leur adresse a la
+	   main — exactement ce qu'un selecteur est cense eviter.
+
+	   Elles sont presentees sous leur mere, pour qu'on lise l'arborescence
+	   dans un menu qui, lui, est plat. */
+	$racines = sql_allfetsel('id_rubrique, titre', 'spip_rubriques',
+		"statut = 'publie' AND id_parent = 0", '', '0+titre, titre');
+	foreach ($racines as $r) {
 		$cibles['rubrique:' . $r['id_rubrique']] = _T('marly:cible_rubrique') . ' — ' . $r['titre'];
+		foreach (sql_allfetsel('id_rubrique, titre', 'spip_rubriques',
+			"statut = 'publie' AND id_parent = " . intval($r['id_rubrique']),
+			'', '0+titre, titre') as $f) {
+			$cibles['rubrique:' . $f['id_rubrique']] =
+				_T('marly:cible_rubrique') . ' — ' . $r['titre'] . ' — ' . $f['titre'];
+		}
 	}
 
 	/* Les pages du thème, nommées en clair. Elles ne sont pas devinables
 	   depuis la base : c'est la seule liste que le code doit connaître. */
 	$pages = array(
 		'demarches'    => 'marly:toutes_les_demarches',
+		'commerces'    => 'marly:titre_commerces',
 		'associations' => 'marly:titre_vie_associative',
+		'conseil'      => 'marly:titre_conseil',
 		'lieux'        => 'marly:titre_ou_nous_trouver',
 		'reservation'  => 'marly:reserver',
 		'newsletter'   => 'marly:newsletter',
+		'plan'         => 'marly:plan_du_site',
 	);
 	foreach ($pages as $page => $intitule) {
 		$cibles['page:' . $page] = _T('marly:cible_page') . ' — ' . _T($intitule);
