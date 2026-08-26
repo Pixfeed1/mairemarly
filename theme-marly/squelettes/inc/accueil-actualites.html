@@ -85,36 +85,27 @@
 		<div class="actus-grille">
 			<div>
 			<BOUCLE_une(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{id_article!=#GET{art_banniere}}{!par date}{0,1}>
-				[(#REM) TROIS COUCHES, DE LA DERNIERE A LA PREMIERE.
+				[(#REM) DEUX COUCHES, ET AUCUNE PHOTOGRAPHIE DE SECOURS.
 
-				        Au fond, le sceau grave. On ne le voit jamais tant que
-				        tout va bien : il est la pour le jour ou la photo par
-				        defaut manque ou ne charge pas. Un dessin vaut mieux
-				        qu'un rectangle vide.
+				        Au fond, le sceau grave. C'est la marque du theme, pas
+				        une image de la commune : un filigrane qui occupe le
+				        cadre quand l'article n'apporte rien, comme il le fait
+				        deja sur la vignette d'un commerce ou le fond du plan.
 
-				        Au-dessus, l'eglise Saint-Remy. Elle ne s'affiche QUE
-				        si l'article n'a pas sa propre image — sinon le
-				        navigateur telechargerait une photographie que
-				        personne ne verrait.
+				        Au-dessus, la photographie de l'article, quand il en
+				        porte une.
 
-				        Au-dessus encore, la photographie de l'article, quand
-				        il en porte une. C'est toujours elle qui gagne.
+				        UNE PHOTOGRAPHIE PAR DEFAUT A EXISTE ICI, l'eglise
+				        Saint-Remy, et elle a ete retiree le 26 aout 2026 a la
+				        demande du client. La raison est juste : montrer
+				        l'eglise sur un article qui parle d'un centre de
+				        vaccination, ce n'est pas illustrer, c'est meubler. Le
+				        lecteur croit que la photographie dit quelque chose de
+				        l'article, et elle ne dit rien.
 
-				        alt vide pour l'eglise, et c'est volontaire : elle ne
-				        dit rien de l'article qu'elle accompagne. La decrire
-				        ferait annoncer << esplanade de l'eglise >> a un
-				        lecteur d'ecran devant un article sur les encombrants.
-				        C'est un decor, il se tait. ]
-				[(#REM) UN SEUL LIEN POUR TOUTE LA MISE EN AVANT, image comprise.
-				        Le cartouche seul etait cliquable ; l'image, posee juste
-				        au-dessus et manifestement du meme bloc, ne l'etait pas.
-				        Personne ne devine qu'une photographie de cette taille
-				        n'est pas un lien : on clique dessus, il ne se passe
-				        rien, et on croit le site casse.
-
-				        Un lien unique plutot que deux liens vers la meme page :
-				        au clavier, deux arrets pour une seule destination, et
-				        un lecteur d'ecran annoncerait deux fois le meme titre. ]
+				        L'eglise reste la banniere du haut de page, ou elle est
+				        a sa place : elle y represente la commune, pas un
+				        article. ]
 				<a class="une-lien" href="#URL_ARTICLE">
 				<span class="une-fond">
 					<span class="une-grave" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=une-trace}{n=une}></span>
@@ -127,7 +118,6 @@
 					        photographie deposee fait 1600x1200. Une dimension
 					        declaree est une promesse au navigateur ; mieux vaut
 					        n'en faire aucune que d'en faire une fausse. ]
-					[(#LOGO_ARTICLE|non)<img class="une-defaut" src="#CHEMIN{img/eglise-defaut.jpg}" alt="" loading="lazy">]
 					[(#LOGO_ARTICLE||image_reduire{900,460})]
 				</span>
 				<span class="une-carton">
