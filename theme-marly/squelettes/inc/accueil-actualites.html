@@ -97,7 +97,18 @@
 				        ferait annoncer << esplanade de l'eglise >> a un
 				        lecteur d'ecran devant un article sur les encombrants.
 				        C'est un decor, il se tait. ]
-				<div class="une-fond">
+				[(#REM) UN SEUL LIEN POUR TOUTE LA MISE EN AVANT, image comprise.
+				        Le cartouche seul etait cliquable ; l'image, posee juste
+				        au-dessus et manifestement du meme bloc, ne l'etait pas.
+				        Personne ne devine qu'une photographie de cette taille
+				        n'est pas un lien : on clique dessus, il ne se passe
+				        rien, et on croit le site casse.
+
+				        Un lien unique plutot que deux liens vers la meme page :
+				        au clavier, deux arrets pour une seule destination, et
+				        un lecteur d'ecran annoncerait deux fois le meme titre. ]
+				<a class="une-lien" href="#URL_ARTICLE">
+				<span class="une-fond">
 					<span class="une-grave" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=une-trace}{n=une}></span>
 					[(#REM) PAS DE width NI DE height ICI, ET C'EST DELIBERE. Cette
 					        image est en position absolue et remplit son cadre :
@@ -110,11 +121,12 @@
 					        n'en faire aucune que d'en faire une fausse. ]
 					[(#LOGO_ARTICLE|non)<img class="une-defaut" src="#CHEMIN{img/eglise-defaut.jpg}" alt="" loading="lazy">]
 					[(#LOGO_ARTICLE||image_reduire{900,460})]
-				</div>
-				<a class="une-carton" href="#URL_ARTICLE">
+				</span>
+				<span class="une-carton">
 					[<span class="une-date">(#DATE|affdate)</span>]
 					<span class="une-titre">#TITRE</span>
 					[<span class="une-chapo">(#INTRODUCTION|couper{170})</span>]
+				</span>
 				</a>
 			</BOUCLE_une>
 			</div>

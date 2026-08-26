@@ -2150,7 +2150,12 @@ body.page-contact .page-simple{ max-width:1080px; }
 /* Le sceau est SOUS l'image, pas à côté : l'article qui porte une photo la
    voit recouvrir le cadre entier, celui qui n'en porte pas montre le dessin.
    Une seule écriture pour les deux cas — aucun des deux ne peut être oublié. */
+/* Toute la mise en avant est UN seul lien, image comprise. Le cartouche seul
+   etait cliquable et l'image ne l'etait pas : on clique sur une photographie
+   de cette taille, il ne se passe rien, et on croit le site casse. */
+.une-lien{ display:block; text-decoration:none; color:var(--encre); }
 .une-fond{
+  display:block;
   position:relative; aspect-ratio:16/8; background:var(--creme);
   border-top:3px solid var(--accent); overflow:hidden;
 }
@@ -2174,10 +2179,10 @@ body.page-contact .page-simple{ max-width:1080px; }
   padding:20px 24px 22px; display:block; text-decoration:none; color:var(--encre);
   transition:transform .15s ease;
 }
-.une-carton:hover{ transform:translateY(-3px); }
+.une-lien:hover .une-carton{ transform:translateY(-3px); }
 @media (prefers-reduced-motion:reduce){
   .une-carton{ transition:none; }
-  .une-carton:hover{ transform:none; }
+  .une-lien:hover .une-carton{ transform:none; }
 }
 .une-date{
   font-family:var(--titre); font-size:11.5px; font-weight:800; letter-spacing:.12em;
@@ -2187,7 +2192,7 @@ body.page-contact .page-simple{ max-width:1080px; }
   display:block; font-family:var(--serif); font-size:clamp(21px,2.2vw,26px);
   line-height:1.14; margin-bottom:6px;
 }
-.une-carton:hover .une-titre{ text-decoration:underline; }
+.une-lien:hover .une-titre{ text-decoration:underline; }
 .une-chapo{
   display:block; font-family:var(--texte); font-size:14.5px; line-height:1.6;
   color:var(--encre-doux);
