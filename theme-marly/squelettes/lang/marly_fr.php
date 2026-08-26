@@ -332,8 +332,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'connexion_q2_b'       => 'Aucun compte n’est attribué en dehors de la mairie.',
 
 	'connexion_q3'         => 'Vous représentez une association ou un commerce ?',
-	'connexion_q3_a'       => 'Les fiches de l’annuaire sont tenues à jour par la mairie. Aucun compte n’est nécessaire : pour signaler une création, un changement ou une erreur, vous pouvez utiliser le formulaire prévu à cet effet, ou écrire directement au secrétariat.',
-	'connexion_q3_lien'    => 'Signaler ou mettre à jour une association',
+	// Le formulaire de signalement CREE une fiche, il n'en modifie aucune :
+	// il refuse meme un nom deja present. Ecrire << ou mettre a jour >> sur
+	// son bouton envoyait le president d'une association existante dans un
+	// mur. Pour corriger, chaque fiche porte deja son bouton de signalement.
+	'connexion_q3_a'       => 'Les fiches de l’annuaire sont tenues à jour par la mairie, et aucun compte n’est nécessaire.',
+	'connexion_q3_b2'      => 'Si votre association ne figure pas encore dans l’annuaire, ce formulaire permet de la proposer. Pour corriger une fiche déjà en ligne, sa page porte un bouton « signaler une correction ».',
+	'connexion_q3_lien'    => 'Proposer une association absente de l’annuaire',
 	'connexion_q3_b'       => 'Pour un commerce, un artisan, un service, ou pour toute autre demande, vous pouvez contacter la mairie à l’adresse suivante :',
 
 	// --- Mot de passe oublie -------------------------------------------------
