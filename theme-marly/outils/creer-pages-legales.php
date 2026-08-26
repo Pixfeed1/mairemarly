@@ -399,6 +399,93 @@ $pages[] = array(
 . "municipaux proposés en ligne.",
 );
 
+/* ---------------------------------------------------------------------------
+ * LA DÉCLARATION D'ACCESSIBILITÉ.
+ *
+ * Elle suit le plan imposé par le RGAA : état de conformité, résultats des
+ * tests, contenus non accessibles, établissement de la déclaration, contact,
+ * voie de recours. Aucune de ces rubriques n'est facultative.
+ *
+ * ELLE NE PROCLAME AUCUN NIVEAU DE CONFORMITÉ, et c'est le point. Un niveau
+ * s'établit par un audit complet des 106 critères ; le nôtre a couvert ce
+ * qu'une machine peut trancher et quatre critères manuels, pas davantage.
+ * Écrire « partiellement conforme » aujourd'hui serait une déclaration fausse,
+ * et une déclaration fausse expose la commune plus qu'une déclaration
+ * inachevée.
+ *
+ * Ce qui est écrit ici est donc VRAI et daté : l'échantillon réel, les outils
+ * réellement employés, les critères réellement passés. Ce qui manque est
+ * marqué en gras, comme les deux blancs des mentions légales.
+ * ------------------------------------------------------------------------ */
+$pages[] = array(
+	'mot'   => 'Accessibilité',
+	'titre' => 'Déclaration d’accessibilité',
+	'texte' =>
+"La commune de Marly-Gomont s’engage à rendre son site internet accessible, "
+. "conformément à l’article 47 de la loi n° 2005-102 du 11 février 2005.\n\n"
+. "Cette déclaration d’accessibilité s’applique au site {{marlygomont.pixfeed.net}}.\n\n"
+
+. "{{{État de conformité}}}\n\n"
+. "{{Le niveau de conformité n’est pas encore établi.}} Un audit partiel a été "
+. "mené le 26 août 2026 ; l’audit complet des 106 critères du RGAA version 4.1 "
+. "reste à conduire. Le niveau de conformité sera inscrit ici à son issue.\n\n"
+. "Annoncer aujourd’hui un niveau qui n’a pas été mesuré serait inexact, et une "
+. "déclaration inexacte engage davantage la commune qu’une déclaration "
+. "inachevée.\n\n"
+
+. "{{{Résultats des tests}}}\n\n"
+. "L’audit partiel du 26 août 2026 a porté sur un échantillon de 23 pages : les "
+. "pages obligatoires — page d’accueil, contact, mentions légales, déclaration "
+. "d’accessibilité, plan du site, page d’authentification — et une page par "
+. "gabarit du site.\n\n"
+. "Ont été vérifiés et sont conformes sur cet échantillon :\n"
+. "-* les alternatives des images et des éléments graphiques ;\n"
+. "-* l’intitulé des liens et des boutons ;\n"
+. "-* l’étiquetage des champs de formulaire et le rattachement des messages d’erreur ;\n"
+. "-* la hiérarchie des titres et la présence des régions de page ;\n"
+. "-* le lien d’évitement, l’ordre de tabulation et la visibilité de la prise de focus ;\n"
+. "-* le contraste des textes et des composants d’interface ;\n"
+. "-* la restitution du contenu sans feuille de styles ;\n"
+. "-* l’agrandissement du seul texte à 200 %.\n\n"
+
+. "{{{Contenus non accessibles}}}\n\n"
+. "{{Les critères suivants n’ont pas encore été évalués}} et feront l’objet de "
+. "l’audit complet :\n"
+. "-* la pertinence des alternatives textuelles des images publiées par la commune ;\n"
+. "-* la pertinence des intitulés de titres et des titres de pages, lus hors contexte ;\n"
+. "-* l’accessibilité des documents téléchargeables, notamment les fichiers PDF ;\n"
+. "-* la restitution par un lecteur d’écran.\n\n"
+. "Aucune dérogation pour charge disproportionnée n’est revendiquée à ce jour.\n\n"
+
+. "{{{Établissement de cette déclaration}}}\n\n"
+. "Cette déclaration a été établie le {{26 août 2026}}.\n\n"
+. "Technologies utilisées pour la réalisation du site : HTML, CSS, JavaScript, SPIP.\n\n"
+. "Les tests ont été effectués avec les outils suivants : moteur de rendu "
+. "Chromium, moteur d’analyse axe-core, service de validation du W3C, et deux "
+. "outils écrits pour ce site, l’un vérifiant les squelettes, l’autre parcourant "
+. "l’échantillon de pages.\n\n"
+
+. "{{{Retour d’information et contact}}}\n\n"
+. "Si vous n’arrivez pas à accéder à un contenu ou à un service de ce site, vous "
+. "pouvez contacter la mairie afin d’être orienté vers une alternative "
+. "accessible ou d’obtenir le contenu sous une autre forme.\n\n"
+. "Par le formulaire de contact du site, par courriel, par téléphone ou en vous "
+. "présentant au secrétariat aux heures d’ouverture. Les coordonnées figurent en "
+. "bas de chaque page.\n\n"
+
+. "{{{Voie de recours}}}\n\n"
+. "Si vous constatez un défaut d’accessibilité vous empêchant d’accéder à un "
+. "contenu ou à une fonctionnalité du site, que vous nous le signalez et que "
+. "vous ne parvenez pas à obtenir une réponse, vous êtes en droit de faire "
+. "parvenir vos doléances ou une demande de saisine au Défenseur des droits.\n\n"
+. "Plusieurs moyens sont à votre disposition :\n"
+. "-* le formulaire de contact du Défenseur des droits ;\n"
+. "-* le délégué du Défenseur des droits de votre département ;\n"
+. "-* le numéro de téléphone 09 69 39 00 00 ;\n"
+. "-* par courrier, sans affranchissement : Défenseur des droits, Libre réponse "
+. "71120, 75342 Paris CEDEX 07.",
+);
+
 $ecrits = 0;
 foreach ($pages as $page) {
 	$id_mot = marly_mot($page['mot']);
@@ -485,6 +572,9 @@ echo "page : le telephone de l'hebergeur, obligatoire au titre de l'article 6\n"
 echo "de la LCEN, et le delegue a la protection des donnees, que toute\n";
 echo "commune doit designer depuis 2018. Relancer avec --reecrire ecrase le\n";
 echo "texte des deux pages par celui du script.\n";
-echo "\nUne page reste vide, et c'est voulu : la declaration d'accessibilite\n";
-echo "annonce un niveau de conformite qui se mesure par un audit. Tant qu'il\n";
-echo "n'a pas eu lieu, personne ne peut l'ecrire.\n";
+echo "\nLA DECLARATION D'ACCESSIBILITE EST ECRITE, MAIS ELLE NE PROCLAME AUCUN\n";
+echo "NIVEAU DE CONFORMITE, et c'est voulu : un niveau s'etablit par un audit\n";
+echo "des 106 criteres. Le notre a couvert ce qu'une machine tranche et quatre\n";
+echo "criteres manuels. Ecrire << partiellement conforme >> aujourd'hui serait\n";
+echo "faux, et une declaration fausse expose la commune plus qu'une declaration\n";
+echo "inachevee. Le niveau s'inscrira a l'issue de l'audit complet.\n";
