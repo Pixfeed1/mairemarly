@@ -56,7 +56,7 @@
 
 	<B_dem>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:demarches:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<h2 class="titre-bloc"><:marly:demarches:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_dem(DEMARCHES){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">
@@ -69,7 +69,7 @@
 
 	<B_art>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:actus:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<h2 class="titre-bloc"><:marly:actus:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_art(ARTICLES){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="#URL_ARTICLE">
@@ -83,7 +83,7 @@
 
 	<B_com>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:titre_commerces:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<h2 class="titre-bloc"><:marly:titre_commerces:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_com(COMMERCES){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="[(#URL_PAGE{commerce}|parametre_url{id_commerce,#ID_COMMERCE})]">
@@ -96,7 +96,7 @@
 
 	<B_asso>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:titre_vie_associative:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<h2 class="titre-bloc"><:marly:titre_vie_associative:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_asso(ASSOCIATIONS){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
@@ -109,7 +109,7 @@
 
 	<B_elu>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:titre_conseil:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<h2 class="titre-bloc"><:marly:titre_conseil:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_elu(ELUS){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="[(#URL_PAGE{elu}|parametre_url{id_elu,#ID_ELU})]">
@@ -123,7 +123,7 @@
 
 	<B_evt>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:evenements:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<h2 class="titre-bloc"><:marly:evenements:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_evt(MANIFESTATIONS){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
@@ -137,7 +137,7 @@
 
 	<B_rub>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:recherche_rubriques:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<h2 class="titre-bloc"><:marly:recherche_rubriques:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_rub(RUBRIQUES){recherche}{par points}{inverse}{0,10}>
 		<li><a href="#URL_RUBRIQUE">

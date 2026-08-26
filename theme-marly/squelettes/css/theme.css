@@ -545,11 +545,15 @@ section{ padding-block:70px; position:relative; }
 
 /* Le compte, colle au titre du groupe. Il dit combien sans faire un chiffre
    geant : ce qui compte ici, c'est la liste, pas le score. */
-.recherche-compte{
-	display:inline-block; margin-left:10px; vertical-align:6px;
-	font-family:var(--titre); font-weight:700; font-size:15px;
-	color:var(--encre-doux); background:var(--creme-sombre);
-	border-radius:20px; padding:2px 12px;
+/* Le selecteur porte .titre-bloc, sans quoi la regle .titre-bloc span —
+   celle du second mot des titres a deux tons, en serif et jusqu'a 70 pixels —
+   l'emporte et le compte s'affiche en geant. Deja rencontre sur le bouton du
+   pied de page : une regle plus specifique gagne, meme ecrite plus haut. */
+.titre-bloc .recherche-compte{
+	display:inline-block; margin-left:12px; vertical-align:5px;
+	font-family:var(--texte); font-weight:600; font-size:14px; letter-spacing:0;
+	text-transform:none; color:var(--encre-doux); background:var(--creme-sombre);
+	border-radius:20px; padding:4px 14px;
 }
 
 .recherche-vide{ margin:10px 0 0; }
