@@ -289,4 +289,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'pied_voir_demarches'  => 'Voir les démarches',
 	'pied_ou'              => 'ou directement sur',
 
+	// --- Recherche ------------------------------------------------------------
+	'titre_recherche'      => 'Recherche',
+	'recherche_rubriques'  => 'Rubriques du site',
+	'recherche_rien'       => 'Aucun résultat pour',
+	'recherche_essayez'    => 'Essayez un mot plus court, ou une autre orthographe. Vous pouvez aussi partir de l’une de ces pages :',
+
 );

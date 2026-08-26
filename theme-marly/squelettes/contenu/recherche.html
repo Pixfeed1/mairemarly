@@ -1,0 +1,165 @@
+[(#REM)
+  Les resultats de recherche.
+  ---------------------------------------------------------------------------
+  TOUT AFFICHER, GROUPE PAR NATURE, ET NE RIEN FAIRE CLIQUER. Le modele
+  regarde propose huit pastilles de filtre : elles se justifient chez lui, il
+  affiche six cents resultats. Ici on en aura cinq a quarante. Poser un
+  appareil de tri plus gros que ce qu'il trie est le defaut qu'on a deja
+  refuse sur l'annuaire des associations.
+
+  L'ORDRE DES GROUPES EST L'INFORMATION. Les demarches d'abord, toujours :
+  c'est ce qu'on cherche sur le site d'une mairie. Puis ce qui se visite, puis
+  ce qui s'ecrit. Des pastilles laisseraient le visiteur deviner cet ordre ;
+  la page le lui donne.
+
+  CHAQUE BOUCLE PORTE SON PROPRE {recherche} sur SA table, plutot qu'un
+  moteur unique. Les huit tables du plugin declarent leurs champs cherchables
+  et leur poids — le nom d'un commerce pese 8, son activite 4 — et c'est SPIP
+  qui fait le travail. Une boucle par nature, c'est verbeux, mais chaque
+  groupe peut porter son pictogramme, son intitule et son compte.
+
+  SANS AUCUN RESULTAT, la page propose autre chose plutot que d'annoncer un
+  zero : la liste des demarches, les annuaires, la mairie. Une recherche
+  infructueuse est le moment ou l'on a le plus besoin d'aide.
+]
+<INCLURE{fond=inc/bandeau-page}{titre=[(#VAL{marly:titre_recherche}|_T)]}>
+
+<div class="page-simple page-sous-carton">
+
+	[(#REM) Le champ, toujours visible et pre-rempli : on affine sans avoir a
+	        rouvrir le panneau plein ecran. ]
+	<form class="recherche-champ" role="search" method="get" action="#URL_PAGE{recherche}">
+		<label for="recherche-page" class="sr"><:marly:rechercher_site:></label>
+		<input type="search" id="recherche-page" name="recherche"
+		       value="[(#ENV{recherche}|attribut_html)]"
+		       placeholder="<:marly:rechercher_placeholder:>">
+		<button type="submit">
+			<svg class="ico" aria-hidden="true"><use href="#ri-search-line"/></svg>
+			<span class="sr"><:marly:lancer_recherche:></span>
+		</button>
+	</form>
+
+	[(#ENV{recherche}|non)
+	<p class="chapo"><:marly:recherche_amorce:></p>
+	]
+
+	[(#ENV{recherche}|oui)
+
+	#SET{trouve,''}
+
+	<B_dem>
+	#SET{trouve,oui}
+	<h2 class="titre-bloc"><:marly:demarches:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<ul class="fiches">
+		<BOUCLE_dem(DEMARCHES){recherche}{statut=publie}{par points}{inverse}{0,20}>
+		<li><a href="[(#URL_PAGE{demarche}|parametre_url{id_demarche,#ID_DEMARCHE})]">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#[(#ICONE|sinon{ri-file-text-line}|trim)]"/></svg></span>
+			<span class="fiche-texte"><b>#TITRE</b>[<span>(#RESUME|couper{140})</span>]</span>
+		</a></li>
+		</BOUCLE_dem>
+	</ul>
+	</B_dem>
+
+	<B_art>
+	#SET{trouve,oui}
+	<h2 class="titre-bloc"><:marly:actus:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<ul class="fiches">
+		<BOUCLE_art(ARTICLES){recherche}{statut=publie}{par points}{inverse}{0,20}>
+		<li><a href="#URL_ARTICLE">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+			<span class="fiche-texte"><b>#TITRE</b>
+				<span>[(#DATE|affdate)][ · (#INTRODUCTION|couper{120})]</span></span>
+		</a></li>
+		</BOUCLE_art>
+	</ul>
+	</B_art>
+
+	<B_com>
+	#SET{trouve,oui}
+	<h2 class="titre-bloc"><:marly:titre_commerces:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<ul class="fiches">
+		<BOUCLE_com(COMMERCES){recherche}{statut=publie}{par points}{inverse}{0,20}>
+		<li><a href="[(#URL_PAGE{commerce}|parametre_url{id_commerce,#ID_COMMERCE})]">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#[(#CATEGORIE|marly_icone_commerce)]"/></svg></span>
+			<span class="fiche-texte"><b>#NOM</b>[<span>(#ACTIVITE|couper{140})</span>]</span>
+		</a></li>
+		</BOUCLE_com>
+	</ul>
+	</B_com>
+
+	<B_asso>
+	#SET{trouve,oui}
+	<h2 class="titre-bloc"><:marly:titre_vie_associative:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<ul class="fiches">
+		<BOUCLE_asso(ASSOCIATIONS){recherche}{statut=publie}{par points}{inverse}{0,20}>
+		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>
+			<span class="fiche-texte"><b>#NOM</b>[<span>(#ACTIVITE|couper{140})</span>]</span>
+		</a></li>
+		</BOUCLE_asso>
+	</ul>
+	</B_asso>
+
+	<B_elu>
+	#SET{trouve,oui}
+	<h2 class="titre-bloc"><:marly:titre_conseil:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<ul class="fiches">
+		<BOUCLE_elu(ELUS){recherche}{statut=publie}{par points}{inverse}{0,20}>
+		<li><a href="[(#URL_PAGE{elu}|parametre_url{id_elu,#ID_ELU})]">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-government-line"/></svg></span>
+			<span class="fiche-texte"><b>[(#PRENOM) ]#NOM</b>
+				<span>#FONCTION[ · (#DELEGATION)]</span></span>
+		</a></li>
+		</BOUCLE_elu>
+	</ul>
+	</B_elu>
+
+	<B_evt>
+	#SET{trouve,oui}
+	<h2 class="titre-bloc"><:marly:evenements:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<ul class="fiches">
+		<BOUCLE_evt(MANIFESTATIONS){recherche}{statut=publie}{par points}{inverse}{0,20}>
+		<li><a href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg></span>
+			<span class="fiche-texte"><b>#TITRE</b>
+				<span>[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate)][ · (#LIEU)]</span></span>
+		</a></li>
+		</BOUCLE_evt>
+	</ul>
+	</B_evt>
+
+	<B_rub>
+	#SET{trouve,oui}
+	<h2 class="titre-bloc"><:marly:recherche_rubriques:> <span class="recherche-compte">#TOTAL_BOUCLE</span></h2>
+	<ul class="fiches">
+		<BOUCLE_rub(RUBRIQUES){recherche}{par points}{inverse}{0,10}>
+		<li><a href="#URL_RUBRIQUE">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
+			<span class="fiche-texte"><b>#TITRE</b>[<span>(#DESCRIPTIF|textebrut|couper{140})</span>]</span>
+		</a></li>
+		</BOUCLE_rub>
+	</ul>
+	</B_rub>
+
+	[(#REM) Rien trouve. On ne laisse pas le visiteur sur un zero : c'est le
+	        moment ou il a le plus besoin qu'on lui montre le chemin. ]
+	[(#GET{trouve}|non)
+	<div class="recherche-vide">
+		<p class="recherche-rien"><:marly:recherche_rien:> <b>[(#ENV{recherche}|textebrut)]</b>.</p>
+		<p><:marly:recherche_essayez:></p>
+		<p class="fiche-liens">
+			<a class="pilule" href="#URL_PAGE{demarches}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:toutes_les_demarches:></a>
+			<a class="pilule" href="#URL_PAGE{commerces}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> <:marly:titre_commerces:></a>
+			<a class="pilule" href="#URL_PAGE{associations}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg> <:marly:titre_vie_associative:></a>
+			[<a class="pilule" href="mailto:(#CONFIG{marly/courriel}|attribut_html)">
+				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:pied_nous_ecrire:></a>]
+		</p>
+	</div>
+	]
+
+	]
+
+</div>

@@ -521,6 +521,46 @@ section{ padding-block:70px; position:relative; }
 .lettre button{ border:0; background:var(--accent); color:#fff; border-radius:3px; padding:13px 24px; font-weight:700; cursor:pointer; font-family:var(--texte); }
 
 /* ---- PIED --------------------------------------------------------------- */
+/* ---- LA PAGE DE RECHERCHE ----------------------------------------------- */
+/* Le champ reste visible en tete des resultats : on affine sans rouvrir le
+   panneau plein ecran, et l'adresse de la page suffit a repartager la
+   recherche. */
+.recherche-champ{
+	display:flex; align-items:center; gap:10px;
+	border:1px solid var(--trait); border-radius:30px;
+	background:#fff; padding:6px 8px 6px 22px; margin:0 0 30px;
+}
+.recherche-champ input{
+	flex:1; min-width:0; border:0; background:none; outline:none;
+	font-family:var(--texte); font-size:17px; color:var(--encre); padding:10px 0;
+}
+.recherche-champ input::placeholder{ color:var(--encre-doux); }
+.recherche-champ button{
+	flex-shrink:0; border:0; cursor:pointer; border-radius:50%;
+	width:44px; height:44px; background:var(--accent); color:#fff;
+	display:flex; align-items:center; justify-content:center;
+}
+.recherche-champ button:hover{ background:var(--accent-sombre); }
+.recherche-champ .ico{ width:20px; height:20px; }
+
+/* Le compte, colle au titre du groupe. Il dit combien sans faire un chiffre
+   geant : ce qui compte ici, c'est la liste, pas le score. */
+.recherche-compte{
+	display:inline-block; margin-left:10px; vertical-align:6px;
+	font-family:var(--titre); font-weight:700; font-size:15px;
+	color:var(--encre-doux); background:var(--creme-sombre);
+	border-radius:20px; padding:2px 12px;
+}
+
+.recherche-vide{ margin:10px 0 0; }
+.recherche-rien{ font-size:1.12em; color:var(--encre); margin:0 0 6px; }
+.recherche-vide .fiche-liens{ margin-top:18px; }
+
+@media(max-width:560px){
+	.recherche-champ{ padding-left:16px; }
+	.recherche-champ input{ font-size:16px; }
+}
+
 /* ---- PIED DE PAGE ------------------------------------------------------- */
 /* Batî sur ce que font les mairies : des coordonnees d'abord, pas un plan du
    site. Les horaires ont leur colonne, avec son titre — c'est la premiere
