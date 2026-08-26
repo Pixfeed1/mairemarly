@@ -1,1 +1,26 @@
+[(#REM)
+  association.html — la page d'une association.
+  ---------------------------------------------------------------------------
+  UNE BOUCLE DE CONTROLE AVANT TOUT. Sans elle, un identifiant qui ne
+  correspond a rien rendait la page quand meme : en-tete, rien, pied, et un
+  code 200. Un lien peri, une adresse mal tapee, un objet retire donnaient une
+  coquille que les moteurs indexaient comme une page du site. Mesure du
+  26 aout 2026 : ?id_association=999999 repondait 200.
+
+  L'EN-TETE EST ICI, ET PAS DANS contenu/. Une premiere version le posait dans
+  le squelette de contenu : mesure, il ne remontait pas jusqu'a la reponse, la
+  page restait a 200. A la racine il fonctionne — c'est la que le posent les
+  sept pages de SPIP qu'on a fermees, et elles repondent bien 404.
+
+  La boucle ne lit qu'une ligne et ne rend rien : elle ne sert qu'a savoir si
+  l'objet existe.
+]
+<B_existe>
+<BOUCLE_existe(ASSOCIATIONS){id_association}{0,1}><!-- on ne fait que verifier --></BOUCLE_existe>
 <INCLURE{fond=structure}{env}{type-page=association}>
+</B_existe>
+#HTTP_HEADER{HTTP/1.0 404 Not Found}
+#HTTP_HEADER{"Cache-Control: no-store, no-cache, must-revalidate"}
+#HTTP_HEADER{Pragma: no-cache}
+<INCLURE{fond=structure}{env}{type-page=404}>
+<//B_existe>
