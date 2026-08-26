@@ -1707,6 +1707,55 @@ if os.path.exists(_css_f):
                  "s'affiche plus comme prevu")
 
 
+# 68. Une ecriture en base dont personne ne verifie le resultat.
+#     sql_insertq() rend 0 quand l'insertion echoue, et n'affiche RIEN. Le
+#     script continue, annonce << cree >>, et le compte rendu ment.
+#
+#     Le prix a ete paye le 26 aout 2026, sur la page d'accueil. Le script des
+#     pages legales creait le groupe de mots-cles << Emplacements >> en lui
+#     ecrivant une colonne 'articles' qui existait en SPIP 3 et a disparu en
+#     SPIP 4. L'insertion echouait, la fonction affichait quand meme
+#     << groupe de mots-cles cree >>, et les quatre mots-cles legaux
+#     atterrissaient avec id_groupe = 0 — rattaches a rien.
+#
+#     Personne ne l'a vu pendant des semaines, parce que les pages legales se
+#     cherchent par le TITRE du mot-cle et s'affichaient parfaitement. Le
+#     groupe n'a servi qu'au jour ou la bande d'actualites a voulu ecarter ces
+#     articles par leur groupe : la declaration d'accessibilite s'est retrouvee
+#     en mise en avant de la page d'accueil du site d'une mairie.
+#
+#     C'est la troisieme fois que la meme mecanique frappe : une requete qui
+#     nomme une colonne absente echoue en silence, et l'outil se contente de
+#     son propre compte rendu. Le recensement des images avait groupe sur une
+#     colonne 'role' inexistante ; l'import d'articles avait annonce six fiches
+#     publiees qui etaient restees en brouillon.
+#
+#     La regle : apres une insertion, RELIRE LA BASE. Soit en testant la valeur
+#     rendue, soit — mieux — en redemandant la ligne. Un script qui se contente
+#     de son propre compte rendu ne verifie rien.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _lignes = open(_f, encoding='utf-8').read().split(chr(10))
+    for _i, _l in enumerate(_lignes):
+        if 'sql_insertq(' not in _l or _l.lstrip().startswith(('*', '//', '/*')):
+            continue
+        _suite = chr(10).join(_lignes[_i:_i + 12])
+        _relit = re.search(r'sql_(getfetsel|countsel|fetsel|allfetsel)\(', _suite)
+        _m3 = re.search(r'\$([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*\(?[a-z]*\)?\s*sql_insertq\(', _l)
+        if _m3:
+            _v = _m3.group(1)
+            _teste = (re.search(r'if\s*\(\s*!?\s*\$' + _v + r'\b', _suite)
+                      or re.search(r'\$' + _v + r'\s*(===|!==|==|!=)', _suite))
+            if _teste or _relit:
+                continue
+        elif _relit:
+            continue
+        signaler(os.path.join('outils', os.path.basename(_f)), _i + 1,
+                 "insertion en base dont le resultat n'est jamais verifie. "
+                 "sql_insertq rend 0 en cas d'echec sans rien afficher : le "
+                 "script annoncera << cree >> pour une ligne qui n'existe pas. "
+                 "Relire la base juste apres, ou tester la valeur rendue")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

@@ -347,7 +347,11 @@ function signer_article($id_article, $auteur) {
 			'id_objet'  => intval($id_article),
 			'vu'        => 'non',
 		));
-		$gestes[] = 'signature liee';
+		/* On relit : le compte rendu ne doit annoncer que ce qui est
+		   reellement en base. */
+		$gestes[] = sql_countsel('spip_auteurs_liens', 'id_auteur = ' . $id_auteur
+			. " AND objet = 'article' AND id_objet = " . intval($id_article))
+			? 'signature liee' : 'ECHEC du lien de signature';
 	}
 	return $gestes;
 }

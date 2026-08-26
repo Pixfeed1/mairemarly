@@ -22,7 +22,7 @@
 	<p class="chapo"><:marly:actualites_intro:></p>
 
 	<B_arts>
-	<BOUCLE_arts(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{type_mot!=Emplacements}{!par date}{pagination 20}>
+	<BOUCLE_arts(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{titre_mot!=Mentions légales}{titre_mot!=Confidentialité}{titre_mot!=Crédits}{titre_mot!=Accessibilité}{!par date}{pagination 20}>
 	#SET{nouvelle_annee,#DATE|annee|unique{annees_actus}}
 	[(#GET{nouvelle_annee}|et{#COMPTEUR_BOUCLE|>{1}})</ul>]
 	[(#GET{nouvelle_annee}|oui)<h2 class="rubrique-annee">#GET{nouvelle_annee}</h2><ul class="fiches">]

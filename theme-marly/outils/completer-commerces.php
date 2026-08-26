@@ -216,6 +216,11 @@ foreach ($nouvelles as $fiche) {
 	$fiche['longitude'] = $point['longitude'] ?? '';
 	sleep(1);
 	sql_insertq('spip_commerces', $fiche);
+	/* On relit. Une insertion qui echoue rend 0 sans rien dire, et le script
+	   annoncerait une fiche creee qui n'existe pas. */
+	if (!sql_countsel('spip_commerces', 'nom = BINARY ' . sql_quote($fiche['nom']))) {
+		printf("  %-30s ECHEC : la fiche n'a pas ete creee\n", $fiche['nom']);
+	}
 }
 
 if ($ecrire_pour_de_vrai) {

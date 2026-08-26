@@ -101,35 +101,111 @@ function marly_rubrique_legale(): int {
 	}
 	$parent = sql_getfetsel('id_rubrique', 'spip_rubriques',
 		'id_parent = 0 AND titre LIKE ' . sql_quote('%Ma mairie%'));
-	$id = sql_insertq('spip_rubriques', array(
+	sql_insertq('spip_rubriques', array(
 		'titre'      => $titre,
 		'descriptif' => 'Mentions légales, confidentialité, accessibilité et crédits du site.',
 		'id_parent'  => intval($parent),
 		'statut'     => 'publie',
 	));
+	/* On relit plutot que de croire l'identifiant rendu. Si la rubrique
+	   n'existe pas, les quatre pages legales seraient creees dans la
+	   rubrique 0 — c'est-a-dire nulle part, et invisibles. */
+	$id = (int) sql_getfetsel('id_rubrique', 'spip_rubriques', 'titre = ' . sql_quote($titre));
+	if (!$id) {
+		echo "ERREUR : la rubrique '$titre' n'a pas pu etre creee.\n";
+		exit(1);
+	}
 	echo "rubrique creee : $titre" . ($parent ? " (sous Ma mairie)" : " (a la racine)") . "\n";
-	return (int) $id;
+	return $id;
 }
 
-/** Le mot-clé, cherché par son titre exact, créé s'il manque. */
-function marly_mot(string $titre): int {
-	$id_mot = sql_getfetsel('id_mot', 'spip_mots', 'titre = ' . sql_quote($titre));
-	if ($id_mot) {
-		return (int) $id_mot;
-	}
+/**
+ * Le groupe de mots-clés « Emplacements », créé s'il manque.
+ * ---------------------------------------------------------------------------
+ * LA PREMIÈRE VERSION ÉCHOUAIT SANS LE DIRE, et le prix a été payé sur la
+ * page d'accueil. Elle écrivait 'articles' => 'oui' dans la ligne du groupe :
+ * cette colonne existait en SPIP 3, elle a été remplacée par 'tables_liees'.
+ * L'insertion échouait donc, rendait 0, et la fonction annonçait quand même
+ * « groupe de mots-cles cree ». Les quatre mots-clés légaux se retrouvaient
+ * avec id_groupe = 0, rattachés à rien.
+ *
+ * Personne ne l'a vu pendant des semaines : les pages légales s'affichaient
+ * parfaitement, puisqu'elles se cherchent par le TITRE du mot-clé. Le groupe
+ * n'a servi qu'au jour où la bande d'actualités a voulu écarter ces articles
+ * par {type_mot!=Emplacements} — et a affiché la déclaration d'accessibilité
+ * en tête de la page d'accueil.
+ *
+ * DEUX LEÇONS, APPLIQUÉES ICI. On demande d'abord à la table quelles colonnes
+ * elle a, et on ne lui envoie que celles-là — même technique que le
+ * recensement, corrigé pour la même raison. Et on ne dit « créé » qu'après
+ * avoir relu la base : un script qui se contente de son propre compte rendu
+ * ne vérifie rien.
+ */
+function marly_groupe_emplacements(): int {
 	$id_groupe = sql_getfetsel('id_groupe', 'spip_groupes_mots', 'titre = ' . sql_quote('Emplacements'));
-	if (!$id_groupe) {
-		$id_groupe = sql_insertq('spip_groupes_mots', array(
-			'titre'      => 'Emplacements',
-			'descriptif' => 'Où l’article se place dans le site.',
-			'articles'   => 'oui',
-			'unseul'     => 'non',
-		));
-		echo "groupe de mots-cles cree : Emplacements\n";
+	if ($id_groupe) {
+		return (int) $id_groupe;
 	}
-	$id_mot = sql_insertq('spip_mots', array('titre' => $titre, 'id_groupe' => $id_groupe));
-	echo "mot-cle cree : $titre\n";
-	return (int) $id_mot;
+
+	$desc = sql_showtable('spip_groupes_mots', true);
+	$colonnes = ($desc && !empty($desc['field'])) ? array_keys($desc['field']) : array();
+	if (!$colonnes) {
+		echo "ERREUR : impossible de lire les colonnes de spip_groupes_mots.\n";
+		exit(1);
+	}
+
+	$champs = array(
+		'titre'        => 'Emplacements',
+		'descriptif'   => 'Où l’article se place dans le site.',
+		'tables_liees' => 'article',   /* SPIP 4 */
+		'articles'     => 'oui',       /* SPIP 3, ignoré s'il n'existe plus */
+		'unseul'       => 'non',
+	);
+	$champs = array_intersect_key($champs, array_flip($colonnes));
+
+	$id_groupe = (int) sql_insertq('spip_groupes_mots', $champs);
+
+	/* On relit. L'identifiant rendu par l'insertion peut mentir ; la ligne
+	   présente en base, non. */
+	$id_groupe = (int) sql_getfetsel('id_groupe', 'spip_groupes_mots', 'titre = ' . sql_quote('Emplacements'));
+	if (!$id_groupe) {
+		echo "ERREUR : le groupe de mots-cles 'Emplacements' n'a pas pu etre cree.\n";
+		echo "         colonnes envoyees : " . implode(', ', array_keys($champs)) . "\n";
+		echo "         colonnes de la table : " . implode(', ', $colonnes) . "\n";
+		exit(1);
+	}
+	echo "groupe de mots-cles cree : Emplacements (id $id_groupe)\n";
+	return $id_groupe;
+}
+
+/**
+ * Le mot-clé, cherché par son titre exact, créé s'il manque.
+ *
+ * REJOINT aussi les mots-clés déjà créés que la version fautive a laissés
+ * sans groupe. Un mot-clé à id_groupe = 0 n'apparaît sous aucun groupe dans
+ * l'espace privé : la secrétaire de mairie ne peut pas le retrouver.
+ */
+function marly_mot(string $titre): int {
+	$id_groupe = marly_groupe_emplacements();
+
+	$mot = sql_fetsel('id_mot, id_groupe', 'spip_mots', 'titre = ' . sql_quote($titre));
+	if ($mot) {
+		if ((int) $mot['id_groupe'] !== $id_groupe) {
+			sql_updateq('spip_mots', array('id_groupe' => $id_groupe),
+				'id_mot = ' . intval($mot['id_mot']));
+			echo "mot-cle rattache au groupe Emplacements : $titre\n";
+		}
+		return (int) $mot['id_mot'];
+	}
+
+	sql_insertq('spip_mots', array('titre' => $titre, 'id_groupe' => $id_groupe));
+	$id_mot = (int) sql_getfetsel('id_mot', 'spip_mots', 'titre = ' . sql_quote($titre));
+	if (!$id_mot) {
+		echo "ERREUR : le mot-cle '$titre' n'a pas pu etre cree.\n";
+		exit(1);
+	}
+	echo "mot-cle cree : $titre (id $id_mot)\n";
+	return $id_mot;
 }
 
 /**
@@ -560,6 +636,14 @@ foreach ($pages as $page) {
 		'id_objet' => $id_article,
 		'objet'    => 'article',
 	));
+	/* On relit : sans ce lien, le gabarit ne retrouve plus la page — elle se
+	   cherche par son mot-cle, pas par son identifiant. */
+	if (!sql_countsel('spip_mots_liens', 'id_mot = ' . intval($id_mot)
+			. ' AND objet = ' . sql_quote('article')
+			. ' AND id_objet = ' . intval($id_article))) {
+		echo "ERREUR : le mot-cle n'a pas pu etre pose sur l'article $id_article.\n";
+		exit(1);
+	}
 	echo 'ecrite : ' . $page['titre'] . " (article $id_article, rubrique $rubrique)\n";
 	$ecrits++;
 }

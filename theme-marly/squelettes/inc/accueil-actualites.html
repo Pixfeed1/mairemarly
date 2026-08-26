@@ -17,6 +17,23 @@
   portent la photographie de banniere, ceux qui servent d'entree de menu, et
   les quatre pages legales — qui, ayant ete creees le meme jour, seraient
   sinon les quatre plus recentes du site. Ils sont ecartes par leur mot-cle.
+
+  SEPT CRITERES PLUTOT QU'UN. La premiere version en ecrivait un seul pour les
+  quatre pages legales : {type_mot!=Emplacements}, le groupe ou le script qui
+  les cree est cense les ranger. Deploye le 26 aout 2026, l'accueil affichait
+  la declaration d'accessibilite en mise en avant et trois pages legales dans
+  les breves. Mesure faite : le groupe << Emplacements >> N'EXISTE PAS, et les
+  quatre mots-cles portent id_groupe = 0. Le script qui devait creer le groupe
+  echouait sans le dire.
+
+  On repasse donc au seul mecanisme dont ce site a la preuve qu'il marche —
+  titre_mot!=, deja employe par heros.html et entete.html — meme s'il faut
+  l'ecrire sept fois. Un critere elegant qu'on n'a jamais vu fonctionner ne
+  vaut pas six criteres verbeux qui fonctionnent.
+
+  Le meme deploiement a prouve autre chose, et c'etait le vrai risque : les
+  articles SANS aucun mot-cle sortent bien. Une negation sur table jointe
+  aurait pu les ecarter tous.
 ]
 <section class="bande bande-actus" aria-labelledby="titre-actus">
 
@@ -33,7 +50,7 @@
 		<B_une>
 		<div class="actus-grille">
 			<div>
-			<BOUCLE_une(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{type_mot!=Emplacements}{!par date}{0,1}>
+			<BOUCLE_une(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{titre_mot!=Mentions légales}{titre_mot!=Confidentialité}{titre_mot!=Crédits}{titre_mot!=Accessibilité}{!par date}{0,1}>
 				[(#REM) Le sceau est SOUS l'image, pas a cote : quand l'article
 				        porte une photographie elle le recouvre entierement,
 				        quand il n'en porte pas c'est le sceau qu'on voit. Une
@@ -52,7 +69,7 @@
 			</div>
 
 			<div>
-			<BOUCLE_breves(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{type_mot!=Emplacements}{!par date}{1,5}>
+			<BOUCLE_breves(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{titre_mot!=Mentions légales}{titre_mot!=Confidentialité}{titre_mot!=Crédits}{titre_mot!=Accessibilité}{!par date}{1,5}>
 				<a class="actu-breve" href="#URL_ARTICLE">
 					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
 					<span><b>#TITRE</b>[<span class="actu-quand">(#DATE|affdate)</span>]</span>
