@@ -1,0 +1,71 @@
+[(#REM)
+  inc/accueil-actualites.html — la bande d'actualites de l'accueil.
+  ---------------------------------------------------------------------------
+  UNE MISE EN AVANT, CINQ BREVES. Le rapport n'est pas decoratif : sur les
+  82 articles publies, 7 seulement portent une image (recensement du 26 aout
+  2026). Une grille de six vignettes illustrees montrerait cinq cadres vides.
+  On donne donc la photographie a UN article, celui du haut, et les autres
+  vivent tres bien en liste. Quand meme celui-la n'en a pas, le sceau grave
+  tient la place — c'est un dessin, pas un trou.
+
+  LES ARTICLES VIENNENT DE TOUT LE SITE, pas d'une rubrique << Actualites >>.
+  Une mairie ne range pas ses nouvelles a part : un arrete de voirie est dans
+  Urbanisme, une fermeture de secretariat dans Ma mairie. La bande prend donc
+  les plus recents partout, et l'ordre du jour se fait tout seul.
+
+  CE QUI EST EXCLU. Certains articles ne sont pas des nouvelles : ceux qui
+  portent la photographie de banniere, ceux qui servent d'entree de menu, et
+  les quatre pages legales — qui, ayant ete creees le meme jour, seraient
+  sinon les quatre plus recentes du site. Ils sont ecartes par leur mot-cle.
+]
+<section class="bande bande-actus" aria-labelledby="titre-actus">
+
+	<div class="bande-sceau a-droite" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=bande-sceau-trace}{n=actus}></div>
+
+	<div class="large">
+
+		<div class="bande-tete">
+			<h2 class="titre-bloc" id="titre-actus"><:marly:les:> <span><:marly:actualites:></span></h2>
+			<a class="bande-tout" href="#URL_PAGE{actualites}"><:marly:toutes_actualites:>
+				<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a>
+		</div>
+
+		<B_une>
+		<div class="actus-grille">
+			<div>
+			<BOUCLE_une(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{type_mot!=Emplacements}{!par date}{0,1}>
+				[(#REM) Le sceau est SOUS l'image, pas a cote : quand l'article
+				        porte une photographie elle le recouvre entierement,
+				        quand il n'en porte pas c'est le sceau qu'on voit. Une
+				        seule ecriture pour les deux cas, donc aucun des deux
+				        ne peut etre oublie. ]
+				<div class="une-fond">
+					<span class="une-grave" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=une-trace}{n=une}></span>
+					[(#LOGO_ARTICLE||image_reduire{900,460})]
+				</div>
+				<a class="une-carton" href="#URL_ARTICLE">
+					[<span class="une-date">(#DATE|affdate)</span>]
+					<span class="une-titre">#TITRE</span>
+					[<span class="une-chapo">(#INTRODUCTION|couper{170})</span>]
+				</a>
+			</BOUCLE_une>
+			</div>
+
+			<div>
+			<BOUCLE_breves(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{type_mot!=Emplacements}{!par date}{1,5}>
+				<a class="actu-breve" href="#URL_ARTICLE">
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+					<span><b>#TITRE</b>[<span class="actu-quand">(#DATE|affdate)</span>]</span>
+				</a>
+			</BOUCLE_breves>
+			</div>
+		</div>
+		</B_une>
+
+		[(#REM) Rien de publie : on le dit. Un titre suivi de blanc laisse
+		        croire a une page cassee. ]
+		<p class="explication"><:marly:aucune_actualite_publiee:></p>
+		<//B_une>
+
+	</div>
+</section>

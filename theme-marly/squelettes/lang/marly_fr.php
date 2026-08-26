@@ -118,9 +118,23 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'a'                    => 'À',
 	'lire'                 => 'lire',
 
+	'actualites'           => 'actualités',
+	'agenda_de_la'         => 'L’agenda de la',
+	'commune'              => 'commune',
+	'les_derniers'         => 'Les derniers',
+	'documents'            => 'documents',
+	'voir_detail'          => 'Voir le détail',
+	'aucune_actualite_publiee' => 'Aucune actualité publiée pour le moment.',
+
 	'toutes_actualites'    => 'Toutes les actualités',
 	'tout_agenda'          => 'Tout l’agenda',
+	'tous_les_comptes_rendus' => 'Tous les comptes rendus',
 	'toutes_associations'  => 'Toutes les associations',
+
+	// --- Page « Toutes les actualités » -------------------------------------
+	'toutes_les_actualites' => 'Toutes les actualités',
+	'actualites_intro'     => 'Tout ce qui a été publié sur le site, de la plus récente à la plus ancienne : décisions du conseil, travaux, informations pratiques, vie de la commune.',
+	'plan_actualites_quoi' => 'toutes les publications du site, classées par date',
 
 	// --- Conseil municipal --------------------------------------------------
 	'pv_intro'             => 'Tous les procès-verbaux, consultables en ligne et cherchables par mot-clé.',

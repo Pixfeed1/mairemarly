@@ -1,0 +1,42 @@
+[(#REM)
+  inc/accueil-documents.html — les derniers documents, en bas de l'accueil.
+  ---------------------------------------------------------------------------
+  C'EST LA MATIERE REELLE DU SITE. Recensement du 26 aout 2026 : 52 des 82
+  articles publies portent un PDF — comptes rendus, arretes, budgets. Ce que
+  les gens viennent chercher ici, ce n'est pas une nouvelle, c'est une piece.
+  Elle merite sa bande, et une liste dense plutot que des tuiles aerees.
+
+  LE LIEN MENE A L'ARTICLE, PAS AU FICHIER. Ouvrir un PDF sans son contexte
+  prive de la date de la seance et de ce qui l'accompagne ; et une boucle
+  imbriquee sur l'article porteur garantit au passage que le document n'est
+  pas rattache a un brouillon.
+
+  Consequence assumee : si l'un des six derniers PDF n'a pas d'article
+  publie pour le porter, la liste en montre cinq. Mieux vaut cinq liens qui
+  menent quelque part que six dont un tombe dans le vide.
+]
+<B_docs>
+<section class="bande bande-creme" aria-labelledby="titre-docs">
+	<div class="large">
+
+		<div class="bande-tete">
+			<h2 class="titre-bloc" id="titre-docs"><:marly:les_derniers:> <span><:marly:documents:></span></h2>
+			<a class="bande-tout" href="#URL_PAGE{conseil}"><:marly:tous_les_comptes_rendus:>
+				<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a>
+		</div>
+
+		<div class="docs-liste">
+		<BOUCLE_docs(DOCUMENTS){extension=pdf}{mode=document}{par date}{inverse}{0,6}>
+			<BOUCLE_porteur(ARTICLES){id_document}{0,1}>
+			<a class="doc-ligne" href="#URL_ARTICLE">
+				<svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg>
+				<span><b>[(#_docs:TITRE|sinon{#TITRE})]</b>
+					<span class="doc-quoi">[(#_docs:EXTENSION|majuscules)][ · (#_docs:TAILLE|taille_en_octets)]</span></span>
+			</a>
+			</BOUCLE_porteur>
+		</BOUCLE_docs>
+		</div>
+
+	</div>
+</section>
+</B_docs>

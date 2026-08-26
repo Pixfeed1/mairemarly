@@ -82,6 +82,12 @@
 			        jamais mener a une page vide. ]
 			<h2><:marly:plan_services:></h2>
 			<ul>
+				<B_plan_actus>
+				<li><a href="#URL_PAGE{actualites}"><:marly:toutes_les_actualites:></a>
+					<span class="quoi">— <:marly:plan_actualites_quoi:></span></li>
+				<BOUCLE_plan_actus(ARTICLES){0,1}><!-- au moins un --></BOUCLE_plan_actus>
+				</B_plan_actus>
+
 				<B_plan_assos>
 				<li><a href="#URL_PAGE{associations}"><:marly:plan_annuaire:></a>
 					<span class="quoi">— <:marly:plan_annuaire_quoi:></span></li>

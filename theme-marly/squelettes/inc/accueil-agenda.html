@@ -1,0 +1,79 @@
+[(#REM)
+  inc/accueil-agenda.html — l'agenda, sur la bande verte de l'accueil.
+  ---------------------------------------------------------------------------
+  LA BANDE PLEINE COULEUR TIENT LA PAGE. Sans elle l'accueil descendait en
+  blanc et creme alternes et se lisait comme une suite de billets. Le vert au
+  milieu coupe la descente et donne a la page une structure qu'on percoit
+  avant meme de lire.
+
+  UN RENDEZ-VOUS EN GRAND, QUATRE EN LISTE. Franconville pose six cartes
+  illustrees ; nous n'avons pas les photographies pour les remplir. La
+  densite vient donc de la typographie : le prochain rendez-vous prend une
+  carte blanche avec son quantieme en jaune, sa date complete, son lieu et
+  deux lignes de resume ; les suivants se rangent a meme le vert.
+
+  TOUTE LA BANDE DISPARAIT S'IL N'Y A RIEN. C'est le cas au jour ou elle est
+  ecrite : la base ne contient aucune manifestation. Un agenda vide sur une
+  page d'accueil dit << ici il ne se passe rien >>, ce qui est faux et
+  desservirait la commune. La bande apparait le jour de la premiere saisie.
+]
+<B_agenda>
+<section class="bande bande-verte" aria-labelledby="titre-agenda">
+
+	<div class="bande-sceau a-droite" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=bande-sceau-trace}{n=agenda}></div>
+
+	<div class="large">
+
+		<div class="bande-tete">
+			<h2 class="titre-bloc" id="titre-agenda"><:marly:agenda_de_la:> <span><:marly:commune:></span></h2>
+			<a class="bande-tout" href="#URL_PAGE{reservation}"><:marly:tout_agenda:>
+				<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a>
+		</div>
+
+		<div class="ag-grille">
+			<div>
+			<BOUCLE_agenda(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{par date_debut}{0,1}>
+				<a class="ag-une" href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
+					[(#REM) Le quantieme d'abord, le mois ensuite : c'est l'ordre
+					        dans lequel on cherche une date dans un agenda. ]
+					<span class="ag-cal">
+						<b>[(#DATE_DEBUT|affdate{'d'})]</b>
+						[<span>(#DATE_DEBUT|marly_mois_abrege)</span>]
+						[<i>(#DATE_DEBUT|annee)</i>]
+					</span>
+					<span class="ag-corps">
+						[(#REM) La seule etiquette affichee est une information
+						        reelle : le nombre de places encore libres. Le
+						        filtre rend une chaine vide quand la
+						        manifestation n'a pas de jauge, et le bloc
+						        optionnel efface alors l'etiquette. On
+						        n'invente pas de categorie : la table n'en
+						        porte pas. ]
+						[<span class="ag-tag">(#ID_MANIFESTATION|marly_places_restantes) <:marly:places_libres:></span>]
+						<span class="ag-titre">#TITRE</span>
+						<span class="ag-meta">[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate_jourcourt)][, (#DATE_DEBUT|affdate{'H\hi'})][ · (#LIEU)]</span>
+						[<span class="ag-chapo">(#DESCRIPTIF|textebrut|couper{160})</span>]
+						<span class="ag-lire"><:marly:voir_detail:>
+							<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></span>
+					</span>
+				</a>
+			</BOUCLE_agenda>
+			</div>
+
+			<div class="ag-suite">
+			<BOUCLE_suite(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{par date_debut}{1,4}>
+				<a class="ag-ligne" href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
+					<span class="ag-jour">
+						<b>[(#DATE_DEBUT|affdate{'d'})]</b>
+						[<span>(#DATE_DEBUT|marly_mois_abrege)</span>]
+					</span>
+					<span class="ag-l-corps"><b class="ag-l-titre">#TITRE</b>
+						<span class="ag-l-meta">[(#DATE_DEBUT|nom_jour)][, (#DATE_DEBUT|affdate{'H\hi'})][ · (#LIEU)]</span></span>
+				</a>
+			</BOUCLE_suite>
+			</div>
+		</div>
+
+	</div>
+</section>
+</B_agenda>

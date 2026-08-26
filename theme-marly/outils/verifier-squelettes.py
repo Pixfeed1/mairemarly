@@ -1593,6 +1593,49 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                      "crochet fermant, et la suite du commentaire s'affiche en "
                      "clair sur la page. Ecrire le mot, jamais le signe")
 
+# 66. Deux bandes de meme fond l'une sous l'autre, sur la page d'accueil.
+#     Le rythme de l'accueil EST sa structure : creme, blanc, vert plein,
+#     creme. Deux bandes de meme couleur qui se suivent se relisent comme un
+#     seul bloc trop long, et la page redevient la suite de billets qu'elle ne
+#     doit pas etre. C'est la premiere chose que le client a relevee en
+#     regardant la maquette de l'agenda : << si ya que du vert l'un en dessous
+#     de l'autre ca fera chelou >>.
+#
+#     La regle lit l'ordre des INCLURE de contenu/sommaire.html, ouvre chaque
+#     fichier inclus, releve le fond de sa premiere bande, et refuse deux fois
+#     le meme fond de suite. Elle ne juge pas les couleurs : elle verifie
+#     seulement qu'elles alternent.
+_FONDS = {'bande-verte': 'vert', 'bande-creme': 'creme', 'acces': 'creme'}
+_somm = os.path.join(RACINE, 'squelettes', 'contenu', 'sommaire.html')
+if os.path.exists(_somm):
+    _src = open(_somm, encoding='utf-8').read()
+    _suite = []
+    for _inc in re.finditer(r'<INCLURE\{fond=(inc/[a-z0-9-]+)\}', _src):
+        _chemin = os.path.join(RACINE, 'squelettes', _inc.group(1) + '.html')
+        if not os.path.exists(_chemin):
+            signaler('squelettes/contenu/sommaire.html',
+                     _src[:_inc.start()].count(chr(10)) + 1,
+                     f"la page d'accueil inclut {_inc.group(1)}, qui n'existe pas")
+            continue
+        _corps = open(_chemin, encoding='utf-8').read()
+        _corps = re.sub(r'\[\(#REM\).*?\]', '', _corps, flags=re.S)
+        _fond = 'blanc'
+        for _cl, _nom in _FONDS.items():
+            if re.search(r'class="[^"]*\b' + _cl + r'\b', _corps):
+                _fond = _nom
+                break
+        _suite.append((_inc.group(1), _fond,
+                       _src[:_inc.start()].count(chr(10)) + 1))
+    for _i in range(1, len(_suite)):
+        if _suite[_i][1] == _suite[_i - 1][1] and _suite[_i][1] != 'blanc':
+            signaler('squelettes/contenu/sommaire.html', _suite[_i][2],
+                     f"{_suite[_i][0]} pose un fond {_suite[_i][1]} juste apres "
+                     f"{_suite[_i - 1][0]}, qui pose deja le meme. Les bandes de "
+                     "l'accueil doivent ALTERNER : deux fonds identiques a la "
+                     "suite se lisent comme un seul bloc, et la page redevient "
+                     "un blog")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

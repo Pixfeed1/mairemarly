@@ -1,0 +1,46 @@
+[(#REM)
+  contenu/actualites.html — toutes les nouvelles, du plus recent au plus ancien.
+  ---------------------------------------------------------------------------
+  POURQUOI CETTE PAGE EXISTE. Le menu du site est fait de rubriques
+  THEMATIQUES — Ma mairie, Urbanisme, Vie associative. Une nouvelle se range
+  donc selon son sujet, et aucune page ne repondait a la seule question que
+  pose un habitant qui revient : << qu'est-ce qui a bouge depuis la derniere
+  fois >>. La bande d'accueil y repond pour les six dernieres ; celle-ci pour
+  toutes les autres.
+
+  Les memes exclusions qu'a l'accueil, pour la meme raison : un article qui
+  porte la photographie de banniere ou qui sert d'entree de menu n'est pas
+  une nouvelle, et les pages legales dateraient toutes du meme jour.
+
+  Groupees par annee, comme dans une rubrique : c'est la meme lecture, et le
+  visiteur n'a pas a apprendre deux presentations pour la meme chose.
+]
+<INCLURE{fond=inc/bandeau-page}{cle=toutes_les_actualites}>
+
+<div class="page-simple page-sous-carton">
+
+	<p class="chapo"><:marly:actualites_intro:></p>
+
+	<B_arts>
+	<BOUCLE_arts(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{type_mot!=Emplacements}{!par date}{pagination 20}>
+	#SET{nouvelle_annee,#DATE|annee|unique{annees_actus}}
+	[(#GET{nouvelle_annee}|et{#COMPTEUR_BOUCLE|>{1}})</ul>]
+	[(#GET{nouvelle_annee}|oui)<h2 class="rubrique-annee">#GET{nouvelle_annee}</h2><ul class="fiches">]
+		<li><a href="#URL_ARTICLE">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+			<span class="fiche-texte">
+				<b>#TITRE</b>
+				<span>[(#DATE|affdate)][ · (#SOUSTITRE)][ · (#INTRODUCTION|couper{110})]</span>
+			</span>
+		</a></li>
+	</BOUCLE_arts>
+	</ul>
+	[<p class="pagination">(#PAGINATION{prive})</p>]
+	</B_arts>
+
+	[(#REM) Rien de publie : on le dit plutot que de laisser une page qui
+	        parait cassee. ]
+	<p class="explication"><:marly:aucune_actualite_publiee:></p>
+	<//B_arts>
+
+</div>

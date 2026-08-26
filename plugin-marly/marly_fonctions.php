@@ -140,6 +140,37 @@ function filtre_marly_nom_mois_dist($mois) {
 }
 
 /**
+ * « sept. » à partir d'une date SQL.
+ * ---------------------------------------------------------------------------
+ * Pour la pastille de date de l'agenda : un rond de 52 pixels ne loge pas
+ * « septembre », et un rond plus grand mangerait le titre à côté.
+ *
+ * La table est ÉCRITE ICI plutôt que déduite de affdate() : les abréviations
+ * françaises ne sont pas mécaniques — « juin » et « août » ne s'abrègent pas,
+ * « juil. » perd deux lettres, « déc. » trois. Une troncature à quatre
+ * caractères donnerait « juin. », « août. » et « févr » selon les cas.
+ *
+ * Rend une chaîne vide si la date est illisible : l'affichage est dans un
+ * bloc optionnel, la pastille se contente alors du quantième.
+ */
+function filtre_marly_mois_abrege_dist($date) {
+	$t = strtotime((string) $date);
+	/* La date vide de SQL, « 0000-00-00 », se laisse lire par strtotime et
+	   rend un timestamp negatif — donc vrai. Sans ce garde-fou une
+	   manifestation sans date affichait « nov. » sur sa pastille. On exige
+	   une annee plausible plutot qu'un simple non-zero. */
+	if ($t === false || intval(date('Y', (int) $t)) < 1970) {
+		return '';
+	}
+	$abreges = array(
+		1 => 'janv.', 2 => 'févr.', 3 => 'mars',  4 => 'avr.',
+		5 => 'mai',   6 => 'juin',  7 => 'juil.', 8 => 'août',
+		9 => 'sept.', 10 => 'oct.', 11 => 'nov.', 12 => 'déc.',
+	);
+	return $abreges[intval(date('n', $t))];
+}
+
+/**
  * Traduit l'adresse d'une video en adresse d'incorporation.
  * ---------------------------------------------------------------------------
  * La mairie colle l'adresse qu'elle voit dans son navigateur. Lui demander

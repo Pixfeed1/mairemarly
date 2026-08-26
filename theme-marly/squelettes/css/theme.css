@@ -413,12 +413,13 @@ body::after{
   .acces-liens .rond{ transition:none; }
   .acces-liens a:hover .rond{ transform:none; }
 }
-/* Six ronds sur une ligne, ou deux rangées de trois — jamais cinq et un
-   orphelin. Entre 1080 et 1320 px la colonne de gauche ne laisse pas la
-   place aux six ; on tranche pour deux rangées franches. */
-@media (min-width:1081px) and (max-width:1319px){
-  .acces-liens ul{ grid-template-columns:repeat(3,1fr); }
-}
+/* CETTE RÈGLE A ÉTÉ RETIRÉE, ET LA RAISON MÉRITE D'ÊTRE ÉCRITE. Elle repliait
+   les six ronds en deux rangées de trois entre 1081 et 1319 px, « plutôt que
+   cinq et un orphelin ». Mesuré le 26 août 2026 dans Chromium à 1280, 1200 et
+   1100 px : les six tiennent sur une ligne dès 1100 px, et un seul intitulé
+   passe sur deux lignes, « Réserver une salle ». La règle doublait donc la
+   hauteur de la bande pour éviter un défaut qui n'existait pas — et c'est
+   elle qui donnait à l'accueil son air de page vide. */
 @media (max-width:1080px){
   .acces-grille{ grid-template-columns:1fr; gap:30px; }
   .acces .titre-bloc.droite{ text-align:left; }
@@ -434,109 +435,14 @@ body::after{
 
 section{ padding-block:70px; position:relative; }
 
-/* ---- 4. GRAVURE QUI DÉBORDE --------------------------------------------- */
-.gravure{ position:absolute; width:300px; height:300px; opacity:.8; mix-blend-mode:multiply; pointer-events:none; z-index:0; }
-.gravure.dr{ right:0; top:40px; transform:translateX(45%); }
-.gravure.ga{ left:0; top:120px; transform:translateX(-45%); }
+/* Le reste de l'ancienne composition — actu vedette, evenements, conseil,
+   associations, « a lire » — vivait ici en 103 lignes. AUCUNE n'etait
+   appelee par un squelette : elles venaient de la maquette d'origine et y
+   sont restees. Elles sont retirees le 26 aout 2026, en meme temps que la
+   page d'accueil est refaite pour de bon. Une d'elles s'appelait
+   .bande-creme, comme la bande de l'accueil ci-dessous : le doublon aurait
+   ete tres difficile a voir. */
 
-/* ---- 3. ACTU VEDETTE ---------------------------------------------------- */
-.actu-vedette{ position:relative; display:flex; align-items:center; z-index:1; text-decoration:none; }
-.actu-vedette .ph{ width:72%; aspect-ratio:1087/578; border-radius:4px; --f:linear-gradient(135deg,#C98B3C,#8E5526); }
-.actu-vedette .txt{
-  background:#fff; border-radius:4px; border-bottom:4px solid var(--accent);
-  padding:40px 44px; max-width:470px; margin-left:-140px; position:relative; z-index:2;
-  box-shadow:0 16px 44px rgba(29,26,26,.12);
-}
-.cat{ display:inline-block; background:var(--jaune); color:var(--encre); font-size:12px; letter-spacing:.09em; text-transform:uppercase; font-weight:700; padding:4px 11px; margin-bottom:12px; }
-.actu-vedette .txt h3{ font-family:var(--titre); font-weight:800; font-size:34px; margin-bottom:12px; }
-.actu-vedette .txt p{ margin:0; color:var(--encre-doux); font-size:16px; }
-
-/* ---- 2. BANDE CRÈME ----------------------------------------------------- */
-.bande-creme{ position:relative; margin-top:46px; padding-top:34px; padding-bottom:38px; }
-.bande-creme::before{
-  content:''; position:absolute; left:50%; transform:translateX(-50%); width:100vw;
-  top:0; bottom:0; background:var(--creme); border-bottom:3px solid var(--accent); z-index:0;
-}
-.bande-creme>*{ position:relative; z-index:1; }
-.actus-petites{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-.actu-petite{ position:relative; aspect-ratio:540/288; border-radius:4px; overflow:hidden; display:block; text-decoration:none; color:#fff; }
-.actu-petite .ph{ position:absolute; inset:0; }
-.actu-petite .voile{ position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.15) 58%,transparent 100%); }
-.actu-petite .txt{ position:absolute; bottom:0; padding:16px 20px; width:100%; }
-.actu-petite h3{ font-family:var(--titre); font-weight:700; font-size:20px; color:#fff; }
-
-.filet{ position:relative; margin-top:38px; text-align:right; }
-.filet::before{ content:''; position:absolute; left:0; right:0; top:50%; height:2px; background:var(--accent); }
-.filet a{ position:relative; display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--accent); border-radius:30px; padding:11px 26px; text-decoration:none; font-weight:600; font-size:15px; }
-.filet a:hover{ background:var(--accent); color:#fff; }
-
-/* ---- ÉVÉNEMENTS --------------------------------------------------------- */
-.evt-zone{ position:relative; }
-.evt-zone::before{ content:''; position:absolute; left:50%; transform:translateX(-50%); width:100vw; top:120px; bottom:0; background:var(--creme); border-bottom:3px solid var(--accent); z-index:0; }
-.evt-grille{ position:relative; z-index:1; display:grid; grid-template-columns:440px 1fr; gap:56px; }
-.affiche{ position:relative; }
-.affiche .ph{ aspect-ratio:450/357; border-radius:4px; --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
-.affiche .txt{ background:#fff; padding:26px 28px 22px; margin:-46px 18px 0; position:relative; border-radius:4px; box-shadow:0 14px 34px rgba(29,26,26,.12); }
-.affiche h3{ font-family:var(--titre); font-weight:800; font-size:26px; margin-bottom:8px; }
-.affiche p{ margin:0; color:var(--encre-doux); font-size:15px; }
-.pastille-date{
-  position:absolute; left:20px; bottom:-26px; z-index:3; width:106px; height:106px;
-  border-radius:50%; background:var(--accent); color:#fff; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; line-height:1;
-}
-.pastille-date b{ font-family:var(--titre); font-size:29px; font-weight:800; }
-.pastille-date span{ font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-top:3px; }
-
-.filtres{ display:flex; gap:10px; justify-content:flex-end; margin-bottom:26px; flex-wrap:wrap; position:relative; z-index:1; }
-.filtres button{ border:1px solid var(--accent); background:#fff; color:var(--encre); border-radius:24px; padding:8px 20px; font-size:14px; cursor:pointer; font-family:var(--texte); }
-.filtres button:hover{ background:var(--accent); color:#fff; }
-
-.evt-liste{ list-style:none; margin:0; padding:0; }
-.evt-liste li{ display:flex; gap:24px; align-items:center; padding:22px 0; border-bottom:1px solid var(--trait); }
-.evt-liste li:last-child{ border-bottom:0; }
-.rond-date{ flex-shrink:0; width:88px; height:88px; border-radius:50%; background:var(--accent); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; }
-.rond-date b{ font-family:var(--titre); font-size:26px; font-weight:800; }
-.rond-date span{ font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; margin-top:2px; }
-.evt-liste h3{ font-family:var(--titre); font-weight:700; font-size:21px; margin-top:6px; }
-
-/* ---- CONSEIL MUNICIPAL -------------------------------------------------- */
-.conseil{ background:var(--accent); color:#fff; }
-.conseil .titre-bloc{ color:var(--jaune); }
-.conseil .titre-bloc span{ color:#fff; }
-.conseil-grille{ display:grid; grid-template-columns:1fr 1.05fr; gap:56px; align-items:center; }
-.conseil p.intro{ font-size:18px; opacity:.93; margin:0 0 26px; }
-.conseil-recherche{ display:flex; background:#fff; border-radius:4px; overflow:hidden; }
-.conseil-recherche input{ flex:1; border:0; padding:16px 18px; font-size:16px; min-width:0; font-family:var(--texte); }
-.conseil-recherche button{ border:0; background:var(--jaune); color:var(--encre); padding:0 26px; font-weight:700; cursor:pointer; font-family:var(--texte); }
-.pv{ background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); border-radius:4px; }
-.pv ul{ list-style:none; margin:0; padding:8px; }
-.pv li{ display:flex; align-items:center; gap:14px; padding:14px; border-bottom:1px solid rgba(255,255,255,.13); }
-.pv li:last-child{ border-bottom:0; }
-.pv i{ color:var(--jaune); font-size:20px; flex-shrink:0; }
-.pv b{ font-family:var(--titre); font-size:17px; font-weight:700; }
-.pv small{ display:block; opacity:.75; font-size:13px; }
-.pv .marq{ margin-left:auto; font-size:11px; background:var(--jaune); color:var(--encre); padding:3px 9px; font-weight:700; white-space:nowrap; }
-
-/* ---- ASSOCIATIONS ------------------------------------------------------- */
-.assos{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
-.asso{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:28px 24px; text-decoration:none; display:block; }
-.asso:hover{ border-color:var(--accent); }
-.asso .rond{ width:52px; height:52px; border-radius:50%; background:var(--creme); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
-.asso .rond i{ font-size:25px; color:var(--accent); }
-.asso h3{ font-family:var(--titre); font-weight:800; font-size:19px; margin-bottom:5px; }
-.asso p{ margin:0; font-size:14px; color:var(--encre-doux); }
-
-/* ---- À LIRE ------------------------------------------------------------- */
-.lire{ background:var(--creme); }
-.lire-grille{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
-.bulletin{ display:flex; gap:26px; align-items:center; }
-.couv{ width:160px; height:216px; flex-shrink:0; border-radius:2px; box-shadow:0 12px 30px rgba(29,26,26,.22); --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
-.lettre{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:30px; }
-.lettre form{ display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
-.lettre input{ flex:1; min-width:190px; border:1px solid var(--trait-champ); border-radius:3px; padding:13px 15px; font-family:var(--texte); }
-.lettre button{ border:0; background:var(--accent); color:#fff; border-radius:3px; padding:13px 24px; font-weight:700; cursor:pointer; font-family:var(--texte); }
-
-/* ---- PIED --------------------------------------------------------------- */
 /* ---- LA PAGE DE RECHERCHE ----------------------------------------------- */
 /* Le champ reste visible en tete des resultats : on affine sans rouvrir le
    panneau plein ecran, et l'adresse de la page suffit a repartager la
@@ -668,19 +574,9 @@ section{ padding-block:70px; position:relative; }
 @media(max-width:560px){ .pied-quatre{ grid-template-columns:1fr; } }
 
 /* ---- responsive --------------------------------------------------------- */
-@media (max-width:1080px){
-  .actu-vedette{ flex-direction:column; align-items:stretch; }
-  .actu-vedette .ph{ width:100%; }
-  .actu-vedette .txt{ margin-left:0; margin-top:-60px; max-width:none; margin-inline:20px; }
-  .evt-grille{ grid-template-columns:1fr; gap:64px; }
-  .conseil-grille,.lire-grille{ grid-template-columns:1fr; gap:34px; }
-  .assos{ grid-template-columns:1fr 1fr; }
-  .gravure{ display:none; }
-}
+/* Ce bloc pilotait lui aussi l'ancienne composition. Il ne reste que les deux
+   declarations qui portent sur des selecteurs vivants. */
 @media (max-width:760px){
-  .actus-petites,.assos{ grid-template-columns:1fr; }
-  .bulletin{ flex-direction:column; align-items:flex-start; }
-  .filtres{ justify-content:flex-start; }
   .titre-bloc.droite{ text-align:left; }
   section{ padding-block:48px; }
 }
@@ -2221,4 +2117,250 @@ body.page-contact .page-simple{ max-width:1080px; }
 	.contact-deux{ grid-template-columns:1fr; gap:40px 0; }
 	.contact-infos{ position:static; }
 	.contact-rang{ grid-template-columns:1fr; }
+}
+
+/* ===========================================================================
+   LA PAGE D'ACCUEIL — LES TROIS BANDES
+   ---------------------------------------------------------------------------
+   MESURE DU 26 AOÛT 2026 : sur 82 articles publiés, 7 portent une image et
+   52 portent un PDF. Le contenu de cette commune est documentaire, pas
+   photographique. Une composition bâtie sur de grandes images montrerait un
+   cadre vide onze fois sur douze : la densité vient donc de la typographie.
+
+   LE RYTHME DE LA PAGE EST SA STRUCTURE. Vert de la bannière, crème des
+   accès, blanc des actualités, VERT PLEIN de l'agenda, crème des documents.
+   Les fonds ALTERNENT, sans exception : deux bandes de même couleur l'une
+   sous l'autre se relisent comme un seul bloc trop long, et la page redevient
+   la suite de billets qu'elle ne doit pas être.
+   =========================================================================== */
+
+.bande{ position:relative; padding:46px 0 40px; }
+.bande > .large{ position:relative; z-index:1; }
+.bande-creme{
+  background:var(--creme);
+  border-top:1px solid var(--trait); border-bottom:3px solid var(--accent);
+}
+.bande-verte{ background:var(--accent); color:#fff; padding:46px 0 48px; }
+.bande-verte .titre-bloc{ color:#fff; }
+.bande-verte .titre-bloc span{ color:var(--jaune); }
+.bande-verte .bande-tout{ color:#fff; }
+
+/* Le sceau gravé, À CHEVAL sur le bord de la bande. Il était d'abord posé à
+   5 % d'opacité : invisible, et l'ensemble avait l'air de manquer de dessin
+   sans qu'on sache dire pourquoi. À 10 % il se lit comme un filigrane. */
+.bande-sceau{ position:absolute; z-index:0; pointer-events:none; color:var(--accent); }
+.bande-sceau .bande-sceau-trace{ width:100%; height:100%; display:block; }
+.bande-sceau.a-droite{ top:-40px; right:-70px; width:330px; height:330px; opacity:.10; }
+.bande-sceau.a-gauche{ bottom:-70px; left:-80px; width:300px; height:300px; opacity:.09; }
+.bande-verte .bande-sceau{ color:#fff; opacity:.10; }
+
+/* Titre à gauche, lien « tout voir » à droite, alignés sur la même ligne de
+   base : le lien fait partie du titre, il ne se cherche pas en bas de bande. */
+.bande-tete{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:24px; margin:0 0 20px;
+}
+.bande-tete .titre-bloc{ margin:0; font-size:clamp(28px,3.2vw,40px); }
+.bande-tout{
+  font-family:var(--texte); font-size:13.5px; font-weight:700; color:var(--accent);
+  text-decoration:none; white-space:nowrap; display:inline-flex; align-items:center; gap:7px;
+}
+.bande-tout .ico{ width:15px; height:15px; transition:transform .15s ease; }
+.bande-tout:hover{ text-decoration:underline; }
+.bande-tout:hover .ico{ transform:translateX(4px); }
+@media (max-width:560px){
+  .bande-tete{ flex-direction:column; align-items:flex-start; gap:10px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .bande-tout .ico{ transition:none; }
+  .bande-tout:hover .ico{ transform:none; }
+}
+
+/* --- L'ACTUALITÉ EN TÊTE -------------------------------------------------- */
+.actus-grille{ display:grid; grid-template-columns:1.15fr 1fr; gap:0 40px; align-items:start; }
+@media (max-width:940px){ .actus-grille{ grid-template-columns:1fr; gap:30px 0; } }
+
+/* Le sceau est SOUS l'image, pas à côté : l'article qui porte une photo la
+   voit recouvrir le cadre entier, celui qui n'en porte pas montre le dessin.
+   Une seule écriture pour les deux cas — aucun des deux ne peut être oublié. */
+.une-fond{
+  position:relative; aspect-ratio:16/8; background:var(--creme);
+  border-top:3px solid var(--accent); overflow:hidden;
+}
+.une-fond img{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; }
+.une-grave{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--accent); opacity:.16;
+}
+.une-grave .une-trace{ width:58%; height:58%; }
+
+/* Le carton chevauche l'image : c'est le geste du thème, celui du cartouche
+   de bandeau et de la vignette de commerce. */
+.une-carton{
+  position:relative; z-index:2; margin:-58px 22px 0; background:#fff;
+  border-bottom:3px solid var(--accent); box-shadow:0 12px 34px rgba(29,26,26,.14);
+  padding:20px 24px 22px; display:block; text-decoration:none; color:var(--encre);
+  transition:transform .15s ease;
+}
+.une-carton:hover{ transform:translateY(-3px); }
+@media (prefers-reduced-motion:reduce){
+  .une-carton{ transition:none; }
+  .une-carton:hover{ transform:none; }
+}
+.une-date{
+  font-family:var(--titre); font-size:11.5px; font-weight:800; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px;
+}
+.une-titre{
+  display:block; font-family:var(--serif); font-size:clamp(21px,2.2vw,26px);
+  line-height:1.14; margin-bottom:6px;
+}
+.une-carton:hover .une-titre{ text-decoration:underline; }
+.une-chapo{
+  display:block; font-family:var(--texte); font-size:14.5px; line-height:1.6;
+  color:var(--encre-doux);
+}
+
+.actu-breve{
+  display:flex; gap:13px; align-items:flex-start; padding:13px 0;
+  border-top:1px solid var(--trait); text-decoration:none; color:var(--encre);
+}
+.actu-breve:first-child{ border-top:0; padding-top:0; }
+.actu-breve .rond{
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background:var(--creme); border:1px solid var(--trait); color:var(--accent);
+  display:flex; align-items:center; justify-content:center;
+}
+.actu-breve .rond .ico{ width:17px; height:17px; }
+.actu-breve b{
+  display:block; font-family:var(--serif); font-size:17.5px; line-height:1.22;
+  font-weight:400; margin-bottom:2px;
+}
+/* LA DATE SEULE PORTE LES CAPITALES. Écrit sur « .actu-breve span », le
+   text-transform descendait aussi dans le <b> et tous les titres de brèves
+   sortaient en capitales. D'où cette classe dédiée. */
+.actu-quand{
+  display:block; font-family:var(--texte); font-size:11.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--encre-doux);
+}
+.actu-breve:hover b{ color:var(--accent); text-decoration:underline; }
+
+/* --- L'AGENDA, SUR LE VERT ------------------------------------------------ */
+/* Franconville pose six cartes illustrées en 3×2. Nous n'avons pas les
+   images pour les remplir : un rendez-vous en grand, quatre en liste serrée. */
+.ag-grille{ display:grid; grid-template-columns:1.05fr .95fr; gap:0 42px; align-items:stretch; }
+@media (max-width:900px){ .ag-grille{ grid-template-columns:1fr; gap:28px 0; } }
+
+.ag-une{
+  display:flex; gap:22px; background:#fff; color:var(--encre); text-decoration:none;
+  padding:24px 26px 26px; border-bottom:4px solid var(--jaune);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.ag-une:hover{ transform:translateY(-3px); box-shadow:0 16px 34px rgba(0,0,0,.24); }
+@media (prefers-reduced-motion:reduce){
+  .ag-une{ transition:none; }
+  .ag-une:hover{ transform:none; }
+}
+.ag-cal{
+  flex-shrink:0; width:74px; background:var(--jaune); color:var(--encre);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:12px 0 10px; line-height:1; align-self:flex-start;
+}
+.ag-cal b{ font-family:var(--titre); font-size:34px; font-weight:800; }
+.ag-cal span{
+  font-family:var(--titre); font-size:12px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; margin-top:4px;
+}
+.ag-cal i{
+  font-style:normal; font-family:var(--texte); font-size:10.5px; letter-spacing:.1em;
+  margin-top:6px; opacity:.75;
+}
+.ag-corps{ display:flex; flex-direction:column; align-items:flex-start; flex:1; }
+.ag-tag{
+  display:inline-block; font-family:var(--titre); font-size:10.5px; font-weight:700;
+  letter-spacing:.11em; text-transform:uppercase; color:var(--accent);
+  border:1px solid var(--accent); padding:3px 9px; margin-bottom:9px;
+}
+.ag-titre{
+  display:block; font-family:var(--serif); font-size:clamp(21px,2.2vw,27px);
+  line-height:1.13; margin-bottom:6px;
+}
+.ag-une:hover .ag-titre{ text-decoration:underline; }
+.ag-meta{
+  display:block; font-family:var(--texte); font-size:13px; font-weight:700;
+  color:var(--accent); margin-bottom:8px;
+}
+.ag-chapo{
+  display:block; font-family:var(--texte); font-size:14.5px; line-height:1.6;
+  color:var(--encre-doux);
+}
+/* Poussé en bas de la carte : les hauteurs des deux colonnes se répondent. */
+.ag-lire{
+  margin-top:auto; padding-top:14px; font-family:var(--texte); font-size:13px;
+  font-weight:700; color:var(--accent); display:inline-flex; align-items:center; gap:7px;
+}
+.ag-lire .ico{ width:15px; height:15px; transition:transform .15s ease; }
+.ag-une:hover .ag-lire .ico{ transform:translateX(4px); }
+@media (prefers-reduced-motion:reduce){
+  .ag-lire .ico{ transition:none; }
+  .ag-une:hover .ag-lire .ico{ transform:none; }
+}
+
+.ag-ligne{
+  display:flex; gap:16px; align-items:center; padding:13px 4px 13px 0;
+  border-top:1px solid rgba(255,255,255,.35); text-decoration:none; color:#fff;
+}
+.ag-ligne:first-child{ border-top:0; padding-top:0; }
+.ag-suite a:last-child{ border-bottom:1px solid rgba(255,255,255,.35); }
+.ag-jour{
+  flex-shrink:0; width:52px; height:52px; background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.5); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; line-height:1;
+}
+.ag-jour b{ font-family:var(--titre); font-size:19px; font-weight:800; }
+.ag-jour span{
+  font-family:var(--titre); font-size:9.5px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; margin-top:2px;
+}
+.ag-l-titre{
+  display:block; font-family:var(--serif); font-size:18px; font-weight:400;
+  line-height:1.2; margin-bottom:2px;
+}
+.ag-l-meta{ display:block; font-family:var(--texte); font-size:12.5px; color:rgba(255,255,255,.85); }
+.ag-ligne:hover .ag-jour{ background:var(--jaune); border-color:var(--jaune); color:var(--encre); }
+.ag-ligne:hover .ag-l-titre{ text-decoration:underline; }
+
+/* --- LES DOCUMENTS -------------------------------------------------------- */
+/* 52 des 82 articles portent un PDF. C'est la matière réelle du site : une
+   liste dense sur deux colonnes, pas quatre tuiles avec de l'air autour. */
+/* DEUX COLONNES EN « columns », PAS EN GRILLE. Une grille à deux colonnes
+   range le premier document à gauche et le DEUXIÈME à droite : la colonne de
+   gauche lue de haut en bas donne alors le 1er, le 3e, le 5e. On lit une
+   liste de comptes rendus de haut en bas, pas en zigzag. columns remplit la
+   première colonne avant d'ouvrir la seconde, et l'ordre visible redevient
+   l'ordre du document — celui qu'entend aussi un lecteur d'écran. */
+.docs-liste{ columns:2; column-gap:40px; }
+@media (max-width:760px){ .docs-liste{ columns:1; } }
+.doc-ligne{
+  display:flex; gap:13px; align-items:baseline; padding:11px 0;
+  border-top:1px solid var(--trait); text-decoration:none; color:var(--encre);
+  break-inside:avoid;
+}
+.doc-ligne .ico{
+  width:17px; height:17px; color:var(--accent); flex-shrink:0;
+  position:relative; top:3px;
+}
+.doc-ligne b{
+  font-family:var(--serif); font-size:16.5px; font-weight:400; line-height:1.25;
+  overflow-wrap:anywhere;
+}
+.doc-quoi{
+  display:block; font-family:var(--texte); font-size:11.5px; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--encre-doux); margin-top:2px;
+}
+.doc-ligne:hover b{ color:var(--accent); text-decoration:underline; }
+
+@media (max-width:820px){
+  .bande-sceau{ display:none; }
+  .une-carton{ margin-inline:12px; }
 }
