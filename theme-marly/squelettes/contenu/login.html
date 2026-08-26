@@ -115,9 +115,10 @@
 			[(#REM) L'adresse vient des reglages de la commune, jamais du
 			        squelette. Sans adresse renseignee, la phrase entiere
 			        disparait plutot que de renvoyer vers rien. ]
+			#SET{courriel,#CONFIG{marly/courriel}}
 			[<div class="connexion-encart">
 				<p><:marly:connexion_q3_b:><br>
-				<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a></p>
+				<a href="mailto:(#GET{courriel}|attribut_html)">#GET{courriel}</a></p>
 			</div>]
 
 		</div>

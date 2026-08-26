@@ -123,8 +123,10 @@
 		</div>
 		<div>
 			<p class="urba-ou"><svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:urba_par_courriel:></p>
-			<p>[<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a><br>]
-			[<a href="tel:[(#CONFIG{marly/telephone}|replace{' ',''}|attribut_html)]">(#CONFIG{marly/telephone})</a>]</p>
+			<p>#SET{courriel_urba,#CONFIG{marly/courriel}}
+				#SET{tel_urba,#CONFIG{marly/telephone}}
+				[<a href="mailto:(#GET{courriel_urba}|attribut_html)">#GET{courriel_urba}</a><br>]
+			[<a href="tel:(#GET{tel_urba}|marly_tel_lien)">#GET{tel_urba}</a>]</p>
 			<p class="urba-precision"><:marly:urba_precision_courriel:></p>
 		</div>
 	</div>

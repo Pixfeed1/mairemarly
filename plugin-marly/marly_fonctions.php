@@ -81,6 +81,25 @@ function filtre_marly_jours_mois_dist($mois) {
 }
 
 /**
+ * Un numéro de téléphone pour un lien tel:.
+ * ---------------------------------------------------------------------------
+ * Les squelettes écrivaient |replace{'[^0-9+]',''}. L'expression est juste,
+ * mais elle contient des CROCHETS, et le crochet ouvre un bloc optionnel en
+ * langage SPIP : la ligne entière cessait d'être interprétée et le visiteur
+ * lisait href="tel:[(03 23 60 21 85|replace{'[^0-9+]',''}|attribut_html)]"
+ * dans la page. Mesuré le 26 août 2026 sur la page Contact.
+ *
+ * Le nettoyage se fait donc ici, où les crochets n'ont pas de sens
+ * particulier. Le plus (+) initial est gardé : un numéro international sans
+ * lui n'appelle personne.
+ */
+function filtre_marly_tel_lien_dist($tel) {
+	$tel = (string) $tel;
+	$plus = (strpos(trim($tel), '+') === 0) ? '+' : '';
+	return $plus . preg_replace('/[^0-9]/', '', $tel);
+}
+
+/**
  * Un mois AAAA-MM sûr, quoi qu'on lui donne.
  * ---------------------------------------------------------------------------
  * Le squelette écrivait le mois courant lui-même, par #VAL|date_format{Y-m}.

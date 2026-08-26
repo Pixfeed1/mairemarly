@@ -47,8 +47,21 @@
 				<h2><:marly:pied_la_mairie:></h2>
 				<p>[(#CONFIG{marly/adresse}|sinon{'4 rue de la Poterie'})<br>]
 				[(#CONFIG{marly/code_postal}|sinon{'02120'}) ][(#CONFIG{marly/ville}|sinon{'Marly-Gomont'})]</p>
-				<p>[<a href="tel:[(#CONFIG{marly/telephone}|sinon{'0323602185'}|replace{' ',''})]">(#CONFIG{marly/telephone}|sinon{'03 23 60 21 85'})</a><br>]
-				[<a href="mailto:(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'}|attribut_html)">(#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'})</a>]</p>
+				[(#REM) UN BLOC [ ] N'EVALUE QU'UNE BALISE ENTRE PARENTHESES NUES.
+				        La ligne du courriel en portait deux, celle du href et celle
+				        du texte : SPIP en a pris une, et l'autre est ressortie en
+				        clair dans l'adresse. Le lien courriel du pied ne menait donc
+				        nulle part, sur les vingt-trois pages de l'echantillon, et ca
+				        ressemblait a une adresse. Trouve le 26 aout 2026 par le
+				        validateur du W3C.
+
+				        La valeur est calculee AVANT, une fois, et le bloc n'emploie
+				        plus qu'un [( )] pour l'attribut et un #GET nu pour le texte.
+				        Un #GET sans parentheses ne consomme pas la place. ]
+				#SET{tel,#CONFIG{marly/telephone}|sinon{'03 23 60 21 85'}}
+				#SET{courriel,#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'}}
+				<p>[<a href="tel:(#GET{tel}|marly_tel_lien)">#GET{tel}</a><br>]
+				[<a href="mailto:(#GET{courriel}|attribut_html)">#GET{courriel}</a>]</p>
 				[(#REM) L'action de la colonne mene a la page Contact, et non plus
 				        a un mailto. La page donne le formulaire, le telephone, les
 				        horaires et la carte ; le mailto ne donnait qu'une adresse,

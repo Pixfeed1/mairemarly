@@ -25,19 +25,23 @@
 		<div class="contact-infos">
 			<h2 class="titre-bloc"><:marly:contact_la_mairie:></h2>
 
+			#SET{adresse,#CONFIG{marly/adresse}}
+			#SET{commune,#CONFIG{marly/code_postal}|concat{' ',#CONFIG{marly/ville}}}
 			[<div class="contact-ligne">
 				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg></span>
-				<p><b><:marly:champ_adresse:></b>(#CONFIG{marly/adresse})[<br>(#CONFIG{marly/code_postal}) ][(#CONFIG{marly/ville})]</p>
+				<p><b><:marly:champ_adresse:></b>(#GET{adresse})[<br>(#GET{commune}|trim)]</p>
 			</div>]
 
+			#SET{tel,#CONFIG{marly/telephone}}
 			[<div class="contact-ligne">
 				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-phone-line"/></svg></span>
-				<p><b><:marly:champ_telephone:></b><a href="tel:[(#CONFIG{marly/telephone}|replace{'[^0-9+]',''}|attribut_html)]">(#CONFIG{marly/telephone})</a></p>
+				<p><b><:marly:champ_telephone:></b><a href="tel:(#GET{tel}|marly_tel_lien)">#GET{tel}</a></p>
 			</div>]
 
+			#SET{courriel,#CONFIG{marly/courriel}}
 			[<div class="contact-ligne">
 				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg></span>
-				<p><b><:marly:votre_courriel:></b><a href="mailto:[(#CONFIG{marly/courriel}|attribut_html)]">(#CONFIG{marly/courriel})</a></p>
+				<p><b><:marly:votre_courriel:></b><a href="mailto:(#GET{courriel}|attribut_html)">#GET{courriel}</a></p>
 			</div>]
 
 			[<div class="contact-horaires">
@@ -47,10 +51,11 @@
 
 			[(#REM) La carte, si la commune a pu etre localisee. Sans JavaScript
 			        le cadre reste vide et l'adresse ci-dessus suffit. ]
+			#SET{lon,#CONFIG{marly/longitude}|attribut_html}
+			#SET{nom,#NOM_SITE_SPIP|trim|attribut_html}
 			[<div class="carte-cadre" data-carte
 			      data-lat="(#CONFIG{marly/latitude}|attribut_html)"
-			      data-lon="[(#CONFIG{marly/longitude}|attribut_html)]"
-			      data-nom="[(#NOM_SITE_SPIP|trim|attribut_html)]"></div>]
+			      data-lon="#GET{lon}" data-nom="#GET{nom}"></div>]
 			[(#CONFIG{marly/latitude}|oui)
 			<link rel="stylesheet" href="#CHEMIN{js/leaflet/leaflet.css}">
 			<script src="#CHEMIN{js/leaflet/leaflet.js}"></script>

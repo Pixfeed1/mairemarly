@@ -78,7 +78,8 @@
 
 	[(#REM) Le dernier recours : quelqu'un a la mairie. Le lien ne s'affiche
 	        que si l'adresse est renseignee dans les reglages. ]
+	#SET{courriel,#CONFIG{marly/courriel}}
 	[<p class="explication"><:marly:404_sinon:>
-		<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a>.</p>]
+		<a href="mailto:(#GET{courriel}|attribut_html)">#GET{courriel}</a>.</p>]
 
 </div>

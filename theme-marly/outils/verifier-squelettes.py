@@ -1462,6 +1462,75 @@ if os.path.exists(_CSS61):
                  "plus ou l'on est, et rien ne le signale puisque tout marche a "
                  "la souris (RGAA 10.7). Redessiner l'anneau, jamais le supprimer")
 
+# 62. Deux balises entre parentheses dans un meme bloc optionnel.
+#     Un bloc [ avant (#BALISE|filtres) apres ] n'a qu'UN pivot. Ecrire
+#     [<a href="mailto:(#X|f)">(#X)</a>] en met deux : SPIP en prend un, et
+#     l'autre ressort EN CLAIR, parentheses et filtres compris, au milieu d'un
+#     attribut href. Le lien ne mene alors nulle part.
+#
+#     Mesure du 26 aout 2026 : le courriel du pied de page etait dans ce cas,
+#     donc casse sur les vingt-trois pages de l'echantillon. Personne ne
+#     l'avait vu — a l'ecran, ca ressemble a une adresse. C'est le validateur
+#     du W3C qui l'a signale, en refusant la valeur de l'attribut.
+#
+#     La forme juste : UN pivot entre parentheses, et une substitution simple
+#     #BALISE ou #GET pour l'autre emploi. Un # sans parentheses ne consomme
+#     pas la place.
+#
+#     Les blocs imbriques comptent a part : ils ont leur propre pivot.
+def _blocs62(_t):
+    _out, _pile = [], []
+    for _i, _c in enumerate(_t):
+        if _c == '[':
+            _pile.append(_i)
+        elif _c == ']' and _pile:
+            _d = _pile.pop()
+            if not _pile:
+                _out.append((_d, _t[_d:_i + 1]))
+    return _out
+
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _m2 = re.sub(r'\[\(#REM\).*?\]', lambda _m: ' ' * len(_m.group(0)), _src, flags=re.S)
+    for _d, _b in _blocs62(_m2):
+        if _b.startswith('[('):
+            continue
+        # On retire les blocs imbriques du plus interieur vers l'exterieur :
+        # un seul passage laissait ceux qui en contiennent eux-memes, et la
+        # regle criait a tort sur la carte des fiches — mesuree correcte.
+        _dedans = _b[1:-1]
+        while True:
+            _n = re.sub(r'\[[^\[\]]*\]', '', _dedans)
+            if _n == _dedans:
+                break
+            _dedans = _n
+        if len(re.findall(r'\(#[A-Z_]', _dedans)) > 1:
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                     _m2[:_d].count(chr(10)) + 1,
+                     "deux balises entre parentheses dans un meme bloc optionnel : "
+                     "SPIP n'en evalue qu'une, l'autre ressort en clair dans la page. "
+                     "Garder un seul pivot, et employer #BALISE sans parentheses "
+                     "pour le second emploi")
+
+# 63. Un crochet dans un argument de filtre.
+#     Le crochet ouvre un bloc optionnel. Ecrire |replace{'[^0-9+]',''} pose
+#     donc un crochet ouvrant que SPIP compte, la structure du squelette se
+#     desequilibre, et la ligne entiere cesse d'etre interpretee.
+#
+#     Mesure du 26 aout 2026 : la page Contact affichait
+#     href="tel:[(03 23 60 21 85|replace{'[^0-9+]',''}|attribut_html)]".
+#
+#     Une expression reguliere n'a rien a faire dans un squelette : elle va
+#     dans un filtre PHP, ou le crochet n'a pas de sens particulier.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _c in re.finditer(r"\|\w+\{'[^']*[\[\]][^']*'", _src):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_c.start()].count(chr(10)) + 1,
+                 f"crochet dans un argument de filtre : << {_c.group(0)[:40]} >>. "
+                 "Le crochet ouvre un bloc optionnel et desequilibre le squelette ; "
+                 "la ligne entiere cesse d'etre interpretee. Passer par un filtre PHP")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
