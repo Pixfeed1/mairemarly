@@ -1,0 +1,31 @@
+[(#REM)
+  Le bandeau d'une page de section.
+  ---------------------------------------------------------------------------
+  Les pages baties comme gabarits — les demarches, la vie associative,
+  l'annuaire des commerces, le catalogue des reservations — n'ont pas de
+  hierarchie dans SPIP : le site ne peut pas composer leur fil d'Ariane tout
+  seul comme il le fait pour une rubrique. Il est donc pose ici, et il n'a
+  que deux niveaux : l'accueil, puis la page.
+
+  ELLES N'ONT PAS DE PHOTOGRAPHIE NON PLUS. Une rubrique porte un logo, ces
+  pages-la n'existent pas dans la base et n'en ont pas ou en accrocher. Le
+  paysage dessine tient donc seul, et c'est tres bien : ces pages sont des
+  outils, pas des vitrines.
+
+  Parametre : titre, deja traduit par l'appelant.
+]
+<div class="bandeau-illustre">
+	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
+	     width="1440" height="260" alt="" aria-hidden="true">
+
+	<div class="bandeau-carton">
+		<div>
+			<nav class="fil-ariane" aria-label="Fil d’Ariane">
+				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+				<span aria-hidden="true">›</span>
+				<span aria-current="page">#ENV{titre}</span>
+			</nav>
+			<h1>#ENV{titre}</h1>
+		</div>
+	</div>
+</div>

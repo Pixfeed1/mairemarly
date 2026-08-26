@@ -18,9 +18,10 @@
   Un titre de groupe ne s'affiche que si le groupe contient quelque chose :
   c'est le role du bloc optionnel autour de chacune.
 ]
-<div class="page-simple">
+<INCLURE{fond=inc/bandeau-page}{titre=[(#VAL{marly:titre_vie_associative}|_T)]}>
 
-	<h1><:marly:titre_vie_associative:></h1>
+<div class="page-simple page-sous-carton">
+
 	<p class="chapo"><:marly:assos_intro:></p>
 
 	<B_t_sport>
