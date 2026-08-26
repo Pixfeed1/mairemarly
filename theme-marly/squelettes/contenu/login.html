@@ -30,9 +30,25 @@
 	<div class="connexion-deux">
 
 		<div class="connexion-carte">
+
+			[(#REM) DEJA CONNECTE : SPIP ne rend rien. Sans ce cas, la carte
+			        creme reste vide et ressemble exactement a une panne — c'est
+			        ce qui s'est passe, et c'est notre defaut, pas celui de SPIP.
+			        On dit alors qui est connecte et on ouvre la porte suivante. ]
+			[(#SESSION{id_auteur}|oui)
+			<h2 class="titre-bloc"><:marly:connexion_deja:></h2>
+			<p class="connexion-qui"><:marly:connexion_deja_qui:> <b>[(#SESSION{nom})]</b></p>
+			<p class="fiche-liens"><a class="pilule plein" href="#URL_SITE_SPIP/ecrire/">
+				<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg>
+				<:marly:connexion_espace:></a></p>
+			]
+
+			[(#SESSION{id_auteur}|non)
 			<h2 class="titre-bloc"><:marly:se_connecter:></h2>
 			<p class="connexion-qui"><:marly:connexion_pour:></p>
 			[(#FORMULAIRE_LOGIN{#ENV{url}})]
+			]
+
 		</div>
 
 		<div class="connexion-a-cote">

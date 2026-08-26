@@ -50,9 +50,19 @@
 			</a>
 			</B_lettre_menu>
 
+			[(#REM) Connecte, le bouton mene a l'espace personnel et le dit.
+			        Proposer de se connecter a quelqu'un qui l'est deja est le
+			        meme oubli que la carte vide de la page de connexion. ]
+			[(#SESSION{id_auteur}|non)
 			<a class="pilule" href="#URL_PAGE{login}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:espace_citoyen:>
 			</a>
+			]
+			[(#SESSION{id_auteur}|oui)
+			<a class="pilule" href="#URL_SITE_SPIP/ecrire/">
+				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:connexion_espace:>
+			</a>
+			]
 
 			<B_menu_salles>
 			<BOUCLE_menu_salles(SALLES){statut=publie}{0,1}><!-- boucle non vide --></BOUCLE_menu_salles>

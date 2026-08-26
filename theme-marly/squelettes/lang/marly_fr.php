@@ -312,6 +312,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	// signalement ou par le secretariat, sans compte.
 	'se_connecter'         => 'Se connecter',
 	'connexion_pour'       => 'Réservé au secrétariat de mairie et aux élus.',
+	'connexion_deja'       => 'Vous êtes connecté',
+	'connexion_deja_qui'   => 'Compte utilisé :',
+	'connexion_espace'     => 'Espace personnel',
 
 	'connexion_acces'      => 'Accès à l’espace personnel',
 

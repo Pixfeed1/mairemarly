@@ -71,9 +71,19 @@
 				<span class="sr">[(#CONFIG{marly/appli_nom}|sinon{'Application mobile'})]</span>
 			</a>]
 
+			[(#REM) Connecte, le bouton mene a l'espace personnel et le dit.
+			        Proposer de se connecter a quelqu'un qui l'est deja est le
+			        meme oubli que la carte vide de la page de connexion. ]
+			[(#SESSION{id_auteur}|non)
 			<a class="pilule plein" href="#URL_PAGE{login}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:connexion:>
 			</a>
+			]
+			[(#SESSION{id_auteur}|oui)
+			<a class="pilule plein" href="#URL_SITE_SPIP/ecrire/">
+				<svg class="ico" aria-hidden="true"><use href="#ri-account-circle-line"/></svg> <:marly:connexion_espace:>
+			</a>
+			]
 			[(#REM) Le bouton de la lettre d'information ne s'affiche que si une
 			        lettre existe — meme un brouillon. Proposer de s'abonner a
 			        quelque chose qui n'a jamais paru, c'est promettre sans

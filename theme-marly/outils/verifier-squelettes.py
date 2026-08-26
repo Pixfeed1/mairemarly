@@ -1136,6 +1136,32 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', 'css', '*.css'))):
                  "navigateurs le rempliraient et SPIP rejetterait alors toutes "
                  "les demandes de mot de passe, en silence")
 
+# 51. Un formulaire de connexion sans le cas << deja connecte >>.
+#     FORMULAIRE_LOGIN ne rend RIEN quand une session existe : c'est le
+#     comportement normal de SPIP, et il laisse notre carte creme entierement
+#     vide. Un visiteur qui arrive la voit une page cassee, sans message et
+#     sans rien a cliquer.
+#
+#     Constate le 26 aout 2026 : la page de connexion venait d'etre deployee,
+#     le formulaire etait bien rendu cote serveur (verifie au curl), et il
+#     avait disparu dans le navigateur — parce que la session y existait.
+#     Rien n'etait casse, et tout en avait l'air.
+#
+#     La forme juste : encadrer l'appel par un test de SESSION, et dire
+#     quelque chose dans l'autre cas.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _sans_rem = re.sub(r'\[\(#REM\).*?\]', '', _src, flags=re.S)
+    if '#FORMULAIRE_LOGIN' not in _sans_rem:
+        continue
+    if '#SESSION{id_auteur}' in _sans_rem:
+        continue
+    signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+             _src[:_src.index('#FORMULAIRE_LOGIN')].count(chr(10)) + 1,
+             "formulaire de connexion appele sans traiter le cas deja connecte : "
+             "SPIP ne rend rien quand une session existe, la page reste vide et "
+             "ressemble a une panne. Encadrer par un test #SESSION{id_auteur}")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
