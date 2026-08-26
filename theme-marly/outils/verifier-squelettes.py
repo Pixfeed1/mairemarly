@@ -1531,6 +1531,41 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "Le crochet ouvre un bloc optionnel et desequilibre le squelette ; "
                  "la ligne entiere cesse d'etre interpretee. Passer par un filtre PHP")
 
+# 64. Une page de detail sans controle d'existence.
+#     Une page batie sur un identifiant — un article, une fiche, une rubrique —
+#     doit verifier que l'objet existe AVANT de s'afficher. Sans ce controle,
+#     un identifiant qui ne correspond a rien rend la page quand meme :
+#     en-tete, rien, pied, et un code 200. Un lien peri, une adresse mal
+#     tapee, un objet retire donnent une coquille que les moteurs indexent
+#     comme une page du site.
+#
+#     Mesure du 26 aout 2026 : les huit pages de detail etaient dans ce cas.
+#
+#     LE CONTROLE VA A LA RACINE. Pose dans le squelette de contenu, l'en-tete
+#     404 ne remonte pas jusqu'a la reponse : mesure, la page restait a 200.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', 'contenu', '*.html'))):
+    _nom = os.path.basename(_f)
+    _src = open(_f, encoding='utf-8').read()
+    # SEULEMENT LA PREMIERE BOUCLE DU FICHIER. Chercher un {id_...} n'importe
+    # ou attrapait les boucles de comptage imbriquees : le plan du site, qui
+    # liste les rubriques et compte leurs articles, etait signale comme une
+    # page de detail. Une page de detail se reconnait a ce que sa boucle
+    # EXTERIEURE porte l'identifiant.
+    _m = re.search(r'<BOUCLE_\w+\([A-Z]+\)\{(\w+)\}', _src)
+    if not _m or not _m.group(1).startswith('id_'):
+        continue
+    _racine = os.path.join(RACINE, 'squelettes', _nom)
+    if not os.path.exists(_racine):
+        continue
+    _r = open(_racine, encoding='utf-8').read()
+    if 'BOUCLE_existe' in _r and re.search(r'HTTP/1\.[01]\s+404', _r):
+        continue
+    signaler('squelettes/' + _nom, 1,
+             f"page batie sur {_m.group(1)} sans controle d'existence : un "
+             "identifiant qui ne correspond a rien rendra une page vide a 200, "
+             "que les moteurs indexeront. Poser la boucle de controle et "
+             "l'en-tete 404 A LA RACINE, pas dans contenu/")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
