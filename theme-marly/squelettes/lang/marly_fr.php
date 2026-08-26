@@ -315,6 +315,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'connexion_deja'       => 'Vous êtes connecté',
 	'connexion_deja_qui'   => 'Compte utilisé :',
 	'connexion_espace'     => 'Espace personnel',
+	'connexion_deconnecter'=> 'Se déconnecter',
 
 	'connexion_acces'      => 'Accès à l’espace personnel',
 

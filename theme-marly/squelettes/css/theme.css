@@ -2062,6 +2062,11 @@ body.page-login .page-simple{ max-width:1080px; }
 .connexion-carte .erreur input{ border-color:#A32020; }
 
 .connexion-retour{ margin:16px 0 0; text-align:center; font-family:var(--texte); font-size:13.5px; }
+/* Sur la page du mot de passe la carte est etroite et son bouton pleine
+   largeur : centrer est juste. Sur la connexion tout est cale a gauche,
+   titre, compte et bouton ; un lien centre sous eux serait le seul element
+   de travers. */
+body.page-login .connexion-retour{ text-align:left; }
 .connexion-retour a{ color:var(--encre-doux); text-decoration:none; border-bottom:1px solid var(--trait); }
 .connexion-retour a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
 

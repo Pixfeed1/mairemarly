@@ -41,6 +41,24 @@
 			<p class="fiche-liens"><a class="pilule plein" href="#URL_SITE_SPIP/ecrire/">
 				<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg>
 				<:marly:connexion_espace:></a></p>
+
+			[(#REM) La deconnexion, telle que SPIP l'ecrit pour lui-meme dans
+			        ecrire/inc/auth.php, a ceci pres que la valeur est public et
+			        non prive : action/logout.php dit que public sans url
+			        renvoie vers url_de_base(), l'accueil du site public. Avec
+			        prive on ressortirait dans l'espace prive, donc sur la page
+			        de connexion, ce qui n'a pas de sens ici.
+
+			        Pas de jeton dans ce lien : SPIP pose alors sa propre etape
+			        de confirmation contre les CSRF, auto-validee en JavaScript.
+			        C'est son chemin prevu, et c'est celui qu'il emprunte
+			        lui-meme.
+
+			        ET NULLE PART AILLEURS. L'espace prive porte deja ce lien,
+			        et c'est la qu'on se trouve quand on a fini de travailler ;
+			        le poser dans l'en-tete l'afficherait sur toutes les pages
+			        du site pour six personnes. ]
+			<p class="connexion-retour"><a href="#URL_SITE_SPIP/spip.php?action=logout&amp;logout=public"><:marly:connexion_deconnecter:></a></p>
 			]
 
 			[(#SESSION{id_auteur}|non)

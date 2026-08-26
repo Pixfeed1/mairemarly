@@ -1162,6 +1162,26 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
              "SPIP ne rend rien quand une session existe, la page reste vide et "
              "ressemble a une panne. Encadrer par un test #SESSION{id_auteur}")
 
+# 52. Une deconnexion posee sur le site public avec la mauvaise destination.
+#     ecrire/action/logout.php ne renvoie vers l'accueil du site public que si
+#     le parametre vaut public ET qu'aucune url n'est fournie. Avec prive — la
+#     valeur que SPIP emploie pour lui-meme, et donc celle qu'on recopie sans
+#     y penser — le visiteur ressort dans l'espace prive, c'est-a-dire sur la
+#     page de connexion qu'il vient de quitter.
+#
+#     Personne ne verrait l'erreur en relisant le lien : les deux valeurs sont
+#     plausibles, et la faute ne se voit qu'apres avoir clique.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _c in re.finditer(r'action=logout[^"\'<>]*', _src):
+        if 'logout=public' in _c.group(0):
+            continue
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_c.start()].count(chr(10)) + 1,
+                 "deconnexion sur le site public sans logout=public : SPIP "
+                 "renverrait le visiteur dans l'espace prive, donc sur la page "
+                 "de connexion qu'il vient de quitter")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
