@@ -550,7 +550,10 @@ section{ padding-block:70px; position:relative; }
    l'emporte et le compte s'affiche en geant. Deja rencontre sur le bouton du
    pied de page : une regle plus specifique gagne, meme ecrite plus haut. */
 .titre-bloc .recherche-compte{
-	display:inline-block; margin-left:12px; vertical-align:5px;
+	/* Alignee sur la LIGNE DE BASE du titre, et non calee a une hauteur
+	   choisie a l'oeil : la pastille suit alors le titre quelle que soit sa
+	   taille, y compris quand il retrecit sur un petit ecran. */
+	display:inline-block; margin-left:14px; vertical-align:baseline;
 	font-family:var(--texte); font-weight:600; font-size:14px; letter-spacing:0;
 	text-transform:none; color:var(--encre-doux); background:var(--creme-sombre);
 	border-radius:20px; padding:4px 14px;
