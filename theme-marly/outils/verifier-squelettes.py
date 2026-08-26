@@ -1636,6 +1636,77 @@ if os.path.exists(_somm):
                      "un blog")
 
 
+# 67. Une classe stylee dans theme.css que plus aucun squelette n'emet.
+#     Du CSS mort ne casse rien le jour ou il est ecrit, et c'est ce qui le
+#     rend dangereux : il grossit, on le relit en croyant qu'il sert, et le
+#     jour ou une vraie regle prend le meme nom, les deux se marchent dessus
+#     sans que rien ne le signale.
+#
+#     Le 26 aout 2026, la feuille portait 103 lignes de l'ancienne composition
+#     — actu vedette, evenements, conseil, associations, << a lire >> — dont
+#     aucun squelette n'appelait plus une seule classe. L'une d'elles
+#     s'appelait .bande-creme, exactement comme la bande de la nouvelle page
+#     d'accueil : le doublon aurait ete tres difficile a voir.
+#
+#     Les classes CALCULEES sont reconnues : << class="page-#ENV{type-page}" >>
+#     fait de page- un prefixe legitime, et .page-contact n'est donc pas
+#     signalee. Une classe qui vient de SPIP lui-meme et qu'aucun de nos
+#     fichiers n'ecrit se met dans _CSS_HORS_NOUS, avec la raison.
+_CSS_HORS_NOUS = {
+    # SPIP ecrit lui-meme ces classes en rendant #TEXTE : un document joint
+    # aligne a gauche ou a droite, et sa legende. Aucun de nos fichiers ne les
+    # pose, et pourtant elles doivent etre habillees.
+    'spip_documents_gauche', 'spip_documents_droite', 'spip_doc_legende',
+}
+
+_css_f = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.exists(_css_f):
+    _css = re.sub(r'/\*.*?\*/', '', open(_css_f, encoding='utf-8').read(), flags=re.S)
+    _classes = set(re.findall(r'\.([a-zA-Z][a-zA-Z0-9_-]*)', _css))
+
+    #     APERCU/ EST EXCLU, ET C'EST LE COEUR DE LA REGLE. Les fichiers
+    #     apercu/*-publiable.html sont FABRIQUES a partir des squelettes et
+    #     embarquent une copie figee de la feuille : ils contenaient encore
+    #     tout le balisage de l'ancienne composition, et suffisaient a faire
+    #     passer .actu-vedette pour vivante. Un apercu ne justifie pas une
+    #     regle de style, il la reflete. Ce fichier-ci s'exclut aussi : ses
+    #     commentaires citent des noms de classes pour expliquer la regle.
+    _sources = []
+    for _motif in ('squelettes/**/*.html', 'squelettes/js/*.js',
+                   'outils/*.py', 'outils/*.php'):
+        _sources += glob.glob(os.path.join(RACINE, _motif), recursive=True)
+    _sources = [_s for _s in _sources if os.path.basename(_s) != 'verifier-squelettes.py']
+    for _motif in ('**/*.html', '**/*.php'):
+        _sources += glob.glob(os.path.join(RACINE, '..', 'plugin-marly', _motif), recursive=True)
+
+    _texte = ''
+    for _f2 in _sources:
+        try:
+            _texte += open(_f2, encoding='utf-8').read()
+        except Exception:
+            pass
+
+    # << class="page-#ENV{...}" >> : tout ce qui commence par page- est emis.
+    _prefixes = set(re.findall(r'class="[^"]*?([a-zA-Z][a-zA-Z0-9_-]*-)(?=#|\[\()', _texte))
+
+    for _c in sorted(_classes):
+        if _c in _CSS_HORS_NOUS:
+            continue
+        if any(_c.startswith(_p) for _p in _prefixes):
+            continue
+        if re.search(r'\b' + re.escape(_c) + r'\b', _texte):
+            continue
+        _lg = 1
+        _m2 = re.search(r'^.*?\.' + re.escape(_c) + r'\b', _css, re.S)
+        if _m2:
+            _lg = _m2.group(0).count(chr(10)) + 1
+        signaler('squelettes/css/theme.css', _lg,
+                 f".{_c} est stylee mais aucun squelette ne la pose. Soit la "
+                 "regle est morte et il faut la retirer, soit la classe a ete "
+                 "renommee d'un cote seulement — auquel cas quelque chose ne "
+                 "s'affiche plus comme prevu")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

@@ -87,15 +87,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible,
             stroke-linecap:round; stroke-linejoin:round; }
 
 .pilule .ico{ width:16px; height:16px; }
-.menu-mobile .fermer .ico, .panneau-recherche .fermer .ico{ width:22px; height:22px; }
-
-/* ---- photos : dégradé de secours si le fichier manque ------------------- */
-.ph{ position:relative; overflow:hidden; background:var(--f,var(--accent)); }
-.ph img{ width:100%; height:100%; object-fit:cover; display:block; }
-.ph::after{
-  content:''; position:absolute; inset:0; pointer-events:none;
-  background:radial-gradient(120% 90% at 20% 12%,rgba(255,255,255,.14),transparent 58%);
-}
+.panneau-recherche .fermer .ico{ width:22px; height:22px; }
 
 /* ---- grain papier ------------------------------------------------------- */
 body::after{
@@ -699,11 +691,6 @@ section{ padding-block:70px; position:relative; }
 	.rang-nav{ gap:12px; padding:10px 0 14px; }
 }
 
-/* On respecte le réglage système : pas d'animation pour qui n'en veut pas. */
-@media (prefers-reduced-motion:reduce){
-	.menu-mobile, .voile-menu{ transition:none; }
-}
-
 /* ===========================================================================
    RÉSERVER — le catalogue, puis les fiches
    ---------------------------------------------------------------------------
@@ -953,7 +940,6 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   padding:15px 26px; font-family:var(--texte); font-weight:700; font-size:16px; cursor:pointer;
 }
 .formulaire_newsletter .submit:hover, .formulaire_signaler_association .submit:hover{ background:var(--accent-sombre); }
-.nl-note{ font-family:var(--texte); font-size:12.5px; line-height:1.55; color:var(--encre-doux); margin:16px 0 0; }
 .formulaire_newsletter .erreur_message, .formulaire_signaler_association .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px;
                                         font-weight:700; color:#A32020; margin-bottom:5px; }
 .formulaire_newsletter .erreur input, .formulaire_signaler_association .erreur input{ border-color:#A32020; }
@@ -1532,9 +1518,6 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    vingt traits et la page devient un damier. L'air suffit a separer ; le seul
    trait est celui qui souligne le numero.
    =========================================================================== */
-.annuaire-titre{ text-align:center; margin-bottom:0; }
-.annuaire-titre::after{ content:""; display:block; width:64px; height:3px;
-  background:var(--accent); margin:20px auto 0; }
 .annuaire-intro{ text-align:center; max-width:60ch; margin:26px auto 52px; }
 
 .commerces{ list-style:none; margin:0; padding:0; }
@@ -1711,11 +1694,6 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 	justify-content:center; background:var(--accent); border-radius:3px;
 	color:#fff; overflow:hidden; }
 .elu-sceau-fiche{ width:130px; height:130px; opacity:.9; }
-/* Le credit sous le portrait. Aucun gabarit ne s'en sert encore : une
-   premiere version l'affichait quand il n'y avait PAS de photo, ce qui est
-   l'inverse de ce a quoi sert un credit. La regle reste ici pour le jour ou
-   on saura lire le champ credits du document depose. */
-.elu-credit{ display:block; margin-top:7px; font-size:12px; color:var(--encre-doux); }
 .elu-role h2{ margin-top:34px; }
 .elu-maj{ margin-top:38px; padding-top:14px; border-top:1px solid var(--trait);
 	font-size:13.5px; color:var(--encre-doux); }
@@ -1844,12 +1822,6 @@ a.elu-nom:hover{ text-decoration:underline; }
 .urba-local dl{ margin:0; position:relative; }
 .urba-local dt{ font-weight:700; margin-top:15px; }
 .urba-local dd{ margin:3px 0 0; color:var(--encre-doux); line-height:1.6; }
-.urba-verif{
-	display:inline-block; margin-left:6px; padding:1px 8px; border-radius:20px;
-	background:var(--jaune); color:var(--encre);
-	font-size:11.5px; font-weight:700; letter-spacing:.03em; vertical-align:2px;
-}
-
 @media (max-width:700px){
 	.urba-filigrane{ display:none; }
 	.urba-echelle{ grid-template-columns:1fr; grid-template-rows:none; }
@@ -1945,10 +1917,6 @@ body.page-login .page-simple{ max-width:1080px; }
 	display:block; font-family:var(--texte); font-size:13.5px; font-weight:700;
 	margin-bottom:5px; color:var(--encre);
 }
-/* L'étoile d'obligation : présente pour la règle, discrète pour l'œil.
-   Tous les champs de ces formulaires sont obligatoires, la souligner en
-   rouge n'apprend rien. */
-.connexion-carte .etoile{ color:var(--encre-doux); font-weight:400; }
 .connexion-carte input[type="text"],
 .connexion-carte input[type="email"],
 .connexion-carte input[type="password"]{
@@ -2151,7 +2119,6 @@ body.page-contact .page-simple{ max-width:1080px; }
 .bande-sceau{ position:absolute; z-index:0; pointer-events:none; color:var(--accent); }
 .bande-sceau .bande-sceau-trace{ width:100%; height:100%; display:block; }
 .bande-sceau.a-droite{ top:-40px; right:-70px; width:330px; height:330px; opacity:.10; }
-.bande-sceau.a-gauche{ bottom:-70px; left:-80px; width:300px; height:300px; opacity:.09; }
 .bande-verte .bande-sceau{ color:#fff; opacity:.10; }
 
 /* Titre à gauche, lien « tout voir » à droite, alignés sur la même ligne de
@@ -2252,10 +2219,39 @@ body.page-contact .page-simple{ max-width:1080px; }
 @media (max-width:900px){ .ag-grille{ grid-template-columns:1fr; gap:28px 0; } }
 
 .ag-une{
-  display:flex; gap:22px; background:#fff; color:var(--encre); text-decoration:none;
-  padding:24px 26px 26px; border-bottom:4px solid var(--jaune);
+  display:flex; flex-direction:column; background:#fff; color:var(--encre);
+  text-decoration:none; border-bottom:4px solid var(--jaune);
   transition:transform .15s ease, box-shadow .15s ease;
 }
+.ag-tete{ display:flex; gap:22px; padding:24px 26px 26px; }
+
+/* LA PHOTO, QUAND LA MANIFESTATION EN PORTE UNE.
+   Elle prend toute la largeur de la carte et le bloc de date vient CHEVAUCHER
+   son bord bas — le geste du thème, déjà celui du cartouche de bandeau et de
+   la vignette de commerce.
+
+   ET LE TEXTE SE RÉDUIT AU TITRE. Une affiche de brocante dit déjà l'heure,
+   le lieu et le tarif : les répéter dessous fait de la carte un billet de
+   blog. C'est masqué ici plutôt que retiré du squelette parce qu'un
+   squelette à deux branches, c'est deux fois où oublier quelque chose ;
+   display:none retire aussi bien aux lecteurs d'écran qu'à l'œil, l'affichage
+   et l'annonce restent donc d'accord.
+
+   Sans photo, rien de tout ceci ne s'applique et la carte garde tout : c'est
+   ce qui la remplit. */
+.ag-photo{ display:block; aspect-ratio:16/8; overflow:hidden; }
+.ag-photo img{ display:block; width:100%; height:100%; object-fit:cover; }
+.ag-une.avec-photo .ag-tete{ padding-top:0; align-items:center; }
+.ag-une.avec-photo .ag-cal{
+  margin-top:-42px; position:relative; z-index:2;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+.ag-une.avec-photo .ag-corps{ padding-top:22px; }
+.ag-une.avec-photo .ag-titre{ margin-bottom:0; }
+.ag-une.avec-photo .ag-tag,
+.ag-une.avec-photo .ag-meta,
+.ag-une.avec-photo .ag-chapo,
+.ag-une.avec-photo .ag-lire{ display:none; }
 .ag-une:hover{ transform:translateY(-3px); box-shadow:0 16px 34px rgba(0,0,0,.24); }
 @media (prefers-reduced-motion:reduce){
   .ag-une{ transition:none; }

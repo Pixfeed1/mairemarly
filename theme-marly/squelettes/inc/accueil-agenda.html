@@ -33,7 +33,22 @@
 		<div class="ag-grille">
 			<div>
 			<BOUCLE_agenda(MANIFESTATIONS){statut=publie}{date_debut>#DATE}{par date_debut}{0,1}>
-				<a class="ag-une" href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
+				<a class="ag-une [(#LOGO_MANIFESTATION|?{'avec-photo'})]" href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
+
+					[(#REM) LA PHOTO QUAND IL Y EN A UNE. La table des
+					        manifestations accepte un logo, comme les salles et
+					        les commerces : une affiche de brocante, une photo de
+					        la derniere kermesse. Elle prend alors toute la
+					        largeur de la carte, et le texte se reduit au titre
+					        — le reste est masque par la feuille de style. Une
+					        affiche PARLE deja : lui empiler un resume dessous
+					        la fait ressembler a un billet de blog.
+
+					        Sans photo, la carte garde tout : c'est ce qui la
+					        remplit. ]
+					[<span class="ag-photo">(#LOGO_MANIFESTATION||image_reduire{760,380})</span>]
+
+					<span class="ag-tete">
 					[(#REM) Le quantieme d'abord, le mois ensuite : c'est l'ordre
 					        dans lequel on cherche une date dans un agenda. ]
 					<span class="ag-cal">
@@ -55,6 +70,7 @@
 						[<span class="ag-chapo">(#DESCRIPTIF|textebrut|couper{160})</span>]
 						<span class="ag-lire"><:marly:voir_detail:>
 							<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></span>
+					</span>
 					</span>
 				</a>
 			</BOUCLE_agenda>
