@@ -13,10 +13,22 @@
   Urbanisme, une fermeture de secretariat dans Ma mairie. La bande prend donc
   les plus recents partout, et l'ordre du jour se fait tout seul.
 
-  CE QUI EST EXCLU, ET COMMENT. Les quatre pages legales ne sont pas des
-  nouvelles, et creees le meme jour elles seraient les quatre articles les
-  plus recents du site. On les ecarte par LEUR RUBRIQUE, une colonne de la
-  table des articles.
+  DEUX RUBRIQUES SONT ECARTEES, et chacune pour une raison mesuree.
+
+  Les quatre pages legales, parce qu'elles ne sont pas des nouvelles et que,
+  creees le meme jour, elles seraient les quatre articles les plus recents du
+  site.
+
+  Les comptes rendus de conseil, parce qu'ils sont 30 sur 82 et qu'ils sont
+  les plus recents. Deployee sans cette exclusion, la bande affichait six fois
+  << Reunion de conseil du ... >> pendant que la bande des documents, juste en
+  dessous, listait les MEMES seances en PDF. L'accueil disait deux fois de
+  suite la meme chose. Ils gardent leur bande de documents, leur page du
+  conseil municipal, et leur rubrique ; les ecarter d'ici laisse 52 articles,
+  dont 19 d'evenements et 11 d'informations pratiques.
+
+  Dans les deux cas on ecarte par LA RUBRIQUE, une colonne de la table des
+  articles.
 
   DEUX ECRITURES ONT ETE ESSAYEES AVANT, ET LES DEUX ONT ECHOUE EN PRODUCTION.
 
@@ -48,6 +60,7 @@
   l'aveugle un critere de plus.
 ]
 #SET{rub_legale,#VAL|marly_rubrique_legale}
+#SET{rub_pv,#VAL|marly_rubrique_comptes_rendus}
 <section class="bande bande-actus" aria-labelledby="titre-actus">
 
 	<div class="bande-sceau a-droite" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=bande-sceau-trace}{n=actus}></div>
@@ -63,7 +76,7 @@
 		<B_une>
 		<div class="actus-grille">
 			<div>
-			<BOUCLE_une(ARTICLES){id_rubrique!=#GET{rub_legale}}{!par date}{0,1}>
+			<BOUCLE_une(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{!par date}{0,1}>
 				[(#REM) TROIS COUCHES, DE LA DERNIERE A LA PREMIERE.
 
 				        Au fond, le sceau grave. On ne le voit jamais tant que
@@ -99,7 +112,7 @@
 			</div>
 
 			<div>
-			<BOUCLE_breves(ARTICLES){id_rubrique!=#GET{rub_legale}}{!par date}{1,5}>
+			<BOUCLE_breves(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{!par date}{1,5}>
 				<a class="actu-breve" href="#URL_ARTICLE">
 					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
 					<span><b>#TITRE</b>[<span class="actu-quand">(#DATE|affdate)</span>]</span>

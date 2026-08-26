@@ -8,14 +8,18 @@
   fois >>. La bande d'accueil y repond pour les six dernieres ; celle-ci pour
   toutes les autres.
 
-  Les memes exclusions qu'a l'accueil, pour la meme raison : un article qui
-  porte la photographie de banniere ou qui sert d'entree de menu n'est pas
-  une nouvelle, et les pages legales dateraient toutes du meme jour.
+  LES MEMES EXCLUSIONS QU'A L'ACCUEIL, et c'est voulu : cette page est
+  l'archive de la bande d'accueil, pas un inventaire du site. Les pages
+  legales n'y sont pas parce qu'elles ne sont pas des nouvelles ; les comptes
+  rendus de conseil non plus, parce qu'ils sont 30 sur 82 et qu'ils
+  noieraient tout le reste — ils ont leur propre page. Pour l'inventaire
+  complet, il y a le plan du site.
 
   Groupees par annee, comme dans une rubrique : c'est la meme lecture, et le
   visiteur n'a pas a apprendre deux presentations pour la meme chose.
 ]
 #SET{rub_legale,#VAL|marly_rubrique_legale}
+#SET{rub_pv,#VAL|marly_rubrique_comptes_rendus}
 <INCLURE{fond=inc/bandeau-page}{cle=toutes_les_actualites}>
 
 <div class="page-simple page-sous-carton">
@@ -23,7 +27,7 @@
 	<p class="chapo"><:marly:actualites_intro:></p>
 
 	<B_arts>
-	<BOUCLE_arts(ARTICLES){id_rubrique!=#GET{rub_legale}}{!par date}{pagination 20}>
+	<BOUCLE_arts(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{!par date}{pagination 20}>
 	#SET{nouvelle_annee,#DATE|annee|unique{annees_actus}}
 	[(#GET{nouvelle_annee}|et{#COMPTEUR_BOUCLE|>{1}})</ul>]
 	[(#GET{nouvelle_annee}|oui)<h2 class="rubrique-annee">#GET{nouvelle_annee}</h2><ul class="fiches">]

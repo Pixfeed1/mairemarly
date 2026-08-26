@@ -190,6 +190,32 @@ function filtre_marly_rubrique_legale_dist($rien = '') {
 }
 
 /**
+ * La rubrique des comptes rendus de conseil, ou 0.
+ * ---------------------------------------------------------------------------
+ * MESURE DU 26 AOÛT 2026, sur la base réelle : 30 des 82 articles publiés sont
+ * des comptes rendus de conseil, et ce sont les plus récents. Déployée sans
+ * ce filtre, la page d'accueil affichait six fois « Réunion de conseil du … »
+ * — la mise en avant et les cinq brèves — pendant que la bande des documents,
+ * juste en dessous, listait les MÊMES séances en PDF. L'accueil disait deux
+ * fois de suite la même chose.
+ *
+ * Ces articles ne sont pas perdus pour autant : ils ont leur bande de
+ * documents, leur page « Le conseil municipal », et la rubrique elle-même.
+ * Les écarter des actualités laisse 52 articles, dont 19 d'événements et 11
+ * d'informations pratiques — ce qu'un habitant vient chercher.
+ *
+ * La rubrique est trouvée par son titre, comme le fait déjà la page du
+ * conseil municipal ({titre==[Cc]omptes rendus}). Si la mairie la renomme,
+ * les deux cessent de la reconnaître en même temps, ce qui est au moins
+ * cohérent — et ici l'effet est bénin : les comptes rendus réapparaissent
+ * dans les actualités, personne ne perd rien.
+ */
+function filtre_marly_rubrique_comptes_rendus_dist($rien = '') {
+	return (int) sql_getfetsel('id_rubrique', 'spip_rubriques',
+		'titre LIKE ' . sql_quote('Comptes rendus%'));
+}
+
+/**
  * « sept. » à partir d'une date SQL.
  * ---------------------------------------------------------------------------
  * Pour la pastille de date de l'agenda : un rond de 52 pixels ne loge pas
