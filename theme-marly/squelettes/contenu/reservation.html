@@ -50,7 +50,13 @@
 			        promesse en l'air. Six semaines toujours affichees, sinon la
 			        page saute sous le curseur quand on change de mois. ]
 			<div class="filtre-calendrier">
-				#SET{mois,#ENV{mois,[(#VAL|date_format{Y-m})]}}
+				[(#REM) Le mois vient de la chaine de requete, donc de n'importe qui.
+				        marly_mois_valide rend le mois donne s'il tient la route, et le
+				        mois courant sinon. L'ecriture precedente calculait le mois ici,
+				        avec un VAL sans argument passe a date_format : PHP 8 refusait
+				        la chaine vide, la page levait une erreur a chaque affichage et
+				        perdait sa banniere. ]
+				#SET{mois,#ENV{mois}|marly_mois_valide}
 				<div class="cal-tete">
 					<a class="cal-nav" rel="nofollow"
 					   href="[(#URL_PAGE{reservation}|parametre_url{mois,[(#GET{mois}|marly_mois_decale{-1})]})]"

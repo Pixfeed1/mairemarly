@@ -1332,6 +1332,31 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "d'un croisillon litteral et ecrit le nom de la balise en clair, "
                  "sans erreur ni journal. Porter le croisillon dans la valeur")
 
+# 58. #VAL sans argument, passe a un filtre.
+#     #VAL sert a injecter une valeur litterale dans une chaine de filtres.
+#     Sans argument, il vaut la CHAINE VIDE : le filtre qui suit recoit du
+#     vide, et le fait savoir plus ou moins bruyamment selon ce qu'il attend.
+#
+#     Mesure du 26 aout 2026 : #VAL|date_format{Y-m}, ecrit pour obtenir le
+#     mois courant, passait une chaine vide a date_format(), que PHP 8 refuse.
+#     La page de reservation levait une erreur a chaque affichage et perdait
+#     sa banniere, donc son titre de premier niveau. Personne ne l'avait vue
+#     depuis des semaines : le site rendait la page, en moins bien, et
+#     l'erreur ne vivait que dans tmp/log/spip.log.
+#
+#     C'est l'audit RGAA qui l'a trouvee, en signalant une page sans h1. Le
+#     symptome etait accessible, la maladie etait un bug.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in re.finditer(r'#VAL\s*\|', _masque):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _masque[:_c.start()].count(chr(10)) + 1,
+                 "#VAL sans argument passe a un filtre : il vaut la chaine vide. "
+                 "Donner la valeur — #VAL{quelque chose} — ou appeler un filtre "
+                 "qui sait produire ce qu'on veut")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

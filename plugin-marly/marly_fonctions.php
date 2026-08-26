@@ -80,6 +80,27 @@ function filtre_marly_jours_mois_dist($mois) {
 	return $grille;
 }
 
+/**
+ * Un mois AAAA-MM sûr, quoi qu'on lui donne.
+ * ---------------------------------------------------------------------------
+ * Le squelette écrivait le mois courant lui-même, par #VAL|date_format{Y-m}.
+ * #VAL sans argument vaut la chaîne vide, et PHP 8 refuse une chaîne là où
+ * date_format() attend un objet : la page de réservation levait une erreur à
+ * chaque affichage et ne rendait plus sa bannière. Personne ne l'avait vue —
+ * c'est l'audit RGAA du 26 août 2026 qui a signalé la page comme dépourvue de
+ * titre de premier niveau, et c'était le symptôme, pas la maladie.
+ *
+ * Le mois vient de la chaîne de requête, donc de n'importe qui. Un ?mois=pizza
+ * ne casse rien aujourd'hui, mais laissait le nom du mois vide en haut du
+ * calendrier. Une seule porte d'entrée vaut mieux que trois replis identiques
+ * dans trois filtres.
+ */
+function filtre_marly_mois_valide_dist($mois) {
+	return preg_match(',^\d{4}-(0[1-9]|1[0-2])$,', (string) $mois)
+		? (string) $mois
+		: date('Y-m');
+}
+
 /** Décale un mois AAAA-MM de n mois. */
 function filtre_marly_mois_decale_dist($mois, $n) {
 	if (!preg_match(',^(\d{4})-(\d{2})$,', (string) $mois, $r)) {
