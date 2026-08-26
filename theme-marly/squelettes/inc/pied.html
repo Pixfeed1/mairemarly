@@ -47,17 +47,25 @@
 				<h2><:marly:pied_la_mairie:></h2>
 				<p>[(#CONFIG{marly/adresse}|sinon{'4 rue de la Poterie'})<br>]
 				[(#CONFIG{marly/code_postal}|sinon{'02120'}) ][(#CONFIG{marly/ville}|sinon{'Marly-Gomont'})]</p>
-				[(#REM) UN BLOC [ ] N'EVALUE QU'UNE BALISE ENTRE PARENTHESES NUES.
-				        La ligne du courriel en portait deux, celle du href et celle
-				        du texte : SPIP en a pris une, et l'autre est ressortie en
-				        clair dans l'adresse. Le lien courriel du pied ne menait donc
-				        nulle part, sur les vingt-trois pages de l'echantillon, et ca
-				        ressemblait a une adresse. Trouve le 26 aout 2026 par le
-				        validateur du W3C.
+				[(#REM) UN BLOC OPTIONNEL N'EVALUE QU'UNE BALISE ENTRE PARENTHESES
+				        NUES. La ligne du courriel en portait deux, celle du href et
+				        celle du texte : SPIP en a pris une, et l'autre est ressortie
+				        en clair dans l'adresse. Le lien courriel du pied ne menait
+				        donc nulle part, sur les vingt-trois pages de l'echantillon,
+				        et ca ressemblait a une adresse. Trouve le 26 aout 2026 par
+				        le validateur du W3C.
 
-				        La valeur est calculee AVANT, une fois, et le bloc n'emploie
-				        plus qu'un [( )] pour l'attribut et un #GET nu pour le texte.
-				        Un #GET sans parentheses ne consomme pas la place. ]
+				        La valeur est calculee AVANT, une fois. Le bloc n'emploie
+				        plus qu'une balise entre parentheses pour l'attribut, et une
+				        balise nue pour le texte : un croisillon sans parentheses ne
+				        consomme pas la place.
+
+				        ET CE COMMENTAIRE N'ECRIT AUCUN CROCHET. Sa premiere version
+				        en montrait, pour illustrer : le premier crochet fermant a
+				        referme le commentaire, et tout le reste s'est affiche en
+				        clair dans le pied de page, sur tout le site. La lecon etait
+				        deja ecrite dans inc/bandeau-page.html, ce matin. Le
+				        verificateur la garde desormais. ]
 				#SET{tel,#CONFIG{marly/telephone}|sinon{'03 23 60 21 85'}}
 				#SET{courriel,#CONFIG{marly/courriel}|sinon{'mairie.marlygomont@wanadoo.fr'}}
 				<p>[<a href="tel:(#GET{tel}|marly_tel_lien)">#GET{tel}</a><br>]

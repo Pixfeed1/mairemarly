@@ -1566,6 +1566,33 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', 'contenu', '*.html
              "que les moteurs indexeront. Poser la boucle de controle et "
              "l'en-tete 404 A LA RACINE, pas dans contenu/")
 
+# 65. Un crochet dans un commentaire.
+#     Un commentaire de squelette se referme AU PREMIER CROCHET FERMANT. Un
+#     crochet ecrit dans son texte le termine donc plus tot que prevu, et tout
+#     ce qui suit — la fin du commentaire, phrase par phrase — s'affiche en
+#     clair sur la page.
+#
+#     Cette regle aurait du exister ce matin. La lecon etait deja ecrite, en
+#     toutes lettres, dans inc/bandeau-page.html : un commentaire y raconte
+#     comment il s'etait lui-meme repandu dans la page. Faute d'en faire une
+#     regle, la meme faute est revenue le meme jour dans le pied de page, et
+#     s'est affichee sur tout le site.
+#
+#     Une lecon qu'on ecrit sans la faire garder par une machine est une lecon
+#     qu'on reapprendra.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _c in re.finditer(r'\[\(#REM\)', _src):
+        _fin = _src.find(']', _c.end())
+        _corps = _src[_c.end():_fin if _fin > 0 else len(_src)]
+        if '[' in _corps:
+            _i = _corps.index('[')
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                     _src[:_c.start()].count(chr(10)) + 1,
+                     "crochet dans un commentaire : il se referme au premier "
+                     "crochet fermant, et la suite du commentaire s'affiche en "
+                     "clair sur la page. Ecrire le mot, jamais le signe")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
