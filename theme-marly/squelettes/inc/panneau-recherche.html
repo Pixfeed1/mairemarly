@@ -16,7 +16,14 @@
 	</button>
 	<div class="dedans">
 		<span class="titre-bloc"><:marly:que:> <span><:marly:cherchez_vous:></span></span>
-		<form role="search" method="get" action="#URL_PAGE{recherche}">
+		[(#REM) ACTION VERS spip.php ET PAGE EN CHAMP CACHE, jamais
+		        action="URL_PAGE{...}". Avec method="get", le navigateur JETTE
+		        la chaine de requete de l'action et la remplace par les champs du
+		        formulaire : action="spip.php?page=recherche" partait donc vers
+		        spip.php?recherche=..., sans le nom de la page, et SPIP servait
+		        l'accueil. On restait sur place, sans la moindre erreur. ]
+		<form role="search" method="get" action="#URL_SITE_SPIP/spip.php">
+			<input type="hidden" name="page" value="recherche">
 			<label for="recherche-panneau" class="sr"><:marly:rechercher_site:></label>
 			<input type="search" id="recherche-panneau" name="recherche"
 			       placeholder="<:marly:rechercher_placeholder:>">

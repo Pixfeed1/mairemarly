@@ -994,6 +994,39 @@ if os.path.isfile(_CSS46):
                      "un nom sans espace ni trait d'union est un seul mot pour le "
                      "navigateur, il debordera sous le bouton")
 
+# 47. Un formulaire en method="get" dont l'action porte une chaine de requete.
+#     Le navigateur la JETTE : avec method="get", la chaine de requete de
+#     l'action est remplacee par les champs du formulaire. action="#URL_PAGE
+#     {recherche}" rend spip.php?page=recherche, la validation partait donc
+#     vers spip.php?recherche=..., SPIP ne voyait plus quelle page servir et
+#     rendait l'accueil. Le visiteur tapait, validait, et restait sur place —
+#     sans message, sans erreur, sans rien a chercher dans un journal.
+#
+#     Mesure du 26 aout 2026 : quatre formulaires de recherche et le filtre du
+#     catalogue etaient dans ce cas. La forme juste etait pourtant deja dans
+#     le depot, dans la bande d'acces rapides : action vers spip.php, et la
+#     page en champ cache.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _c in re.finditer(r'<form[^>]*method="get"[^>]*>', _src, re.I):
+        _balise = _c.group(0)
+        _action = re.search(r'action="([^"]*)"', _balise)
+        if not _action:
+            continue
+        _url = _action.group(1)
+        if '#URL_PAGE{' not in _url and '?' not in _url:
+            continue
+        # La forme juste : l'action ne porte pas la page, un champ cache la porte.
+        _suite = _src[_c.end():_c.end() + 400]
+        if re.search(r'name="page"', _suite):
+            continue
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _src[:_c.start()].count(chr(10)) + 1,
+                 "formulaire en method=get dont l'action porte la page : le navigateur "
+                 "remplace la chaine de requete de l'action par les champs du "
+                 "formulaire, la page demandee est perdue et SPIP rend l'accueil. "
+                 "Viser spip.php et poser la page en champ cache")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

@@ -22,7 +22,14 @@
 
 			[(#REM) La recherche. Un simple GET : pas de JavaScript, la page
 			        fonctionne sans, et le resultat est une adresse partageable. ]
-			<form class="filtre-recherche" method="get" action="#URL_PAGE{reservation}">
+			[(#REM) ACTION VERS spip.php ET PAGE EN CHAMP CACHE, jamais
+			        action="URL_PAGE{...}". Avec method="get", le navigateur JETTE
+			        la chaine de requete de l'action et la remplace par les champs du
+			        formulaire : action="spip.php?page=reservation" partait donc vers
+			        spip.php?recherche=..., sans le nom de la page, et SPIP servait
+			        l'accueil. On restait sur place, sans la moindre erreur. ]
+			<form class="filtre-recherche" method="get" action="#URL_SITE_SPIP/spip.php">
+				<input type="hidden" name="page" value="reservation">
 				<label for="q" class="sr"><:marly:rechercher_evenement:></label>
 				<svg class="ico" aria-hidden="true"><use href="#ri-search-line"/></svg>
 				<input type="search" name="q" id="q" value="[(#ENV{q}|attribut_html)]"

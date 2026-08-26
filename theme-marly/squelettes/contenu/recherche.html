@@ -28,7 +28,14 @@
 
 	[(#REM) Le champ, toujours visible et pre-rempli : on affine sans avoir a
 	        rouvrir le panneau plein ecran. ]
-	<form class="recherche-champ" role="search" method="get" action="#URL_PAGE{recherche}">
+	[(#REM) ACTION VERS spip.php ET PAGE EN CHAMP CACHE, jamais
+	        action="URL_PAGE{...}". Avec method="get", le navigateur JETTE
+	        la chaine de requete de l'action et la remplace par les champs du
+	        formulaire : action="spip.php?page=recherche" partait donc vers
+	        spip.php?recherche=..., sans le nom de la page, et SPIP servait
+	        l'accueil. On restait sur place, sans la moindre erreur. ]
+	<form class="recherche-champ" role="search" method="get" action="#URL_SITE_SPIP/spip.php">
+		<input type="hidden" name="page" value="recherche">
 		<label for="recherche-page" class="sr"><:marly:rechercher_site:></label>
 		<input type="search" id="recherche-page" name="recherche"
 		       value="[(#ENV{recherche}|attribut_html)]"
