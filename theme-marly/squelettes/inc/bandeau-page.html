@@ -15,10 +15,15 @@
   Parametre : cle, le nom de la chaine de langue du titre.
 
   ON PASSE LA CLE, ET NON LE TITRE DEJA TRADUIT. La premiere version recevait
-  {titre=[(VAL{marly:titre_recherche}|_T)]} : SPIP n'accepte pas de crochets
-  dans les arguments d'un INCLURE, il ne reconnaissait donc plus la balise et
+  un titre calcule entre crochets : SPIP n'accepte pas de crochets dans les
+  arguments d'un INCLURE, il ne reconnaissait donc plus la balise et
   recrachait la ligne telle quelle au milieu de la page. La traduction se fait
   ici, ou elle a le droit.
+
+  Et ce commentaire-ci ne montre pas l'ecriture fautive : une paire de
+  crochets a l'interieur d'un commentaire le referme au premier crochet
+  fermant, et tout ce qui suit s'affiche en clair. C'est ce qui vient
+  d'arriver.
 ]
 #SET{titre,#VAL{marly:}|concat{#ENV{cle}}|_T}
 
