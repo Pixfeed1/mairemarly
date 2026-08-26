@@ -59,6 +59,17 @@ PAGES = [
     ('Reservation de salle',       'spip.php?page=reservation'),
     ('Lettre d information',       'spip.php?page=newsletter'),
     ('Lieux',                      'spip.php?page=lieux'),
+
+    # LES PAGES DE DETAIL. Aucune n'y figurait, et c'est la que vivent les
+    # liens telephone et courriel batis balise par balise, donc les plus
+    # fragiles. Le premier objet venu suffit : on eprouve le gabarit, pas le
+    # contenu. Un identifiant absent rend maintenant un 404, ce qui se voit
+    # aussi dans la colonne du code.
+    ('Fiche commerce',             'spip.php?page=commerce&id_commerce=1'),
+    ('Fiche association',          'spip.php?page=association&id_association=1'),
+    ('Fiche elu',                  'spip.php?page=elu&id_elu=1'),
+    ('Fiche demarche',             'spip.php?page=demarche&id_demarche=1'),
+    ('Fiche salle',                'spip.php?page=salle&id_salle=1'),
 ]
 
 # --- Ce qu'une machine ne tranche pas ---------------------------------------
