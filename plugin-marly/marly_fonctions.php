@@ -216,6 +216,38 @@ function filtre_marly_rubrique_comptes_rendus_dist($rien = '') {
 }
 
 /**
+ * L'article qui porte la photographie de bannière, ou 0.
+ * ---------------------------------------------------------------------------
+ * La bannière d'accueil vient d'un article portant le mot-clé « Bannière » :
+ * la mairie dépose la photo en logo de cet article, écrit le crédit dans son
+ * descriptif, et peut en préparer plusieurs pour changer au fil des saisons.
+ *
+ * Mais cet article est un article comme un autre, et il est publié. Sans ce
+ * filtre, il remonterait dans la bande d'actualités de la page d'accueil —
+ * juste en dessous de la bannière qu'il alimente, sous un titre du genre
+ * « Bannière de l'accueil ». Personne ne veut lire ça.
+ *
+ * On rend l'identifiant du plus récent, et le squelette l'écarte par
+ * {id_article!=…} : une comparaison sur une colonne de la table des articles,
+ * pas une négation sur table jointe. Cette distinction a coûté cher le 26 août
+ * 2026 — voir la règle 69 du vérificateur.
+ *
+ * Rend 0 tant qu'aucun article de bannière n'existe, et {id_article!=0}
+ * n'écarte alors personne.
+ */
+function filtre_marly_article_banniere_dist($rien = '') {
+	$id_mot = sql_getfetsel('id_mot', 'spip_mots', 'titre = ' . sql_quote('Bannière'));
+	if (!$id_mot) {
+		return 0;
+	}
+	return (int) sql_getfetsel('a.id_article',
+		'spip_articles AS a INNER JOIN spip_mots_liens AS l ON l.id_objet = a.id_article',
+		'l.id_mot = ' . intval($id_mot) . ' AND l.objet = ' . sql_quote('article')
+		. ' AND a.statut = ' . sql_quote('publie'),
+		'', 'a.date DESC');
+}
+
+/**
  * « sept. » à partir d'une date SQL.
  * ---------------------------------------------------------------------------
  * Pour la pastille de date de l'agenda : un rond de 52 pixels ne loge pas

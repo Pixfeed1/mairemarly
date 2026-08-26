@@ -20,6 +20,7 @@
 ]
 #SET{rub_legale,#VAL|marly_rubrique_legale}
 #SET{rub_pv,#VAL|marly_rubrique_comptes_rendus}
+#SET{art_banniere,#VAL|marly_article_banniere}
 <INCLURE{fond=inc/bandeau-page}{cle=toutes_les_actualites}>
 
 <div class="page-simple page-sous-carton">
@@ -27,7 +28,7 @@
 	<p class="chapo"><:marly:actualites_intro:></p>
 
 	<B_arts>
-	<BOUCLE_arts(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{!par date}{pagination 20}>
+	<BOUCLE_arts(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{id_article!=#GET{art_banniere}}{!par date}{pagination 20}>
 	#SET{nouvelle_annee,#DATE|annee|unique{annees_actus}}
 	[(#GET{nouvelle_annee}|et{#COMPTEUR_BOUCLE|>{1}})</ul>]
 	[(#GET{nouvelle_annee}|oui)<h2 class="rubrique-annee">#GET{nouvelle_annee}</h2><ul class="fiches">]
