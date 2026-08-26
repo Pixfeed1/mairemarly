@@ -1214,6 +1214,30 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "l'a ete avec des espaces autour. Elles se voient dans le titre "
                  "de chaque page, donc dans les resultats de recherche")
 
+# 54. Une page qui rend le 404 sans poser le code 404.
+#     Le 404 de squelettes-dist posait lui-meme HTTP/1.0 404 Not Found et les
+#     en-tetes de non-mise-en-cache. En le remplacant par le notre, on a
+#     remplace aussi ce qu'il posait — et la page introuvable a pu se mettre a
+#     repondre << 200 tout va bien >>.
+#
+#     C'est invisible a l'ecran : le visiteur voit la bonne page. Ce sont les
+#     moteurs de recherche qui paient, en gardant chaque adresse morte dans
+#     leur index pendant des mois, et en comptant chaque adresse fausse comme
+#     une page du site.
+#
+#     Vaut aussi pour les sept pages de SPIP qu'on a fermees : elles rendent
+#     notre 404, elles doivent en rendre le code.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '*.html'))):
+    _src = open(_f, encoding='utf-8').read()
+    if 'type-page=404' not in _src:
+        continue
+    if re.search(r'#HTTP_HEADER\{HTTP/1\.[01]\s', _src):
+        continue
+    signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), 1,
+             "cette page rend le 404 sans poser le code HTTP 404 : le visiteur "
+             "voit la bonne page, les moteurs de recherche recoivent un 200 et "
+             "gardent l'adresse morte dans leur index")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

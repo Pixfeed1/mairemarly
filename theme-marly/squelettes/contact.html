@@ -1,0 +1,19 @@
+[(#REM)
+  contact.html — page de SPIP fermee.
+  ---------------------------------------------------------------------------
+  Le formulaire de contact de SPIP ne suit pas notre charte et doublerait
+  le << Nous ecrire >> du pied de page.
+
+  FERMER N'EST PAS CACHER. La page repond un vrai 404 et affiche la notre.
+  Sans ce fichier, SPIP servait la sienne, avec son propre gabarit, au milieu
+  du site de la commune — exactement ce qui arrivait a spip_pass avant qu'on
+  ne la reprenne.
+
+  Personne ne lie cette adresse depuis le site. Elle repond quand meme des
+  qu'on la tape, et le jour de la mise en service elle peut sortir n'importe
+  ou : dans un vieux lien, dans un index, dans un signet.
+]
+#HTTP_HEADER{HTTP/1.0 404 Not Found}
+#HTTP_HEADER{"Cache-Control: no-store, no-cache, must-revalidate"}
+#HTTP_HEADER{Pragma: no-cache}
+<INCLURE{fond=structure}{env}{type-page=404}>

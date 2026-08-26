@@ -1,8 +1,26 @@
 [(#REM)
   404.html — la page qui n'existe pas.
   ---------------------------------------------------------------------------
-  SPIP appelle ce gabarit par son nom, sans passer par le delegateur : il n'y
-  a donc pas de INCLURE{fond=structure} ici, la structure est appelee a
-  l'envers, avec le type de page en parametre.
+  SPIP appelle ce gabarit par son nom, sans passer par le delegateur : la
+  structure est donc appelee a l'envers, avec le type de page en parametre.
+
+  LES TROIS EN-TETES SONT INDISPENSABLES, et la premiere version les avait
+  perdus. Le 404 de squelettes-dist les posait lui-meme ; en le remplacant par
+  celui-ci, on a remplace aussi ce qu'il posait. Une page introuvable qui
+  repond << 200 tout va bien >> est bien pire qu'un ecran laid : les moteurs
+  de recherche gardent l'adresse morte dans leur index pendant des mois, et
+  chaque adresse fausse devient une page du site a leurs yeux.
+
+  Le code reste parametrable, comme chez SPIP : un 403 passe par ENV{code}.
+
+  Et le no-cache : un 404 mis en cache par le navigateur ou un intermediaire
+  continuerait de refuser une page qui existe a nouveau.
+
+  Les guillemets autour du Cache-Control ne sont pas decoratifs. Sa valeur
+  contient des virgules, et la virgule separe les arguments d'une balise SPIP :
+  sans eux, l'en-tete serait tronque a << no-store >>.
 ]
+#HTTP_HEADER{HTTP/1.0 #ENV{code,'404 Not Found'}}
+#HTTP_HEADER{"Cache-Control: no-store, no-cache, must-revalidate"}
+#HTTP_HEADER{Pragma: no-cache}
 <INCLURE{fond=structure}{env}{type-page=404}>
