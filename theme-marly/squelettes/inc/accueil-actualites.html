@@ -51,13 +51,30 @@
 		<div class="actus-grille">
 			<div>
 			<BOUCLE_une(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{titre_mot!=Mentions légales}{titre_mot!=Confidentialité}{titre_mot!=Crédits}{titre_mot!=Accessibilité}{!par date}{0,1}>
-				[(#REM) Le sceau est SOUS l'image, pas a cote : quand l'article
-				        porte une photographie elle le recouvre entierement,
-				        quand il n'en porte pas c'est le sceau qu'on voit. Une
-				        seule ecriture pour les deux cas, donc aucun des deux
-				        ne peut etre oublie. ]
+				[(#REM) TROIS COUCHES, DE LA DERNIERE A LA PREMIERE.
+
+				        Au fond, le sceau grave. On ne le voit jamais tant que
+				        tout va bien : il est la pour le jour ou la photo par
+				        defaut manque ou ne charge pas. Un dessin vaut mieux
+				        qu'un rectangle vide.
+
+				        Au-dessus, l'eglise Saint-Remy. Elle ne s'affiche QUE
+				        si l'article n'a pas sa propre image — sinon le
+				        navigateur telechargerait une photographie que
+				        personne ne verrait.
+
+				        Au-dessus encore, la photographie de l'article, quand
+				        il en porte une. C'est toujours elle qui gagne.
+
+				        alt vide pour l'eglise, et c'est volontaire : elle ne
+				        dit rien de l'article qu'elle accompagne. La decrire
+				        ferait annoncer << esplanade de l'eglise >> a un
+				        lecteur d'ecran devant un article sur les encombrants.
+				        C'est un decor, il se tait. ]
 				<div class="une-fond">
 					<span class="une-grave" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=une-trace}{n=une}></span>
+					[(#LOGO_ARTICLE|non)<img class="une-defaut" src="#CHEMIN{img/eglise-defaut.jpg}"
+						width="800" height="533" alt="" loading="lazy">]
 					[(#LOGO_ARTICLE||image_reduire{900,460})]
 				</div>
 				<a class="une-carton" href="#URL_ARTICLE">

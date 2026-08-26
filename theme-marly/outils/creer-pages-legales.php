@@ -281,7 +281,12 @@ $pages[] = array(
 . "Pictogrammes Remix Icon, sous licence Apache 2.0.\n\n"
 . "{{{Dessins et photographies}}}\n\n"
 . "L’emblème de la commune et le paysage sont des dessins originaux réalisés pour ce site, "
-. "d’après l’église fortifiée Saint-Rémy, classée monument historique en 1928.\n"
+. "d’après l’église fortifiée Saint-Rémy, classée monument historique en 1928.\n\n"
+. "La photographie de l’esplanade de l’église, qui illustre la page d’accueil lorsque "
+. "l’article mis en avant n’a pas d’image propre, est de {{René Hourdry}}, sous licence "
+. "Creative Commons Attribution - Partage dans les mêmes conditions 4.0 "
+. "([CC BY-SA 4.0->https://creativecommons.org/licenses/by-sa/4.0/deed.fr]), "
+. "via Wikimedia Commons.\n\n"
 . "Sauf mention contraire, photographies de la commune de Marly-Gomont.",
 );
 
