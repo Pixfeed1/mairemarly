@@ -137,9 +137,31 @@ def lire(url, auth):
     except Exception as e:
         return 0, str(e)
 
+# Des traces de langage SPIP dans la page rendue. Ce n'est pas un critere du
+# RGAA : c'est pire, c'est du code qui s'affiche. Un bloc [ ... ] n'evalue
+# qu'UNE balise entre parenthesees ; la seconde ressort en clair, filtres
+# compris, souvent au milieu d'un href — et le lien ne mene alors nulle part.
+#
+# Trouve le 26 aout 2026 par le validateur du W3C, qui refusait
+# href="mailto:(mairie@…|sinon{'…'}|attribut_html)". Le lien courriel du pied
+# etait casse sur toutes les pages du site, et personne ne l'avait vu : a
+# l'ecran il ressemble a une adresse.
+TRACES_SPIP = (
+    '|attribut_html', '|urlencode', '|replace{', '|sinon{', '|couper{',
+    '#CONFIG{', '#TELEPHONE', '#COURRIEL', '#LATITUDE', '#LONGITUDE',
+)
+
 def auditer(nom, html):
     """Rend une liste de (critere, message). Vide = rien a signaler."""
     f = []
+
+    corps = html
+    for _s in TRACES_SPIP:
+        i = corps.find(_s)
+        if i >= 0:
+            extrait = ' '.join(corps[max(0, i - 70):i + len(_s) + 12].split())
+            f.append(('SPIP', f'code SPIP non interprete dans la page : …{extrait}…'))
+
     p = Page()
     try:
         p.feed(html)
