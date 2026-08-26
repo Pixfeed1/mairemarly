@@ -407,12 +407,22 @@ foreach ($pages as $page) {
 	   peut-etre ete relu et corrige par la mairie depuis. */
 	$deja = sql_getfetsel('l.id_objet', 'spip_mots_liens AS l',
 		'l.id_mot = ' . intval($id_mot) . ' AND l.objet = "article"');
+	/* Ce drapeau repare un mensonge du script. La reecriture ne comptait pas
+	   dans le total, et la branche suivante annoncait ensuite << DEJA LA,
+	   saute >> pour le meme article : la sortie affichait donc REECRITE, puis
+	   son contraire, puis << 0 page(s) ecrite(s) >>. Qui lit le total conclut
+	   que rien n'a bouge, alors que le texte des trois pages venait d'etre
+	   remplace — y compris, le cas echeant, les mentions que la mairie avait
+	   completees a la main. */
+	$touche = false;
 	if ($deja && $reecrire) {
 		objet_modifier('article', $deja, array(
 			'titre' => $page['titre'],
 			'texte' => $page['texte'],
 		));
 		echo 'REECRITE : ' . $page['titre'] . " (article $deja)\n";
+		$ecrits++;
+		$touche = true;
 	}
 	if ($deja) {
 		/* On ne recrit pas l'article — il a peut-etre ete relu par la mairie —
@@ -424,6 +434,7 @@ foreach ($pages as $page) {
 			marly_forcer_rubrique($deja, $rubrique);
 			echo 'DEPLACE : ' . $page['titre'] . " (article $deja, rubrique $ou -> $rubrique)\n";
 			$ecrits++;
+			$touche = true;
 		}
 		$statut = sql_getfetsel('statut', 'spip_articles', 'id_article = ' . intval($deja));
 		if ($statut !== 'publie') {
@@ -431,7 +442,8 @@ foreach ($pages as $page) {
 			marly_forcer_publication($deja);
 			echo 'PUBLIE : ' . $page['titre'] . " (article $deja, etait $statut)\n";
 			$ecrits++;
-		} elseif ($ou == $rubrique) {
+			$touche = true;
+		} elseif ($ou == $rubrique && !$touche) {
 			echo 'DEJA LA, saute : ' . $page['titre'] . " (article $deja)\n";
 		}
 		continue;
@@ -466,7 +478,7 @@ foreach ($pages as $page) {
 }
 
 marly_invalider_cache();
-echo "\n$ecrits page(s) ecrite(s).\n";
+echo "\n$ecrits page(s) creee(s), reecrite(s), deplacee(s) ou publiee(s).\n";
 echo "A relire dans Edition > Articles avant de montrer le site.\n";
 echo "\nDEUX MENTIONS RESTENT A COMPLETER, elles apparaissent en gras dans la\n";
 echo "page : le telephone de l'hebergeur, obligatoire au titre de l'article 6\n";
