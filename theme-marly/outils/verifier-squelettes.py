@@ -1409,6 +1409,59 @@ if os.path.exists(_CSS59):
                      "percoit pas la teinte ne voit aucune difference (RGAA 3.1). "
                      "Ajouter une graisse, un lisere, un fond ou une forme")
 
+# 60. Un message d'erreur qui n'est pas rattache a son champ.
+#     RGAA 11.10 : quand une saisie est refusee, l'erreur doit etre indiquee,
+#     decrite en toutes lettres, et le champ fautif identifie. Un span pose a
+#     cote du champ satisfait l'oeil et personne d'autre : celui qui parcourt
+#     le formulaire au lecteur d'ecran, de champ en champ, entend l'etiquette
+#     et jamais le message. Il apprend qu'il s'est trompe, sans savoir ou.
+#
+#     Mesure du 26 aout 2026 : les quinze formulaires du site etaient dans ce
+#     cas, soixante-treize champs en tout. Le message porte desormais un
+#     identifiant, et le champ le designe par aria-describedby en se declarant
+#     aria-invalid.
+#
+#     L'invariant se verifie des deux cotes : pas de message sans identifiant,
+#     et pas d'identifiant que personne ne designe.
+for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', 'formulaires', '*.html'))):
+    _src = open(_f, encoding='utf-8').read()
+    _rel = os.path.relpath(_f, os.path.join(RACINE, '..'))
+    for _c in re.finditer(r'class="erreur_message"(?! id=)', _src):
+        signaler(_rel, _src[:_c.start()].count(chr(10)) + 1,
+                 "message d'erreur sans identifiant : le champ ne peut pas le "
+                 "designer, et un lecteur d'ecran ne l'annoncera jamais (RGAA 11.10)")
+    _ids = set(re.findall(r'class="erreur_message" id="([^"]+)"', _src))
+    _vises = set(re.findall(r'aria-describedby="([^"]+)"', _src))
+    for _i in sorted(_ids - _vises):
+        signaler(_rel, 1,
+                 f"le message d'erreur id=\"{_i}\" n'est designe par aucun champ : "
+                 "ajouter aria-describedby sur le controle correspondant")
+
+# 61. outline:none, ou comment effacer la prise de focus.
+#     RGAA 10.7 : la prise de focus doit se voir. L'anneau du navigateur est
+#     souvent juge disgracieux, et le premier reflexe est de l'effacer. Il ne
+#     se remplace jamais dans la foulee, et le site devient impraticable au
+#     clavier — sans que rien ne le signale, puisque tout marche a la souris.
+#
+#     Mesure du 26 aout 2026 : une seule declaration, sur le champ de
+#     recherche, et elle privait d'indication l'accueil, la page introuvable
+#     et les deux panneaux. On tabulait dans le champ sans rien voir.
+#
+#     Aucune exception : si un anneau ne plait pas, on le redessine, on ne le
+#     supprime pas.
+_CSS61 = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.exists(_CSS61):
+    _src = open(_CSS61, encoding='utf-8').read()
+    _masque = re.sub(r'/\*.*?\*/',
+                     lambda _m: ''.join(_c if _c == chr(10) else ' ' for _c in _m.group(0)),
+                     _src, flags=re.S)
+    for _c in re.finditer(r'outline\s*:\s*(none|0)\b', _masque):
+        signaler('squelettes/css/theme.css',
+                 _masque[:_c.start()].count(chr(10)) + 1,
+                 "outline:none efface la prise de focus : au clavier on ne sait "
+                 "plus ou l'on est, et rien ne le signale puisque tout marche a "
+                 "la souris (RGAA 10.7). Redessiner l'anneau, jamais le supprimer")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

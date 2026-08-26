@@ -23,30 +23,30 @@
 			<ul>
 				<li class="marly-champ marly-telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
 					<label for="telephone"><:marly:champ_telephone:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
-					<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]">
+					[<span class="erreur_message" id="erreur-telephone">(#ENV**{erreurs}|table_valeur{telephone})</span>]
+					<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{telephone}|oui) aria-invalid="true" aria-describedby="erreur-telephone"]>
 					<small><:marly:telephone_aide:></small>
 				</li>
 				<li class="marly-champ marly-courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
 					<label for="courriel"><:marly:champ_courriel:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
-					<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]">
+					[<span class="erreur_message" id="erreur-courriel">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+					<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{courriel}|oui) aria-invalid="true" aria-describedby="erreur-courriel"]>
 				</li>
 				<li class="marly-champ marly-adresse[ (#ENV**{erreurs}|table_valeur{adresse}|oui)erreur]">
 					<label for="adresse"><:marly:adresse:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{adresse})</span>]
-					<input type="text" class="text" name="adresse" id="adresse" value="[(#ENV{adresse}|attribut_html)]">
+					[<span class="erreur_message" id="erreur-adresse">(#ENV**{erreurs}|table_valeur{adresse})</span>]
+					<input type="text" class="text" name="adresse" id="adresse" value="[(#ENV{adresse}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{adresse}|oui) aria-invalid="true" aria-describedby="erreur-adresse"]>
 					<small><:marly:adresse_aide:></small>
 				</li>
 				<li class="marly-champ marly-code_postal[ (#ENV**{erreurs}|table_valeur{code_postal}|oui)erreur]">
 					<label for="code_postal"><:marly:code_postal:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{code_postal})</span>]
-					<input type="text" class="text" name="code_postal" id="code_postal" value="[(#ENV{code_postal}|attribut_html)]">
+					[<span class="erreur_message" id="erreur-code_postal">(#ENV**{erreurs}|table_valeur{code_postal})</span>]
+					<input type="text" class="text" name="code_postal" id="code_postal" value="[(#ENV{code_postal}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{code_postal}|oui) aria-invalid="true" aria-describedby="erreur-code_postal"]>
 				</li>
 				<li class="marly-champ marly-ville[ (#ENV**{erreurs}|table_valeur{ville}|oui)erreur]">
 					<label for="ville"><:marly:ville:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ville})</span>]
-					<input type="text" class="text" name="ville" id="ville" value="[(#ENV{ville}|attribut_html)]">
+					[<span class="erreur_message" id="erreur-ville">(#ENV**{erreurs}|table_valeur{ville})</span>]
+					<input type="text" class="text" name="ville" id="ville" value="[(#ENV{ville}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{ville}|oui) aria-invalid="true" aria-describedby="erreur-ville"]>
 					<small><:marly:ville_aide:></small>
 				</li>
 				<li class="marly-champ marly-horaires">
@@ -63,48 +63,48 @@
 			<ul>
 				<li class="marly-champ marly-facebook[ (#ENV**{erreurs}|table_valeur{facebook}|oui)erreur]">
 					<label for="facebook"><:marly:facebook:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{facebook})</span>]
-					<input type="url" class="text" name="facebook" id="facebook" value="[(#ENV{facebook}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-facebook">(#ENV**{erreurs}|table_valeur{facebook})</span>]
+					<input type="url" class="text" name="facebook" id="facebook" value="[(#ENV{facebook}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{facebook}|oui) aria-invalid="true" aria-describedby="erreur-facebook"]>
 				</li>
 				<li class="marly-champ marly-instagram[ (#ENV**{erreurs}|table_valeur{instagram}|oui)erreur]">
 					<label for="instagram"><:marly:instagram:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{instagram})</span>]
-					<input type="url" class="text" name="instagram" id="instagram" value="[(#ENV{instagram}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-instagram">(#ENV**{erreurs}|table_valeur{instagram})</span>]
+					<input type="url" class="text" name="instagram" id="instagram" value="[(#ENV{instagram}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{instagram}|oui) aria-invalid="true" aria-describedby="erreur-instagram"]>
 				</li>
 				<li class="marly-champ marly-youtube[ (#ENV**{erreurs}|table_valeur{youtube}|oui)erreur]">
 					<label for="youtube"><:marly:youtube:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{youtube})</span>]
-					<input type="url" class="text" name="youtube" id="youtube" value="[(#ENV{youtube}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-youtube">(#ENV**{erreurs}|table_valeur{youtube})</span>]
+					<input type="url" class="text" name="youtube" id="youtube" value="[(#ENV{youtube}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{youtube}|oui) aria-invalid="true" aria-describedby="erreur-youtube"]>
 				</li>
 				<li class="marly-champ marly-x[ (#ENV**{erreurs}|table_valeur{x}|oui)erreur]">
 					<label for="x"><:marly:x:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{x})</span>]
-					<input type="url" class="text" name="x" id="x" value="[(#ENV{x}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-x">(#ENV**{erreurs}|table_valeur{x})</span>]
+					<input type="url" class="text" name="x" id="x" value="[(#ENV{x}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{x}|oui) aria-invalid="true" aria-describedby="erreur-x"]>
 				</li>
 				<li class="marly-champ marly-linkedin[ (#ENV**{erreurs}|table_valeur{linkedin}|oui)erreur]">
 					<label for="linkedin"><:marly:linkedin:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{linkedin})</span>]
-					<input type="url" class="text" name="linkedin" id="linkedin" value="[(#ENV{linkedin}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-linkedin">(#ENV**{erreurs}|table_valeur{linkedin})</span>]
+					<input type="url" class="text" name="linkedin" id="linkedin" value="[(#ENV{linkedin}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{linkedin}|oui) aria-invalid="true" aria-describedby="erreur-linkedin"]>
 				</li>
 				<li class="marly-champ marly-tiktok[ (#ENV**{erreurs}|table_valeur{tiktok}|oui)erreur]">
 					<label for="tiktok"><:marly:tiktok:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{tiktok})</span>]
-					<input type="url" class="text" name="tiktok" id="tiktok" value="[(#ENV{tiktok}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-tiktok">(#ENV**{erreurs}|table_valeur{tiktok})</span>]
+					<input type="url" class="text" name="tiktok" id="tiktok" value="[(#ENV{tiktok}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{tiktok}|oui) aria-invalid="true" aria-describedby="erreur-tiktok"]>
 				</li>
 				<li class="marly-champ marly-whatsapp[ (#ENV**{erreurs}|table_valeur{whatsapp}|oui)erreur]">
 					<label for="whatsapp"><:marly:whatsapp:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{whatsapp})</span>]
-					<input type="url" class="text" name="whatsapp" id="whatsapp" value="[(#ENV{whatsapp}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-whatsapp">(#ENV**{erreurs}|table_valeur{whatsapp})</span>]
+					<input type="url" class="text" name="whatsapp" id="whatsapp" value="[(#ENV{whatsapp}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{whatsapp}|oui) aria-invalid="true" aria-describedby="erreur-whatsapp"]>
 				</li>
 				<li class="marly-champ marly-mastodon[ (#ENV**{erreurs}|table_valeur{mastodon}|oui)erreur]">
 					<label for="mastodon"><:marly:mastodon:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{mastodon})</span>]
-					<input type="url" class="text" name="mastodon" id="mastodon" value="[(#ENV{mastodon}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-mastodon">(#ENV**{erreurs}|table_valeur{mastodon})</span>]
+					<input type="url" class="text" name="mastodon" id="mastodon" value="[(#ENV{mastodon}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{mastodon}|oui) aria-invalid="true" aria-describedby="erreur-mastodon"]>
 				</li>
 				<li class="marly-champ marly-bluesky[ (#ENV**{erreurs}|table_valeur{bluesky}|oui)erreur]">
 					<label for="bluesky"><:marly:bluesky:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{bluesky})</span>]
-					<input type="url" class="text" name="bluesky" id="bluesky" value="[(#ENV{bluesky}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-bluesky">(#ENV**{erreurs}|table_valeur{bluesky})</span>]
+					<input type="url" class="text" name="bluesky" id="bluesky" value="[(#ENV{bluesky}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{bluesky}|oui) aria-invalid="true" aria-describedby="erreur-bluesky"]>
 				</li>
 			</ul>
 		</fieldset>
@@ -114,14 +114,14 @@
 			<ul>
 				<li class="marly-champ marly-appli_nom[ (#ENV**{erreurs}|table_valeur{appli_nom}|oui)erreur]">
 					<label for="appli_nom"><:marly:appli_nom:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{appli_nom})</span>]
-					<input type="text" class="text" name="appli_nom" id="appli_nom" value="[(#ENV{appli_nom}|attribut_html)]">
+					[<span class="erreur_message" id="erreur-appli_nom">(#ENV**{erreurs}|table_valeur{appli_nom})</span>]
+					<input type="text" class="text" name="appli_nom" id="appli_nom" value="[(#ENV{appli_nom}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{appli_nom}|oui) aria-invalid="true" aria-describedby="erreur-appli_nom"]>
 					<small><:marly:appli_nom_aide:></small>
 				</li>
 				<li class="marly-champ marly-appli_url[ (#ENV**{erreurs}|table_valeur{appli_url}|oui)erreur]">
 					<label for="appli_url"><:marly:appli_url:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{appli_url})</span>]
-					<input type="url" class="text" name="appli_url" id="appli_url" value="[(#ENV{appli_url}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-appli_url">(#ENV**{erreurs}|table_valeur{appli_url})</span>]
+					<input type="url" class="text" name="appli_url" id="appli_url" value="[(#ENV{appli_url}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{appli_url}|oui) aria-invalid="true" aria-describedby="erreur-appli_url"]>
 				</li>
 			</ul>
 		</fieldset>

@@ -6,8 +6,8 @@
 ]
 <div class="formulaire_spip formulaire_reserver_salle">
 
-	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
-	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_ok" role="status">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur" role="alert">(#ENV*{message_erreur})</p>]
 
 	[(#ENV{editable}|oui)
 	<form method="post" action="#ENV{action}">
@@ -35,18 +35,18 @@
 			<ul>
 				<li class="editer editer_date_jour[ (#ENV**{erreurs}|table_valeur{date_jour}|oui)erreur]">
 					<label for="date_jour"><:marly:date_souhaitee:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{date_jour})</span>]
-					<input type="date" class="text" name="date_jour" id="date_jour" value="[(#ENV{date_jour}|attribut_html)]" required>
+					[<span class="erreur_message" id="erreur-date_jour">(#ENV**{erreurs}|table_valeur{date_jour})</span>]
+					<input type="date" class="text" name="date_jour" id="date_jour" value="[(#ENV{date_jour}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{date_jour}|oui) aria-invalid="true" aria-describedby="erreur-date_jour"]>
 				</li>
 				<li class="editer editer_heure_debut[ (#ENV**{erreurs}|table_valeur{heure_debut}|oui)erreur]">
 					<label for="heure_debut"><:marly:heure_debut:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{heure_debut})</span>]
-					<input type="time" class="text" name="heure_debut" id="heure_debut" value="[(#ENV{heure_debut}|attribut_html)]" required>
+					[<span class="erreur_message" id="erreur-heure_debut">(#ENV**{erreurs}|table_valeur{heure_debut})</span>]
+					<input type="time" class="text" name="heure_debut" id="heure_debut" value="[(#ENV{heure_debut}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{heure_debut}|oui) aria-invalid="true" aria-describedby="erreur-heure_debut"]>
 				</li>
 				<li class="editer editer_heure_fin[ (#ENV**{erreurs}|table_valeur{heure_fin}|oui)erreur]">
 					<label for="heure_fin"><:marly:heure_fin:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{heure_fin})</span>]
-					<input type="time" class="text" name="heure_fin" id="heure_fin" value="[(#ENV{heure_fin}|attribut_html)]" required>
+					[<span class="erreur_message" id="erreur-heure_fin">(#ENV**{erreurs}|table_valeur{heure_fin})</span>]
+					<input type="time" class="text" name="heure_fin" id="heure_fin" value="[(#ENV{heure_fin}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{heure_fin}|oui) aria-invalid="true" aria-describedby="erreur-heure_fin"]>
 				</li>
 			</ul>
 		</fieldset>
@@ -56,9 +56,9 @@
 			<ul>
 				<li class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
 					<label for="nom"><:marly:votre_nom:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+					[<span class="erreur_message" id="erreur-nom">(#ENV**{erreurs}|table_valeur{nom})</span>]
 					<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]"
-					       autocomplete="name" required aria-required="true">
+					       autocomplete="name" required aria-required="true"[(#ENV**{erreurs}|table_valeur{nom}|oui) aria-invalid="true" aria-describedby="erreur-nom"]>
 				</li>
 				<li class="editer editer_organisme">
 					<label for="organisme"><:marly:organisme:></label>
@@ -68,20 +68,20 @@
 				</li>
 				<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
 					<label for="courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+					[<span class="erreur_message" id="erreur-courriel">(#ENV**{erreurs}|table_valeur{courriel})</span>]
 					<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]"
-					       autocomplete="email" required aria-required="true">
+					       autocomplete="email" required aria-required="true"[(#ENV**{erreurs}|table_valeur{courriel}|oui) aria-invalid="true" aria-describedby="erreur-courriel"]>
 				</li>
 				<li class="editer editer_telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
 					<label for="telephone"><:marly:votre_telephone:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
+					[<span class="erreur_message" id="erreur-telephone">(#ENV**{erreurs}|table_valeur{telephone})</span>]
 					<input type="tel" class="text" name="telephone" id="telephone" value="[(#ENV{telephone}|attribut_html)]"
-					       autocomplete="tel" required aria-required="true">
+					       autocomplete="tel" required aria-required="true"[(#ENV**{erreurs}|table_valeur{telephone}|oui) aria-invalid="true" aria-describedby="erreur-telephone"]>
 				</li>
 				<li class="editer editer_motif[ (#ENV**{erreurs}|table_valeur{motif}|oui)erreur]">
 					<label for="motif"><:marly:motif:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{motif})</span>]
-					<textarea name="motif" id="motif" rows="3" required>[(#ENV{motif}|textebrut)]</textarea>
+					[<span class="erreur_message" id="erreur-motif">(#ENV**{erreurs}|table_valeur{motif})</span>]
+					<textarea name="motif" id="motif" rows="3" required[(#ENV**{erreurs}|table_valeur{motif}|oui) aria-invalid="true" aria-describedby="erreur-motif"]>[(#ENV{motif}|textebrut)]</textarea>
 					<small><:marly:motif_aide:></small>
 				</li>
 			</ul>

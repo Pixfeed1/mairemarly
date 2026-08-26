@@ -26,13 +26,13 @@
 			<ul>
 			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
 				<label for="titre"><:marly:champ_intitule:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
-				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
+				[<span class="erreur_message" id="erreur-titre">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{titre}|oui) aria-invalid="true" aria-describedby="erreur-titre"]>
 			</li>
 			<li class="marly-champ marly-resume[ (#ENV**{erreurs}|table_valeur{resume}|oui)erreur]">
 				<label for="resume"><:marly:champ_resume:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{resume})</span>]
-				<textarea name="resume" id="resume" rows="2" required>[(#ENV{resume}|textebrut)]</textarea>
+				[<span class="erreur_message" id="erreur-resume">(#ENV**{erreurs}|table_valeur{resume})</span>]
+				<textarea name="resume" id="resume" rows="2" required[(#ENV**{erreurs}|table_valeur{resume}|oui) aria-invalid="true" aria-describedby="erreur-resume"]>[(#ENV{resume}|textebrut)]</textarea>
 				<small><:marly:resume_aide:></small>
 			</li>
 			<li class="marly-champ marly-famille">
@@ -82,8 +82,8 @@
 			</li>
 			<li class="marly-champ marly-ou[ (#ENV**{erreurs}|table_valeur{ou}|oui)erreur]">
 				<label for="ou"><:marly:champ_ou:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ou})</span>]
-				<textarea name="ou" id="ou" rows="3" required>[(#ENV{ou}|textebrut)]</textarea>
+				[<span class="erreur_message" id="erreur-ou">(#ENV**{erreurs}|table_valeur{ou})</span>]
+				<textarea name="ou" id="ou" rows="3" required[(#ENV**{erreurs}|table_valeur{ou}|oui) aria-invalid="true" aria-describedby="erreur-ou"]>[(#ENV{ou}|textebrut)]</textarea>
 				<small><:marly:ou_aide:></small>
 			</li>
 			</ul>
@@ -139,14 +139,14 @@
 			<ul>
 			<li class="marly-champ marly-lien[ (#ENV**{erreurs}|table_valeur{lien}|oui)erreur]">
 				<label for="lien"><:marly:champ_lien:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{lien})</span>]
-				<input type="url" class="text" name="lien" id="lien" value="[(#ENV{lien}|attribut_html)]" placeholder="https://www.service-public.gouv.fr/…">
+				[<span class="erreur_message" id="erreur-lien">(#ENV**{erreurs}|table_valeur{lien})</span>]
+				<input type="url" class="text" name="lien" id="lien" value="[(#ENV{lien}|attribut_html)]" placeholder="https://www.service-public.gouv.fr/…"[(#ENV**{erreurs}|table_valeur{lien}|oui) aria-invalid="true" aria-describedby="erreur-lien"]>
 				<small><:marly:lien_aide:></small>
 			</li>
 			<li class="marly-champ marly-lien_faire[ (#ENV**{erreurs}|table_valeur{lien_faire}|oui)erreur]">
 				<label for="lien_faire"><:marly:champ_lien_faire:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{lien_faire})</span>]
-				<input type="url" class="text" name="lien_faire" id="lien_faire" value="[(#ENV{lien_faire}|attribut_html)]" placeholder="https://">
+				[<span class="erreur_message" id="erreur-lien_faire">(#ENV**{erreurs}|table_valeur{lien_faire})</span>]
+				<input type="url" class="text" name="lien_faire" id="lien_faire" value="[(#ENV{lien_faire}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{lien_faire}|oui) aria-invalid="true" aria-describedby="erreur-lien_faire"]>
 				<small><:marly:lien_faire_aide:></small>
 			</li>
 			<li class="marly-champ marly-statut">

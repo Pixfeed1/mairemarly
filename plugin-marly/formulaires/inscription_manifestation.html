@@ -9,8 +9,8 @@
 ]
 <div class="formulaire_spip formulaire_inscription">
 
-	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
-	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_ok" role="status">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur" role="alert">(#ENV*{message_erreur})</p>]
 
 	[(#ENV{editable}|oui)
 	<form method="post" action="#ENV{action}">
@@ -34,22 +34,22 @@
 		<ul>
 			<li class="editer editer_places[ (#ENV**{erreurs}|table_valeur{places}|oui)erreur]">
 				<label for="places"><:marly:champ_places_demandees:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{places})</span>]
+				[<span class="erreur_message" id="erreur-places">(#ENV**{erreurs}|table_valeur{places})</span>]
 				<input type="number" class="text" name="places" id="places" min="1"
 				       max="[(#ENV{_manif}|table_valeur{places_par_personne})]"
-				       value="[(#ENV{places}|attribut_html)]" required>
+				       value="[(#ENV{places}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{places}|oui) aria-invalid="true" aria-describedby="erreur-places"]>
 			</li>
 			<li class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
 				<label for="nom"><:marly:votre_nom:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+				[<span class="erreur_message" id="erreur-nom">(#ENV**{erreurs}|table_valeur{nom})</span>]
 				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]"
-				       autocomplete="name" required aria-required="true">
+				       autocomplete="name" required aria-required="true"[(#ENV**{erreurs}|table_valeur{nom}|oui) aria-invalid="true" aria-describedby="erreur-nom"]>
 			</li>
 			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
 				<label for="courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				[<span class="erreur_message" id="erreur-courriel">(#ENV**{erreurs}|table_valeur{courriel})</span>]
 				<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]"
-				       autocomplete="email" required aria-required="true">
+				       autocomplete="email" required aria-required="true"[(#ENV**{erreurs}|table_valeur{courriel}|oui) aria-invalid="true" aria-describedby="erreur-courriel"]>
 			</li>
 			<li class="editer editer_telephone">
 				<label for="telephone"><:marly:votre_telephone:></label>

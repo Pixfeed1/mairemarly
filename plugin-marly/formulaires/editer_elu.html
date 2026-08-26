@@ -18,19 +18,19 @@
 			</li>
 			<li class="marly-champ marly-nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
 				<label for="nom"><:marly:champ_nom_elu:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
-				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]" required>
+				[<span class="erreur_message" id="erreur-nom">(#ENV**{erreurs}|table_valeur{nom})</span>]
+				<input type="text" class="text" name="nom" id="nom" value="[(#ENV{nom}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{nom}|oui) aria-invalid="true" aria-describedby="erreur-nom"]>
 			</li>
 			<li class="marly-champ marly-fonction[ (#ENV**{erreurs}|table_valeur{fonction}|oui)erreur]">
 				<label for="fonction"><:marly:champ_fonction:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{fonction})</span>]
+				[<span class="erreur_message" id="erreur-fonction">(#ENV**{erreurs}|table_valeur{fonction})</span>]
 				[(#REM) Une liste de SUGGESTIONS et non un menu ferme. Les
 				        intitules courants sont proposes — ce qui evite dix
 				        orthographes de << adjoint au maire >> sur dix fiches —
 				        mais on peut toujours ecrire autre chose : une commune
 				        a parfois des fonctions qu'aucune liste ne prevoit. ]
 				<input type="text" class="text" name="fonction" id="fonction"
-				       value="[(#ENV{fonction}|attribut_html)]" list="fonctions-courantes" required>
+				       value="[(#ENV{fonction}|attribut_html)]" list="fonctions-courantes" required[(#ENV**{erreurs}|table_valeur{fonction}|oui) aria-invalid="true" aria-describedby="erreur-fonction"]>
 				<datalist id="fonctions-courantes">
 					<option value="Maire">
 					<option value="Adjointe au maire">
@@ -54,8 +54,8 @@
 			</li>
 			<li class="marly-champ marly-courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
 				<label for="courriel"><:marly:champ_courriel:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
-				<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-courriel">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				<input type="email" class="text" name="courriel" id="courriel" value="[(#ENV{courriel}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{courriel}|oui) aria-invalid="true" aria-describedby="erreur-courriel"]>
 			</li>
 			<li class="marly-champ marly-permanence">
 				<label for="permanence"><:marly:champ_permanence:></label>

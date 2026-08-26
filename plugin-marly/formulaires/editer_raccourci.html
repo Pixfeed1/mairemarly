@@ -14,14 +14,14 @@
 		<ul>
 			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
 				<label for="titre"><:marly:champ_intitule:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
-				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" maxlength="30" required>
+				[<span class="erreur_message" id="erreur-titre">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" maxlength="30" required[(#ENV**{erreurs}|table_valeur{titre}|oui) aria-invalid="true" aria-describedby="erreur-titre"]>
 				<small><:marly:raccourci_titre_aide:></small>
 			</li>
 			<li class="marly-champ marly-cible[ (#ENV**{erreurs}|table_valeur{cible}|oui)erreur]">
 				<label for="cible"><:marly:champ_destination:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{cible})</span>]
-				<select name="cible" id="cible">
+				[<span class="erreur_message" id="erreur-cible">(#ENV**{erreurs}|table_valeur{cible})</span>]
+				<select name="cible" id="cible"[(#ENV**{erreurs}|table_valeur{cible}|oui) aria-invalid="true" aria-describedby="erreur-cible"]>
 					<BOUCLE_cibles(DATA){source tableau,#ENV{_cibles}}>
 					<option value="#CLE"[(#ENV{cible}|=={#CLE}|oui) selected]>#VALEUR</option>
 					</BOUCLE_cibles>
@@ -30,8 +30,8 @@
 			</li>
 			<li class="marly-champ marly-url[ (#ENV**{erreurs}|table_valeur{url}|oui)erreur]">
 				<label for="url"><:marly:champ_url_exterieure:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{url})</span>]
-				<input type="url" class="text" name="url" id="url" value="[(#ENV{url}|attribut_html)]" placeholder="https://">
+				[<span class="erreur_message" id="erreur-url">(#ENV**{erreurs}|table_valeur{url})</span>]
+				<input type="url" class="text" name="url" id="url" value="[(#ENV{url}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{url}|oui) aria-invalid="true" aria-describedby="erreur-url"]>
 				<small><:marly:url_exterieure_aide:></small>
 			</li>
 			<li class="marly-champ marly-icone">

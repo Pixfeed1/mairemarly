@@ -19,41 +19,41 @@
 		<ul>
 			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
 				<label for="titre"><:marly:champ_titre:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
-				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
+				[<span class="erreur_message" id="erreur-titre">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{titre}|oui) aria-invalid="true" aria-describedby="erreur-titre"]>
 			</li>
 			<li class="marly-champ marly-capacite[ (#ENV**{erreurs}|table_valeur{capacite}|oui)erreur]">
 				<label for="capacite"><:marly:champ_capacite:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{capacite})</span>]
-				<input type="number" class="text" name="capacite" id="capacite" value="[(#ENV{capacite}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-capacite">(#ENV**{erreurs}|table_valeur{capacite})</span>]
+				<input type="number" class="text" name="capacite" id="capacite" value="[(#ENV{capacite}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{capacite}|oui) aria-invalid="true" aria-describedby="erreur-capacite"]>
 				<small><:marly:capacite_aide:></small>
 			</li>
 			<li class="marly-champ marly-tarif_commune[ (#ENV**{erreurs}|table_valeur{tarif_commune}|oui)erreur]">
 				<label for="tarif_commune"><:marly:champ_tarif_commune:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{tarif_commune})</span>]
-				<input type="text" class="text" name="tarif_commune" id="tarif_commune" value="[(#ENV{tarif_commune}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-tarif_commune">(#ENV**{erreurs}|table_valeur{tarif_commune})</span>]
+				<input type="text" class="text" name="tarif_commune" id="tarif_commune" value="[(#ENV{tarif_commune}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{tarif_commune}|oui) aria-invalid="true" aria-describedby="erreur-tarif_commune"]>
 				<small><:marly:tarif_aide:></small>
 			</li>
 			<li class="marly-champ marly-tarif_hors_commune[ (#ENV**{erreurs}|table_valeur{tarif_hors_commune}|oui)erreur]">
 				<label for="tarif_hors_commune"><:marly:champ_tarif_hors_commune:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{tarif_hors_commune})</span>]
-				<input type="text" class="text" name="tarif_hors_commune" id="tarif_hors_commune" value="[(#ENV{tarif_hors_commune}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-tarif_hors_commune">(#ENV**{erreurs}|table_valeur{tarif_hors_commune})</span>]
+				<input type="text" class="text" name="tarif_hors_commune" id="tarif_hors_commune" value="[(#ENV{tarif_hors_commune}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{tarif_hors_commune}|oui) aria-invalid="true" aria-describedby="erreur-tarif_hors_commune"]>
 			</li>
 			<li class="marly-champ marly-caution[ (#ENV**{erreurs}|table_valeur{caution}|oui)erreur]">
 				<label for="caution"><:marly:champ_caution:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{caution})</span>]
-				<input type="text" class="text" name="caution" id="caution" value="[(#ENV{caution}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-caution">(#ENV**{erreurs}|table_valeur{caution})</span>]
+				<input type="text" class="text" name="caution" id="caution" value="[(#ENV{caution}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{caution}|oui) aria-invalid="true" aria-describedby="erreur-caution"]>
 			</li>
 			<li class="marly-champ marly-delai_min[ (#ENV**{erreurs}|table_valeur{delai_min}|oui)erreur]">
 				<label for="delai_min"><:marly:champ_delai_min:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{delai_min})</span>]
-				<input type="number" class="text" name="delai_min" id="delai_min" value="[(#ENV{delai_min}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-delai_min">(#ENV**{erreurs}|table_valeur{delai_min})</span>]
+				<input type="number" class="text" name="delai_min" id="delai_min" value="[(#ENV{delai_min}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{delai_min}|oui) aria-invalid="true" aria-describedby="erreur-delai_min"]>
 				<small><:marly:delai_min_aide:></small>
 			</li>
 			<li class="marly-champ marly-delai_max[ (#ENV**{erreurs}|table_valeur{delai_max}|oui)erreur]">
 				<label for="delai_max"><:marly:champ_delai_max:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{delai_max})</span>]
-				<input type="number" class="text" name="delai_max" id="delai_max" value="[(#ENV{delai_max}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-delai_max">(#ENV**{erreurs}|table_valeur{delai_max})</span>]
+				<input type="number" class="text" name="delai_max" id="delai_max" value="[(#ENV{delai_max}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{delai_max}|oui) aria-invalid="true" aria-describedby="erreur-delai_max"]>
 				<small><:marly:delai_max_aide:></small>
 			</li>
 			<li class="marly-champ marly-descriptif">

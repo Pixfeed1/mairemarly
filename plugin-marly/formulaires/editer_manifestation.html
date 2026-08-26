@@ -23,24 +23,24 @@
 			<ul>
 			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
 				<label for="titre"><:marly:champ_intitule:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
-				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
+				[<span class="erreur_message" id="erreur-titre">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{titre}|oui) aria-invalid="true" aria-describedby="erreur-titre"]>
 			</li>
 			<li class="marly-champ marly-lieu[ (#ENV**{erreurs}|table_valeur{lieu}|oui)erreur]">
 				<label for="lieu"><:marly:champ_lieu:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{lieu})</span>]
-				<input type="text" class="text" name="lieu" id="lieu" value="[(#ENV{lieu}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-lieu">(#ENV**{erreurs}|table_valeur{lieu})</span>]
+				<input type="text" class="text" name="lieu" id="lieu" value="[(#ENV{lieu}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{lieu}|oui) aria-invalid="true" aria-describedby="erreur-lieu"]>
 				<small><:marly:lieu_aide:></small>
 			</li>
 			<li class="marly-champ marly-date_debut[ (#ENV**{erreurs}|table_valeur{date_debut}|oui)erreur]">
 				<label for="date_debut"><:marly:champ_date_debut:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{date_debut})</span>]
-				<input type="datetime-local" class="text" name="date_debut" id="date_debut" value="[(#ENV{date_debut}|attribut_html)]" required>
+				[<span class="erreur_message" id="erreur-date_debut">(#ENV**{erreurs}|table_valeur{date_debut})</span>]
+				<input type="datetime-local" class="text" name="date_debut" id="date_debut" value="[(#ENV{date_debut}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{date_debut}|oui) aria-invalid="true" aria-describedby="erreur-date_debut"]>
 			</li>
 			<li class="marly-champ marly-date_fin[ (#ENV**{erreurs}|table_valeur{date_fin}|oui)erreur]">
 				<label for="date_fin"><:marly:champ_date_fin:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{date_fin})</span>]
-				<input type="datetime-local" class="text" name="date_fin" id="date_fin" value="[(#ENV{date_fin}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-date_fin">(#ENV**{erreurs}|table_valeur{date_fin})</span>]
+				<input type="datetime-local" class="text" name="date_fin" id="date_fin" value="[(#ENV{date_fin}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{date_fin}|oui) aria-invalid="true" aria-describedby="erreur-date_fin"]>
 				<small><:marly:date_fin_aide:></small>
 			</li>
 				[(#ENV{id_manifestation}|=={new}|oui)
@@ -51,8 +51,8 @@
 				]
 				<li class="marly-champ marly-video[ (#ENV**{erreurs}|table_valeur{video}|oui)erreur]">
 					<label for="video"><:marly:champ_video:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{video})</span>]
-					<input type="url" class="text" name="video" id="video" value="[(#ENV{video}|attribut_html)]" placeholder="https://">
+					[<span class="erreur_message" id="erreur-video">(#ENV**{erreurs}|table_valeur{video})</span>]
+					<input type="url" class="text" name="video" id="video" value="[(#ENV{video}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{video}|oui) aria-invalid="true" aria-describedby="erreur-video"]>
 					<small><:marly:video_aide:></small>
 				</li>
 				<li class="marly-champ marly-descriptif">
@@ -67,20 +67,20 @@
 			<ul>
 			<li class="marly-champ marly-places[ (#ENV**{erreurs}|table_valeur{places}|oui)erreur]">
 				<label for="places"><:marly:champ_places:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{places})</span>]
-				<input type="number" class="text" name="places" id="places" value="[(#ENV{places}|attribut_html)]" min="0">
+				[<span class="erreur_message" id="erreur-places">(#ENV**{erreurs}|table_valeur{places})</span>]
+				<input type="number" class="text" name="places" id="places" value="[(#ENV{places}|attribut_html)]" min="0"[(#ENV**{erreurs}|table_valeur{places}|oui) aria-invalid="true" aria-describedby="erreur-places"]>
 				<small><:marly:places_aide:></small>
 			</li>
 			<li class="marly-champ marly-places_par_personne[ (#ENV**{erreurs}|table_valeur{places_par_personne}|oui)erreur]">
 				<label for="places_par_personne"><:marly:champ_places_par_personne:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{places_par_personne})</span>]
-				<input type="number" class="text" name="places_par_personne" id="places_par_personne" value="[(#ENV{places_par_personne}|attribut_html)]" min="1">
+				[<span class="erreur_message" id="erreur-places_par_personne">(#ENV**{erreurs}|table_valeur{places_par_personne})</span>]
+				<input type="number" class="text" name="places_par_personne" id="places_par_personne" value="[(#ENV{places_par_personne}|attribut_html)]" min="1"[(#ENV**{erreurs}|table_valeur{places_par_personne}|oui) aria-invalid="true" aria-describedby="erreur-places_par_personne"]>
 				<small><:marly:places_par_personne_aide:></small>
 			</li>
 			<li class="marly-champ marly-tarif[ (#ENV**{erreurs}|table_valeur{tarif}|oui)erreur]">
 				<label for="tarif"><:marly:champ_tarif:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{tarif})</span>]
-				<input type="text" class="text" name="tarif" id="tarif" value="[(#ENV{tarif}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-tarif">(#ENV**{erreurs}|table_valeur{tarif})</span>]
+				<input type="text" class="text" name="tarif" id="tarif" value="[(#ENV{tarif}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{tarif}|oui) aria-invalid="true" aria-describedby="erreur-tarif"]>
 				<small><:marly:tarif_aide:></small>
 			</li>
 				<li class="marly-champ marly-validation">
@@ -99,14 +99,14 @@
 			<ul>
 			<li class="marly-champ marly-ouverture[ (#ENV**{erreurs}|table_valeur{ouverture}|oui)erreur]">
 				<label for="ouverture"><:marly:champ_ouverture:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ouverture})</span>]
-				<input type="datetime-local" class="text" name="ouverture" id="ouverture" value="[(#ENV{ouverture}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-ouverture">(#ENV**{erreurs}|table_valeur{ouverture})</span>]
+				<input type="datetime-local" class="text" name="ouverture" id="ouverture" value="[(#ENV{ouverture}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{ouverture}|oui) aria-invalid="true" aria-describedby="erreur-ouverture"]>
 				<small><:marly:ouverture_aide:></small>
 			</li>
 			<li class="marly-champ marly-cloture[ (#ENV**{erreurs}|table_valeur{cloture}|oui)erreur]">
 				<label for="cloture"><:marly:champ_cloture:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{cloture})</span>]
-				<input type="datetime-local" class="text" name="cloture" id="cloture" value="[(#ENV{cloture}|attribut_html)]">
+				[<span class="erreur_message" id="erreur-cloture">(#ENV**{erreurs}|table_valeur{cloture})</span>]
+				<input type="datetime-local" class="text" name="cloture" id="cloture" value="[(#ENV{cloture}|attribut_html)]"[(#ENV**{erreurs}|table_valeur{cloture}|oui) aria-invalid="true" aria-describedby="erreur-cloture"]>
 				<small><:marly:cloture_aide:></small>
 			</li>
 				<li class="marly-champ marly-statut">

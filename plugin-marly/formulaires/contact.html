@@ -9,8 +9,8 @@
 ]
 <div class="formulaire_spip formulaire_contact">
 
-	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
-	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_ok" role="status">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur" role="alert">(#ENV*{message_erreur})</p>]
 
 	[(#ENV{editable}|oui)
 	<form method="post" action="#ENV{action}">
@@ -27,27 +27,27 @@
 			<li class="contact-rang">
 				<span class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
 					<label for="ct-nom"><:marly:votre_nom:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+					[<span class="erreur_message" id="erreur-ct-nom">(#ENV**{erreurs}|table_valeur{nom})</span>]
 					<input type="text" class="text" name="nom" id="ct-nom"
-					       value="[(#ENV{nom}|attribut_html)]" autocomplete="name" required aria-required="true" maxlength="120">
+					       value="[(#ENV{nom}|attribut_html)]" autocomplete="name" required aria-required="true" maxlength="120"[(#ENV**{erreurs}|table_valeur{nom}|oui) aria-invalid="true" aria-describedby="erreur-ct-nom"]>
 				</span>
 				<span class="editer editer_telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
 					<label for="ct-telephone"><:marly:champ_telephone:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
+					[<span class="erreur_message" id="erreur-ct-telephone">(#ENV**{erreurs}|table_valeur{telephone})</span>]
 					<input type="tel" class="text" name="telephone" id="ct-telephone"
-					       value="[(#ENV{telephone}|attribut_html)]" autocomplete="tel" maxlength="20">
+					       value="[(#ENV{telephone}|attribut_html)]" autocomplete="tel" maxlength="20"[(#ENV**{erreurs}|table_valeur{telephone}|oui) aria-invalid="true" aria-describedby="erreur-ct-telephone"]>
 				</span>
 			</li>
 			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
 				<label for="ct-courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				[<span class="erreur_message" id="erreur-ct-courriel">(#ENV**{erreurs}|table_valeur{courriel})</span>]
 				<input type="email" class="text" name="courriel" id="ct-courriel"
-				       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true" maxlength="120">
+				       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true" maxlength="120"[(#ENV**{erreurs}|table_valeur{courriel}|oui) aria-invalid="true" aria-describedby="erreur-ct-courriel"]>
 			</li>
 			<li class="editer editer_objet[ (#ENV**{erreurs}|table_valeur{objet}|oui)erreur]">
 				<label for="ct-objet"><:marly:contact_champ_objet:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{objet})</span>]
-				<select name="objet" id="ct-objet">
+				[<span class="erreur_message" id="erreur-ct-objet">(#ENV**{erreurs}|table_valeur{objet})</span>]
+				<select name="objet" id="ct-objet"[(#ENV**{erreurs}|table_valeur{objet}|oui) aria-invalid="true" aria-describedby="erreur-ct-objet"]>
 					<BOUCLE_objets(DATA){source table,#ENV{_objets}}>
 					<option value="#CLE"[(#CLE|=={#ENV{objet}}|oui) selected]>#VALEUR</option>
 					</BOUCLE_objets>
@@ -55,8 +55,8 @@
 			</li>
 			<li class="editer editer_message[ (#ENV**{erreurs}|table_valeur{message}|oui)erreur]">
 				<label for="ct-message"><:marly:champ_message:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{message})</span>]
-				<textarea name="message" id="ct-message" rows="8" maxlength="4000" required aria-required="true">[(#ENV{message}|textebrut)]</textarea>
+				[<span class="erreur_message" id="erreur-ct-message">(#ENV**{erreurs}|table_valeur{message})</span>]
+				<textarea name="message" id="ct-message" rows="8" maxlength="4000" required aria-required="true"[(#ENV**{erreurs}|table_valeur{message}|oui) aria-invalid="true" aria-describedby="erreur-ct-message"]>[(#ENV{message}|textebrut)]</textarea>
 			</li>
 		</ul>
 		<p class="boutons">

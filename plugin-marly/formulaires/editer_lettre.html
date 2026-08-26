@@ -19,8 +19,8 @@
 		<ul>
 			<li class="marly-champ marly-titre[ (#ENV**{erreurs}|table_valeur{titre}|oui)erreur]">
 				<label for="titre"><:marly:champ_objet:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{titre})</span>]
-				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required>
+				[<span class="erreur_message" id="erreur-titre">(#ENV**{erreurs}|table_valeur{titre})</span>]
+				<input type="text" class="text" name="titre" id="titre" value="[(#ENV{titre}|attribut_html)]" required[(#ENV**{erreurs}|table_valeur{titre}|oui) aria-invalid="true" aria-describedby="erreur-titre"]>
 				<small><:marly:objet_aide:></small>
 			</li>
 			<li class="marly-champ marly-chapo">
@@ -30,14 +30,14 @@
 			</li>
 			<li class="marly-champ marly-texte[ (#ENV**{erreurs}|table_valeur{texte}|oui)erreur]">
 				<label for="texte"><:marly:champ_texte:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{texte})</span>]
-				<textarea name="texte" id="texte" rows="16" class="inserer_barre_edition">[(#ENV{texte}|textebrut)]</textarea>
+				[<span class="erreur_message" id="erreur-texte">(#ENV**{erreurs}|table_valeur{texte})</span>]
+				<textarea name="texte" id="texte" rows="16" class="inserer_barre_edition"[(#ENV**{erreurs}|table_valeur{texte}|oui) aria-invalid="true" aria-describedby="erreur-texte"]>[(#ENV{texte}|textebrut)]</textarea>
 				<small><:marly:texte_aide:></small>
 			</li>
 			<li class="marly-champ marly-video[ (#ENV**{erreurs}|table_valeur{video}|oui)erreur]">
 				<label for="video"><:marly:champ_video_lettre:></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{video})</span>]
-				<input type="url" class="text" name="video" id="video" value="[(#ENV{video}|attribut_html)]" placeholder="https://">
+				[<span class="erreur_message" id="erreur-video">(#ENV**{erreurs}|table_valeur{video})</span>]
+				<input type="url" class="text" name="video" id="video" value="[(#ENV{video}|attribut_html)]" placeholder="https://"[(#ENV**{erreurs}|table_valeur{video}|oui) aria-invalid="true" aria-describedby="erreur-video"]>
 				<small><:marly:video_lettre_aide:></small>
 			</li>
 			<li class="marly-champ marly-actus">

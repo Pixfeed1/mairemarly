@@ -5,8 +5,8 @@
 ]
 <div class="formulaire_spip formulaire_newsletter">
 
-	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
-	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_ok" role="status">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur" role="alert">(#ENV*{message_erreur})</p>]
 
 	[(#ENV{editable}|oui)
 	<form method="post" action="#ENV{action}">
@@ -29,9 +29,9 @@
 		<ul>
 			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
 				<label for="nl-courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				[<span class="erreur_message" id="erreur-nl-courriel">(#ENV**{erreurs}|table_valeur{courriel})</span>]
 				<input type="email" class="text" name="courriel" id="nl-courriel"
-				       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true">
+				       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true"[(#ENV**{erreurs}|table_valeur{courriel}|oui) aria-invalid="true" aria-describedby="erreur-nl-courriel"]>
 			</li>
 		</ul>
 		<p class="boutons">
@@ -47,27 +47,27 @@
 		<ul>
 				<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
 					<label for="nl-courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+					[<span class="erreur_message" id="erreur-nl-courriel">(#ENV**{erreurs}|table_valeur{courriel})</span>]
 					<input type="email" class="text" name="courriel" id="nl-courriel"
-					       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true">
+					       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true"[(#ENV**{erreurs}|table_valeur{courriel}|oui) aria-invalid="true" aria-describedby="erreur-nl-courriel"]>
 				</li>
 				<li class="editer editer_courriel_bis[ (#ENV**{erreurs}|table_valeur{courriel_bis}|oui)erreur]">
 					<label for="nl-courriel_bis"><:marly:confirmez_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel_bis})</span>]
+					[<span class="erreur_message" id="erreur-nl-courriel_bis">(#ENV**{erreurs}|table_valeur{courriel_bis})</span>]
 					<input type="email" class="text" name="courriel_bis" id="nl-courriel_bis"
-					       value="[(#ENV{courriel_bis}|attribut_html)]" autocomplete="off" required aria-required="true">
+					       value="[(#ENV{courriel_bis}|attribut_html)]" autocomplete="off" required aria-required="true"[(#ENV**{erreurs}|table_valeur{courriel_bis}|oui) aria-invalid="true" aria-describedby="erreur-nl-courriel_bis"]>
 				</li>
 				<li class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
 					<label for="nl-nom"><:marly:votre_nom_seul:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+					[<span class="erreur_message" id="erreur-nl-nom">(#ENV**{erreurs}|table_valeur{nom})</span>]
 					<input type="text" class="text" name="nom" id="nl-nom"
-					       value="[(#ENV{nom}|attribut_html)]" autocomplete="family-name">
+					       value="[(#ENV{nom}|attribut_html)]" autocomplete="family-name"[(#ENV**{erreurs}|table_valeur{nom}|oui) aria-invalid="true" aria-describedby="erreur-nl-nom"]>
 				</li>
 				<li class="editer editer_prenom[ (#ENV**{erreurs}|table_valeur{prenom}|oui)erreur]">
 					<label for="nl-prenom"><:marly:votre_prenom:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{prenom})</span>]
+					[<span class="erreur_message" id="erreur-nl-prenom">(#ENV**{erreurs}|table_valeur{prenom})</span>]
 					<input type="text" class="text" name="prenom" id="nl-prenom"
-					       value="[(#ENV{prenom}|attribut_html)]" autocomplete="given-name">
+					       value="[(#ENV{prenom}|attribut_html)]" autocomplete="given-name"[(#ENV**{erreurs}|table_valeur{prenom}|oui) aria-invalid="true" aria-describedby="erreur-nl-prenom"]>
 				</li>
 			</ul>
 
@@ -77,17 +77,17 @@
 				<ul>
 				<li class="editer editer_code_postal[ (#ENV**{erreurs}|table_valeur{code_postal}|oui)erreur]">
 					<label for="nl-code_postal"><:marly:code_postal:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{code_postal})</span>]
+					[<span class="erreur_message" id="erreur-nl-code_postal">(#ENV**{erreurs}|table_valeur{code_postal})</span>]
 					<input type="text" class="text" name="code_postal" id="nl-code_postal"
-					       value="[(#ENV{code_postal}|attribut_html)]" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5">
+					       value="[(#ENV{code_postal}|attribut_html)]" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" maxlength="5"[(#ENV**{erreurs}|table_valeur{code_postal}|oui) aria-invalid="true" aria-describedby="erreur-nl-code_postal"]>
 				</li>
 								</ul>
 				<ul>
 				<li class="editer editer_ville[ (#ENV**{erreurs}|table_valeur{ville}|oui)erreur]">
 					<label for="nl-ville"><:marly:ville:></label>
-					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{ville})</span>]
+					[<span class="erreur_message" id="erreur-nl-ville">(#ENV**{erreurs}|table_valeur{ville})</span>]
 					<input type="text" class="text" name="ville" id="nl-ville"
-					       value="[(#ENV{ville}|attribut_html)]" autocomplete="address-level2">
+					       value="[(#ENV{ville}|attribut_html)]" autocomplete="address-level2"[(#ENV**{erreurs}|table_valeur{ville}|oui) aria-invalid="true" aria-describedby="erreur-nl-ville"]>
 				</li>
 				</ul>
 			</div>
@@ -98,9 +98,9 @@
 			        pre-cochee n'est pas un consentement, le RGPD le dit et la
 			        CNIL sanctionne. ]
 			<li class="editer editer_consent[ (#ENV**{erreurs}|table_valeur{consent}|oui)erreur]">
-				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{consent})</span>]
+				[<span class="erreur_message" id="erreur-nl-consent">(#ENV**{erreurs}|table_valeur{consent})</span>]
 				<label class="case" for="nl-consent">
-					<input type="checkbox" name="consent" id="nl-consent" value="oui" required aria-required="true">
+					<input type="checkbox" name="consent" id="nl-consent" value="oui" required aria-required="true"[(#ENV**{erreurs}|table_valeur{consent}|oui) aria-invalid="true" aria-describedby="erreur-nl-consent"]>
 					<span><:marly:consentement_newsletter:></span>
 				</label>
 			</li>
