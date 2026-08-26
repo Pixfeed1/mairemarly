@@ -823,7 +823,15 @@ section{ padding-block:70px; position:relative; }
                  text-decoration:none; padding:9px 0; border-bottom:1px solid var(--trait-champ); }
 .filtre-types a:last-child{ border-bottom:0; }
 .filtre-types a:hover{ color:var(--accent); }
-.filtre-types a.actif{ color:var(--accent); }
+/* L'ETAT ACTIF NE TIENT PAS QU'A LA COULEUR. Il ne se marquait que par
+   var(--accent) — la meme teinte que le survol : impossible de distinguer le
+   filtre actif de celui sous le curseur, et rien du tout pour qui ne percoit
+   pas cette couleur (RGAA 3.1, releve le 26 aout 2026). La graisse et le
+   liseré se voient en niveaux de gris. */
+.filtre-types a.actif{
+	color:var(--accent); font-weight:800;
+	border-left:3px solid var(--accent); padding-left:11px;
+}
 
 /* --- le calendrier -------------------------------------------------------- */
 .filtre-calendrier{ border-top:3px solid var(--accent); padding-top:18px; }

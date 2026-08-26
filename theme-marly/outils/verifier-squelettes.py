@@ -1357,6 +1357,58 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "Donner la valeur — #VAL{quelque chose} — ou appeler un filtre "
                  "qui sait produire ce qu'on veut")
 
+# 59. Un etat marque par la seule couleur.
+#     RGAA 3.1 : une information ne doit pas etre donnee par la couleur seule.
+#     Un onglet actif, un filtre choisi, une entree de menu courante — celui
+#     qui ne percoit pas la teinte ne voit alors aucune difference.
+#
+#     Mesure du 26 aout 2026 : .filtre-types a.actif ne changeait que color, et
+#     la meme teinte servait au survol. On ne pouvait meme pas distinguer le
+#     filtre actif de celui sous le curseur.
+#
+#     La regle demande, pour toute regle d'etat, au moins une propriete qui se
+#     voit en niveaux de gris : une graisse, un liseré, un fond, un
+#     soulignement, une forme. Le calendrier le faisait deja — un jour sans
+#     evenement est barre et estompe, pas seulement decolore.
+_ETAT59 = re.compile(r'(\.actif|\.choisi|\.courant|\[aria-current\])\s*$')
+_FORME59 = ('font-weight', 'border', 'background', 'text-decoration', 'outline',
+            'box-shadow', 'opacity', 'content', 'transform', 'padding')
+_CSS59 = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.exists(_CSS59):
+    _src = open(_CSS59, encoding='utf-8').read()
+    _masque = re.sub(r'/\*.*?\*/',
+                     lambda _m: ''.join(_c if _c == chr(10) else ' ' for _c in _m.group(0)),
+                     _src, flags=re.S)
+    for _m in re.finditer(r'([^{}]+)\{([^{}]*)\}', _masque):
+        _sel = ' '.join(_m.group(1).split())
+        # Les pseudo-classes d'interaction ne sont pas des etats de contenu.
+        if ':hover' in _sel or ':focus' in _sel or '::' in _sel:
+            continue
+        if not any(_ETAT59.search(_x.strip()) for _x in _sel.split(',')):
+            continue
+        # Un etat porte par un element NON CLIQUABLE se distingue deja de ses
+        # voisins par sa nature : le dernier cran d'un fil d'Ariane est un
+        # span au milieu de liens. Le critere vise des elements comparables.
+        if not re.search(r'\ba\b|button|\[role=', _sel):
+            continue
+        # Le repere peut vivre dans une regle voisine, en ::before ou ::after.
+        # Le menu deroulant fait exactement cela, et c'est juste.
+        _voisin = False
+        for _p in ('::before', '::after'):
+            for _b in _sel.split(','):
+                _c = re.search(re.escape(_b.strip() + _p) + r'\s*\{([^{}]*)\}', _masque)
+                if _c and 'content' in _c.group(1):
+                    _voisin = True
+        if _voisin:
+            continue
+        _corps = _src[_m.start(2):_m.end(2)]
+        if not any(_prop in _corps for _prop in _FORME59):
+            signaler('squelettes/css/theme.css',
+                     _masque[:_m.start()].count(chr(10)) + 1,
+                     f"<< {_sel[:60]} >> marque un etat par la seule couleur : qui ne "
+                     "percoit pas la teinte ne voit aucune difference (RGAA 3.1). "
+                     "Ajouter une graisse, un lisere, un fond ou une forme")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

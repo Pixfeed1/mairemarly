@@ -46,7 +46,12 @@ PAGES = [
     ('Connexion',                  'spip.php?page=login'),
     ('Mot de passe oublie',        'spip.php?page=spip_pass'),
     ('Recherche (resultats)',      'spip.php?page=recherche&recherche=mairie'),
-    ('Page introuvable',           'spip.php?page=cette-page-n-existe-pas'),
+    # Un article qui n'existe pas plutot qu'une page qui n'existe pas : les
+    # deux rendent le meme 404, mais la seconde fait ecrire a SPIP une ERREUR
+    # dans tmp/log/spip.log a chaque passage de l'audit. Un journal rempli de
+    # fausses alarmes rend les vraies invisibles — c'est exactement ce qui a
+    # laisse l'erreur de la page de reservation dormir des semaines.
+    ('Page introuvable',           'spip.php?page=article&id_article=999999'),
     ('Toutes les demarches',       'spip.php?page=demarches'),
     ('Annuaire des associations',  'spip.php?page=associations'),
     ('Commerces et services',      'spip.php?page=commerces'),

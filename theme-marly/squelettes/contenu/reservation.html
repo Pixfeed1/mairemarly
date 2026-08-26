@@ -37,11 +37,18 @@
 			</form>
 
 			<nav class="filtre-types" aria-label="<:marly:filtrer_par_type:>">
+				[(#REM) aria-current dit l'etat au lecteur d'ecran, la classe le dit
+				        a l'oeil. Vide, l'attribut vaut « false » pour ARIA : les
+				        deux autres liens n'annoncent donc rien, et c'est juste.
+				        Meme mecanique que le menu deroulant, qui la portait deja. ]
 				<a href="#URL_PAGE{reservation}"
-				   class="[(#ENV{type}|non|?{'actif'})][(#ENV{jour}|oui|?{''})]"><:marly:tout_voir:></a>
+				   aria-current="[(#ENV{type}|non|?{'true'})]"
+				   class="[(#ENV{type}|non|?{'actif'})]"><:marly:tout_voir:></a>
 				<a href="[(#URL_PAGE{reservation}|parametre_url{type,evenements})]"
+				   aria-current="[(#ENV{type}|=={evenements}|?{'true'})]"
 				   class="[(#ENV{type}|=={evenements}|?{'actif'})]"><:marly:les_evenements:></a>
 				<a href="[(#URL_PAGE{reservation}|parametre_url{type,salles})]"
+				   aria-current="[(#ENV{type}|=={salles}|?{'true'})]"
 				   class="[(#ENV{type}|=={salles}|?{'actif'})]"><:marly:les_salles:></a>
 			</nav>
 
