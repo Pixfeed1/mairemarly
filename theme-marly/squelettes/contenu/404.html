@@ -1,0 +1,84 @@
+[(#REM)
+  La page introuvable.
+  ---------------------------------------------------------------------------
+  PAS DE DESSIN, PAS DE PLAISANTERIE. Sur le site d'une mairie, celui qui
+  arrive ici cherchait quelque chose : un horaire, une demarche, un compte
+  rendu. Un gros 404 illustre le fait rire une fois et ne l'aide jamais.
+
+  Trois choses lui sont donnees, dans l'ordre de ce qui sert : le champ de
+  recherche, deja ouvert ; les quatre pages les plus demandees ; le moyen de
+  joindre la mairie si rien de tout cela ne convient.
+
+  LE FIL D'ARIANE N'A PAS DE DERNIER NIVEAU : il n'y a pas de page ou l'on
+  serait. Il ne dit donc que le retour a l'accueil.
+
+  La reponse HTTP reste un vrai 404, posee par SPIP : une page introuvable
+  qui repondrait << tout va bien >> tromperait les moteurs de recherche, qui
+  garderaient l'adresse morte dans leur index pendant des mois.
+]
+<div class="bandeau-illustre">
+	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
+	     width="1440" height="260" alt="" aria-hidden="true">
+
+	<div class="bandeau-carton">
+		<div>
+			<nav class="fil-ariane" aria-label="Fil d’Ariane">
+				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
+			</nav>
+			<h1><:marly:titre_404:></h1>
+		</div>
+	</div>
+</div>
+
+<div class="page-simple page-sous-carton">
+
+	<p class="chapo"><:marly:texte_404:></p>
+
+	<form class="recherche-champ" role="search" method="get" action="#URL_SITE_SPIP/spip.php">
+		<input type="hidden" name="page" value="recherche">
+		<label for="recherche-404" class="sr"><:marly:rechercher_site:></label>
+		<input type="search" id="recherche-404" name="recherche"
+		       placeholder="<:marly:rechercher_placeholder:>">
+		<button type="submit">
+			<svg class="ico" aria-hidden="true"><use href="#ri-search-line"/></svg>
+			<span class="sr"><:marly:lancer_recherche:></span>
+		</button>
+	</form>
+
+	[(#REM) Les pages les plus demandees, gardees chacune par sa boucle : un
+	        lien du 404 ne doit pas mener a une autre page vide. ]
+	<h2 class="titre-bloc"><:marly:404_ou_aller:></h2>
+	<ul class="fiches">
+		<li><a href="#URL_SITE_SPIP/">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg></span>
+			<span class="fiche-texte"><b><:marly:accueil:></b><span><:marly:404_accueil_quoi:></span></span>
+		</a></li>
+
+		<B_dem404>
+		<BOUCLE_dem404(DEMARCHES){0,1}><!-- on ne fait que verifier --></BOUCLE_dem404>
+		<li><a href="#URL_PAGE{demarches}">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
+			<span class="fiche-texte"><b><:marly:toutes_les_demarches:></b><span><:marly:plan_demarches_quoi:></span></span>
+		</a></li>
+		</B_dem404>
+
+		<B_com404>
+		<BOUCLE_com404(COMMERCES){0,1}><!-- on ne fait que verifier --></BOUCLE_com404>
+		<li><a href="#URL_PAGE{commerces}">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg></span>
+			<span class="fiche-texte"><b><:marly:titre_commerces:></b><span><:marly:plan_commerces_quoi:></span></span>
+		</a></li>
+		</B_com404>
+
+		<li><a href="#URL_PAGE{plan}">
+			<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-list-3-line"/></svg></span>
+			<span class="fiche-texte"><b><:marly:plan_du_site:></b><span><:marly:404_plan_quoi:></span></span>
+		</a></li>
+	</ul>
+
+	[(#REM) Le dernier recours : quelqu'un a la mairie. Le lien ne s'affiche
+	        que si l'adresse est renseignee dans les reglages. ]
+	[<p class="explication"><:marly:404_sinon:>
+		<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a>.</p>]
+
+</div>

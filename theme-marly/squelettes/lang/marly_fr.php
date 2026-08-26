@@ -297,4 +297,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'recherche_rien'       => 'Aucun résultat pour',
 	'recherche_essayez'    => 'Essayez un mot plus court, ou une autre orthographe. Vous pouvez aussi partir de l’une de ces pages :',
 
+	// --- Page introuvable ----------------------------------------------------
+	'titre_404'            => 'Cette page n’existe pas',
+	'texte_404'            => 'L’adresse demandée ne correspond à aucune page du site. Elle a peut-être changé, ou la page a été retirée. Voici de quoi retrouver ce que vous cherchiez.',
+	'404_ou_aller'         => 'Où aller',
+	'404_accueil_quoi'     => 'les actualités et les prochains rendez-vous',
+	'404_plan_quoi'        => 'toutes les pages du site, sur une seule liste',
+	'404_sinon'            => 'Si vous ne trouvez toujours pas, écrivez à la mairie :',
+
 );
