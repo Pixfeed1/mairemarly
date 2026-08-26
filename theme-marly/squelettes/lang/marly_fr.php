@@ -332,4 +332,11 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'connexion_q3_lien'    => 'Signaler ou mettre à jour une association',
 	'connexion_q3_b'       => 'Pour un commerce, un artisan, un service, ou pour toute autre demande, vous pouvez contacter la mairie à l’adresse suivante :',
 
+	// --- Mot de passe oublie -------------------------------------------------
+	'mot_de_passe_oublie'  => 'Mot de passe oublié',
+	'pass_avant'           => 'Cette page ne concerne que les comptes de l’espace personnel, créés par la mairie. Aucun compte n’est nécessaire pour consulter le site ou effectuer une démarche.',
+	'pass_titre_demande'   => 'Réinitialiser votre mot de passe',
+	'pass_titre_nouveau'   => 'Choisir un nouveau mot de passe',
+	'pass_retour'          => 'Retour à la connexion',
+
 );

@@ -1,0 +1,42 @@
+[(#REM)
+  Le corps de la page << mot de passe oublie >>.
+  ---------------------------------------------------------------------------
+  LA PAGE SERT A DEUX MOMENTS, et c'est le parametre p qui les separe. Sans
+  p, on demande son adresse et SPIP envoie un courriel. Avec p, on revient
+  par le lien de ce courriel, jeton en main, et on choisit son mot de passe.
+
+  Les deux formulaires et cette condition sont repris tels quels de
+  prive/spip_pass.html. Oublier le second serait invisible a la lecture et
+  fatal a l'usage : le lien du courriel redemanderait l'adresse, en boucle,
+  et personne ne pourrait jamais changer son mot de passe.
+
+  Une seule colonne, et rien autour. Il y a un champ, et rien a raconter.
+]
+<INCLURE{fond=inc/bandeau-page}{cle=mot_de_passe_oublie}{env}>
+
+<div class="page-simple page-sous-carton">
+
+	[(#REM) L'avertissement ne vaut qu'a la premiere etape : celui qui revient
+	        du courriel sait deja qu'il a un compte. ]
+	[(#ENV{p}|non)
+	<p class="connexion-avant"><:marly:pass_avant:></p>
+	]
+
+	<div class="connexion-solo">
+		<div class="connexion-carte">
+
+			[(#ENV{p}|non)
+			<h2 class="titre-bloc"><:marly:pass_titre_demande:></h2>
+			#FORMULAIRE_OUBLI
+			]
+			[(#ENV{p}|oui)
+			<h2 class="titre-bloc"><:marly:pass_titre_nouveau:></h2>
+			#FORMULAIRE_MOT_DE_PASSE
+			]
+
+			<p class="connexion-retour"><a href="#URL_PAGE{login}"><:marly:pass_retour:></a></p>
+
+		</div>
+	</div>
+
+</div>

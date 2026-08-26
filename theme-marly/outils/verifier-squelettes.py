@@ -107,7 +107,7 @@ if os.path.exists(paquet):
 #    l'habille en CSS, on ne la reecrit pas — donc pas de fichier chez nous.
 #    Cette liste ne se remplit qu'apres avoir constate l'appel, pas par
 #    precaution : un nom ajoute d'avance rouvrirait la porte que la regle ferme.
-FORMULAIRES_DE_SPIP = {'login'}
+FORMULAIRES_DE_SPIP = {'login', 'oubli', 'mot_de_passe'}
 for f in sorted(glob.glob('squelettes/**/*.html', recursive=True)):
     s = open(f, encoding='utf-8').read()
     for m in re.finditer(r'#FORMULAIRE_([A-Z_]+)', s):
@@ -1057,45 +1057,84 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                      "page. Passer une valeur simple, et calculer dans l'include")
 
 # 49. Du CSS qui vise un balisage que SPIP ne produit pas.
-#     Le formulaire de connexion appartient a SPIP : on l'habille, on ne le
-#     reecrit pas. Une feuille de style qui vise une classe inexistante ne
-#     provoque aucune erreur — elle ne s'applique simplement jamais, et le
-#     formulaire s'affiche nu au milieu d'une page soignee. Rien dans un
-#     journal, rien dans le verificateur, rien a chercher.
+#     Les formulaires de connexion et de mot de passe appartiennent a SPIP :
+#     on les habille, on ne les reecrit pas. Une feuille qui vise une classe
+#     inexistante ne provoque aucune erreur — elle ne s'applique simplement
+#     jamais, et le formulaire s'affiche nu au milieu d'une page soignee.
+#     Rien dans un journal, rien a chercher.
 #
 #     Mesure du 26 aout 2026, sur le site : les champs sont des <div class=
-#     "editer editer_login"> dans un div.editer-groupe, pas des <li>, et la
-#     classe n'est pas editer_var_login. La premiere version de la feuille
-#     visait les deux inventions. C'est la mesure qui a tranche.
+#     "editer editer_login"> dans un div.editer-groupe, pas des <li>, la
+#     classe n'est pas editer_var_login, et sur l'oubli c'est saisie_oubli et
+#     non editer_oubli. La premiere version de la feuille visait les deux
+#     premieres inventions.
 #
-#     La liste ci-dessous est celle du relevé. erreur et erreur_message n'y
-#     figuraient pas : ils viennent de la convention commune aux formulaires
-#     SPIP, deja verifiee sur ceux de la lettre d'information et du
-#     signalement. Si un jour SPIP change ce balisage, cette regle le dira le
-#     jour du deploiement au lieu de laisser la page se defaire en silence.
-_LOGIN_CLASSES = {
-    'formulaire_spip', 'formulaire_login', 'form-hidden', 'editer-groupe',
-    'editer', 'editer_login', 'editer_password', 'editer_session',
-    'obligatoire', 'etoile', 'details', 'choix', 'checkbox', 'text',
-    'password', 'nofx', 'boutons', 'btn', 'submit',
+#     La regle lit la region CONNEXION de la feuille et n'y tolere que deux
+#     sortes de classes : les notres, prefixees connexion-, et celles du
+#     releve ci-dessous. Toute autre est signalee. Ajouter une classe a nous
+#     ne demande donc rien, inventer une classe de SPIP est arrete.
+_CLASSES_SPIP_RELEVEES = {
+    # relevees sur formulaire_login ET formulaire_oubli : la convention
+    # commune aux formulaires SPIP, vue deux fois plutot que supposee.
+    'formulaire_spip', 'form-hidden', 'editer-groupe', 'editer', 'obligatoire',
+    'boutons', 'btn', 'submit', 'text',
+    # propres au formulaire de connexion
+    'formulaire_login', 'editer_login', 'editer_password', 'editer_session',
+    'etoile', 'details', 'choix', 'checkbox', 'password', 'nofx',
+    # propres au formulaire d'oubli
+    'formulaire_oubli', 'pass', 'saisie_oubli', 'email',
+    # convention d'erreur, deja verifiee sur les formulaires de la lettre
+    # d'information et du signalement
     'erreur', 'erreur_message',
+    # les notres qui ne portent pas le prefixe
+    'titre-bloc', 'fiche-liens', 'bandeau-carton', 'page-simple', 'page-login',
 }
 _CSS49 = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
 if os.path.exists(_CSS49):
     _src = open(_CSS49, encoding='utf-8').read()
+    _debut = _src.find('   CONNEXION ET MOT DE PASSE')
+    if _debut < 0:
+        signaler('squelettes/css/theme.css', 1,
+                 "la region CONNEXION a disparu de la feuille : la regle 49 ne "
+                 "garde plus rien, la retirer ou corriger son reperage")
+    else:
+        _region = _src[_debut:]
+        _sans = re.sub(r'/\*.*?\*/', '', _region, flags=re.S)
+        for _m in re.finditer(r'([^{}]+)\{', _sans):
+            _sel = _m.group(1).strip()
+            if not _sel or _sel.startswith('@') or ':' in _sel.split('.')[0][:1]:
+                pass
+            for _cl in re.findall(r'\.([A-Za-z_][-\w]*)', _sel):
+                if _cl.startswith('connexion-') or _cl in _CLASSES_SPIP_RELEVEES:
+                    continue
+                _pos = _src.find(_sel)
+                signaler('squelettes/css/theme.css',
+                         (_src[:_pos].count(chr(10)) + 1) if _pos >= 0 else 0,
+                         f"le selecteur << {_sel} >> vise la classe .{_cl}, absente "
+                         "du releve du balisage de SPIP : la regle ne s'appliquera "
+                         "jamais et le formulaire restera nu. Relever le balisage "
+                         "reel avant d'ecrire le style")
+
+# 50. Le piege a robots du formulaire de mot de passe oublie.
+#     SPIP pose un champ nobot masque par un style EN LIGNE, et rejette tout
+#     envoi qui le trouve rempli. Le style en ligne l'emporte sur la feuille,
+#     le piege tient donc tout seul — jusqu'au jour ou quelqu'un ecrit une
+#     regle qui le rouvre, avec un !important ou un selecteur trop large.
+#     Alors les navigateurs le remplissent par autocompletion, SPIP refuse
+#     toutes les demandes, et rien ne le dit : le formulaire a l'air de
+#     marcher, il ne repond simplement jamais.
+#
+#     Aucune raison legitime de styler ce champ. Toute mention est arretee.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', 'css', '*.css'))):
+    _src = open(_f, encoding='utf-8').read()
     _sans = re.sub(r'/\*.*?\*/', '', _src, flags=re.S)
-    for _m in re.finditer(r'([^{}]*\.formulaire_login[^{}]*)\{', _sans):
-        _sel = _m.group(1)
-        for _cl in re.findall(r'\.([A-Za-z_][-\w]*)', _sel):
-            if _cl in _LOGIN_CLASSES:
-                continue
-            _pos = _src.find(_sel.strip())
-            signaler('squelettes/css/theme.css',
-                     (_src[:_pos].count(chr(10)) + 1) if _pos >= 0 else 0,
-                     f"le selecteur << {_sel.strip()} >> vise la classe .{_cl}, "
-                     "que le formulaire de connexion de SPIP ne produit pas : "
-                     "la regle ne s'appliquera jamais et le formulaire restera nu. "
-                     "Relever le balisage reel avant d'ecrire le style")
+    for _c in re.finditer(r'nobot', _sans):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _sans[:_c.start()].count(chr(10)) + 1,
+                 "le champ nobot est le piege a robots de SPIP, masque par un "
+                 "style en ligne : le styler risque de le rendre visible, les "
+                 "navigateurs le rempliraient et SPIP rejetterait alors toutes "
+                 "les demandes de mot de passe, en silence")
 
 if fautes:
     print('\n'.join(fautes))

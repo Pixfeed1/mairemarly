@@ -1936,32 +1936,47 @@ a.elu-nom:hover{ text-decoration:underline; }
 }
 
 /* ===========================================================================
-   CONNEXION
+   CONNEXION ET MOT DE PASSE OUBLIÉ
    ---------------------------------------------------------------------------
-   Le formulaire est celui de SPIP, non modifié. Les sélecteurs ci-dessous
-   visent le balisage QUE SPIP PRODUIT VRAIMENT, relevé le 26 août 2026 sur
-   le site :
+   Les deux formulaires sont ceux de SPIP, non modifiés : ils portent la
+   session, le cookie, le jeton envoyé par courriel et les messages d'erreur.
+   On les habille, on ne les réécrit pas.
 
-     div.formulaire_spip.formulaire_login
-       form#formulaire_login
-         span.form-hidden          (les champs caches de l'action)
-         fieldset > legend
+   LE STYLE VISE NOTRE CARTE, PAS LES CLASSES DE SPIP. La première version
+   visait .formulaire_login et se serait donc appliquée à un seul des deux
+   formulaires ; le second, celui du nouveau mot de passe, ne peut pas être
+   relevé (il ne s'affiche qu'avec un jeton valide) et serait resté nu.
+   En visant .connexion-carte plus des sélecteurs d'éléments, tout formulaire
+   SPIP posé dans la carte est habillé, mesuré ou non.
+
+   Relevé du 26 août 2026, sur le site, pour les deux formulaires :
+
+     div.formulaire_spip.formulaire_login | .formulaire_oubli
+       form
+         span.form-hidden        (les champs cachés de l'action)
+         fieldset > legend [ > p  sur l'oubli : la phrase d'explication ]
            div.editer-groupe
              div.editer.editer_login.obligatoire    > label + input.text
              div.editer.editer_password.obligatoire > label + input.password
-                                                      + p.details (mot de passe oublie)
+                                                      + p.details
              div.editer.editer_session > div.choix  > input.checkbox + label
+             div.editer.saisie_oubli.obligatoire    > label + input.email
+         p[style=display:none] > label + input#nobot   <-- PIÈGE À ROBOTS
          p.boutons > input.btn.submit
 
-   La première version de cette feuille visait des <li> et une classe
-   editer_var_login : deux inventions. C'est la mesure qui a tranché, pas
-   la mémoire.
+   LE CHAMP nobot NE DOIT JAMAIS REDEVENIR VISIBLE. Il est masqué par un
+   style en ligne, qui l'emporte sur cette feuille ; une règle qui le
+   rouvrirait ferait remplir le piège par les navigateurs et SPIP rejetterait
+   alors tous les envois, sans que rien ne le signale. Le vérificateur garde
+   cette porte.
    =========================================================================== */
+
 /* La page de connexion porte DEUX colonnes ; la largeur de lecture des pages
-   simples, 820 px, n'en laisse que 320 a la seconde et hache le texte en
-   lignes de six mots. On elargit — mais le carton du bandeau ET le corps
-   ensemble : ils partagent la meme largeur, les desaligner ferait un decroche
-   visible sous le titre. */
+   simples, 820 px, n'en laisse que 320 à la seconde et hache le texte en
+   lignes de six mots. On élargit, mais le carton du bandeau ET le corps
+   ensemble : ils partagent la même largeur, les désaligner ferait un
+   décroché visible sous le titre. La page du mot de passe garde 820 px,
+   elle n'a qu'une colonne. */
 body.page-login .bandeau-carton{ width:min(1080px,calc(100% - 44px)); }
 body.page-login .page-simple{ max-width:1080px; }
 
@@ -1969,6 +1984,12 @@ body.page-login .page-simple{ max-width:1080px; }
 	display:grid; grid-template-columns:minmax(0,380px) minmax(0,1fr); gap:0 64px;
 	align-items:start; margin-top:8px;
 }
+.connexion-solo{ max-width:520px; margin-inline:auto; }
+.connexion-avant{
+	max-width:520px; margin:0 auto 26px; text-align:center;
+	font-family:var(--texte); font-size:15px; line-height:1.7; color:var(--encre-doux);
+}
+
 .connexion-carte{
 	background:var(--creme); border-top:4px solid var(--accent);
 	padding:28px 30px 30px; position:sticky; top:20px;
@@ -1979,58 +2000,70 @@ body.page-login .page-simple{ max-width:1080px; }
 	margin:0 0 22px; padding-bottom:18px; border-bottom:1px solid var(--trait);
 }
 
-/* La légende de SPIP dit « Identifiants personnels » ; le titre de la carte
-   le dit déjà. On la retire de l'écran SANS la retirer aux lecteurs
-   d'écran : un display:none priverait le groupe de champs de son nom
-   accessible, ce qui est précisément ce que la légende sert à donner. */
-.formulaire_login legend{ position:absolute; left:-9999px; }
-.formulaire_login fieldset{ border:0; margin:0; padding:0; }
-.formulaire_login .editer{ margin-bottom:16px; }
-.formulaire_login label{
+/* La légende de SPIP dit « Identifiants personnels » ou « Nouveau mot de
+   passe » ; le titre de la carte le dit déjà. On la retire de l'écran SANS
+   la retirer aux lecteurs d'écran : un display:none priverait le groupe de
+   champs de son nom accessible, ce qui est précisément ce que la légende
+   sert à donner. */
+.connexion-carte legend{ position:absolute; left:-9999px; }
+.connexion-carte fieldset{ border:0; margin:0; padding:0; }
+
+/* Sur l'oubli, SPIP place sa phrase d'explication DANS le fieldset, avant le
+   champ. C'est la bonne place : on l'habille en sous-titre plutôt que d'en
+   écrire une seconde à côté. */
+.connexion-carte fieldset > p{
+	font-family:var(--texte); font-size:14px; line-height:1.6; color:var(--encre-doux);
+	margin:0 0 18px;
+}
+.connexion-carte .editer{ margin-bottom:16px; }
+.connexion-carte label{
 	display:block; font-family:var(--texte); font-size:13.5px; font-weight:700;
 	margin-bottom:5px; color:var(--encre);
 }
 /* L'étoile d'obligation : présente pour la règle, discrète pour l'œil.
-   Les deux champs sont obligatoires, la souligner en rouge n'apprend rien. */
-.formulaire_login .etoile{ color:var(--encre-doux); font-weight:400; }
-.formulaire_login input.text,
-.formulaire_login input[type="text"],
-.formulaire_login input[type="password"]{
+   Tous les champs de ces formulaires sont obligatoires, la souligner en
+   rouge n'apprend rien. */
+.connexion-carte .etoile{ color:var(--encre-doux); font-weight:400; }
+.connexion-carte input[type="text"],
+.connexion-carte input[type="email"],
+.connexion-carte input[type="password"]{
 	width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
 	padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
 /* SPIP remplit ce span par ajax avec le logo de l'auteur reconnu. Vide la
    plupart du temps : il ne doit pas creuser un trou sous le champ. */
-.formulaire_login #spip_logo_auteur:empty{ display:none; }
-.formulaire_login #spip_logo_auteur img{ max-width:60px; height:auto; margin-top:8px; }
+.connexion-carte #spip_logo_auteur:empty{ display:none; }
+.connexion-carte #spip_logo_auteur img{ max-width:60px; height:auto; margin-top:8px; }
 
-/* Le mot de passe oublié : SPIP le pose ici, sous le champ concerné. C'est
-   la bonne place, et c'est la deuxième raison d'être de la page. */
-.formulaire_login .details{
+/* Le mot de passe oublié : SPIP le pose sous le champ concerné, c'est la
+   bonne place. */
+.connexion-carte .details{
 	margin:7px 0 0; text-align:right; font-family:var(--texte); font-size:13px;
 }
-.formulaire_login .details a{ color:var(--encre-doux); text-decoration:none; border-bottom:1px solid var(--trait); }
-.formulaire_login .details a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
+.connexion-carte .details a{ color:var(--encre-doux); text-decoration:none; border-bottom:1px solid var(--trait); }
+.connexion-carte .details a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
 
 /* La case « se souvenir de moi » : cliquable sur toute sa ligne, cible de
-   plus de 24 px — un doigt n'atteint pas une case de 13 px. */
-.formulaire_login .choix{ display:flex; align-items:flex-start; gap:11px; }
-.formulaire_login .choix input{ width:20px; height:20px; margin:1px 0 0; flex-shrink:0; accent-color:var(--accent); }
-.formulaire_login .choix label{
-	font-weight:400; font-size:14px; line-height:1.5; margin:0; cursor:pointer;
-}
+   plus de 24 px, un doigt n'atteint pas une case de 13 px. */
+.connexion-carte .choix{ display:flex; align-items:flex-start; gap:11px; }
+.connexion-carte .choix input{ width:20px; height:20px; margin:1px 0 0; flex-shrink:0; accent-color:var(--accent); }
+.connexion-carte .choix label{ font-weight:400; font-size:14px; line-height:1.5; margin:0; cursor:pointer; }
 
-.formulaire_login .boutons{ margin:22px 0 0; }
-.formulaire_login .submit{
+.connexion-carte .boutons{ margin:22px 0 0; }
+.connexion-carte .submit{
 	border:0; background:var(--accent); color:#fff; border-radius:4px; width:100%;
 	padding:15px 26px; font-family:var(--texte); font-weight:700; font-size:16px; cursor:pointer;
 }
-.formulaire_login .submit:hover{ background:var(--accent-sombre); }
-.formulaire_login .erreur_message{
+.connexion-carte .submit:hover{ background:var(--accent-sombre); }
+.connexion-carte .erreur_message{
 	display:block; font-family:var(--texte); font-size:13.5px; font-weight:700;
 	color:#A32020; margin-bottom:5px;
 }
-.formulaire_login .erreur input{ border-color:#A32020; }
+.connexion-carte .erreur input{ border-color:#A32020; }
+
+.connexion-retour{ margin:16px 0 0; text-align:center; font-family:var(--texte); font-size:13.5px; }
+.connexion-retour a{ color:var(--encre-doux); text-decoration:none; border-bottom:1px solid var(--trait); }
+.connexion-retour a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
 
 .connexion-a-cote .titre-bloc{ font-size:clamp(26px,3vw,32px); margin:0 0 4px; }
 /* Une section, trois questions : le nom du service en gros serif, les
@@ -2048,7 +2081,7 @@ body.page-login .page-simple{ max-width:1080px; }
 .connexion-a-cote a{ color:var(--accent); }
 
 /* Les exemples sous la question : une liste, avec une puce dessinée plutôt
-   que celle du navigateur — elle prend la couleur de la commune et se cale
+   que celle du navigateur, elle prend la couleur de la commune et se cale
    sur la ligne de base du texte. */
 .connexion-liste{
 	list-style:none; margin:0 0 18px; padding:0;

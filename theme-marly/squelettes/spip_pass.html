@@ -1,0 +1,13 @@
+[(#REM)
+  spip_pass.html — mot de passe oublie.
+  ---------------------------------------------------------------------------
+  CE FICHIER PREND LA MAIN SUR CELUI DE SPIP. La page n'etait pas un
+  squelette public : elle vit dans prive/spip_pass.html, et c'est un document
+  HTML complet, avec son propre <head> et les feuilles de l'espace prive.
+  Elle n'est donc jamais passee par notre structure, et c'est pour ca qu'elle
+  avait l'air d'un autre site.
+
+  Notre repertoire vient avant prive/ dans le chemin des squelettes : poser
+  ce fichier suffit a reprendre la page.
+]
+<INCLURE{fond=structure}{env}{type-page=spip_pass}>
