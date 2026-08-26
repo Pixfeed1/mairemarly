@@ -19,7 +19,13 @@
 	        résultats Google, distingue le vrai site de l'ancien
 	        marlygomont.free.fr et des pages non officielles. On ne la met PAS
 	        partout — elle mangerait la place du titre utile. ]
-	<title>[(#ENV{titre_page}|textebrut) — ]#NOM_SITE_SPIP[(#ENV{titre_page}|non) — <:marly:site_officiel:>]</title>
+	[(#REM) Le nom du site est saisi a la main dans SPIP, et il l'a ete avec
+	        une espace avant et une apres. Sans le trim, le titre sortait
+	        << _Marly-Gomont_ — Site officiel >>, avec une espace en tete et
+	        deux avant le tiret. Mesure du 26 aout 2026, sur le site : ca se
+	        voyait dans chaque resultat Google. Corriger le champ ne suffit
+	        pas, il sera ressaisi un jour. ]
+	<title>[(#ENV{titre_page}|textebrut) — ][(#NOM_SITE_SPIP|trim)][(#ENV{titre_page}|non) — <:marly:site_officiel:>]</title>
 
 	[(#REM) Faute de description propre à la page, on retombe sur celle du
 	        site : une page sans description laisse Google composer la sienne
@@ -34,8 +40,8 @@
 	<meta name="robots" content="[(#ENV{type-page}|match{'^(login|spip_pass|recherche)$'}|?{noindex,index}), follow">
 
 	[(#REM) Partage sur les réseaux et messageries ]
-	<meta property="og:site_name" content="#NOM_SITE_SPIP">
-	<meta property="og:title" content="[(#ENV{titre_page}|textebrut|sinon{#NOM_SITE_SPIP})]">
+	<meta property="og:site_name" content="[(#NOM_SITE_SPIP|trim)]">
+	<meta property="og:title" content="[(#ENV{titre_page}|textebrut|sinon{#NOM_SITE_SPIP}|trim)]">
 	<meta property="og:type" content="website">
 	[<meta property="og:description" content="(#ENV{description}|sinon{#DESCRIPTIF_SITE_SPIP}|textebrut|couper{200}|attribut_html)">]
 	<meta property="og:url" content="#SELF|url_absolue">

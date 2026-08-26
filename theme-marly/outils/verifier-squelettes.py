@@ -1182,6 +1182,38 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "renverrait le visiteur dans l'espace prive, donc sur la page "
                  "de connexion qu'il vient de quitter")
 
+# 53. Le nom du site affiche sans trim.
+#     Il est saisi a la main dans SPIP, et il l'a ete avec une espace avant et
+#     une apres. Le titre sortait donc << _Marly-Gomont_ — Site officiel >>,
+#     une espace en tete et deux avant le tiret, dans le titre de CHAQUE page,
+#     donc dans chaque resultat Google et dans chaque partage sur les reseaux.
+#
+#     Mesure du 26 aout 2026 : <title> Marly-Gomont  — Site officiel de la
+#     commune</title>. Corriger le champ dans l'espace prive repare le jour
+#     meme et rien de plus : il sera ressaisi un jour, par quelqu'un d'autre,
+#     et personne ne reverra jamais l'espace en trop.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    # Les commentaires sont neutralises SANS perdre les sauts de ligne : les
+    # retirer purement decalait le compte et la faute etait signalee vingt
+    # lignes trop haut. Un numero faux fait chercher au mauvais endroit, ce
+    # qui coute plus cher que pas de numero du tout.
+    _sans_rem = re.sub(r'\[\(#REM\).*?\]',
+                       lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in re.finditer(r'#NOM_SITE_SPIP((\|\w+(\{[^}]*\})?)*)', _sans_rem):
+        if 'trim' in _c.group(1):
+            continue
+        # Employe comme argument d'un filtre — |sinon{#NOM_SITE_SPIP} — le trim
+        # se pose en bout de chaine, sur le resultat.
+        _suite = _sans_rem[_c.end():_c.end() + 60]
+        if _suite.startswith('}') and 'trim' in _suite[:_suite.find(')') + 1 or 60]:
+            continue
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _sans_rem[:_c.start()].count(chr(10)) + 1,
+                 "nom du site affiche sans |trim : il est saisi a la main et "
+                 "l'a ete avec des espaces autour. Elles se voient dans le titre "
+                 "de chaque page, donc dans les resultats de recherche")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
