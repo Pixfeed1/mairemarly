@@ -179,14 +179,18 @@ body::after{
 	   ancrée garde ses proportions à toutes les tailles d'écran. */
 	background:linear-gradient(to bottom, #3A7D5C 0%, #1E5B41 55%, #123F2D 100%);
 }
-/* Le paysage est un élément, pas une image de fond : un fond dimensionné se
-   maîtrise mal quand le rapport du bloc varie, un élément posé obéit. */
-.heros-paysage{
-	position:absolute; left:0; right:0; bottom:0; width:100%; height:auto;
-	display:block; pointer-events:none;
-}
-/* Dès qu'une photographie existe, elle passe devant l'illustration. */
+/* LE PAYSAGE DESSINE A QUITTE CETTE BANNIERE le 26 aout 2026, remplace par la
+   photographie de l'eglise Saint-Remy. Il disait « une commune » la ou une
+   photographie dit « CETTE commune », et c'est la premiere chose que voit
+   quelqu'un qui arrive. Il n'est pas perdu : il tient toujours le pied de page
+   et le bandeau des pages de section, ou il est a sa place — un decor.
+   Sa regle est donc partie avec lui, sinon elle serait devenue du style mort
+   que plus rien ne pose (regle 67 du verificateur). */
 .heros-image{ position:absolute; inset:0; }
+/* Le recadrage remonte le point d'ancrage : la banniere est une bande tres
+   large, la photographie un 4:3, et centre le cadrage coupait la fleche.
+   C'est le parvis qui cede, ce qui ne coute rien. */
+.heros-defaut img{ object-position:50% 34%; }
 .heros-image:empty{ display:none; }
 .heros-image img{ width:100%; height:100%; object-fit:cover; }
 /* Un voile sombre en bas seulement : l'image reste lisible en haut, le champ
