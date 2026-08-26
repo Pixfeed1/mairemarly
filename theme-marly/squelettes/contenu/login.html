@@ -1,0 +1,69 @@
+[(#REM)
+  Le corps de la page de connexion.
+  ---------------------------------------------------------------------------
+  Trois personnes cliquent sur << Connexion >>, en haut a droite de chaque
+  page : le secretariat, une association qui tient sa fiche, et quelqu'un qui
+  a clique par curiosite. Le formulaire seul ne parle qu'au premier et laisse
+  les deux autres devant un champ nu, a chercher un bouton << creer un
+  compte >> qui n'existe pas.
+
+  D'ou les deux colonnes : le formulaire a gauche, et a droite la reponse a la
+  seule question du curieux — est-ce que ca me concerne. La reponse est non,
+  et le dire tout de suite lui evite de chercher.
+
+  LE FORMULAIRE EST CELUI DE SPIP, INTACT. FORMULAIRE_LOGIN porte la session,
+  le cookie, le retour vers la page d'ou l'on venait et les messages d'erreur.
+  On l'habille en CSS, on ne reecrit pas son balisage : une faute ici ne casse
+  pas une mise en page, elle casse l'authentification.
+
+  Le lien << mot de passe oublie >> n'est PAS pose ici : SPIP le place deja
+  sous le champ de mot de passe, dans un p.details. En ajouter un second en
+  ferait deux sur la page. C'est la mesure du balisage reel qui l'a montre.
+
+  Le parametre url est celui que passe squelettes-dist : c'est la page a
+  rouvrir apres la connexion. Vide, il vaut ce qu'il valait avant.
+]
+<INCLURE{fond=inc/bandeau-page}{cle=connexion}{env}>
+
+<div class="page-simple page-sous-carton">
+
+	<div class="connexion-deux">
+
+		<div class="connexion-carte">
+			<h2 class="titre-bloc"><:marly:se_connecter:></h2>
+			<p class="connexion-qui"><:marly:connexion_pour:></p>
+			[(#FORMULAIRE_LOGIN{#ENV{url}})]
+		</div>
+
+		<div class="connexion-a-cote">
+
+			<h2 class="titre-bloc"><:marly:connexion_besoin:></h2>
+			<p><:marly:connexion_besoin_non:></p>
+
+			<h2 class="titre-bloc"><:marly:connexion_qui:></h2>
+			<div class="connexion-roles">
+				<div>
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-government-line"/></svg></span>
+					<p><b><:marly:connexion_mairie:></b>
+					<span><:marly:connexion_mairie_quoi:></span></p>
+				</div>
+				<div>
+					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>
+					<p><b><:marly:connexion_assos:></b>
+					<span><:marly:connexion_assos_quoi:></span></p>
+				</div>
+			</div>
+
+			[(#REM) L'adresse vient des reglages de la commune, jamais du
+			        squelette. Sans adresse renseignee, la phrase entiere
+			        disparait plutot que de renvoyer vers rien. ]
+			[<div class="connexion-encart">
+				<p><:marly:connexion_creation:>
+				<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a>.</p>
+			</div>]
+
+		</div>
+
+	</div>
+
+</div>

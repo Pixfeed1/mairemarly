@@ -1,0 +1,12 @@
+[(#REM)
+  login.html — la page de connexion.
+  ---------------------------------------------------------------------------
+  Comme partout : ce fichier ne fait qu'appeler le gabarit commun en lui
+  disant quel corps aller chercher dans contenu/.
+
+  Il n'existait pas. SPIP retombait donc sur le delegateur de squelettes-dist,
+  qui appelait notre structure.html, laquelle cherchait contenu/login.html —
+  absent lui aussi. Resultat : notre en-tete et notre pied autour du contenu
+  brut de SPIP. La page avait l'air a nous et ne l'etait pas.
+]
+<INCLURE{fond=structure}{env}{type-page=login}>

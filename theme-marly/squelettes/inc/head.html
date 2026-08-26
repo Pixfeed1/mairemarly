@@ -27,6 +27,12 @@
 	[<meta name="description" content="(#ENV{description}|sinon{#DESCRIPTIF_SITE_SPIP}|textebrut|couper{160}|attribut_html)">]
 	<meta name="theme-color" content="#1E5B41">
 
+	[(#REM) Les pages de service n'ont rien a faire dans un moteur de recherche :
+	        une page de connexion ou une liste de resultats indexee n'apporte
+	        rien au visiteur et brouille les vraies pages de la commune. Le
+	        << follow >> reste : les liens qui en partent gardent leur valeur. ]
+	<meta name="robots" content="[(#ENV{type-page}|match{'^(login|spip_pass|recherche)$'}|?{noindex,index}), follow">
+
 	[(#REM) Partage sur les réseaux et messageries ]
 	<meta property="og:site_name" content="#NOM_SITE_SPIP">
 	<meta property="og:title" content="[(#ENV{titre_page}|textebrut|sinon{#NOM_SITE_SPIP})]">

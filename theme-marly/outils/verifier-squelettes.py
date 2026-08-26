@@ -102,10 +102,18 @@ if os.path.exists(paquet):
                      f"genie nom=\"{m.group(1)}\" : SPIP ajoutera deja le prefixe, retirer \"{prefixe}_\"")
 
 # 8. Un formulaire appele doit avoir ses deux fichiers.
+#    Sauf ceux de SPIP : la connexion appartient au noyau, elle porte la
+#    session, le cookie et le retour vers la page d'ou l'on venait. On
+#    l'habille en CSS, on ne la reecrit pas — donc pas de fichier chez nous.
+#    Cette liste ne se remplit qu'apres avoir constate l'appel, pas par
+#    precaution : un nom ajoute d'avance rouvrirait la porte que la regle ferme.
+FORMULAIRES_DE_SPIP = {'login'}
 for f in sorted(glob.glob('squelettes/**/*.html', recursive=True)):
     s = open(f, encoding='utf-8').read()
     for m in re.finditer(r'#FORMULAIRE_([A-Z_]+)', s):
         nom = m.group(1).lower()
+        if nom in FORMULAIRES_DE_SPIP:
+            continue
         base = os.path.join(RACINE, '..', 'plugin-marly', 'formulaires', nom)
         if not os.path.exists(base + '.php') and not os.path.exists(base + '.html'):
             signaler(f, s[:m.start()].count(chr(10)) + 1,
@@ -1047,6 +1055,47 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                      "crochets dans les arguments d'un INCLURE : SPIP ne reconnaît "
                      "plus la balise et affiche la ligne en clair au milieu de la "
                      "page. Passer une valeur simple, et calculer dans l'include")
+
+# 49. Du CSS qui vise un balisage que SPIP ne produit pas.
+#     Le formulaire de connexion appartient a SPIP : on l'habille, on ne le
+#     reecrit pas. Une feuille de style qui vise une classe inexistante ne
+#     provoque aucune erreur — elle ne s'applique simplement jamais, et le
+#     formulaire s'affiche nu au milieu d'une page soignee. Rien dans un
+#     journal, rien dans le verificateur, rien a chercher.
+#
+#     Mesure du 26 aout 2026, sur le site : les champs sont des <div class=
+#     "editer editer_login"> dans un div.editer-groupe, pas des <li>, et la
+#     classe n'est pas editer_var_login. La premiere version de la feuille
+#     visait les deux inventions. C'est la mesure qui a tranche.
+#
+#     La liste ci-dessous est celle du relevé. erreur et erreur_message n'y
+#     figuraient pas : ils viennent de la convention commune aux formulaires
+#     SPIP, deja verifiee sur ceux de la lettre d'information et du
+#     signalement. Si un jour SPIP change ce balisage, cette regle le dira le
+#     jour du deploiement au lieu de laisser la page se defaire en silence.
+_LOGIN_CLASSES = {
+    'formulaire_spip', 'formulaire_login', 'form-hidden', 'editer-groupe',
+    'editer', 'editer_login', 'editer_password', 'editer_session',
+    'obligatoire', 'etoile', 'details', 'choix', 'checkbox', 'text',
+    'password', 'nofx', 'boutons', 'btn', 'submit',
+    'erreur', 'erreur_message',
+}
+_CSS49 = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.exists(_CSS49):
+    _src = open(_CSS49, encoding='utf-8').read()
+    _sans = re.sub(r'/\*.*?\*/', '', _src, flags=re.S)
+    for _m in re.finditer(r'([^{}]*\.formulaire_login[^{}]*)\{', _sans):
+        _sel = _m.group(1)
+        for _cl in re.findall(r'\.([A-Za-z_][-\w]*)', _sel):
+            if _cl in _LOGIN_CLASSES:
+                continue
+            _pos = _src.find(_sel.strip())
+            signaler('squelettes/css/theme.css',
+                     (_src[:_pos].count(chr(10)) + 1) if _pos >= 0 else 0,
+                     f"le selecteur << {_sel.strip()} >> vise la classe .{_cl}, "
+                     "que le formulaire de connexion de SPIP ne produit pas : "
+                     "la regle ne s'appliquera jamais et le formulaire restera nu. "
+                     "Relever le balisage reel avant d'ecrire le style")
 
 if fautes:
     print('\n'.join(fautes))

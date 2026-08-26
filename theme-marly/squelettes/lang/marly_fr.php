@@ -305,4 +305,16 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'404_plan_quoi'        => 'toutes les pages du site, sur une seule liste',
 	'404_sinon'            => 'Si vous ne trouvez toujours pas, écrivez à la mairie :',
 
+	// --- Connexion -----------------------------------------------------------
+	'se_connecter'         => 'Se connecter',
+	'connexion_pour'       => 'Secrétariat de mairie, élus et associations de la commune.',
+	'connexion_besoin'     => 'Avez-vous besoin d’un compte ?',
+	'connexion_besoin_non' => 'Non, pour presque tout. Consulter une démarche, réserver une salle, s’inscrire à la lettre d’information ou signaler une association : tout cela se fait sans se connecter.',
+	'connexion_qui'        => 'Qui se connecte ici',
+	'connexion_mairie'     => 'Le secrétariat et les élus',
+	'connexion_mairie_quoi'=> 'Publier les actualités, les comptes rendus du conseil, les arrêtés et les documents d’urbanisme.',
+	'connexion_assos'      => 'Les associations de la commune',
+	'connexion_assos_quoi' => 'Tenir à jour leur fiche dans l’annuaire : contact, horaires, activités, prochaines dates.',
+	'connexion_creation'   => 'Les comptes sont créés par la mairie. Si vous représentez une association et n’avez pas encore d’accès, écrivez à',
+
 );
