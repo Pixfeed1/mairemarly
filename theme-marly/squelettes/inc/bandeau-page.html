@@ -12,8 +12,16 @@
   paysage dessine tient donc seul, et c'est tres bien : ces pages sont des
   outils, pas des vitrines.
 
-  Parametre : titre, deja traduit par l'appelant.
+  Parametre : cle, le nom de la chaine de langue du titre.
+
+  ON PASSE LA CLE, ET NON LE TITRE DEJA TRADUIT. La premiere version recevait
+  {titre=[(VAL{marly:titre_recherche}|_T)]} : SPIP n'accepte pas de crochets
+  dans les arguments d'un INCLURE, il ne reconnaissait donc plus la balise et
+  recrachait la ligne telle quelle au milieu de la page. La traduction se fait
+  ici, ou elle a le droit.
 ]
+#SET{titre,#VAL{marly:}|concat{#ENV{cle}}|_T}
+
 <div class="bandeau-illustre">
 	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
 	     width="1440" height="260" alt="" aria-hidden="true">
@@ -23,9 +31,9 @@
 			<nav class="fil-ariane" aria-label="Fil d’Ariane">
 				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
 				<span aria-hidden="true">›</span>
-				<span aria-current="page">#ENV{titre}</span>
+				<span aria-current="page">#GET{titre}</span>
 			</nav>
-			<h1>#ENV{titre}</h1>
+			<h1>#GET{titre}</h1>
 		</div>
 	</div>
 </div>

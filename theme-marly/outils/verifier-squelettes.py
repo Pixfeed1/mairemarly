@@ -1027,6 +1027,27 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "formulaire, la page demandee est perdue et SPIP rend l'accueil. "
                  "Viser spip.php et poser la page en champ cache")
 
+# 48. Des crochets dans les arguments d'un INCLURE. SPIP lit ces arguments
+#     avec une grammaire simple : {cle=valeur}, sans calcul. Un
+#     {titre=[(#VAL{marly:x}|_T)]} ne provoque pas d'erreur, il empeche
+#     seulement la balise d'etre reconnue — et la ligne entiere s'affiche
+#     telle quelle, en clair, au milieu de la page.
+#
+#     Mesure du 26 aout 2026 : << fond=inc/bandeau-page}{titre=Recherche}> >>
+#     s'affichait en haut des resultats de recherche, et sur les quatre autres
+#     pages de section batties sur le meme include.
+#
+#     La forme juste : passer la CLE de langue, et traduire dans l'include.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _c in re.finditer(r'<INCLURE\{[^>]*\}>', _src, re.S):
+        if '[(' in _c.group(0):
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                     _src[:_c.start()].count(chr(10)) + 1,
+                     "crochets dans les arguments d'un INCLURE : SPIP ne reconnaît "
+                     "plus la balise et affiche la ligne en clair au milieu de la "
+                     "page. Passer une valeur simple, et calculer dans l'include")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
