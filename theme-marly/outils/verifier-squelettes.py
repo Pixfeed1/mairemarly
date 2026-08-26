@@ -1818,6 +1818,69 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "de la table elle-meme, ou calculer la liste d'identifiants en PHP")
 
 
+# 70. Une dimension declaree qui ne correspond pas au fichier.
+#     width et height sur une <img> sont une PROMESSE faite au navigateur : il
+#     reserve la place avant meme d'avoir telecharge l'image, et evite ainsi
+#     que la page saute sous le doigt du lecteur au moment ou elle arrive.
+#     Une promesse fausse est pire que pas de promesse : la place reservee
+#     n'est pas la bonne, et la page saute quand meme.
+#
+#     Le 26 aout 2026, la photographie par defaut de l'accueil a ete declaree
+#     800x533 — la taille du premier fichier depose. Celui qui a fini en
+#     ligne, pris sur Wikimedia Commons, fait 1600x1200. Un 4:3 annonce en
+#     3:2 : rien ne le signale, ni SPIP ni le navigateur, et le decalage ne se
+#     voit qu'a l'oeil, une fois, au chargement.
+#
+#     La regle lit l'en-tete du fichier image et le compare a ce que le
+#     squelette annonce. Elle ne regarde que les images matricielles : un SVG
+#     n'a pas toujours de dimension propre, et son viewBox se redimensionne.
+def _taille_image(_chemin):
+    """Largeur et hauteur d'un JPEG ou d'un PNG, lues dans son en-tete."""
+    try:
+        _d = open(_chemin, 'rb').read(200000)
+    except Exception:
+        return None
+    if _d[:8] == b'\x89PNG\r\n\x1a\n':
+        return (int.from_bytes(_d[16:20], 'big'), int.from_bytes(_d[20:24], 'big'))
+    if _d[:2] == b'\xff\xd8':
+        _i = 2
+        while _i < len(_d) - 9:
+            if _d[_i] != 0xFF:
+                _i += 1
+                continue
+            _m = _d[_i + 1]
+            if _m in (0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB):
+                return (int.from_bytes(_d[_i + 7:_i + 9], 'big'),
+                        int.from_bytes(_d[_i + 5:_i + 7], 'big'))
+            if _m in (0xD8, 0xD9) or 0xD0 <= _m <= 0xD7:
+                _i += 2
+                continue
+            _i += 2 + int.from_bytes(_d[_i + 2:_i + 4], 'big')
+    return None
+
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in re.finditer(r'<img[^>]*?#CHEMIN\{(img/[^}]+\.(?:jpg|jpeg|png))\}[^>]*?>',
+                          _masque, re.S | re.I):
+        _balise = _c.group(0)
+        _l = re.search(r'width="(\d+)"', _balise)
+        _h = re.search(r'height="(\d+)"', _balise)
+        if not (_l and _h):
+            continue
+        _vraie = _taille_image(os.path.join(RACINE, 'squelettes', _c.group(1)))
+        if not _vraie:
+            continue
+        if (int(_l.group(1)), int(_h.group(1))) != _vraie:
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                     _masque[:_c.start()].count(chr(10)) + 1,
+                     f"{_c.group(1)} est annoncee en {_l.group(1)}x{_h.group(1)} alors que "
+                     f"le fichier fait {_vraie[0]}x{_vraie[1]}. Le navigateur reserve la "
+                     "mauvaise place et la page saute au chargement. Corriger les deux "
+                     "chiffres, ou les retirer si l'image ne participe pas a la mise en page")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

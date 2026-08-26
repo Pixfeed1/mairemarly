@@ -99,8 +99,16 @@
 				        C'est un decor, il se tait. ]
 				<div class="une-fond">
 					<span class="une-grave" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=une-trace}{n=une}></span>
-					[(#LOGO_ARTICLE|non)<img class="une-defaut" src="#CHEMIN{img/eglise-defaut.jpg}"
-						width="800" height="533" alt="" loading="lazy">]
+					[(#REM) PAS DE width NI DE height ICI, ET C'EST DELIBERE. Cette
+					        image est en position absolue et remplit son cadre :
+					        ses dimensions propres n'entrent dans aucun calcul de
+					        mise en page, le cadre tient sa hauteur tout seul par
+					        son aspect-ratio. Les declarer ne gagnerait donc rien
+					        — et elles etaient FAUSSES : ecrites 800x533 quand la
+					        photographie deposee fait 1600x1200. Une dimension
+					        declaree est une promesse au navigateur ; mieux vaut
+					        n'en faire aucune que d'en faire une fausse. ]
+					[(#LOGO_ARTICLE|non)<img class="une-defaut" src="#CHEMIN{img/eglise-defaut.jpg}" alt="" loading="lazy">]
 					[(#LOGO_ARTICLE||image_reduire{900,460})]
 				</div>
 				<a class="une-carton" href="#URL_ARTICLE">
