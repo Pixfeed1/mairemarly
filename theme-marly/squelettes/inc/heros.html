@@ -43,6 +43,15 @@
 	<div class="heros-voile" aria-hidden="true"></div>
 
 	<div class="heros-dedans">
+
+		[(#REM) LE TITRE DE PREMIER NIVEAU DE L'ACCUEIL. Il n'y en avait aucun :
+		        la premiere page du site etait la seule sans h1, releve par
+		        l'audit du 26 aout 2026 (RGAA 9.1). Il est retire de l'ecran et
+		        non des lecteurs d'ecran : le nom de la commune est deja ecrit en
+		        grand dans l'en-tete, l'afficher deux fois n'apprendrait rien a
+		        qui voit, et son absence prive de repere qui ne voit pas. ]
+		<h1 class="sr">[(#NOM_SITE_SPIP|trim)], <:marly:site_officiel_bas:></h1>
+
 		[(#REM) ACTION VERS spip.php ET PAGE EN CHAMP CACHE, jamais
 		        action="URL_PAGE{...}". Avec method="get", le navigateur JETTE
 		        la chaine de requete de l'action et la remplace par les champs du

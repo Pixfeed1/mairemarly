@@ -1310,6 +1310,28 @@ if os.path.exists(_CSS56):
                      "RGAA 3.3). Le champ reste beau et devient invisible a qui voit "
                      "mal. Employer --trait-champ")
 
+# 57. Deux croisillons devant une balise.
+#     En SPIP, deux croisillons sont l'ECHAPPEMENT d'un croisillon litteral.
+#     Ecrire href="##GET{ancre}" pour obtenir une ancre n'affiche donc pas la
+#     valeur : la page ecrit en clair le nom de la balise.
+#
+#     C'est le piege le plus discret de tous. Aucune erreur, aucun journal,
+#     et a la relecture l'ecriture parait juste — on lit le croisillon de
+#     l'ancre, puis la balise. Rencontre le 26 aout 2026 en rendant unique
+#     l'identifiant de l'embleme, sur le trace du nom de la commune.
+#
+#     La forme juste : porter le croisillon DANS la variable.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in re.finditer(r'##([A-Z_]{2,}\w*)', _masque):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _masque[:_c.start()].count(chr(10)) + 1,
+                 f"deux croisillons devant #{_c.group(1)} : SPIP y voit l'echappement "
+                 "d'un croisillon litteral et ecrit le nom de la balise en clair, "
+                 "sans erreur ni journal. Porter le croisillon dans la valeur")
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

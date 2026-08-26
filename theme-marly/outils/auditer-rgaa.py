@@ -84,14 +84,20 @@ class Page(HTMLParser):
         self.doctype = ''
     def handle_decl(self, d):
         self.doctype = d
+    def masque(self):
+        """Un aria-hidden sur un ANCETRE retire tout le sous-arbre de l'arbre
+        d'accessibilite. Verifier l'element seul faisait crier l'outil sur des
+        icones parfaitement masquees par le span qui les porte : cinq fausses
+        alertes sur l'annuaire des associations, le 26 aout 2026."""
+        return any(x[1].get('aria-hidden') == 'true' for x in self.pile)
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
-        e = [tag, a, '', self.getpos()[0], len(self.pile)]
+        e = [tag, a, '', self.getpos()[0], len(self.pile), self.masque()]
         self.elements.append(e)
         if tag not in VIDES:
             self.pile.append(e)
     def handle_startendtag(self, tag, attrs):
-        self.elements.append([tag, dict(attrs), '', self.getpos()[0], len(self.pile)])
+        self.elements.append([tag, dict(attrs), '', self.getpos()[0], len(self.pile), self.masque()])
     def handle_endtag(self, tag):
         for i in range(len(self.pile) - 1, -1, -1):
             if self.pile[i][0] == tag:
@@ -165,7 +171,7 @@ def auditer(nom, html):
     # 1.1 — les SVG decoratifs doivent etre ignores, les autres nommes.
     for e in par('svg'):
         a = e[1]
-        if a.get('aria-hidden') == 'true':
+        if a.get('aria-hidden') == 'true' or e[5]:
             continue
         if not (a.get('role') == 'img' and (a.get('aria-label') or a.get('aria-labelledby'))):
             f.append(('1.1', f'ligne {e[3]} : <svg> ni masque aux lecteurs d\'ecran (aria-hidden) ni nomme (role=img + aria-label)'))

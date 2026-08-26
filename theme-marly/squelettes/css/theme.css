@@ -595,9 +595,9 @@ section{ padding-block:70px; position:relative; }
   letter-spacing:.1em; text-transform:uppercase; color:var(--encre-doux); margin:5px 0 0; }
 
 .pied-quatre{ display:grid; grid-template-columns:repeat(4,1fr); gap:34px; margin:42px 0 0; }
-.pied-quatre h3{ font-family:var(--titre); font-size:14px; font-weight:800; letter-spacing:.14em;
+.pied-quatre h2{ font-family:var(--titre); font-size:14px; font-weight:800; letter-spacing:.14em;
   text-transform:uppercase; color:var(--accent); margin:0 0 4px; }
-.pied-quatre h3::after{ content:""; display:block; width:34px; height:2px; background:var(--jaune);
+.pied-quatre h2::after{ content:""; display:block; width:34px; height:2px; background:var(--jaune);
   margin:11px auto 16px; }
 .pied-quatre p{ margin:0 0 13px; font-weight:600; font-size:16px; line-height:1.75; }
 .pied-quatre ul{ list-style:none; margin:0; padding:0; }

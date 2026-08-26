@@ -359,4 +359,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'contact_avant'        => 'Avant d’écrire',
 	'contact_avant_quoi'   => 'Beaucoup de demandes ont déjà leur page, avec la liste des pièces à fournir et les délais. C’est souvent plus rapide que d’attendre une réponse.',
 
+	// Variante en bas de casse : la meme mention, au milieu d'une phrase.
+	'site_officiel_bas'    => 'site officiel de la commune',
+
 );

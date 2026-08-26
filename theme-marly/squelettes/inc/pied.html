@@ -31,15 +31,20 @@
 	<div class="large">
 
 		<div class="pied-embleme">
-			<INCLURE{fond=inc/embleme}>
+			<INCLURE{fond=inc/embleme}{ref=-pied}>
 			<p class="pied-nom">[(#NOM_SITE_SPIP|trim)]</p>
 			<p class="pied-sous"><:marly:pied_sous_titre:></p>
 		</div>
 
-		<div class="pied-quatre">
+		[(#REM) LES COLONNES SONT DES h2, PAS DES h3. Sur une page dont le
+	        contenu n'a pas de h2 — l'accueil, les demarches, une page legale —
+	        un h3 ici faisait sauter la hierarchie de h1 a h3 : RGAA 9.1,
+	        releve par l'audit du 26 aout 2026 sur quatre pages. Le pied est
+	        une region a lui, ses colonnes y sont de premier niveau. ]
+			<div class="pied-quatre">
 
 			<div>
-				<h3><:marly:pied_la_mairie:></h3>
+				<h2><:marly:pied_la_mairie:></h2>
 				<p>[(#CONFIG{marly/adresse}|sinon{'4 rue de la Poterie'})<br>]
 				[(#CONFIG{marly/code_postal}|sinon{'02120'}) ][(#CONFIG{marly/ville}|sinon{'Marly-Gomont'})]</p>
 				<p>[<a href="tel:[(#CONFIG{marly/telephone}|sinon{'0323602185'}|replace{' ',''})]">(#CONFIG{marly/telephone}|sinon{'03 23 60 21 85'})</a><br>]
@@ -54,7 +59,7 @@
 			</div>
 
 			<div>
-				<h3><:marly:pied_horaires:></h3>
+				<h2><:marly:pied_horaires:></h2>
 				[<p>(#CONFIG{marly/horaires}|propre)</p>]
 			</div>
 
@@ -64,7 +69,7 @@
 			        ce sont deux boutons. Un pied de page n'est pas un plan du
 			        site — celui-ci existe, il est en bas a droite. ]
 			<div>
-				<h3><:marly:demarches:></h3>
+				<h2><:marly:demarches:></h2>
 				<p><:marly:pied_demarches_texte:></p>
 				<p><a class="pied-lien" href="#URL_PAGE{demarches}">
 					<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:pied_voir_demarches:></a></p>
@@ -73,7 +78,7 @@
 			</div>
 
 			<div>
-				<h3><:marly:pied_rester_informe:></h3>
+				<h2><:marly:pied_rester_informe:></h2>
 				<p><:marly:pied_lettre_texte:></p>
 				<p><a class="pied-lien" href="#URL_PAGE{newsletter}">
 					<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:pied_sinscrire:></a></p>
