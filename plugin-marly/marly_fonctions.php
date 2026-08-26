@@ -140,6 +140,56 @@ function filtre_marly_nom_mois_dist($mois) {
 }
 
 /**
+ * La rubrique où vivent les pages légales, ou 0.
+ * ---------------------------------------------------------------------------
+ * POURQUOI CETTE FONCTION EXISTE. La bande d'actualités doit écarter les
+ * quatre pages légales — mentions, confidentialité, crédits, accessibilité —
+ * qui ne sont pas des nouvelles et qui, créées le même jour, seraient sinon
+ * les quatre articles les plus récents du site.
+ *
+ * Deux écritures ont été essayées dans le squelette, et les deux ont échoué
+ * en production :
+ *
+ *   {type_mot!=Emplacements}  — le groupe n'existait pas, le critère
+ *                               n'écartait rien ;
+ *   {titre_mot!=…} ×7         — mesuré le 26 août 2026 : la bande affichait
+ *                               « Aucune actualité publiée » avec 82 articles
+ *                               en base. Une négation sur table JOINTE écarte
+ *                               aussi les articles qui ne portent AUCUN
+ *                               mot-clé, c'est-à-dire ici la quasi-totalité.
+ *
+ * On revient donc à une comparaison de colonne simple, {id_rubrique!=…}, le
+ * seul mécanisme dont ce site ait la preuve qu'il fonctionne. Il faut pour
+ * cela connaître la rubrique, et c'est ce que cette fonction donne.
+ *
+ * ELLE CHERCHE PAR LE CONTENU, PAS PAR LE NOM. Le titre « Informations
+ * légales » n'est qu'un repli : on part du mot-clé « Mentions légales », on
+ * remonte à l'article qui le porte, et on lit SA rubrique. La mairie peut
+ * donc renommer ou déplacer la rubrique sans que l'accueil se remette à
+ * afficher ses mentions légales en une.
+ *
+ * Rend 0 si rien n'est trouvé — et {id_rubrique!=0} n'écarte alors personne,
+ * ce qui se voit tout de suite sur la page plutôt que de masquer des articles
+ * en silence.
+ */
+function filtre_marly_rubrique_legale_dist($rien = '') {
+	$id_mot = sql_getfetsel('id_mot', 'spip_mots', 'titre = ' . sql_quote('Mentions légales'));
+	if ($id_mot) {
+		$id_article = sql_getfetsel('id_objet', 'spip_mots_liens',
+			'id_mot = ' . intval($id_mot) . ' AND objet = ' . sql_quote('article'));
+		if ($id_article) {
+			$id_rubrique = sql_getfetsel('id_rubrique', 'spip_articles',
+				'id_article = ' . intval($id_article));
+			if ($id_rubrique) {
+				return (int) $id_rubrique;
+			}
+		}
+	}
+	return (int) sql_getfetsel('id_rubrique', 'spip_rubriques',
+		'titre = ' . sql_quote('Informations légales'));
+}
+
+/**
  * « sept. » à partir d'une date SQL.
  * ---------------------------------------------------------------------------
  * Pour la pastille de date de l'agenda : un rond de 52 pixels ne loge pas

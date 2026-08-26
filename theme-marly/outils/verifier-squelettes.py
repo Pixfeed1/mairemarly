@@ -1346,16 +1346,41 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
 #
 #     C'est l'audit RGAA qui l'a trouvee, en signalant une page sans h1. Le
 #     symptome etait accessible, la maladie etait un bug.
+#
+#     LA REGLE A ETE RESSERREE LE 26 AOUT 2026, apres deux faux positifs.
+#     #VAL|marly_nb_destinataires est une ecriture VOULUE : le filtre ne prend
+#     rien en entree, il va chercher son chiffre lui-meme, et #VAL n'est la que
+#     parce que SPIP exige une balise devant un filtre. Cette forme est
+#     employee depuis longtemps dans l'espace prive, ou elle affiche
+#     correctement le nombre d'abonnes.
+#
+#     La regle regarde donc la DECLARATION du filtre : si son premier
+#     parametre a une valeur par defaut, il est ecrit pour etre appele sans
+#     entree, et #VAL devant lui est correct. Sinon il attend quelque chose, et
+#     le vide est une faute — c'etait le cas de date_format.
+_defauts_sans_entree = set()
+for _f in glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '*.php')) + \
+          glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.php'), recursive=True):
+    try:
+        _php = open(_f, encoding='utf-8').read()
+    except Exception:
+        continue
+    for _d in re.finditer(r'function\s+filtre_(\w+?)_dist\s*\(\s*\$\w+\s*=', _php):
+        _defauts_sans_entree.add(_d.group(1))
+
 for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
     _src = open(_f, encoding='utf-8').read()
     _masque = re.sub(r'\[\(#REM\).*?\]',
                      lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
-    for _c in re.finditer(r'#VAL\s*\|', _masque):
+    for _c in re.finditer(r'#VAL\s*\|\s*(\w+)', _masque):
+        if _c.group(1) in _defauts_sans_entree:
+            continue
         signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
                  _masque[:_c.start()].count(chr(10)) + 1,
-                 "#VAL sans argument passe a un filtre : il vaut la chaine vide. "
-                 "Donner la valeur — #VAL{quelque chose} — ou appeler un filtre "
-                 "qui sait produire ce qu'on veut")
+                 f"#VAL sans argument passe au filtre {_c.group(1)}, qui attend une "
+                 "entree : il recevra la chaine vide. Donner la valeur — "
+                 "#VAL{quelque chose} — ou, si le filtre doit aller chercher sa "
+                 "donnee lui-meme, lui donner un premier parametre a valeur par defaut")
 
 # 59. Un etat marque par la seule couleur.
 #     RGAA 3.1 : une information ne doit pas etre donnee par la couleur seule.
@@ -1754,6 +1779,43 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "sql_insertq rend 0 en cas d'echec sans rien afficher : le "
                  "script annoncera << cree >> pour une ligne qui n'existe pas. "
                  "Relire la base juste apres, ou tester la valeur rendue")
+
+
+# 69. Une negation sur un champ de table JOINTE.
+#     titre_mot, type_mot, extension sur une boucle ARTICLES : ces champs
+#     n'appartiennent pas a la table de la boucle, SPIP va les chercher par
+#     une jointure. En positif cela marche. EN NEGATIF, CELA ECARTE AUSSI
+#     TOUT CE QUI N'A RIEN A JOINDRE.
+#
+#     Mesure du 26 aout 2026, en production. Sept criteres {titre_mot!=...}
+#     devaient ecarter de l'accueil quatre pages legales et trois articles
+#     utilitaires. Resultat servi aux visiteurs : << Aucune actualite publiee >>
+#     avec 82 articles en base. Les articles qui ne portent AUCUN mot-cle —
+#     c'est-a-dire 78 des 82 — etaient ecartes eux aussi.
+#
+#     La faute avait deja ete commise le matin meme sous une autre forme,
+#     {type_mot!=Emplacements}, qui elle n'ecartait rien du tout. Deux
+#     tentatives, deux echecs opposes, la meme cause : demander a une jointure
+#     de prouver une absence.
+#
+#     LA FORME JUSTE : comparer une colonne de la table elle-meme. La bande
+#     d'actualites ecarte desormais {id_rubrique!=#GET{rub_legale}}, et c'est
+#     un filtre PHP qui trouve la rubrique. Quand un filtre doit vraiment
+#     porter sur des mots-cles, on calcule la liste d'identifiants en PHP et
+#     on la passe a un critere qui porte sur id_article.
+_CHAMPS_JOINTS = ('titre_mot', 'type_mot', 'id_mot', 'id_groupe')
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in re.finditer(r'\{\s*(' + '|'.join(_CHAMPS_JOINTS) + r')\s*(!=|\s!IN\s)', _masque):
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                 _masque[:_c.start()].count(chr(10)) + 1,
+                 f"negation sur {_c.group(1)}, un champ de table jointe : elle ecarte "
+                 "aussi les objets qui n'ont RIEN a joindre. Mesure du 26 aout 2026 : "
+                 "sept criteres de ce genre ont vide la bande d'actualites de la page "
+                 "d'accueil alors que 82 articles etaient publies. Comparer une colonne "
+                 "de la table elle-meme, ou calculer la liste d'identifiants en PHP")
 
 
 if fautes:

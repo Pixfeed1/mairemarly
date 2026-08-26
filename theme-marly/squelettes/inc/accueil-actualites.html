@@ -13,28 +13,41 @@
   Urbanisme, une fermeture de secretariat dans Ma mairie. La bande prend donc
   les plus recents partout, et l'ordre du jour se fait tout seul.
 
-  CE QUI EST EXCLU. Certains articles ne sont pas des nouvelles : ceux qui
-  portent la photographie de banniere, ceux qui servent d'entree de menu, et
-  les quatre pages legales — qui, ayant ete creees le meme jour, seraient
-  sinon les quatre plus recentes du site. Ils sont ecartes par leur mot-cle.
+  CE QUI EST EXCLU, ET COMMENT. Les quatre pages legales ne sont pas des
+  nouvelles, et creees le meme jour elles seraient les quatre articles les
+  plus recents du site. On les ecarte par LEUR RUBRIQUE, une colonne de la
+  table des articles.
 
-  SEPT CRITERES PLUTOT QU'UN. La premiere version en ecrivait un seul pour les
-  quatre pages legales : {type_mot!=Emplacements}, le groupe ou le script qui
-  les cree est cense les ranger. Deploye le 26 aout 2026, l'accueil affichait
-  la declaration d'accessibilite en mise en avant et trois pages legales dans
-  les breves. Mesure faite : le groupe << Emplacements >> N'EXISTE PAS, et les
-  quatre mots-cles portent id_groupe = 0. Le script qui devait creer le groupe
-  echouait sans le dire.
+  DEUX ECRITURES ONT ETE ESSAYEES AVANT, ET LES DEUX ONT ECHOUE EN PRODUCTION.
 
-  On repasse donc au seul mecanisme dont ce site a la preuve qu'il marche —
-  titre_mot!=, deja employe par heros.html et entete.html — meme s'il faut
-  l'ecrire sept fois. Un critere elegant qu'on n'a jamais vu fonctionner ne
-  vaut pas six criteres verbeux qui fonctionnent.
+  La premiere s'appuyait sur le groupe de mots-cles ou le script des pages
+  legales est cense les ranger. Deploye le 26 aout 2026 : l'accueil affichait
+  la declaration d'accessibilite en mise en avant. Mesure faite, le groupe
+  N'EXISTAIT PAS — le script qui devait le creer echouait sans le dire.
 
-  Le meme deploiement a prouve autre chose, et c'etait le vrai risque : les
-  articles SANS aucun mot-cle sortent bien. Une negation sur table jointe
-  aurait pu les ecarter tous.
+  La seconde posait sept criteres de negation sur le titre du mot-cle, un par
+  article a ecarter. Deploye le meme jour : la bande affichait << Aucune
+  actualite publiee >> avec 82 articles en base. Une negation sur table
+  JOINTE ecarte aussi ce qui n'a RIEN a joindre, c'est-a-dire les 78 articles
+  qui ne portent aucun mot-cle.
+
+  Deux tentatives, deux echecs opposes, la meme cause : on demandait a une
+  jointure de prouver une absence. La regle 69 du verificateur interdit
+  desormais cette ecriture.
+
+  Reste une comparaison de colonne simple, et un filtre PHP pour trouver la
+  rubrique. Ce filtre part du mot-cle des mentions legales et remonte a la
+  rubrique de l'article qui le porte : la mairie peut renommer ou deplacer la
+  rubrique sans que l'accueil se remette a afficher ses mentions legales.
+
+  CE QUI N'EST PLUS ECARTE, ET C'EST ASSUME. Un article portant le mot-cle
+  Banniere ou Menu apparaitra dans les actualites. Aucun de ces deux mots-cles
+  n'existe aujourd'hui dans la base — la banniere de l'accueil et les entrees
+  de menu libres ne sont donc branchees sur rien. Le jour ou la mairie en
+  posera un, on eprouvera le mecanisme sur du reel plutot que d'ecrire a
+  l'aveugle un critere de plus.
 ]
+#SET{rub_legale,#VAL|marly_rubrique_legale}
 <section class="bande bande-actus" aria-labelledby="titre-actus">
 
 	<div class="bande-sceau a-droite" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=bande-sceau-trace}{n=actus}></div>
@@ -50,7 +63,7 @@
 		<B_une>
 		<div class="actus-grille">
 			<div>
-			<BOUCLE_une(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{titre_mot!=Mentions légales}{titre_mot!=Confidentialité}{titre_mot!=Crédits}{titre_mot!=Accessibilité}{!par date}{0,1}>
+			<BOUCLE_une(ARTICLES){id_rubrique!=#GET{rub_legale}}{!par date}{0,1}>
 				[(#REM) TROIS COUCHES, DE LA DERNIERE A LA PREMIERE.
 
 				        Au fond, le sceau grave. On ne le voit jamais tant que
@@ -86,7 +99,7 @@
 			</div>
 
 			<div>
-			<BOUCLE_breves(ARTICLES){titre_mot!=Bannière}{titre_mot!=Bannière ma mairie}{titre_mot!=Menu}{titre_mot!=Mentions légales}{titre_mot!=Confidentialité}{titre_mot!=Crédits}{titre_mot!=Accessibilité}{!par date}{1,5}>
+			<BOUCLE_breves(ARTICLES){id_rubrique!=#GET{rub_legale}}{!par date}{1,5}>
 				<a class="actu-breve" href="#URL_ARTICLE">
 					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
 					<span><b>#TITRE</b>[<span class="actu-quand">(#DATE|affdate)</span>]</span>
