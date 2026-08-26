@@ -37,55 +37,51 @@
 
 		<div class="connexion-a-cote">
 
-			[(#REM) Une section, trois questions. Le titre porte le nom du
-			        service, les h3 posent les questions dans l'ordre ou elles
-			        viennent : ai-je besoin d'un compte, qui en a un, comment
-			        en obtenir un. Le texte est celui de la mairie. ]
+			[(#REM) Une section, trois questions dans l'ordre ou elles se posent :
+			        ai-je besoin d'un compte, qui en a un, et que fait celui qui
+			        n'en a pas.
+
+			        L'ESPACE PRIVE EST CELUI DE LA MAIRIE, ET DE PERSONNE
+			        D'AUTRE. La premiere version promettait un compte aux
+			        associations : rien de tel n'existe dans le code, et rien de
+			        tel ne se fait dans les communes de cette taille. Les fiches
+			        de l'annuaire sont tenues par la mairie, une association
+			        signale ce qui change par le formulaire, un commerce ecrit
+			        au secretariat. ]
 			<h2 class="titre-bloc"><:marly:connexion_acces:></h2>
 
 			<h3><:marly:connexion_q1:></h3>
 			<p><:marly:connexion_q1_a:></p>
 			<p><:marly:connexion_q1_b:></p>
-			<p><:marly:connexion_q1_c:></p>
 
 			<h3><:marly:connexion_q2:></h3>
-			<div class="connexion-roles">
-				<div>
-					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-government-line"/></svg></span>
-					<div>
-						<b><:marly:connexion_mairie:></b>
-						<p><:marly:connexion_mairie_quoi:></p>
-						<ul>
-							<li><:marly:connexion_mairie_1:></li>
-							<li><:marly:connexion_mairie_2:></li>
-							<li><:marly:connexion_mairie_3:></li>
-							<li><:marly:connexion_mairie_4:></li>
-						</ul>
-					</div>
-				</div>
-				<div>
-					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg></span>
-					<div>
-						<b><:marly:connexion_assos:></b>
-						<p><:marly:connexion_assos_quoi:></p>
-						<ul>
-							<li><:marly:connexion_assos_1:></li>
-							<li><:marly:connexion_assos_2:></li>
-							<li><:marly:connexion_assos_3:></li>
-							<li><:marly:connexion_assos_4:></li>
-						</ul>
-					</div>
-				</div>
-			</div>
+			<p><:marly:connexion_q2_a:></p>
+			<ul class="connexion-liste">
+				<li><:marly:connexion_q2_1:></li>
+				<li><:marly:connexion_q2_2:></li>
+				<li><:marly:connexion_q2_3:></li>
+				<li><:marly:connexion_q2_4:></li>
+			</ul>
+			<p><:marly:connexion_q2_b:></p>
 
 			<h3><:marly:connexion_q3:></h3>
 			<p><:marly:connexion_q3_a:></p>
+
+			[(#REM) Le declencheur est un vrai mailto : sans JavaScript il ecrit
+			        a la mairie, avec lui la fenetre de signalement s'ouvre
+			        par-dessus la page. Meme mecanique que sur la page des
+			        associations, et le meme panneau, inclus juste apres. ]
+			[<p class="fiche-liens"><a class="pilule"
+				href="mailto:(#CONFIG{marly/courriel}|attribut_html)?subject=[(#VAL{marly:asso_absente_objet}|_T|urlencode)]"
+				data-ouvre-signalement>
+				<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg>
+				<:marly:connexion_q3_lien:></a></p>]
 
 			[(#REM) L'adresse vient des reglages de la commune, jamais du
 			        squelette. Sans adresse renseignee, la phrase entiere
 			        disparait plutot que de renvoyer vers rien. ]
 			[<div class="connexion-encart">
-				<p><:marly:connexion_creation:><br>
+				<p><:marly:connexion_q3_b:><br>
 				<a href="mailto:(#CONFIG{marly/courriel}|attribut_html)">(#CONFIG{marly/courriel})</a></p>
 			</div>]
 
@@ -94,3 +90,5 @@
 	</div>
 
 </div>
+
+<INCLURE{fond=inc/panneau-signaler-asso}{env}>

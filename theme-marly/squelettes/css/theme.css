@@ -2047,37 +2047,20 @@ body.page-login .page-simple{ max-width:1080px; }
 }
 .connexion-a-cote a{ color:var(--accent); }
 
-/* Qui peut accéder : deux blocs séparés par un filet, pas une liste à
-   puces de premier niveau. Chacun porte son intitulé, sa phrase et ses
-   exemples. */
-.connexion-roles{ margin:6px 0 0; }
-.connexion-roles > div{
-	display:flex; gap:16px; align-items:flex-start;
-	padding:18px 0; border-top:1px solid var(--trait);
+/* Les exemples sous la question : une liste, avec une puce dessinée plutôt
+   que celle du navigateur — elle prend la couleur de la commune et se cale
+   sur la ligne de base du texte. */
+.connexion-liste{
+	list-style:none; margin:0 0 18px; padding:0;
+	font-family:var(--texte); font-size:16px; line-height:1.75; color:var(--encre-doux);
 }
-.connexion-roles > div:last-child{ border-bottom:1px solid var(--trait); }
-.connexion-roles .rond{
-	width:42px; height:42px; border-radius:50%; flex-shrink:0;
-	background:var(--creme); border:1px solid var(--trait); color:var(--accent);
-	display:flex; align-items:center; justify-content:center;
-}
-.connexion-roles .rond .ico{ width:20px; height:20px; }
-.connexion-roles b{
-	display:block; font-family:var(--titre); font-size:18px;
-	color:var(--encre); margin-bottom:4px;
-}
-.connexion-roles p{ font-size:15px; line-height:1.65; margin:0 0 8px; }
-.connexion-roles ul{
-	list-style:none; margin:0; padding:0;
-	font-family:var(--texte); font-size:15px; line-height:1.65; color:var(--encre-doux);
-}
-.connexion-roles li{ padding-left:16px; position:relative; }
-/* Une puce dessinée plutôt que celle du navigateur : elle prend la couleur
-   de la commune et se cale sur la ligne de base du texte. */
-.connexion-roles li::before{
-	content:""; position:absolute; left:2px; top:.68em;
+.connexion-liste li{ padding-left:18px; position:relative; }
+.connexion-liste li::before{
+	content:""; position:absolute; left:2px; top:.72em;
 	width:5px; height:5px; border-radius:50%; background:var(--accent);
 }
+
+.connexion-a-cote .fiche-liens{ margin:0 0 20px; }
 
 .connexion-encart{
 	background:var(--creme); border-left:4px solid var(--jaune);

@@ -306,35 +306,30 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'404_sinon'            => 'Si vous ne trouvez toujours pas, écrivez à la mairie :',
 
 	// --- Connexion -----------------------------------------------------------
-	// Le texte de cette page a ete ecrit par la mairie, pas par le theme.
-	// Le registre est celui d'une collectivite qui s'adresse a un administre :
-	// phrases entieres, pas de raccourci, pas de ton de mode d'emploi.
+	// L'espace prive est celui du secretariat et des elus, et de personne
+	// d'autre : c'est l'usage des communes de cette taille, et c'est le seul
+	// que le code sache tenir. Une association ou un commerce passe par le
+	// signalement ou par le secretariat, sans compte.
 	'se_connecter'         => 'Se connecter',
-	'connexion_pour'       => 'Secrétariat de mairie, élus et associations de la commune.',
+	'connexion_pour'       => 'Réservé au secrétariat de mairie et aux élus.',
 
 	'connexion_acces'      => 'Accès à l’espace personnel',
 
 	'connexion_q1'         => 'Faut-il créer un compte pour utiliser le site ?',
-	'connexion_q1_a'       => 'La plupart des services proposés sur le site sont accessibles sans création de compte.',
-	'connexion_q1_b'       => 'Vous pouvez notamment consulter les démarches, réserver une salle, vous inscrire à la lettre d’information ou transmettre des informations concernant une association sans avoir à vous connecter.',
-	'connexion_q1_c'       => 'L’espace personnel est réservé aux personnes disposant de droits particuliers pour administrer certains contenus du site.',
+	'connexion_q1_a'       => 'Non. L’ensemble des services proposés sur le site est accessible sans création de compte.',
+	'connexion_q1_b'       => 'Vous pouvez consulter les démarches, réserver une salle, vous inscrire à la lettre d’information ou transmettre les informations d’une association sans avoir à vous connecter.',
 
-	'connexion_q2'         => 'Qui peut accéder à l’espace personnel ?',
-	'connexion_mairie'     => 'Le secrétariat de mairie et les élus habilités',
-	'connexion_mairie_quoi'=> 'Cet espace leur permet de publier et de mettre à jour les informations utiles à la vie de la commune, notamment :',
-	'connexion_mairie_1'   => 'les actualités ;',
-	'connexion_mairie_2'   => 'les comptes rendus du conseil municipal ;',
-	'connexion_mairie_3'   => 'les arrêtés ;',
-	'connexion_mairie_4'   => 'les documents relatifs à l’urbanisme.',
-	'connexion_assos'      => 'Les associations de la commune',
-	'connexion_assos_quoi' => 'Les associations disposant d’un accès peuvent mettre à jour les informations de leur fiche dans l’annuaire, par exemple :',
-	'connexion_assos_1'    => 'leurs coordonnées ;',
-	'connexion_assos_2'    => 'leurs horaires ;',
-	'connexion_assos_3'    => 'leurs activités ;',
-	'connexion_assos_4'    => 'leurs prochaines dates et manifestations.',
+	'connexion_q2'         => 'Qui accède à l’espace personnel ?',
+	'connexion_q2_a'       => 'L’espace personnel est réservé au secrétariat de mairie et aux élus habilités. Il leur permet de publier et de mettre à jour les informations utiles à la vie de la commune, notamment :',
+	'connexion_q2_1'       => 'les actualités ;',
+	'connexion_q2_2'       => 'les comptes rendus du conseil municipal ;',
+	'connexion_q2_3'       => 'les arrêtés ;',
+	'connexion_q2_4'       => 'les documents relatifs à l’urbanisme.',
+	'connexion_q2_b'       => 'Aucun compte n’est attribué en dehors de la mairie.',
 
-	'connexion_q3'         => 'Comment obtenir un accès ?',
-	'connexion_q3_a'       => 'Les comptes sont créés directement par la mairie afin de garantir que les accès sont attribués aux personnes habilitées.',
-	'connexion_creation'   => 'Si vous représentez une association de la commune et souhaitez obtenir un accès, vous pouvez contacter la mairie à l’adresse suivante :',
+	'connexion_q3'         => 'Vous représentez une association ou un commerce ?',
+	'connexion_q3_a'       => 'Les fiches de l’annuaire sont tenues à jour par la mairie. Aucun compte n’est nécessaire : pour signaler une création, un changement ou une erreur, vous pouvez utiliser le formulaire prévu à cet effet, ou écrire directement au secrétariat.',
+	'connexion_q3_lien'    => 'Signaler ou mettre à jour une association',
+	'connexion_q3_b'       => 'Pour un commerce, un artisan, un service, ou pour toute autre demande, vous pouvez contacter la mairie à l’adresse suivante :',
 
 );
