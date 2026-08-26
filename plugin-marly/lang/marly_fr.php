@@ -765,4 +765,28 @@ resterez abonné.
 	'accessibilite_niveau' => 'Niveau de conformité',
 	'accessibilite_niveau_aide' => 'Trois valeurs possibles, et elles seules : « non conforme », « partiellement conforme », « totalement conforme ». Elles se décident après un audit, pas avant. Le texte s’affiche à la suite du mot Accessibilité, en bas de chaque page.',
 
+	// --- Écrire à la mairie --------------------------------------------------
+	// Les objets sont des compétences communales, vraies pour n'importe quelle
+	// commune. Ils servent au secrétariat à trier le courrier, pas à aiguiller :
+	// tout arrive à la même adresse, celle des réglages.
+	'contact_champ_objet'   => 'Objet',
+	'champ_message'         => 'Votre message',
+	'contact_objet_general' => 'Une question générale',
+	'contact_objet_etat_civil' => 'État civil',
+	'contact_objet_urbanisme'  => 'Urbanisme et travaux',
+	'contact_objet_salles'     => 'Salles et locations',
+	'contact_objet_voirie'     => 'Voirie et cadre de vie',
+	'contact_objet_associatif' => 'Vie associative',
+	'contact_objet_autre'      => 'Autre',
+	'contact_envoyer'       => 'Envoyer le message',
+	'erreur_message_court'  => 'Le message est trop court pour qu’on puisse y répondre.',
+	'contact_recu'          => 'Votre message est parti. Le secrétariat vous répondra à l’adresse que vous avez indiquée.',
+	// L'échec dit ce qui s'est passé et donne l'autre chemin. Rien n'a été
+	// enregistré : laisser croire que la mairie a reçu la demande serait pire
+	// que de dire l'échec.
+	'contact_echec'         => 'Le message n’a pas pu être transmis. Rien n’a été enregistré : merci de réessayer plus tard, ou d’appeler la mairie.',
+	'contact_echec_tel'     => 'Le message n’a pas pu être transmis. Rien n’a été enregistré : merci de réessayer plus tard, ou d’appeler la mairie au @tel@.',
+	'contact_objet_courriel' => 'Site de la commune : @objet@',
+	'contact_consigne'      => 'Répondre à ce courriel répond directement à la personne qui a écrit.',
+
 );

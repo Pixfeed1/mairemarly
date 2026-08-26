@@ -1,19 +1,8 @@
 [(#REM)
-  contact.html — page de SPIP fermee.
+  contact.html — joindre la mairie.
   ---------------------------------------------------------------------------
-  Le formulaire de contact de SPIP ne suit pas notre charte et doublerait
-  le << Nous ecrire >> du pied de page.
-
-  FERMER N'EST PAS CACHER. La page repond un vrai 404 et affiche la notre.
-  Sans ce fichier, SPIP servait la sienne, avec son propre gabarit, au milieu
-  du site de la commune — exactement ce qui arrivait a spip_pass avant qu'on
-  ne la reprenne.
-
-  Personne ne lie cette adresse depuis le site. Elle repond quand meme des
-  qu'on la tape, et le jour de la mise en service elle peut sortir n'importe
-  ou : dans un vieux lien, dans un index, dans un signet.
+  Ce fichier a d'abord servi a FERMER la page contact de SPIP, qui repondait
+  a cette adresse avec son propre gabarit. Il porte maintenant la notre. Le
+  404 qu'il rendait n'a plus lieu d'etre : l'adresse existe pour de bon.
 ]
-#HTTP_HEADER{HTTP/1.0 404 Not Found}
-#HTTP_HEADER{"Cache-Control: no-store, no-cache, must-revalidate"}
-#HTTP_HEADER{Pragma: no-cache}
-<INCLURE{fond=structure}{env}{type-page=404}>
+<INCLURE{fond=structure}{env}{type-page=contact}>

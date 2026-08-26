@@ -91,6 +91,35 @@ function formulaires_configurer_marly_traiter_dist() {
 		ecrire_config('marly/' . $champ, trim((string) _request($champ)));
 	}
 
+	/* La carte de la page Contact a besoin d'un point, et la secrétaire n'a
+	   pas à saisir une latitude. On la calcule depuis l'adresse, avec le même
+	   géocodeur que les commerces, et seulement quand l'adresse a changé :
+	   interroger un service à chaque enregistrement pour un point qui ne bouge
+	   jamais serait payer sans raison.
+
+	   L'échec est silencieux À DESSEIN. Le géocodeur peut ne rien trouver, ou
+	   être injoignable ; ce n'est pas une raison pour refuser d'enregistrer
+	   l'adresse et le téléphone de la mairie. Sans point, la page Contact
+	   n'affiche pas de cadre, et l'adresse écrite au-dessus porte
+	   l'information de toute façon. */
+	$adresse = trim(implode(' ', array_filter(array(
+		trim((string) _request('adresse')),
+		trim((string) _request('code_postal')),
+		trim((string) _request('ville')),
+	))));
+	if ($adresse !== '' and $adresse !== lire_config('marly/adresse_situee', '')) {
+		include_spip('inc/marly_geocodage');
+		$point = marly_geocoder($adresse);
+		ecrire_config('marly/latitude',  (string) ($point['latitude'] ?? ''));
+		ecrire_config('marly/longitude', (string) ($point['longitude'] ?? ''));
+		ecrire_config('marly/adresse_situee', $adresse);
+	}
+	if ($adresse === '') {
+		ecrire_config('marly/latitude', '');
+		ecrire_config('marly/longitude', '');
+		ecrire_config('marly/adresse_situee', '');
+	}
+
 	return array(
 		'message_ok' => _T('marly:reglages_ok'),
 		'editable'   => true,

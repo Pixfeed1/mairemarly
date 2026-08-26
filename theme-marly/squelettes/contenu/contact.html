@@ -1,0 +1,98 @@
+[(#REM)
+  Le corps de la page Contact.
+  ---------------------------------------------------------------------------
+  A GAUCHE CE QUE LA PLUPART VIENNENT CHERCHER : l'adresse, le telephone, les
+  horaires. Sur telephone cette colonne passe en premier, avant le formulaire,
+  parce qu'on cherche neuf fois sur dix un numero, pas un champ de saisie.
+
+  TOUT VIENT DES REGLAGES, rien n'est ecrit ici. Chaque ligne est gardee : une
+  coordonnee non renseignee ne laisse pas une etiquette vide, elle disparait.
+
+  La carte se calcule depuis l'adresse des reglages, geocodee a
+  l'enregistrement comme celle des commerces. Sans coordonnees, pas de cadre —
+  et l'adresse ecrite au-dessus porte l'information de toute facon.
+
+  << AVANT D'ECRIRE >> N'EST PAS UN ORNEMENT. Trois liens vers les pages qui
+  repondent deja, avec les pieces et les delais. C'est ce qui evite le plus de
+  courriels au secretariat, donc ce qui sert le plus a la commune.
+]
+<INCLURE{fond=inc/bandeau-page}{cle=contact}{env}>
+
+<div class="page-simple page-sous-carton">
+
+	<div class="contact-deux">
+
+		<div class="contact-infos">
+			<h2 class="titre-bloc"><:marly:contact_la_mairie:></h2>
+
+			[<div class="contact-ligne">
+				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg></span>
+				<p><b><:marly:champ_adresse:></b>(#CONFIG{marly/adresse})[<br>(#CONFIG{marly/code_postal}) ][(#CONFIG{marly/ville})]</p>
+			</div>]
+
+			[<div class="contact-ligne">
+				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-phone-line"/></svg></span>
+				<p><b><:marly:champ_telephone:></b><a href="tel:[(#CONFIG{marly/telephone}|replace{'[^0-9+]',''}|attribut_html)]">(#CONFIG{marly/telephone})</a></p>
+			</div>]
+
+			[<div class="contact-ligne">
+				<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg></span>
+				<p><b><:marly:votre_courriel:></b><a href="mailto:[(#CONFIG{marly/courriel}|attribut_html)]">(#CONFIG{marly/courriel})</a></p>
+			</div>]
+
+			[<div class="contact-horaires">
+				<h3><:marly:pied_horaires:></h3>
+				(#CONFIG{marly/horaires}|propre)
+			</div>]
+
+			[(#REM) La carte, si la commune a pu etre localisee. Sans JavaScript
+			        le cadre reste vide et l'adresse ci-dessus suffit. ]
+			[<div class="carte-cadre" data-carte
+			      data-lat="(#CONFIG{marly/latitude}|attribut_html)"
+			      data-lon="[(#CONFIG{marly/longitude}|attribut_html)]"
+			      data-nom="[(#NOM_SITE_SPIP|trim|attribut_html)]"></div>]
+			[(#CONFIG{marly/latitude}|oui)
+			<link rel="stylesheet" href="#CHEMIN{js/leaflet/leaflet.css}">
+			<script src="#CHEMIN{js/leaflet/leaflet.js}"></script>
+			<script src="#CHEMIN{js/carte.js}"></script>
+			]
+		</div>
+
+		<div class="contact-form">
+			<h2 class="titre-bloc"><:marly:contact_ecrire:></h2>
+			<p><:marly:contact_ecrire_quoi:></p>
+			#FORMULAIRE_CONTACT
+			<p class="contact-mention"><:marly:contact_mention:></p>
+		</div>
+
+	</div>
+
+	<div class="contact-avant">
+		<h2 class="titre-bloc"><:marly:contact_avant:></h2>
+		<p><:marly:contact_avant_quoi:></p>
+		<p class="fiche-liens">
+			<B_dem_ct>
+			<BOUCLE_dem_ct(DEMARCHES){0,1}><!-- on ne fait que verifier --></BOUCLE_dem_ct>
+			<a class="pilule" href="#URL_PAGE{demarches}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg>
+				<:marly:toutes_les_demarches:></a>
+			</B_dem_ct>
+
+			<B_urba_ct>
+			<BOUCLE_urba_ct(RUBRIQUES){titre==^Urbanisme}{0,1}>
+			<a class="pilule" href="[(#URL_RUBRIQUE)]">
+				<svg class="ico" aria-hidden="true"><use href="#ri-home-4-line"/></svg>
+				#TITRE</a>
+			</BOUCLE_urba_ct>
+			</B_urba_ct>
+
+			<B_salles_ct>
+			<BOUCLE_salles_ct(SALLES){statut=publie}{0,1}><!-- on ne fait que verifier --></BOUCLE_salles_ct>
+			<a class="pilule" href="#URL_PAGE{reservation}">
+				<svg class="ico" aria-hidden="true"><use href="#ri-calendar-check-line"/></svg>
+				<:marly:reserver:></a>
+			</B_salles_ct>
+		</p>
+	</div>
+
+</div>

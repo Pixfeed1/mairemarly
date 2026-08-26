@@ -1098,7 +1098,12 @@ if os.path.exists(_CSS49):
                  "la region CONNEXION a disparu de la feuille : la regle 49 ne "
                  "garde plus rien, la retirer ou corriger son reperage")
     else:
-        _region = _src[_debut:]
+        # La region s'arrete a la banniere suivante, pas a la fin du fichier.
+        # Ecrite sans cette borne, la regle avalait tout ce qu'on ajoutait
+        # apres elle : le bloc CONTACT, ecrit le meme jour, a declenche
+        # quarante-trois fausses alertes d'un coup.
+        _fin = _src.find('/* ====', _debut)
+        _region = _src[_debut:_fin] if _fin > 0 else _src[_debut:]
         _sans = re.sub(r'/\*.*?\*/', '', _region, flags=re.S)
         for _m in re.finditer(r'([^{}]+)\{', _sans):
             _sel = _m.group(1).strip()
@@ -1237,6 +1242,40 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '*.html'))):
              "cette page rend le 404 sans poser le code HTTP 404 : le visiteur "
              "voit la bonne page, les moteurs de recherche recoivent un 200 et "
              "gardent l'adresse morte dans leur index")
+
+# 55. Le champ-piege des formulaires du site, remis a l'ecran.
+#     La classe .piege sort le champ de l'ecran ET de l'ordre de tabulation.
+#     C'est la barriere qui arrete la quasi-totalite du spam automatique : un
+#     robot remplit tous les champs qu'il trouve dans le HTML, un humain ne
+#     voit pas celui-la.
+#
+#     Une seule declaration doit exister, celle du theme, et elle doit
+#     positionner le champ hors du cadre. Une seconde regle qui le remettrait
+#     dans le flux — un reset trop large, un display:block, un position:static
+#     — le rendrait visible : les navigateurs le rempliraient par
+#     autocompletion, et TOUS les envois seraient refuses, sans message et
+#     sans trace. Le formulaire aurait l'air de marcher et ne repondrait
+#     jamais. Meme mecanique que le nobot de SPIP, regle 50, sur un champ qui
+#     est le notre.
+_CSS55 = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.exists(_CSS55):
+    _src = open(_CSS55, encoding='utf-8').read()
+    _sans = re.sub(r'/\*.*?\*/', lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    _regles = [(_m.group(1).strip(), _m.group(2), _m.start())
+               for _m in re.finditer(r'([^{}]+)\{([^{}]*)\}', _sans)
+               if re.search(r'\.piege\b', _m.group(1))]
+    if len(_regles) != 1:
+        signaler('squelettes/css/theme.css', 1,
+                 f"{len(_regles)} regles visent .piege : le champ-piege doit n'en "
+                 "avoir qu'une, sinon la derniere peut le remettre a l'ecran et "
+                 "faire refuser tous les envois en silence")
+    else:
+        _sel, _corps, _pos = _regles[0]
+        if 'position:absolute' not in _corps.replace(' ', ''):
+            signaler('squelettes/css/theme.css', _sans[:_pos].count(chr(10)) + 1,
+                     "le champ-piege n'est plus sorti du flux : rendu visible, les "
+                     "navigateurs le rempliraient et tous les envois seraient "
+                     "refuses, sans message et sans trace")
 
 if fautes:
     print('\n'.join(fautes))

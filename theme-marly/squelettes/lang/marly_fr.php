@@ -348,4 +348,15 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'pass_titre_nouveau'   => 'Choisir un nouveau mot de passe',
 	'pass_retour'          => 'Retour à la connexion',
 
+	// --- Contact -------------------------------------------------------------
+	'contact'              => 'Contact',
+	'plan_contact_quoi'    => 'l’adresse, le téléphone, les horaires, et un formulaire',
+	'champ_adresse'        => 'Adresse',
+	'contact_la_mairie'    => 'La mairie',
+	'contact_ecrire'       => 'Écrire à la mairie',
+	'contact_ecrire_quoi'  => 'Une question, une remarque, un signalement. Le message arrive au secrétariat, qui vous répond à l’adresse que vous indiquez.',
+	'contact_mention'      => 'Les informations saisies servent uniquement à traiter votre demande. Elles sont transmises au secrétariat de mairie par courriel, ne sont pas conservées sur le site, et ne sont communiquées à personne d’autre.',
+	'contact_avant'        => 'Avant d’écrire',
+	'contact_avant_quoi'   => 'Beaucoup de demandes ont déjà leur page, avec la liste des pièces à fournir et les délais. C’est souvent plus rapide que d’attendre une réponse.',
+
 );

@@ -1,0 +1,67 @@
+[(#REM)
+  Le formulaire de contact. Rien n'entre en base : un courriel part vers la
+  mairie, avec un Reply-To vers l'habitant.
+
+  Le champ-piege porte la classe piege, deja en service sur les autres
+  formulaires : hors de l'ecran, hors de l'ordre de tabulation, invisible
+  d'un lecteur d'ecran. Il ne doit JAMAIS redevenir visible, c'est lui qui
+  arrete les robots.
+]
+<div class="formulaire_spip formulaire_contact">
+
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable}|oui)
+	<form method="post" action="#ENV{action}">
+		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<div class="piege" aria-hidden="true">
+			<label for="_piege_ct">Laissez ce champ vide</label>
+			<input type="text" name="_piege" id="_piege_ct" value="" tabindex="-1" autocomplete="off">
+		</div>
+		<input type="hidden" name="_pose" value="[(#ENV{_pose}|attribut_html)]">
+
+		<p class="nl-requis"><:marly:requis_explication:></p>
+		<ul>
+			<li class="contact-rang">
+				<span class="editer editer_nom[ (#ENV**{erreurs}|table_valeur{nom}|oui)erreur]">
+					<label for="ct-nom"><:marly:votre_nom:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{nom})</span>]
+					<input type="text" class="text" name="nom" id="ct-nom"
+					       value="[(#ENV{nom}|attribut_html)]" autocomplete="name" required aria-required="true" maxlength="120">
+				</span>
+				<span class="editer editer_telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">
+					<label for="ct-telephone"><:marly:champ_telephone:></label>
+					[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{telephone})</span>]
+					<input type="tel" class="text" name="telephone" id="ct-telephone"
+					       value="[(#ENV{telephone}|attribut_html)]" autocomplete="tel" maxlength="20">
+				</span>
+			</li>
+			<li class="editer editer_courriel[ (#ENV**{erreurs}|table_valeur{courriel}|oui)erreur]">
+				<label for="ct-courriel"><:marly:votre_courriel:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{courriel})</span>]
+				<input type="email" class="text" name="courriel" id="ct-courriel"
+				       value="[(#ENV{courriel}|attribut_html)]" autocomplete="email" required aria-required="true" maxlength="120">
+			</li>
+			<li class="editer editer_objet[ (#ENV**{erreurs}|table_valeur{objet}|oui)erreur]">
+				<label for="ct-objet"><:marly:contact_champ_objet:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{objet})</span>]
+				<select name="objet" id="ct-objet">
+					<BOUCLE_objets(DATA){source table,#ENV{_objets}}>
+					<option value="#CLE"[(#CLE|=={#ENV{objet}}|oui) selected]>#VALEUR</option>
+					</BOUCLE_objets>
+				</select>
+			</li>
+			<li class="editer editer_message[ (#ENV**{erreurs}|table_valeur{message}|oui)erreur]">
+				<label for="ct-message"><:marly:champ_message:> <span class="obligatoire"><:marly:obligatoire:></span></label>
+				[<span class="erreur_message">(#ENV**{erreurs}|table_valeur{message})</span>]
+				<textarea name="message" id="ct-message" rows="8" maxlength="4000" required aria-required="true">[(#ENV{message}|textebrut)]</textarea>
+			</li>
+		</ul>
+		<p class="boutons">
+			<input type="submit" class="submit" value="<:marly:contact_envoyer:>">
+		</p>
+	</form>
+	]
+</div>

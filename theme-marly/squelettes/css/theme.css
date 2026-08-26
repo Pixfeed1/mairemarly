@@ -2112,3 +2112,84 @@ body.page-login .connexion-retour{ text-align:left; }
 	.connexion-deux{ grid-template-columns:1fr; gap:44px 0; }
 	.connexion-carte{ position:static; }
 }
+
+/* ===========================================================================
+   CONTACT
+   ---------------------------------------------------------------------------
+   Deux colonnes : les coordonnées à gauche, le formulaire à droite. Sur
+   téléphone la grille retombe en une colonne et l'ordre du document met les
+   coordonnées devant, ce qui est juste : on cherche neuf fois sur dix un
+   numéro, pas un champ de saisie.
+
+   Le formulaire est le nôtre, pas celui de SPIP : son balisage est écrit dans
+   plugin-marly/formulaires/contact.html, et les sélecteurs ci-dessous visent
+   ce que ce fichier produit. Le champ-piège garde la classe .piege, déjà
+   définie plus haut et déjà en service sur les autres formulaires : en créer
+   une seconde ferait une deuxième porte à surveiller.
+   =========================================================================== */
+/* --- Contact -------------------------------------------------------------- */
+body.page-contact .bandeau-carton{ width:min(1080px,calc(100% - 44px)); }
+body.page-contact .page-simple{ max-width:1080px; }
+
+.contact-deux{
+	display:grid; grid-template-columns:minmax(0,360px) minmax(0,1fr); gap:0 60px;
+	align-items:start; margin-top:8px;
+}
+.contact-infos{
+	background:var(--creme); border-top:4px solid var(--accent);
+	padding:26px 28px 28px; position:sticky; top:20px;
+}
+.contact-infos .titre-bloc{ font-size:26px; margin:0 0 18px; }
+.contact-ligne{ display:flex; gap:14px; align-items:flex-start; padding:13px 0; border-top:1px solid var(--trait); }
+.contact-ligne:first-of-type{ border-top:0; padding-top:0; }
+.contact-ligne .rond{
+	width:38px; height:38px; border-radius:50%; flex-shrink:0;
+	background:#fff; border:1px solid var(--trait); color:var(--accent);
+	display:flex; align-items:center; justify-content:center;
+}
+.contact-ligne .rond .ico{ width:18px; height:18px; }
+.contact-ligne b{ display:block; font-family:var(--titre); font-size:13px; letter-spacing:.06em;
+                  text-transform:uppercase; color:var(--encre-doux); margin-bottom:2px; }
+.contact-ligne p{ margin:0; font-family:var(--texte); font-size:15.5px; line-height:1.55; }
+.contact-ligne a{ color:var(--accent); text-decoration:none; border-bottom:1px solid var(--trait); }
+.contact-ligne a:hover{ border-bottom-color:var(--accent); }
+
+.contact-horaires{ margin-top:20px; padding-top:18px; border-top:1px solid var(--trait); }
+.contact-horaires h3{ font-family:var(--titre); font-size:13px; letter-spacing:.06em;
+                      text-transform:uppercase; color:var(--encre-doux); margin:0 0 8px; }
+.contact-horaires p{ margin:0; font-family:var(--texte); font-size:15.5px; line-height:1.7; }
+.contact-infos .carte-cadre{ margin-top:20px; height:190px; border-radius:3px; }
+
+.contact-form .titre-bloc{ font-size:clamp(26px,3vw,32px); margin:0 0 8px; }
+.contact-form > p{ font-family:var(--texte); font-size:16px; line-height:1.7;
+                   color:var(--encre-doux); max-width:62ch; margin:0 0 24px; }
+.contact-form ul{ list-style:none; margin:0; padding:0; }
+.contact-form li{ margin-bottom:16px; }
+.contact-form label{ display:block; font-family:var(--texte); font-size:13.5px;
+                     font-weight:700; margin-bottom:5px; color:var(--encre); }
+.contact-form .obligatoire{ font-weight:400; font-size:12px; color:var(--encre-doux); }
+.contact-form input[type="text"], .contact-form input[type="email"],
+.contact-form input[type="tel"], .contact-form select, .contact-form textarea{
+	width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+	padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
+}
+.contact-form textarea{ resize:vertical; min-height:150px; }
+.contact-rang{ display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+.contact-form .submit{
+	border:0; background:var(--accent); color:#fff; border-radius:4px;
+	padding:15px 34px; font-family:var(--texte); font-weight:700; font-size:16px; cursor:pointer;
+}
+.contact-form .submit:hover{ background:var(--accent-sombre); }
+.contact-mention{ margin:18px 0 0; padding-top:14px; border-top:1px solid var(--trait);
+	font-family:var(--texte); font-size:12.5px; line-height:1.6; color:var(--encre-doux); }
+
+.contact-avant{ margin-top:56px; padding-top:34px; border-top:1px solid var(--trait); }
+.contact-avant .titre-bloc{ font-size:clamp(24px,2.6vw,30px); margin:0 0 8px; }
+.contact-avant > p{ font-family:var(--texte); font-size:16px; line-height:1.7;
+                    color:var(--encre-doux); max-width:70ch; margin:0 0 20px; }
+
+@media (max-width:860px){
+	.contact-deux{ grid-template-columns:1fr; gap:40px 0; }
+	.contact-infos{ position:static; }
+	.contact-rang{ grid-template-columns:1fr; }
+}
