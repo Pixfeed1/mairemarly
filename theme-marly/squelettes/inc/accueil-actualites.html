@@ -109,7 +109,15 @@
 					        photographie deposee fait 1600x1200. Une dimension
 					        declaree est une promesse au navigateur ; mieux vaut
 					        n'en faire aucune que d'en faire une fausse. ]
-					[(#LOGO_ARTICLE||image_reduire{900,460})]
+					[(#REM) Le logo, et a defaut la premiere image jointe :
+					        aucun article de l'ancien site n'a de logo, sept ont
+					        une image. Sans ce repli la une reste au sceau grave
+					        alors qu'il y a une photo a montrer. ]
+					#SET{illu,''}
+					<BOUCLE_illuune(DOCUMENTS){id_article}{mode=image}{par num titre, date}{0,1}>
+					#SET{illu,#FICHIER}
+					</BOUCLE_illuune>
+					[(#LOGO_ARTICLE||sinon{#GET{illu}}|image_reduire{900,460})]
 				</span>
 				<span class="une-carton">
 					[<span class="une-date">(#DATE|affdate)</span>]

@@ -564,7 +564,12 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
 #     30 comptes rendus en ligne, aucun PDF a telecharger.
 for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
     _src = open(_f, encoding='utf-8').read()
-    if 'IMG/ancien-site' in _src and 'ajouter_un_document' not in _src:
+    # Ne vise que les scripts qui ECRIVENT dans ce dossier. Une sonde qui se
+    # contente de le lire n'a rien a attacher, et la regle la signalait :
+    # faux positif du 27 aout 2026, sur sonder-images.php.
+    if ('IMG/ancien-site' in _src
+            and 'file_put_contents' in _src
+            and 'ajouter_un_document' not in _src):
         signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), 1,
                  "rapatrie des fichiers sans les attacher comme documents SPIP : "
                  "les cartes Telecharger et la galerie resteront vides")

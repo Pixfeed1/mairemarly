@@ -68,8 +68,33 @@
 	<p class="article-signature"><:marly:publie_le:> #GET{pub}[(#GET{maj}|=={#GET{pub}}|non)
 		· <:marly:mis_a_jour_le:> #GET{maj}]</p>
 
+	[(#REM) L'ILLUSTRATION : le logo de l'article, et a defaut la premiere
+	        image qui lui est jointe.
+
+	        MESURE DU 27 AOUT 2026 : aucun des 82 articles n'a de logo, et sept
+	        d'entre eux portent pourtant une image jointe que rien n'affichait.
+	        L'import de l'ancien site attachait bien les fichiers comme
+	        documents — c'est correct — mais dans SPIP un document attache et un
+	        logo sont deux choses distinctes, et ce sont les LOGOS que les
+	        gabarits montrent. En base tout avait l'air juste, a l'ecran il n'y
+	        avait rien.
+
+	        Le repli vaut surtout pour la suite : une secretaire de mairie joint
+	        une photo a son article, elle ne va pas chercher l'ecran separe du
+	        logo. Le site doit se debrouiller avec ce qu'elle a fait.
+
+	        LA REMISE A ZERO N'EST PAS DECORATIVE. Une affectation posee a
+	        l'interieur d'une boucle qui ne tourne pas ne s'execute jamais :
+	        sans elle la valeur du
+	        tour precedent resterait, et un article sans image afficherait la
+	        photo du voisin. Ici la boucle englobante ne fait qu'un tour, mais
+	        la meme ecriture sert plus bas dans une liste de trois. ]
+	#SET{illu,''}
+	<BOUCLE_illu(DOCUMENTS){id_article}{mode=image}{par num titre, date}{0,1}>
+	#SET{illu,#FICHIER}
+	</BOUCLE_illu>
 	[<figure class="article-photo">
-		<img src="(#LOGO_ARTICLE|image_reduire{760,0}|extraire_attribut{src})" alt="">
+		<img src="(#LOGO_ARTICLE|sinon{#GET{illu}}|image_reduire{760,0}|extraire_attribut{src})" alt="">
 	</figure>]
 
 	<div class="texte">#TEXTE</div>
@@ -109,8 +134,16 @@
 		<div class="cartes">
 			<BOUCLE_liees(ARTICLES){id_rubrique}{id_article!=#ID_ARTICLE}{!par date}{0,3}>
 			<article class="carte">
+				[(#REM) Meme repli qu'en tete de page. La remise a zero est ici
+				        indispensable et non prudente : la liste fait trois tours,
+				        et sans elle la carte sans image reprendrait la photo de
+				        la precedente. ]
+				#SET{illu,''}
+				<BOUCLE_illuliee(DOCUMENTS){id_article}{mode=image}{par num titre, date}{0,1}>
+				#SET{illu,#FICHIER}
+				</BOUCLE_illuliee>
 				[<div class="carte-photo"><a href="#URL_ARTICLE">
-					<img src="(#LOGO_ARTICLE|image_reduire{420,240}|extraire_attribut{src})" alt=""></a></div>]
+					<img src="(#LOGO_ARTICLE|sinon{#GET{illu}}|image_reduire{420,240}|extraire_attribut{src})" alt=""></a></div>]
 				<div class="carte-corps">
 					<p class="carte-quand"><BOUCLE_lr(RUBRIQUES){id_rubrique}>#TITRE</BOUCLE_lr></p>
 					<h3 class="carte-titre"><a href="#URL_ARTICLE">#TITRE</a></h3>
