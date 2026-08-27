@@ -542,9 +542,16 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
 #     Un script qui publie des articles historiques doit donc leur RENDRE
 #     leur date apres coup, par sql_updateq. Le deuxieme import l'a paye :
 #     21 comptes rendus de 2016-2020 dates du jour de l'import.
+#     LA REGLE A ETE RESSERREE LE 26 AOUT 2026, apres un faux positif. Elle
+#     cherchait la chaine 'publie' N'IMPORTE OU dans le fichier : le
+#     nettoyeur de signatures, qui se contente de LIRE les articles publies
+#     pour y corriger un texte, etait accuse de les publier sans les dater.
+#     Elle exige desormais une ECRITURE de statut — 'statut' => 'publie', ou
+#     un appel a objet_instituer. Lire un statut n'est pas l'ecrire.
+_ECRIT_PUBLIE = re.compile(r"'statut'\s*=>\s*'publie'|objet_instituer\(")
 for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
     _src = open(_f, encoding='utf-8').read()
-    if re.search(r"objet_modifier\('article'", _src) and "'publie'" in _src \
+    if re.search(r"objet_modifier\('article'", _src) and _ECRIT_PUBLIE.search(_src) \
             and not re.search(r"sql_updateq\('spip_articles',\s*array\('date'", _src):
         signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), 1,
                  "publie des articles sans leur rendre leur date : SPIP retimbre la date "

@@ -43,13 +43,29 @@
 	[<p class="chapo">(#SOUSTITRE)</p>]
 	[<p class="chapo">(#CHAPO|propre)</p>]
 
-	[(#REM) La date de mise a jour ne s'affiche que si elle differe du jour de
+	[(#REM) PAS DE SIGNATURE D'AUTEUR, ET C'EST UN CHOIX D'INSTITUTION.
+
+	        Cette ligne affichait << par MVaertan, Severine >> : le compte du
+	        prestataire, et le prenom de la secretaire de mairie. Retire le
+	        26 aout 2026.
+
+	        Un article sur le site d'une commune n'engage pas la personne qui
+	        l'a saisi, il engage la commune. La directrice de la publication
+	        est la Maire, c'est ecrit dans les mentions legales, et c'est la
+	        seule signature qui a une valeur. Afficher le nom de l'agent, c'est
+	        l'exposer nommement pour un texte qui n'est pas le sien — et faire
+	        apparaitre au passage tous les comptes techniques qui ont touche a
+	        l'article.
+
+	        La date, elle, reste : elle dit au lecteur si l'information est
+	        encore d'actualite, et c'est ce qu'il cherche.
+
+	        La date de mise a jour ne s'affiche que si elle differe du jour de
 	        publication : SPIP la fait bouger a chaque enregistrement, et
 	        << mis a jour le jour meme >> ne dirait rien. ]
 	#SET{pub,#DATE|affdate}
 	#SET{maj,#DATE_MODIF|affdate}
-	<p class="article-signature"><:marly:publie_le:> #GET{pub}<B_qui>, <:marly:par:>
-		<BOUCLE_qui(AUTEURS){id_article}{", "}><b>#NOM</b></BOUCLE_qui></B_qui>[(#GET{maj}|=={#GET{pub}}|non)
+	<p class="article-signature"><:marly:publie_le:> #GET{pub}[(#GET{maj}|=={#GET{pub}}|non)
 		· <:marly:mis_a_jour_le:> #GET{maj}]</p>
 
 	[<figure class="article-photo">

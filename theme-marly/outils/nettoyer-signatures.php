@@ -105,14 +105,20 @@ $motifs = array(
 	'#^\s*' . $date . '\s*,\s*par\s+[^,.\n<]{1,40}\s*[,.]?\s*#ui',
 );
 
-$res = sql_select('id_article, titre, texte, descriptif', 'spip_articles', '', '', 'date DESC');
+/* TROIS CHAMPS, ET LE PREMIER EST CELUI QU'ON AVAIT OUBLIE. La premiere
+   version ne lisait que texte et descriptif : elle n'a rien trouve, alors que
+   la ligne s'affichait sur la page d'accueil. SPIP range le resume dans
+   CHAPO, et c'est chapo que #INTRODUCTION sert en priorite. */
+$champs_lus = array('chapo', 'texte', 'descriptif');
+$res = sql_select('id_article, titre, ' . implode(', ', $champs_lus),
+	'spip_articles', '', '', 'date DESC');
 $vus = 0;
 $touches = 0;
 
 while ($a = sql_fetch($res)) {
 	$champs = array();
 
-	foreach (array('texte', 'descriptif') as $champ) {
+	foreach ($champs_lus as $champ) {
 		$avant = (string) $a[$champ];
 		if ($avant === '') {
 			continue;
@@ -150,7 +156,25 @@ while ($a = sql_fetch($res)) {
 
 echo "\n";
 if (!$vus) {
-	echo "Aucune ligne de signature trouvee. Rien a faire.\n";
+	/* UN SCRIPT QUI NE TROUVE RIEN DOIT MONTRER CE QU'IL A REGARDE. Sinon on
+	   ne sait pas s'il n'y a rien a nettoyer, ou si le motif cherche a cote —
+	   et c'est arrive : la premiere version ignorait le champ chapo et
+	   annoncait << rien a faire >> pendant que la signature s'affichait sur
+	   la page d'accueil. */
+	echo "Aucune ligne de signature trouvee.\n\n";
+	echo "VOICI CE QUI A ETE LU, sur les cinq articles les plus recents.\n";
+	echo "Si une signature apparait ci-dessous, c'est le motif qui est en cause.\n";
+	$r2 = sql_select('id_article, titre, ' . implode(', ', $champs_lus),
+		'spip_articles', 'statut = ' . sql_quote('publie'), '', 'date DESC', '0,5');
+	while ($a = sql_fetch($r2)) {
+		printf("\n[%d] %s\n", $a['id_article'], $a['titre']);
+		foreach ($champs_lus as $champ) {
+			$v = trim((string) $a[$champ]);
+			printf("    %-11s %s\n", $champ . ' :',
+				$v === '' ? '(vide)' : str_replace(array("\r", "\n"), ' ', mb_substr($v, 0, 110)));
+		}
+	}
+	echo "\n";
 } elseif ($ecrire) {
 	echo "$touches article(s) nettoye(s).\n";
 	include_spip('inc/invalideur');
