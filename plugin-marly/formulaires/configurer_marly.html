@@ -15,8 +15,41 @@
 
 	<p class="explication"><:marly:intro_reglages:></p>
 
-	<form method="post" action="#ENV{action}">
+	[(#REM) enctype multipart : SANS LUI, le navigateur n'envoie PAS le fichier.
+	        Il poste le formulaire normalement, PHP ne voit rien dans $_FILES,
+	        et l'ecran repond << reglages enregistres >> sans avoir rien recu.
+	        Une panne parfaitement silencieuse. ]
+	<form method="post" action="#ENV{action}" enctype="multipart/form-data">
 		#ACTION_FORMULAIRE{#ENV{action}}
+
+		<fieldset>
+			<legend><:marly:legende_banniere:></legend>
+			<p class="explication"><:marly:banniere_intro:></p>
+			<ul>
+				[<li class="marly-champ marly-banniere-apercu">
+					<img src="(#ENV{banniere_url}|attribut_html)" alt=""
+					     style="max-width:340px;height:auto;display:block;border:1px solid #ccc">
+				</li>]
+				<li class="marly-champ marly-banniere[ (#ENV**{erreurs}|table_valeur{banniere}|oui)erreur]">
+					<label for="banniere"><:marly:champ_banniere:></label>
+					[<span class="erreur_message" id="erreur-banniere">(#ENV**{erreurs}|table_valeur{banniere})</span>]
+					<input type="file" name="banniere" id="banniere"
+					       accept="image/jpeg,image/png,image/webp"[(#ENV**{erreurs}|table_valeur{banniere}|oui) aria-invalid="true" aria-describedby="erreur-banniere"]>
+					<small><:marly:banniere_aide:></small>
+				</li>
+				[(#ENV{banniere}|oui)
+				<li class="marly-champ marly-banniere-retirer">
+					<label><input type="checkbox" name="banniere_retirer" value="oui"> <:marly:banniere_retirer:></label>
+					<small><:marly:banniere_retirer_aide:></small>
+				</li>
+				]
+				<li class="marly-champ marly-banniere_credit">
+					<label for="banniere_credit"><:marly:champ_banniere_credit:></label>
+					<input type="text" class="text" name="banniere_credit" id="banniere_credit" value="[(#ENV{banniere_credit}|attribut_html)]">
+					<small><:marly:banniere_credit_aide:></small>
+				</li>
+			</ul>
+		</fieldset>
 
 		<fieldset>
 			<legend><:marly:legende_contact:></legend>

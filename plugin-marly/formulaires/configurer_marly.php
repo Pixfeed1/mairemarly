@@ -43,6 +43,10 @@ function marly_champs_texte() {
 		   audit n'a eu lieu : annoncer un niveau qu'on n'a pas mesuré est une
 		   déclaration fausse, et c'est une déclaration légale. */
 		'accessibilite_niveau',
+		/* Le crédit de la photographie de bannière. Il s'affiche en petit dans
+		   son coin. Une photographie a un auteur, et la mairie doit pouvoir le
+		   citer sans appeler personne. */
+		'banniere_credit',
 	);
 }
 
@@ -50,11 +54,30 @@ function marly_champs() {
 	return array_merge(marly_champs_texte(), marly_champs_url());
 }
 
+/**
+ * Le fichier de bannière déjà en place, ou ''.
+ * ---------------------------------------------------------------------------
+ * On relit le DISQUE, pas seulement la configuration : si le fichier a été
+ * effacé à la main, la configuration mentirait et la page publique appellerait
+ * une image absente. Ce qui n'existe pas ne s'affiche pas.
+ */
+function marly_banniere_fichier() {
+	$nom = lire_config('marly/banniere', '');
+	if ($nom === '' or !@is_file(_DIR_IMG . $nom)) {
+		return '';
+	}
+	return $nom;
+}
+
 function formulaires_configurer_marly_charger_dist() {
 	$valeurs = array();
 	foreach (marly_champs() as $champ) {
 		$valeurs[$champ] = lire_config('marly/' . $champ, '');
 	}
+	$valeurs['banniere'] = marly_banniere_fichier();
+	$valeurs['banniere_url'] = $valeurs['banniere']
+		? _DIR_IMG . $valeurs['banniere']
+		: '';
 	return $valeurs;
 }
 
@@ -74,6 +97,37 @@ function formulaires_configurer_marly_verifier_dist() {
 	$courriel = trim((string) _request('courriel'));
 	if ($courriel !== '' && !filter_var($courriel, FILTER_VALIDATE_EMAIL)) {
 		$erreurs['courriel'] = _T('marly:erreur_courriel');
+	}
+
+	/* LA PHOTOGRAPHIE DE BANNIERE. On refuse ici plutot que d'accepter et
+	   d'afficher mal : une image trop petite s'agrandit et pixelise sur toute
+	   la largeur de l'ecran, et c'est la premiere chose que voit un visiteur.
+
+	   getimagesize() sert de controle de type ET de mesure : elle rend false
+	   sur tout ce qui n'est pas une image, quel que soit le nom du fichier.
+	   Se fier a l'extension laisserait passer un .jpg qui n'en est pas un. */
+	$envoi = isset($_FILES['banniere']) ? $_FILES['banniere'] : null;
+	if ($envoi and $envoi['error'] !== UPLOAD_ERR_NO_FILE) {
+		if ($envoi['error'] !== UPLOAD_ERR_OK) {
+			/* Le cas le plus frequent : le fichier depasse la limite du
+			   serveur, qui n'est pas la notre. On le dit dans les termes de
+			   l'usager plutot que de rendre un code. */
+			$erreurs['banniere'] = _T('marly:erreur_banniere_envoi');
+		} else {
+			$taille = @getimagesize($envoi['tmp_name']);
+			if (!$taille) {
+				$erreurs['banniere'] = _T('marly:erreur_banniere_type');
+			} elseif (!in_array($taille[2], array(IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP), true)) {
+				$erreurs['banniere'] = _T('marly:erreur_banniere_type');
+			} elseif ($taille[0] < 1200) {
+				$erreurs['banniere'] = _T('marly:erreur_banniere_petite',
+					array('largeur' => (int) $taille[0]));
+			} elseif ($taille[0] < $taille[1]) {
+				$erreurs['banniere'] = _T('marly:erreur_banniere_portrait');
+			} elseif ($envoi['size'] > 8 * 1024 * 1024) {
+				$erreurs['banniere'] = _T('marly:erreur_banniere_lourde');
+			}
+		}
 	}
 
 	return $erreurs;
@@ -120,8 +174,74 @@ function formulaires_configurer_marly_traiter_dist() {
 		ecrire_config('marly/adresse_situee', '');
 	}
 
+	marly_enregistrer_banniere();
+
 	return array(
 		'message_ok' => _T('marly:reglages_ok'),
 		'editable'   => true,
 	);
+}
+
+/**
+ * Enregistre la photographie de bannière déposée, ou la retire.
+ * ---------------------------------------------------------------------------
+ * LE FICHIER VA DANS IMG/, ET C'EST UN CHOIX. Le dossier des squelettes est
+ * recopié à chaque déploiement : une image déposée là serait effacée au
+ * prochain envoi de code, sans que personne comprenne pourquoi la bannière a
+ * disparu. IMG/ appartient au site, pas au thème, et survit.
+ *
+ * LE NOM PORTE UN HORODATAGE, et ce n'est pas de la coquetterie. Avec un nom
+ * fixe, le navigateur de la secrétaire garderait l'ancienne image en cache et
+ * elle croirait que l'enregistrement n'a pas marché — le genre de faux
+ * problème qui coûte un appel téléphonique. Un nom neuf est une adresse neuve.
+ * L'ancien fichier est effacé dans la foulée, sinon IMG/ se remplirait de
+ * bannières mortes.
+ */
+function marly_enregistrer_banniere() {
+	$ancien = lire_config('marly/banniere', '');
+
+	/* La case « retirer » : on revient à la photographie du thème. */
+	if (_request('banniere_retirer')) {
+		if ($ancien !== '' and @is_file(_DIR_IMG . $ancien)) {
+			@unlink(_DIR_IMG . $ancien);
+		}
+		ecrire_config('marly/banniere', '');
+		return;
+	}
+
+	$envoi = isset($_FILES['banniere']) ? $_FILES['banniere'] : null;
+	if (!$envoi or $envoi['error'] !== UPLOAD_ERR_OK) {
+		return;
+	}
+
+	$taille = @getimagesize($envoi['tmp_name']);
+	if (!$taille) {
+		return;
+	}
+	$extensions = array(
+		IMAGETYPE_JPEG => 'jpg',
+		IMAGETYPE_PNG  => 'png',
+		IMAGETYPE_WEBP => 'webp',
+	);
+	if (!isset($extensions[$taille[2]])) {
+		return;
+	}
+
+	$nom = 'marly-banniere-' . time() . '.' . $extensions[$taille[2]];
+	if (!@move_uploaded_file($envoi['tmp_name'], _DIR_IMG . $nom)) {
+		return;
+	}
+	@chmod(_DIR_IMG . $nom, 0644);
+
+	/* ON RELIT LE DISQUE AVANT D'ENREGISTRER LE NOM. Sans ce contrôle, un
+	   déplacement qui échoue à moitié laisserait la configuration pointer vers
+	   un fichier absent, et la page d'accueil appellerait une image morte. */
+	if (!@is_file(_DIR_IMG . $nom)) {
+		return;
+	}
+
+	if ($ancien !== '' and $ancien !== $nom and @is_file(_DIR_IMG . $ancien)) {
+		@unlink(_DIR_IMG . $ancien);
+	}
+	ecrire_config('marly/banniere', $nom);
 }

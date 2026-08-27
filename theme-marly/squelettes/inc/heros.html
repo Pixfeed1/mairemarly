@@ -9,51 +9,52 @@
   L'en-tête garde une loupe, mais seulement sous 1200px, là où la barre
   n'aurait plus la place de s'afficher correctement.
 
-  LA PHOTOGRAPHIE vient d'un article portant le mot-clé « Bannière », et
-  non du logo du site. Le champ « Logo du site » de SPIP porte un nom qui
-  promet un logo : quiconque y dépose un logo se retrouverait avec un
-  logo étiré sur 1920 px en travers de la bannière, sans comprendre
-  pourquoi. Un champ doit faire ce que son nom annonce.
+  LA PHOTOGRAPHIE se dépose dans Configuration ▸ Réglages de la commune, par
+  un simple bouton « Parcourir ». Elle vit dans IMG/, qui appartient au site :
+  le dossier des squelettes est recopié à chaque déploiement, une image posée
+  là disparaîtrait au prochain envoi de code.
 
-  Le montage par article apporte deux choses que le logo ne permettait pas :
-   - le CRÉDIT photographique vit dans le descriptif de l'article. Une photo
-     a un auteur, et la mairie doit pouvoir le citer sans intervention
-     technique ;
-   - on peut préparer plusieurs bannières et changer au fil des saisons :
-     c'est la plus récemment publiée qui s'affiche.
+  Le champ « Logo du site » de SPIP n'est pas utilisé, et son nom explique
+  pourquoi : quiconque y dépose un logo se retrouverait avec un logo étiré sur
+  1920 px en travers de la bannière, sans comprendre. Un champ doit faire ce
+  que son nom annonce.
 
-  Faute d'article, l'illustration provisoire prend le relais. Le site n'est
+  Le CRÉDIT photographique se saisit juste sous le fichier. Une photo a un
+  auteur, et la mairie doit pouvoir le citer sans intervention technique.
+
+  Faute de dépôt, la photographie du thème prend le relais. Le site n'est
   jamais sans bannière.
 ]
 <div class="heros">
 
-	<B_banniere>
-	<BOUCLE_banniere(ARTICLES){titre_mot=Bannière}{par date}{inverse}{0,1}>
-	<div class="heros-image">[(#LOGO_ARTICLE|image_reduire{1920,0})]</div>
-	[(#REM) Le credit vient du descriptif de l'article : une photo a un auteur,
-	        et la mairie doit pouvoir le citer sans intervention technique. ]
-	[<p class="heros-credit">(#DESCRIPTIF|textebrut|couper{120})</p>]
-	</BOUCLE_banniere>
-	</B_banniere>
+	[(#REM) LA PHOTOGRAPHIE VIENT DE L'ECRAN DE REGLAGES, pas d'un article.
 
-	[(#REM) TANT QU'AUCUN ARTICLE DE BANNIERE N'EXISTE : l'eglise Saint-Remy.
+	        Le mecanisme precedent demandait de creer un article, de lui poser
+	        un mot-cle et d'y accrocher un logo. C'est le fonctionnement de
+	        SPIP, mais ce n'est pas evident pour quelqu'un qui n'a jamais fait
+	        de site : trois notions a comprendre pour changer une image. La
+	        secretaire de mairie va maintenant dans Configuration, clique sur
+	        Parcourir, enregistre.
 
-	        Le paysage dessine tenait cette place. Il est bon, mais il dit
-	        << une commune >> la ou une photographie dit << CETTE commune >>,
-	        et c'est la premiere chose que voit quelqu'un qui arrive. Le dessin
-	        n'est pas perdu : il reste au pied de page et sur le bandeau des
-	        pages de section, ou il joue son role de decor.
+	        Le fichier vit dans IMG/, pas dans le theme : le dossier des
+	        squelettes est recopie a chaque deploiement, une image deposee la
+	        disparaitrait au prochain envoi de code.
 
-	        CECI RESTE UN REPLI, et le mecanisme au-dessus ne bouge pas : le
-	        jour ou la mairie publie un article portant le mot-cle
-	        << Banniere >>, sa photographie passe devant. Elle peut en preparer
-	        plusieurs, changer au fil des saisons, et citer l'auteur dans le
-	        descriptif — sans que personne touche au code.
+	        Tant que rien n'est depose, la photographie du theme tient la
+	        place. Le site n'est jamais sans banniere. ]
+	#SET{banniere,#VAL|marly_url_banniere}
 
-	        Meme fichier que la mise en avant des actualites, donc deja dans le
-	        cache du navigateur quand on fait defiler. ]
-	<div class="heros-image heros-defaut"><img src="#CHEMIN{img/eglise-defaut.jpg}" alt=""></div>
-	<//B_banniere>
+	[<div class="heros-image"><img src="(#GET{banniere}|attribut_html)" alt=""></div>]
+
+	[(#REM) Le credit se saisit dans le meme ecran, juste sous le fichier. Une
+	        photographie a un auteur, et la mairie doit pouvoir le citer sans
+	        appeler personne. ]
+	[(#GET{banniere}|oui)[<p class="heros-credit">(#CONFIG{marly/banniere_credit})</p>]]
+
+	[(#REM) Aucune photographie deposee : celle du theme, avec ses reglages de
+	        lumiere. Ils ne s'appliquent qu'a elle — on ne corrige pas une
+	        image qu'on n'a pas vue. ]
+	[(#GET{banniere}|non)<div class="heros-image heros-defaut"><img src="#CHEMIN{img/eglise-defaut.jpg}" alt=""></div>]
 
 	<div class="heros-voile" aria-hidden="true"></div>
 

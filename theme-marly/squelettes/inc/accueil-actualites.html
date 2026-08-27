@@ -52,23 +52,14 @@
   rubrique de l'article qui le porte : la mairie peut renommer ou deplacer la
   rubrique sans que l'accueil se remette a afficher ses mentions legales.
 
-  L'ARTICLE DE BANNIERE EST ECARTE LUI AUSSI, par son identifiant. La banniere
-  d'accueil vient d'un article portant le mot-cle << Banniere >> : sans cela il
-  remonterait ici, juste sous la banniere qu'il alimente, avec un titre du
-  genre << Banniere de l'accueil >>. Un filtre PHP rend son identifiant, et on
-  l'ecarte par {id_article different de}, une colonne de la table — pas une
-  negation sur table jointe.
-
-  RESTE LE CAS DES ENTREES DE MENU, et il est assume. Un article portant le
-  mot-cle << Menu >> apparaitra dans les actualites. Ce mot-cle n'existe pas
-  dans la base, et ils peuvent etre plusieurs : les ecarter demanderait une
-  liste d'identifiants, donc un critere IN dont ce site n'a pas la preuve. Le
-  jour ou la mairie en posera un, on l'eprouvera sur du reel plutot que
-  d'ecrire a l'aveugle un critere de plus.
+  PLUS RIEN D'AUTRE N'EST ECARTE, et c'est une simplification voulue. La
+  banniere d'accueil venait d'un article portant le mot-cle << Banniere >>,
+  qu'il fallait donc ecarter d'ici par son identifiant. Elle se depose
+  desormais dans Configuration, par un bouton Parcourir : il n'y a plus
+  d'article de banniere, donc plus rien a ecarter.
 ]
 #SET{rub_legale,#VAL|marly_rubrique_legale}
 #SET{rub_pv,#VAL|marly_rubrique_comptes_rendus}
-#SET{art_banniere,#VAL|marly_article_banniere}
 <section class="bande bande-actus" aria-labelledby="titre-actus">
 
 	<div class="bande-sceau a-droite" aria-hidden="true"><INCLURE{fond=inc/sceau-tuile}{classe=bande-sceau-trace}{n=actus}></div>
@@ -84,7 +75,7 @@
 		<B_une>
 		<div class="actus-grille">
 			<div>
-			<BOUCLE_une(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{id_article!=#GET{art_banniere}}{!par date}{0,1}>
+			<BOUCLE_une(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{!par date}{0,1}>
 				[(#REM) DEUX COUCHES, ET AUCUNE PHOTOGRAPHIE DE SECOURS.
 
 				        Au fond, le sceau grave. C'est la marque du theme, pas
@@ -130,7 +121,7 @@
 			</div>
 
 			<div>
-			<BOUCLE_breves(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{id_article!=#GET{art_banniere}}{!par date}{1,5}>
+			<BOUCLE_breves(ARTICLES){id_rubrique!=#GET{rub_legale}}{id_rubrique!=#GET{rub_pv}}{!par date}{1,5}>
 				<a class="actu-breve" href="#URL_ARTICLE">
 					<span class="rond"><svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg></span>
 					<span><b>#TITRE</b>[<span class="actu-quand">(#DATE|affdate)</span>]</span>

@@ -216,35 +216,28 @@ function filtre_marly_rubrique_comptes_rendus_dist($rien = '') {
 }
 
 /**
- * L'article qui porte la photographie de bannière, ou 0.
+ * L'adresse publique de la photographie de bannière, ou ''.
  * ---------------------------------------------------------------------------
- * La bannière d'accueil vient d'un article portant le mot-clé « Bannière » :
- * la mairie dépose la photo en logo de cet article, écrit le crédit dans son
- * descriptif, et peut en préparer plusieurs pour changer au fil des saisons.
+ * Le fichier est déposé depuis Configuration ▸ Réglages de la commune et vit
+ * dans IMG/. Trois raisons de passer par un filtre plutôt que de composer
+ * l'adresse dans le squelette :
  *
- * Mais cet article est un article comme un autre, et il est publié. Sans ce
- * filtre, il remonterait dans la bande d'actualités de la page d'accueil —
- * juste en dessous de la bannière qu'il alimente, sous un titre du genre
- * « Bannière de l'accueil ». Personne ne veut lire ça.
- *
- * On rend l'identifiant du plus récent, et le squelette l'écarte par
- * {id_article!=…} : une comparaison sur une colonne de la table des articles,
- * pas une négation sur table jointe. Cette distinction a coûté cher le 26 août
- * 2026 — voir la règle 69 du vérificateur.
- *
- * Rend 0 tant qu'aucun article de bannière n'existe, et {id_article!=0}
- * n'écarte alors personne.
+ *   — _DIR_IMG est un réglage de SPIP, pas une constante universelle. L'écrire
+ *     « IMG/ » en dur marcherait ici et casserait ailleurs ;
+ *   — l'adresse doit être ABSOLUE. Une adresse relative se casse dès que la
+ *     page a des segments, ce qui est le cas de toutes nos URL d'articles ;
+ *   — on relit le DISQUE. Si le fichier a été effacé à la main, la
+ *     configuration mentirait et la page appellerait une image absente. Ce qui
+ *     n'existe pas ne s'affiche pas, et le thème reprend la place.
  */
-function filtre_marly_article_banniere_dist($rien = '') {
-	$id_mot = sql_getfetsel('id_mot', 'spip_mots', 'titre = ' . sql_quote('Bannière'));
-	if (!$id_mot) {
-		return 0;
+function filtre_marly_url_banniere_dist($rien = '') {
+	include_spip('inc/config');
+	$nom = lire_config('marly/banniere', '');
+	if ($nom === '' or !@is_file(_DIR_IMG . $nom)) {
+		return '';
 	}
-	return (int) sql_getfetsel('a.id_article',
-		'spip_articles AS a INNER JOIN spip_mots_liens AS l ON l.id_objet = a.id_article',
-		'l.id_mot = ' . intval($id_mot) . ' AND l.objet = ' . sql_quote('article')
-		. ' AND a.statut = ' . sql_quote('publie'),
-		'', 'a.date DESC');
+	include_spip('inc/filtres');
+	return url_absolue(_DIR_IMG . $nom);
 }
 
 /**

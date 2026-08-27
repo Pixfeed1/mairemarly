@@ -16,6 +16,21 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'intro_reglages'   => 'Ces informations s’affichent dans l’en-tête et le pied de page du site. Laissez vide ce que la commune n’a pas : rien ne s’affichera.',
 
 	'legende_contact'  => 'Coordonnées de la mairie',
+
+	// --- La photographie de bannière de la page d'accueil --------------------
+	'legende_banniere' => 'Photographie de la page d’accueil',
+	'banniere_intro'   => 'La grande photographie qui occupe le haut de la page d’accueil, derrière la barre de recherche. Tant qu’aucune n’est déposée, celle du thème s’affiche.',
+	'champ_banniere'   => 'Choisir une photographie',
+	'banniere_aide'    => 'Format paysage, au moins 1200 pixels de large, 1920 c’est mieux. JPEG, PNG ou WebP, 8 Mo au maximum. La bannière est une bande très large : le sujet doit se trouver au milieu en hauteur, sinon il sera coupé.',
+	'banniere_retirer' => 'Retirer cette photographie',
+	'banniere_retirer_aide' => 'Cochez puis enregistrez : la photographie du thème reprendra sa place.',
+	'champ_banniere_credit' => 'Crédit photographique',
+	'banniere_credit_aide'  => 'S’affiche en petit dans le coin de la bannière. Par exemple : Photo : Tourisme Thiérache. À remplir si la photographie n’a pas été prise par la commune.',
+	'erreur_banniere_envoi' => 'Le fichier n’a pas pu être envoyé. Il est probablement trop lourd pour le serveur : essayez une image plus légère.',
+	'erreur_banniere_type'  => 'Ce fichier n’est pas une image. Formats acceptés : JPEG, PNG, WebP.',
+	'erreur_banniere_petite' => 'Cette image ne fait que @largeur@ pixels de large. Il en faut au moins 1200, sinon elle sera floue sur un grand écran.',
+	'erreur_banniere_portrait' => 'Cette photographie est plus haute que large. La bannière est une bande horizontale : une image en portrait y serait coupée de presque tout.',
+	'erreur_banniere_lourde' => 'Cette image dépasse 8 Mo. Réduisez-la avant de l’envoyer : une page d’accueil aussi lourde met plusieurs secondes à s’afficher.',
 	'legende_reseaux'  => 'Réseaux sociaux',
 	'legende_appli'    => 'Application d’alerte',
 
