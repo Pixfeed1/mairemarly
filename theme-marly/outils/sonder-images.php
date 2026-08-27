@@ -131,6 +131,56 @@ if ($sans_doc) {
 	if (count($sans_doc) > 25) { printf("  ... et %d autres\n", count($sans_doc) - 25); }
 }
 
+/* ---------------------------------------------------------------------------
+   CE QUI DECIDE VRAIMENT DE L'AFFICHAGE.
+
+   Sur un SPIP, une image d'article ne vit pas dans le texte : elle est
+   attachee comme DOCUMENT. Mais les listes et la page d'accueil n'affichent
+   pas les documents, elles affichent le LOGO. Ce sont deux choses distinctes,
+   et un import peut tres bien reussir la premiere en ignorant la seconde.
+   C'est alors invisible en base et flagrant a l'ecran.
+   --------------------------------------------------------------------------- */
+echo "\nCE QUE LES GABARITS PEUVENT MONTRER\n";
+
+$avec_logo = 0; $avec_image = 0; $ni_ni = 0; $logo_seul = 0; $image_seule = 0;
+$candidats = array();
+foreach ($articles as $a) {
+	$id = intval($a['id_article']);
+
+	/* Le logo d'un article, c'est un fichier IMG/artonNN.ext — pas une ligne
+	   en base. On regarde donc le disque, pas une table. */
+	$logo = glob($racine . '/IMG/arton' . $id . '.*');
+	$n_img = sql_countsel('spip_documents AS d JOIN spip_documents_liens AS l ON l.id_document = d.id_document',
+		"l.objet='article' AND l.id_objet=" . $id . " AND d.mode='image'");
+
+	if ($logo) { $avec_logo++; }
+	if ($n_img) { $avec_image++; }
+	if ($logo and !$n_img) { $logo_seul++; }
+	if (!$logo and $n_img) { $image_seule++; $candidats[] = $id . ' : ' . $a['titre']; }
+	if (!$logo and !$n_img) { $ni_ni++; }
+}
+printf("  articles avec un LOGO (IMG/artonNN)        : %d\n", $avec_logo);
+printf("  articles avec au moins une IMAGE attachee  : %d\n", $avec_image);
+printf("  ... dont sans logo : une image existe mais\n");
+printf("      aucune liste ne peut l'afficher        : %d\n", $image_seule);
+printf("  articles avec un logo et aucune image      : %d\n", $logo_seul);
+printf("  articles sans logo ni image                : %d\n", $ni_ni);
+
+if ($candidats) {
+	echo "\nARTICLES QUI ONT UNE IMAGE QUE PERSONNE NE MONTRE\n";
+	foreach (array_slice($candidats, 0, 30) as $l) { echo '  ' . $l . "\n"; }
+	if (count($candidats) > 30) { printf("  ... et %d autres\n", count($candidats) - 30); }
+}
+
+/* Le partage entre images et pieces jointes : une bande << derniers
+   documents >> pleine de PDF et zero vignette d'article, ce n'est pas la
+   meme panne selon que l'ancien site avait des photos ou seulement des PDF. */
+echo "\nLES 71 DOCUMENTS, PAR NATURE\n";
+foreach (sql_allfetsel('mode, extension, COUNT(*) AS n', 'spip_documents',
+                       '', 'mode, extension', 'n DESC') as $d) {
+	printf("  %-10s %-6s %d\n", $d['mode'], $d['extension'], $d['n']);
+}
+
 $docs = sql_countsel('spip_documents');
 $lies = sql_countsel('spip_documents_liens', "objet='article'");
 printf("\nDOCUMENTS EN BASE : %d, dont %d relies a un article.\n", $docs, $lies);
