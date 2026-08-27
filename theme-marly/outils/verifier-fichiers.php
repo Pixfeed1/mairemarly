@@ -117,6 +117,18 @@ function absolue($lien, $base) {
 	return $origine . '/' . implode('/', $morceaux);
 }
 
+/** Le dossier depuis lequel un navigateur résout les liens relatifs de cette
+    page. Attention à la barre finale : /infos/ est un dossier à lui seul,
+    alors que dirname() la mange et rend / — ce qui ferait passer pour saine
+    une page qui a bel et bien besoin de la balise <base>. */
+function dossier_de($url) {
+	$chemin = (string) parse_url($url, PHP_URL_PATH);
+	if ($chemin === '') { return '/'; }
+	if (substr($chemin, -1) === '/') { return $chemin; }
+	$d = dirname($chemin);
+	return ($d === '/' or $d === '.') ? '/' : $d . '/';
+}
+
 /* Une page se parcourt, un fichier se vérifie. La distinction se fait sur
    l'extension : c'est grossier, mais SPIP sert ses pages sans extension ou en
    .html, et tout le reste est un fichier. */
@@ -163,9 +175,14 @@ while ($a_voir and $n_pages < $max) {
 	$base = $cle;
 	if (preg_match(',<base[^>]+href\s*=\s*["\']([^"\']+)["\'],i', $r['page'], $b)) {
 		$base = $b[1];
-	} else {
-		$soucis[] = "BASE MANQUANTE sur $cle — tous les liens relatifs de cette "
-		          . "page sont faux pour le visiteur";
+	} elseif (dossier_de($cle) !== '/') {
+		/* ELLE N'EST EXIGEE QUE HORS DE LA RACINE. Sur spip.php?page=x le
+		   chemin est /spip.php : un lien relatif y est resolu depuis / et il
+		   est juste. SPIP ne pose donc pas de <base> la, et la reclamer
+		   revenait a signaler 69 pages saines — le meme travers que la
+		   version precedente, qui inventait 57 pages en 404. */
+		$soucis[] = "BASE MANQUANTE sur $cle — hors de la racine, tous les liens "
+		          . "relatifs de cette page sont faux pour le visiteur";
 	}
 
 	if (preg_match_all(',(?:href|src)\s*=\s*["\']([^"\']+)["\'],i', $r['page'], $m)) {
