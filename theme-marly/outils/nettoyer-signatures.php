@@ -98,7 +98,13 @@ $ecrire = in_array('--ecrire', $argv, true);
    article n'en est pas une. Et « par » doit suivre une date en toutes
    lettres, donc « distribue par la mairie » ne bouge jamais. */
 $jour  = '(?:1er|\d{1,2})';
-$mois  = '(?:janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)';
+/* LES MOIS S'ECRIVENT AUSSI EN ENTITES HTML. L'ancien site servait
+   << ao&ucirc;t >> et << d&eacute;cembre >> ; l'import a repris le corps tel
+   quel, entites comprises. Un motif ecrit avec les seuls accents ne trouve
+   alors RIEN, et le script conclut a tort qu'il n'y a rien a nettoyer.
+   Chaque mois accentue est donc donne dans ses deux formes. */
+$mois  = '(?:janvier|f(?:é|&eacute;)vrier|mars|avril|mai|juin|juillet'
+	. '|ao(?:û|&ucirc;)t|septembre|octobre|novembre|d(?:é|&eacute;)cembre)';
 $date  = 'Le\s+' . $jour . '\s+' . $mois . '\s+\d{4}';
 $motifs = array(
 	'#^\s*<p>\s*' . $date . '\s*,\s*par\s+[^,.\n<]{1,40}\s*[,.]?\s*</p>\s*#ui',
@@ -173,6 +179,31 @@ if (!$vus) {
 			printf("    %-11s %s\n", $champ . ' :',
 				$v === '' ? '(vide)' : str_replace(array("\r", "\n"), ' ', mb_substr($v, 0, 110)));
 		}
+	}
+
+	/* SONDE LARGE. Les cinq plus recents ne prouvent rien : ce sont les pages
+	   legales, ecrites par nous. On cherche donc, sur TOUS les articles, le
+	   mot << par >> dans les 120 premiers caracteres — sans exiger de date ni
+	   de forme. Ce qui sort ici et que le motif strict n'a pas pris, c'est
+	   exactement ce qu'il faut lui apprendre a reconnaitre. */
+	echo "\nSONDE LARGE : le mot << par >> en tete de champ, tous articles.\n";
+	$trouves = 0;
+	$r3 = sql_select('id_article, titre, ' . implode(', ', $champs_lus),
+		'spip_articles', '', '', 'date DESC');
+	while ($a = sql_fetch($r3)) {
+		foreach ($champs_lus as $champ) {
+			$v = trim((string) $a[$champ]);
+			$tete = mb_substr($v, 0, 120);
+			if ($v !== '' && preg_match('#\bpar\b#ui', $tete)) {
+				$trouves++;
+				printf("\n  [%d] %s\n", $a['id_article'], $a['titre']);
+				printf("      %s : %s\n", $champ, str_replace(array("\r", "\n"), ' ', $tete));
+			}
+		}
+	}
+	if (!$trouves) {
+		echo "  Rien. Le mot << par >> n'apparait en tete d'aucun champ.\n";
+		echo "  Il n'y a donc plus de signature dans le contenu.\n";
 	}
 	echo "\n";
 } elseif ($ecrire) {
