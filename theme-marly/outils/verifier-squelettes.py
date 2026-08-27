@@ -548,7 +548,16 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
 #     pour y corriger un texte, etait accuse de les publier sans les dater.
 #     Elle exige desormais une ECRITURE de statut — 'statut' => 'publie', ou
 #     un appel a objet_instituer. Lire un statut n'est pas l'ecrire.
-_ECRIT_PUBLIE = re.compile(r"'statut'\s*=>\s*'publie'|objet_instituer\(")
+#     RESSERREE UNE SECONDE FOIS LE 27 AOUT 2026, pour la meme raison. Elle
+#     cherchait << 'statut' => 'publie' >> sans regarder QUELLE TABLE : le
+#     reparateur d'images, qui publie des DOCUMENTS et se contente de reecrire
+#     le texte des articles, etait accuse de les publier sans les dater.
+#     Publier un document ne retimbre aucune date d'article.
+_ECRIT_PUBLIE = re.compile(
+    r"sql_updateq\(\s*'spip_articles'\s*,\s*array\(\s*'statut'\s*=>\s*'publie'"
+    r"|objet_instituer\(\s*'article'"
+    r"|objet_(?:modifier|inserer)\(\s*'article'[^;]{0,400}?'statut'\s*=>\s*'publie'",
+    re.S)
 for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
     _src = open(_f, encoding='utf-8').read()
     if re.search(r"objet_modifier\('article'", _src) and _ECRIT_PUBLIE.search(_src) \
