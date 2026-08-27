@@ -161,6 +161,14 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'credits'              => 'Crédits',
 	'plan_du_site'         => 'Plan du site',
 
+	// --- Credits des ressources tierces --------------------------------------
+	// Le blason est le seul element du site qui vienne d'un auteur exterieur et
+	// dont la licence impose une attribution nominative. Elle est portee ici et
+	// non dans la base : ces pages sont ecrites par la mairie, et ce credit
+	// engage le prestataire, pas la commune.
+	'credits_ressources'   => 'Ressources utilisées',
+	'credits_blason'       => 'Blason de la commune : dessin de Chatsam, sous licence Creative Commons BY-SA 3.0, via Wikimedia Commons. Les armes elles-mêmes ne sont la propriété de personne : c’est ce dessin-là qui est crédité.',
+
 	// --- Articles et rubriques ---------------------------------------------
 	'publie_le'            => 'Publié le',
 	'mis_a_jour_le'        => 'Mis à jour le',

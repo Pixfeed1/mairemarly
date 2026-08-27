@@ -9,8 +9,8 @@
 
   ELLES N'ONT PAS DE PHOTOGRAPHIE NON PLUS. Une rubrique porte un logo, ces
   pages-la n'existent pas dans la base et n'en ont pas ou en accrocher. Le
-  paysage dessine tient donc seul, et c'est tres bien : ces pages sont des
-  outils, pas des vitrines.
+  blason tient donc seul, et c'est tres bien : ces pages sont des outils, pas
+  des vitrines.
 
   Parametre : cle, le nom de la chaine de langue du titre.
 
@@ -27,21 +27,25 @@
 ]
 #SET{titre,#VAL{marly:}|concat{#ENV{cle}}|_T}
 
-<div class="bandeau-illustre">
-	#SET{bandeau,#VAL|marly_url_bandeau}
+#SET{bandeau,#VAL|marly_url_bandeau}
+<div class="bandeau-illustre[(#GET{bandeau}|non|?{' sans-image'})]">
 
 	[(#REM) LA PHOTOGRAPHIE DES PAGES DE SECTION vient de Configuration,
 	        Reglages de la commune. Une seule pour toutes ces pages : elles
 	        n'existent pas dans la base et n'ont donc aucune rubrique a qui
 	        emprunter un logo. Une rubrique, elle, garde le sien.
 
-	        Tant que rien n'est depose, le paysage dessine tient la place. ]
+	        Tant que rien n'est depose, la bande porte le blason de la
+	        commune et rien d'autre. Un paysage dessine y figurait ; il a ete
+	        retire le 27 aout 2026 : quel que soit son metier, un dessin de
+	        paysage se lit comme une illustration generee, et une mairie
+	        n'illustre pas ses titres, elle les signe. ]
 	[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
 	[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
-	[(#GET{bandeau}|non)<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
-	     width="1440" height="260" alt="" aria-hidden="true">]
 
 	<div class="bandeau-carton">
+		[(#GET{bandeau}|non)<img class="bandeau-blason" src="#CHEMIN{img/blason.webp}"
+		     width="360" height="396" alt="" aria-hidden="true">]
 		<div>
 			<nav class="fil-ariane" aria-label="Fil d’Ariane">
 				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>

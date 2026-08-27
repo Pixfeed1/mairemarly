@@ -13,9 +13,8 @@
 <BOUCLE_rub(RUBRIQUES){id_rubrique}>
 <div class="urba-page">
 
-<div class="bandeau-illustre">
-	[(#REM) Meme regle que sur les autres pages de section : la photographie
-	        si la mairie en a depose une, le paysage dessine sinon. ]
+#SET{bandeau,#VAL|marly_url_bandeau}
+<div class="bandeau-illustre[(#GET{bandeau}|non|?{' sans-image'})]">
 	[(#REM) LA PHOTOGRAPHIE DES PAGES DE SECTION vient de Configuration,
 	        Reglages de la commune.
 
@@ -27,14 +26,17 @@
 	        qu'il fallait creer un article et lui poser un mot-cle a l'orthographe
 	        exacte pour changer une image de fond.
 
-	        Tant que rien n'est depose, le paysage dessine tient la place. ]
-	#SET{bandeau,#VAL|marly_url_bandeau}
+	        Tant que rien n'est depose, la bande porte le blason de la
+	        commune et rien d'autre. Un paysage dessine y figurait ; il a ete
+	        retire le 27 aout 2026 : quel que soit son metier, un dessin de
+	        paysage se lit comme une illustration generee, et une mairie
+	        n'illustre pas ses titres, elle les signe. ]
 	[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
 	[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
-	[(#GET{bandeau}|non)<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
-	     width="1440" height="260" alt="" aria-hidden="true">]
 
 	<div class="bandeau-carton">
+		[(#GET{bandeau}|non)<img class="bandeau-blason" src="#CHEMIN{img/blason.webp}"
+		     width="360" height="396" alt="" aria-hidden="true">]
 		<div>
 			<nav class="fil-ariane" aria-label="Fil d’Ariane">
 				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
