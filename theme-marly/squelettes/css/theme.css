@@ -171,7 +171,18 @@ body::after{
 
 .heros{
 	position:relative;
-	min-height:clamp(300px,34vw,420px);
+	/* 520 PLUTOT QUE 420, ET C'EST LE REGLAGE QUI A LE PLUS COMPTE.
+	   Mesure du 27 aout 2026, quatre geometries rendues a 1440 et 1920 px sur
+	   la photographie reelle : a 420 px la bande fait 4,6:1 sur un ecran de
+	   bureau et il ne reste qu'un bandeau de brique. A 520 elle tombe a 3,7:1,
+	   et l'on voit enfin l'horloge, la tourelle ronde, la nef et le pignon —
+	   on reconnait l'eglise au lieu d'en deviner un morceau.
+
+	   J'avais annonce qu'il faudrait plutot remonter l'ancrage de 34 a 20 %.
+	   La mesure a dit l'inverse : a 20 % on gagne du ciel vide et on perd le
+	   batiment. Sur une photographie dont le sujet est vertical, ce qui
+	   compte est la HAUTEUR de la bande, pas le point d'ancrage. */
+	min-height:clamp(340px,40vw,520px);
 	display:flex; align-items:center; justify-content:center;
 	overflow:hidden;
 	/* Ciel dégradé + bande de paysage ancrée en bas. Une scène plein cadre
@@ -187,17 +198,35 @@ body::after{
    Sa regle est donc partie avec lui, sinon elle serait devenue du style mort
    que plus rien ne pose (regle 67 du verificateur). */
 .heros-image{ position:absolute; inset:0; }
-/* Le recadrage remonte le point d'ancrage : la banniere est une bande tres
-   large, la photographie un 4:3, et centre le cadrage coupait la fleche.
-   C'est le parvis qui cede, ce qui ne coute rien. */
-.heros-defaut img{ object-position:50% 34%; }
+/* LE REGLAGE DE LUMIERE NE VIT QUE SUR LA PHOTOGRAPHIE PAR DEFAUT, et c'est
+   important : il est calibre pour CELLE-CI, prise a l'heure bleue. Le jour ou
+   la mairie publie sa propre banniere par un article portant le mot-cle
+   << Banniere >>, sa photographie ne subira aucun de ces filtres — sinon on
+   lui appliquerait une correction pensee pour une autre image.
+
+   contrast en dessous de 1 releve les noirs plus qu'il n'abaisse les blancs :
+   c'est la brique dans l'ombre qui remonte, pas le ciel. C'est ce qui
+   distingue ce reglage d'une simple montee de luminosite, qui delavait tout. */
+.heros-defaut img{
+	object-position:50% 34%;
+	filter:brightness(1.16) contrast(.94) saturate(1.08);
+}
 .heros-image:empty{ display:none; }
 .heros-image img{ width:100%; height:100%; object-fit:cover; }
-/* Un voile sombre en bas seulement : l'image reste lisible en haut, le champ
-   garde son contraste en bas. */
+/* UN VOILE BLANC, ET NON PLUS UN VOILE NOIR.
+
+   L'ancien assombrissait jusqu'a 45 % en bas de bande. Il datait d'un temps
+   ou l'on croyait devoir proteger le contraste du champ de recherche — mais
+   ce champ est un pave BLANC opaque, il porte son contraste avec lui, et le
+   credit photo a lui aussi son propre fond. Le voile noir ne protegeait donc
+   rien : il ne faisait qu'eteindre la photographie.
+
+   Celui-ci releve les noirs uniformement, comme un fondu de pellicule. La
+   brique de l'eglise sort de l'ombre sans que le ciel d'heure bleue vire au
+   turquoise — ce qui arrivait des qu'on montait la luminosite seule. */
 .heros-voile{
 	position:absolute; inset:0;
-	background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,.12) 45%,rgba(0,0,0,.45) 100%);
+	background:rgba(255,255,255,.12);
 }
 .heros-dedans{
 	position:relative; z-index:1; width:min(760px,100%); padding:24px;
