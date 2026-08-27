@@ -106,9 +106,23 @@ $jour  = '(?:1er|\d{1,2})';
 $mois  = '(?:janvier|f(?:é|&eacute;)vrier|mars|avril|mai|juin|juillet'
 	. '|ao(?:û|&ucirc;)t|septembre|octobre|novembre|d(?:é|&eacute;)cembre)';
 $date  = 'Le\s+' . $jour . '\s+' . $mois . '\s+\d{4}';
+/* LE NOM EST DANS UN LIEN, et c'est ce qui a fait echouer les deux premieres
+   versions. L'ancien site ecrivait :
+
+       <p>Le 20 d&eacute;cembre 2023, par <a href="spip.php?auteur8">severine</a>,</p>
+
+   Le motif interdisait le caractere < dans le nom — precaution raisonnable
+   pour ne pas deborder sur le texte suivant — et ne pouvait donc jamais
+   reconnaitre un nom entoure d'une balise. Dix-sept articles portaient la
+   signature, le script en trouvait zero, et il l'annoncait sans reserve.
+
+   Le lien est donc admis, mais ENCADRE : une seule balise ouvrante, un nom
+   sans chevron dedans, une seule fermante. Le motif ne peut pas s'emballer et
+   avaler la suite de l'article. */
+$nom = '(?:<a[^>]{0,120}>)?[^<,.\n]{1,40}(?:</a>)?';
 $motifs = array(
-	'#^\s*<p>\s*' . $date . '\s*,\s*par\s+[^,.\n<]{1,40}\s*[,.]?\s*</p>\s*#ui',
-	'#^\s*' . $date . '\s*,\s*par\s+[^,.\n<]{1,40}\s*[,.]?\s*#ui',
+	'#^\s*<p>\s*' . $date . '\s*,\s*par\s+' . $nom . '\s*[,.]?\s*</p>\s*#ui',
+	'#^\s*' . $date . '\s*,\s*par\s+' . $nom . '\s*[,.]?\s*#ui',
 );
 
 /* TROIS CHAMPS, ET LE PREMIER EST CELUI QU'ON AVAIT OUBLIE. La premiere
