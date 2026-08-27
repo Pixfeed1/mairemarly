@@ -77,6 +77,38 @@ APRES=$(grep -o 'version="[^"]*"' "$SITE/plugins/marly/paquet.xml" | head -1)
 if [ "$(id -u)" = "0" ]; then
 	echo "--- Proprietaire"
 	chown -R --reference="$SITE" "$SITE/squelettes" "$SITE/plugins/marly"
+
+	# IMG/ ET local/ AUSSI, ET C'EST LE PLUS IMPORTANT DES TROIS.
+	#
+	# Tout script lance en root y depose des fichiers lui appartenant : un
+	# import, une reparation d'images, une mise a jour de base. Le serveur
+	# refuse alors de les servir — et il repond 404, PAS 403. Un 404 envoie
+	# chercher la panne du cote du chemin ou du fichier manquant, alors que
+	# le fichier est la, a la bonne taille, lisible par tous.
+	#
+	# Mesure du 27 aout 2026 : les 44 photographies rapatriees et les 52 PDF
+	# de comptes rendus etaient invisibles pour cette seule raison. Les PDF
+	# depuis l'import du 22 aout — cinq jours de liens morts sur la page
+	# d'accueil, que personne n'avait vus faute d'avoir clique.
+	for d in IMG local; do
+		if [ -d "$SITE/$d" ]; then
+			chown -R --reference="$SITE" "$SITE/$d"
+		fi
+	done
+fi
+
+# ON RELIT PLUTOT QUE DE CROIRE LE chown SUR PAROLE.
+if [ -d "$SITE/IMG" ]; then
+	etrangers=$(find "$SITE/IMG" ! -user "$(stat -c %U "$SITE")" | head -5)
+	if [ -n "$etrangers" ]; then
+		echo "  ================================================================"
+		echo "  DES FICHIERS DE IMG/ N'APPARTIENNENT PAS A $(stat -c %U "$SITE") :"
+		echo "$etrangers" | sed 's/^/      /'
+		echo "  Le serveur repondra 404 dessus, sans dire pourquoi."
+		echo "  A corriger en root :"
+		echo "      chown -R $(stat -c %U "$SITE") $SITE/IMG"
+		echo "  ================================================================"
+	fi
 fi
 
 # SPIP garde plusieurs caches, et vider le premier ne vide pas les autres.
