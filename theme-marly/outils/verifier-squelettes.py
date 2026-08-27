@@ -1703,6 +1703,12 @@ _CSS_HORS_NOUS = {
     # aligne a gauche ou a droite, et sa legende. Aucun de nos fichiers ne les
     # pose, et pourtant elles doivent etre habillees.
     'spip_documents_gauche', 'spip_documents_droite', 'spip_doc_legende',
+    # Le modele de pagination de SPIP pose les siennes sur la liste qu'il rend :
+    # nos gabarits n'ecrivent que #PAGINATION. Sans cette exemption, habiller
+    # une pagination revenait a declencher la regle — ce qui pousse a ne pas
+    # l'habiller, et c'est exactement ce qui s'etait passe : la liste sortait
+    # avec ses puces nues, alignee a gauche.
+    'pagination-items', 'pagination-item', 'pagination-item-label',
 }
 
 _css_f = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')

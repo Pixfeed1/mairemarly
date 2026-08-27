@@ -160,6 +160,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'accessibilite'        => 'Accessibilité',
 	'credits'              => 'Crédits',
 	'plan_du_site'         => 'Plan du site',
+	'pagination_nav'       => 'Pages de résultats',
 
 	// --- Articles et rubriques ---------------------------------------------
 	'publie_le'            => 'Publié le',

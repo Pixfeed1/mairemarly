@@ -1491,9 +1491,36 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .article-lettre .pilule{ background:#fff; color:var(--accent); border-color:#fff; }
 .article-lettre .pilule:hover{ background:var(--creme); }
 
-/* La pagination d'une rubrique fournie. */
-.pagination{ font-family:var(--texte); font-size:14.5px; text-align:center; margin:26px 0 0; }
-.pagination a{ color:var(--accent); }
+/* ---- LA PAGINATION D'UNE RUBRIQUE FOURNIE -------------------------------
+
+   Le modele << prive >> de SPIP rend une LISTE, avec ses propres classes :
+   .pagination-items sur le ul, .pagination-item sur chaque li, .on.active sur
+   la page courante, .all sur le lien << tout afficher >>. Le theme n'en
+   habillait aucune : on voyait les puces nues d'une liste alignee a gauche.
+
+   LE LIEN << TOUT AFFICHER >> EST RETIRE. SPIP le rend par le signe infini,
+   qui ne veut rien dire pour un habitant, et il n'apporte rien sur deux ou
+   trois pages. On le cache plutot que de reecrire son libelle en CSS : du
+   texte d'interface dans une feuille de style ne se traduit pas et ne se
+   trouve pas quand on le cherche. */
+.pagination{ font-family:var(--texte); font-size:14.5px; margin:26px 0 0; }
+.pagination-items{
+	list-style:none; margin:0; padding:0;
+	display:flex; flex-wrap:wrap; justify-content:center; gap:8px;
+}
+.pagination-item-label{
+	display:block; min-width:38px; padding:7px 11px; border-radius:3px;
+	border:1px solid var(--trait-champ); color:var(--accent);
+	text-align:center; text-decoration:none;
+}
+a.pagination-item-label:hover,
+a.pagination-item-label:focus-visible{ background:var(--creme-sombre); }
+/* La page courante n'est pas un lien : elle se distingue par le fond, pas par
+   un soulignement qu'on chercherait a cliquer. */
+.pagination-item.on .pagination-item-label{
+	background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700;
+}
+.pagination-item.all{ display:none; }
 
 /* ===========================================================================
    Le plan du site

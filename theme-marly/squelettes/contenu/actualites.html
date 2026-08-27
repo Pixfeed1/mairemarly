@@ -40,7 +40,12 @@
 		</a></li>
 	</BOUCLE_arts>
 	</ul>
-	[<p class="pagination">(#PAGINATION{prive})</p>]
+	[(#REM) UN NAV, ET NON UN P. Le modele << prive >> de SPIP rend une
+	        LISTE, et une liste dans un paragraphe est du HTML invalide :
+	        le navigateur referme le p tout seul, la liste s'echappe, et
+	        le centrage du theme ne s'appliquait jamais. Mesure du
+	        27 aout 2026, sur /evenements/. ]
+	[<nav class="pagination" aria-label="<:marly:pagination_nav:>">(#PAGINATION{prive})</nav>]
 	</B_arts>
 
 	[(#REM) Rien de publie : on le dit plutot que de laisser une page qui
