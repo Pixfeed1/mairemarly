@@ -25,7 +25,7 @@
 :root{
   --accent:#1E5B41;  --accent-sombre:#14402E;  --jaune:#E5A93C;
   --encre:#1D1A1A;   --encre-doux:#55504A;
-  --creme:#FDF8EE;   --trait:#DED6C6;   --creme-sombre:#F3EFE6;
+  --creme:#FDF8EE;   --trait:#DED6C6;   --creme-sombre:#F3EFE6;   --creme-bandeau:#EDE6D8;
 
   /* --trait dessine des cartes et des filets : c'est un decor, et WCAG exclut
      le decor de sa regle de contraste. --trait-champ dessine la BORDURE D'UN
@@ -1661,51 +1661,42 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    est un bloc de contenu. Ce carton porte du texte, il n'est pas cliquable.
    =========================================================================== */
 .bandeau-illustre{
-	position:relative; min-height:230px; overflow:hidden; margin-bottom:34px;
-	background:linear-gradient(to bottom,#3A7D5C 0%,#1E5B41 55%,#123F2D 100%);
+	position:relative; min-height:230px; overflow:hidden;
+	background:var(--creme-bandeau);
 }
 
-/* ---- LA BANDE DE TETE QUAND IL N'Y A PAS DE PHOTOGRAPHIE ----------------
+/* ---- LE FOND DE LA BANDE, SANS PHOTOGRAPHIE ------------------------------
 
-   Elle portait un paysage dessine. On l'a retire : un dessin de paysage,
-   quel que soit son metier — vectoriel plat, gravure, lavis — se lit comme
-   une illustration generee, et une mairie n'illustre pas ses titres. Elle
-   les signe.
+   Un paysage dessine tenait cette place. Retire le 27 aout 2026 : quel que
+   soit son metier — vectoriel plat, gravure, lavis — un dessin de paysage se
+   lit aujourd'hui comme une illustration generee. Ce n'est pas le trait qui
+   est en cause, c'est le genre. Une mairie n'illustre pas ses titres.
 
-   Le blason de la commune remplace donc le decor. Ce n'est pas une texture :
-   il est plein, pose a gauche du titre, a la taille ou il se lit. Mesure du
-   27 aout 2026 : sous 88px le lion de l'ecusson sur le tout se bouche, sous
-   40px il ne reste rien. D'ou les 120px, et 78px en mobile.
+   A la place, une mosaique des ARMES de la commune. Pas le blason lui-meme :
+   essaye et mesure, repete a 60px son detail tourne au tartan et ses rouges
+   se battent avec tout ce qu'on met autour. C'est sa STRUCTURE qui est
+   dessinee — le parti, le coupe a dextre, l'ecusson sur le tout. Trois traits
+   qui survivent a la reduction, et qui restent ceux de Marly-Gomont et
+   d'aucune autre commune.
 
-   AUCUN FILET ne separe la bande du texte. Le changement de couleur suffit,
-   et l'en-tete pose deja une bordure quarante pixels plus haut : un trait de
-   plus faisait doublon. */
-.bandeau-illustre.sans-image{
-	background:var(--creme-sombre); min-height:0; margin-bottom:0;
-	overflow:visible;
+   Dessin original, d'apres le blasonnement publie : aucune licence a porter.
+   En data-URI comme le grain de papier plus haut — 640 octets, aucun fichier
+   a deployer, aucun chemin a resoudre depuis une feuille de style.
+
+   LE VERT A DISPARU, et avec lui le contraste qui detachait le cartouche :
+   14,7:1 sur le degrade, 1,17:1 sur ce creme. Ce qui tient le cartouche
+   desormais, c'est son ombre portee, son filet d'accent a gauche, et le fait
+   que la mosaique s'arrete net a son bord. Ne pas retirer l'ombre. */
+.bandeau-motif{
+	position:absolute; inset:0;
+	background-image:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='96' height='104'>\
+<defs><g id='e' transform='scale(.62)' fill='none' stroke='%23CFC5AF' stroke-linejoin='round'>\
+<path d='M6 6H74V52C74 70 60 82 40 92C20 82 6 70 6 52Z' stroke-width='3.4'/>\
+<path d='M40 6V92M6 49H40' stroke-width='2.6'/>\
+<path d='M6 6H74V52C74 70 60 82 40 92C20 82 6 70 6 52Z' stroke-width='9' transform='translate(40 44) scale(.34) translate(-40 -49)'/>\
+</g></defs><g opacity='.85'><use href='%23e' x='0' y='0'/><use href='%23e' x='48' y='52'/><use href='%23e' x='-48' y='52'/><use href='%23e' x='96' y='0'/><use href='%23e' x='0' y='104'/><use href='%23e' x='96' y='104'/></g></svg>");
 }
-/* LARGEUR ET REMBOURRAGE REPRIS DE .page-simple, au pixel : le blason doit
-   commencer exactement la ou commence le texte de la page. Le carton flottait
-   au-dessus d'une image, il pouvait etre en retrait ; pose sur un aplat, un
-   decalage de vingt pixels avec le paragraphe en dessous se voit. */
-.sans-image .bandeau-carton{
-	width:min(820px,100%); margin:0 auto; padding:40px 22px 36px;
-	display:flex; align-items:center; gap:26px;
-}
-/* Le carton creme n'a plus lieu d'etre : il protegeait le titre d'une
-   photographie, il n'y en a pas. */
-.sans-image .bandeau-carton > div{
-	background:none; padding:0; border:0; border-radius:0; box-shadow:none;
-}
-.bandeau-blason{ flex:0 0 auto; height:120px; width:auto; display:block; }
-
-/* Le bloc de credits des ressources suit un premier .page-simple : sans cette
-   remise a zero, les deux rembourrages s'additionnent et creusent 128px. */
-.credits-ressources{ padding-top:0; }
-.credits-ressources h2{ font-family:var(--titre); font-size:15px; letter-spacing:.08em;
-	text-transform:uppercase; color:var(--encre-doux); margin:0 0 10px;
-	padding-top:22px; border-top:1px solid var(--trait); }
-.credits-ressources p{ margin:0; font-size:14px; color:var(--encre-doux); }
 .bandeau-image{ position:absolute; inset:0; }
 .bandeau-image:empty{ display:none; }
 .bandeau-image img{ width:100%; height:100%; object-fit:cover; }
@@ -1728,15 +1719,13 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 }
 .bandeau-carton h1{ margin:0; font-family:var(--serif);
 	font-size:clamp(28px,3.8vw,44px); line-height:1.12; }
-.page-sous-carton{ padding-top:40px; }
+.page-sous-carton{ padding-top:74px; }
 @media(max-width:640px){
 	.bandeau-illustre{ min-height:170px; }
 	.bandeau-carton{ margin:92px auto -34px; }
 	.bandeau-carton > div{ padding:20px 22px 18px; }
-	.page-sous-carton{ padding-top:30px; }
-	.sans-image .bandeau-carton{ width:min(820px,100%); margin:0 auto; padding:26px 18px 24px; gap:16px; }
-	.sans-image .bandeau-carton > div{ padding:0; }
-	.bandeau-blason{ height:78px; }
+	.page-sous-carton{ padding-top:58px; }
+	.bandeau-motif{ background-size:68px auto; }
 }
 
 /* ===========================================================================

@@ -10,15 +10,13 @@
 
   CHAQUE RUBRIQUE PORTE SA PROPRE PHOTOGRAPHIE : c'est son logo, depose dans
   l'espace prive. Les comptes rendus prennent la mairie, les travaux un
-  chantier, les actualites la fete du village. Le blason ne parait que si
-  aucune image n'a ete deposee — le site n'est jamais nu, mais il n'est pas
+  chantier, les actualites la fete du village. Le paysage dessine ne sert que
+  si aucune image n'a ete deposee — le site n'est jamais nu, mais il n'est pas
   identique partout non plus.
 ]
 <BOUCLE_rub(RUBRIQUES){id_rubrique}>
 
-#SET{bandeau,#VAL|marly_url_bandeau}
-#SET{illustre,#LOGO_RUBRIQUE|sinon{#GET{bandeau}}}
-<div class="bandeau-illustre[(#GET{illustre}|non|?{' sans-image'})]">
+<div class="bandeau-illustre">
 	[(#REM) TROIS NIVEAUX, DU PLUS PARTICULIER AU PLUS GENERAL.
 
 	        1. Le logo de la rubrique, s'il y en a un. C'est le plus juste :
@@ -26,24 +24,21 @@
 	           rubrique elle-meme, sur l'ecran de SPIP.
 	        2. Sinon, la photographie commune des pages de section, deposee
 	           dans Configuration.
-	        3. Sinon, aucune image : la bande passe au creme et porte le
-	           blason de la commune a cote du titre.
+	        3. Sinon, le paysage dessine.
 
-	        LES DEUX PREMIERS SONT POSES EN ABSOLU et le dernier venu
-	        couvrirait le precedent : un seul des deux est donc ecrit. Le
-	        troisieme n'est pas une image de fond, c'est un autre etat de la
-	        bande — d'ou la classe << sans-image >> plutot qu'un troisieme
-	        calque. ]
+	        UN SEUL des trois est ecrit : ils sont poses en absolu, et le
+	        dernier venu couvrirait les precedents. ]
+	#SET{bandeau,#VAL|marly_url_bandeau}
+
 	[<div class="bandeau-image">(#LOGO_RUBRIQUE||image_reduire{1920,0})</div>]
 
 	[(#LOGO_RUBRIQUE|non)
 		[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
 		[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
+		[(#GET{bandeau}|non)<div class="bandeau-motif"></div>]
 	]
 
 	<div class="bandeau-carton">
-		[(#GET{illustre}|non)<img class="bandeau-blason" src="#CHEMIN{img/blason.webp}"
-		     width="360" height="396" alt="" aria-hidden="true">]
 		<div>
 			<nav class="fil-ariane" aria-label="Fil d’Ariane">
 				<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
