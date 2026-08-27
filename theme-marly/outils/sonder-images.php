@@ -185,6 +185,42 @@ $docs = sql_countsel('spip_documents');
 $lies = sql_countsel('spip_documents_liens', "objet='article'");
 printf("\nDOCUMENTS EN BASE : %d, dont %d relies a un article.\n", $docs, $lies);
 
+/* ---------------------------------------------------------------------------
+   SONDE LARGE : les balises exactes, telles qu'elles sont en base.
+
+   Meme methode que pour les signatures importees. Un motif de remplacement
+   ecrit sur une idee de ce que contient le texte rate a tous les coups ; celui
+   qu'on ecrit apres avoir lu la chaine reelle tombe du premier coup. On
+   imprime donc les balises entieres, sans les interpreter.
+
+   On regarde aussi si le fichier source se retrouve ailleurs sur le disque :
+   une vignette SPIP 3 encode le nom de l'original dans son chemin, et si
+   l'original a ete rapatrie, le remplacement est trivial. Sinon il n'y a rien
+   a reparer et il faut retirer la balise plutot que laisser une image cassee.
+   --------------------------------------------------------------------------- */
+echo "\nSONDE LARGE : LES BALISES <img> TELLES QU'ELLES SONT EN BASE\n";
+$tout = glob($racine . '/IMG/*/*') ?: array();
+$noms = array();
+foreach ($tout as $f) { $noms[strtolower(basename($f))] = $f; }
+
+foreach ($articles as $a) {
+	$champ = $a['chapo'] . "\n" . $a['texte'] . "\n" . $a['descriptif'];
+	if (!preg_match_all(',<img[^>]*>,i', $champ, $m)) { continue; }
+	printf("\n--- article %d : %s\n", $a['id_article'], $a['titre']);
+	foreach ($m[0] as $tag) {
+		echo '    ' . preg_replace('/\s+/', ' ', $tag) . "\n";
+		if (preg_match(',src="([^"]+)",i', $tag, $u)) {
+			$base = strtolower(basename(parse_url($u[1], PHP_URL_PATH) ?: $u[1]));
+			/* Une vignette SPIP 3 s'appelle souvent L300xH225-<nom>.jpg ou
+			   porte le nom d'origine tel quel : on tente les deux lectures. */
+			$nu = preg_replace('/^L\d+xH\d+[-_]?/i', '', $base);
+			if (isset($noms[$base]))      { echo '      -> original present : ' . $noms[$base] . "\n"; }
+			elseif (isset($noms[$nu]))    { echo '      -> original present : ' . $noms[$nu] . "\n"; }
+			else                          { echo "      -> AUCUN original sur le disque\n"; }
+		}
+	}
+}
+
 /* Une image ecrite en dur dans le texte n'apparait pas dans les documents :
    c'est elle qu'on perdra au prochain deplacement du site. */
 echo "\nSi la ligne << liens restes sur free.fr >> n'est pas a zero, l'ancien\n";
