@@ -1699,6 +1699,30 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .bandeau-image{ position:absolute; inset:0; }
 .bandeau-image:empty{ display:none; }
 .bandeau-image img{ width:100%; height:100%; object-fit:cover; }
+
+/* ---- LA VIE ASSOCIATIVE, SEULE PAGE ILLUSTREE ---------------------------
+
+   Une image de mains levees, tres coloree. Brute, elle ecrase la charte : la
+   page devient une affiche et le vert de la commune n'existe plus nulle part.
+   Eteinte, elle ne dit plus rien.
+
+   D'ou ces deux reglages, et deux seulement :
+
+   LA SATURATION TOMBE DE MOITIE. Le geste reste lisible — ce sont toujours des
+   mains, on voit toujours qu'elles sont nombreuses et differentes — mais les
+   couleurs cessent de crier. Le calcul est fait par le NAVIGATEUR, pas dans le
+   fichier : l'image d'origine reste intacte, et si la mairie trouve ca terne un
+   jour, c'est un nombre a changer ici, pas une image a refabriquer.
+
+   UN VOILE CREME EN DEGRADE, dense a gauche ou se pose le cartouche, presque
+   nul a droite ou il n'y a rien a lire. On protege le titre la ou il est, on
+   laisse l'image vivre la ou elle ne gene personne. */
+.bandeau-associatif .bandeau-image img{ filter:saturate(.55) contrast(.95); }
+.bandeau-associatif .bandeau-image::after{
+	content:""; position:absolute; inset:0;
+	background:linear-gradient(to right,
+		rgba(253,248,238,.86) 0%, rgba(253,248,238,.62) 46%, rgba(253,248,238,.24) 100%);
+}
 .bandeau-credit{
 	position:absolute; right:0; top:0; z-index:1; margin:0;
 	background:rgba(29,26,26,.72); color:#fff; font-size:12px; padding:6px 14px;

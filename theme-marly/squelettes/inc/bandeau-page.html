@@ -27,8 +27,25 @@
 ]
 #SET{titre,#VAL{marly:}|concat{#ENV{cle}}|_T}
 
-<div class="bandeau-illustre">
-	#SET{bandeau,#VAL|marly_url_bandeau}
+[(#REM) UNE ILLUSTRATION PROPRE A UNE PAGE, sur demande de l'appelant.
+
+  Une seule page en a une aujourd'hui : la vie associative. Le parametre est
+  volontairement un OUI ET NON, et non un nom de fichier : SPIP n'accepte pas
+  d'accolades imbriquees dans les arguments d'un INCLURE, et une balise de
+  chemin passee en argument ne compile pas. Le chemin est donc ecrit ici, en
+  clair.
+
+  ET CE COMMENTAIRE NE MONTRE PAS L'ECRITURE FAUTIVE, pour la meme raison que
+  celui du dessus sur les crochets : un diese dans un commentaire reste une
+  balise pour le compilateur. Le verificateur vient de le signaler.
+
+  Elle passe AVANT la photographie de Configuration : elle est plus precise,
+  comme le logo d'une rubrique passe avant le bandeau commun. ]
+#SET{asso,#ENV{associatif}}
+#SET{bandeau,#VAL|marly_url_bandeau}
+#SET{illustre,#GET{asso}|sinon{#GET{bandeau}}}
+
+<div class="bandeau-illustre[(#GET{asso}|oui|?{' bandeau-associatif'})]">
 
 	[(#REM) LA PHOTOGRAPHIE DES PAGES DE SECTION vient de Configuration,
 	        Reglages de la commune. Une seule pour toutes ces pages : elles
@@ -38,9 +55,13 @@
 	        Tant que rien n'est depose, la bande porte une mosaique
 	        des armes de la commune. Un paysage dessine y figurait ; retire le
 	        27 aout 2026, il se lisait comme une illustration generee. ]
-	[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
-	[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
-	[(#GET{bandeau}|non)<div class="bandeau-motif"></div>]
+	[(#GET{asso}|oui)<div class="bandeau-image"><img
+	     src="#CHEMIN{img/vie-associative.jpg}" alt=""></div>]
+	[(#GET{asso}|non)
+		[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
+		[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
+	]
+	[(#GET{illustre}|non)<div class="bandeau-motif"></div>]
 
 	<div class="bandeau-carton">
 		<div>
