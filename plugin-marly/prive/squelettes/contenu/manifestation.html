@@ -11,6 +11,31 @@
 
 [(#FORMULAIRE_EDITER_MANIFESTATION{#ENV{id_manifestation,new}})]
 
+[(#REM)
+  LA PHOTOGRAPHIE MANQUAIT ICI. Le formulaire de creation annoncait pourtant
+  << elle s'ajoute dans la colonne de droite >> : sur les ecrans de SPIP, oui,
+  mais ceux-ci sont les notres et leur colonne de gauche est volontairement
+  vide. L'aide decrivait donc un bouton qui n'existait pas, et aucune
+  photographie ne pouvait etre deposee — ce qui explique qu'il n'y en ait
+  aucune en base.
+
+  Releve le 27 aout 2026, apres deux recherches infructueuses : les deux
+  cherchaient << logo >> en minuscules, alors que la balise s'ecrit
+  FORMULAIRE_EDITER_LOGO, en capitales. Association, commerce et elu avaient la leur depuis
+  le debut.
+
+  Confiee a la mediatheque de SPIP : elle gere les vignettes, les droits et le
+  nettoyage. Elle n'apparait qu'apres le premier enregistrement, SPIP ayant
+  besoin d'un identifiant pour rattacher une image a quelque chose.
+]
+[(#ENV{id_manifestation}|=={new}|non)
+<div class="marly-photo">
+	<h2><:marly:photo_manif:></h2>
+	<p class="explication"><:marly:photo_manif_aide:></p>
+	[(#FORMULAIRE_EDITER_LOGO{manifestation,#ENV{id_manifestation},'',#ENV**})]
+</div>
+]
+
 [(#ENV{id_manifestation}|=={new}|non)
 <BOUCLE_inscrits(RESERVATIONS){id_manifestation=#ENV{id_manifestation}}{par date}{statut IN demande,acceptee}>
 <B_inscrits>

@@ -1888,6 +1888,54 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                      "chiffres, ou les retirer si l'image ne participe pas a la mise en page")
 
 
+# 71. Un objet dont la fiche publique montre une photographie, sans nulle part
+#     ou la deposer.
+#     #LOGO_COMMERCE dans un gabarit public promet une image. Si aucun ecran
+#     de l'espace prive ne porte #FORMULAIRE_EDITER_LOGO pour cet objet, la
+#     mairie n'a AUCUN moyen d'en mettre une : la promesse ne peut pas etre
+#     tenue, et la fiche restera eternellement sur son repli.
+#
+#     Mesure du 27 aout 2026 : l'evenement et la salle etaient dans ce cas.
+#     Pire, leur formulaire de creation affichait « elle s'ajoute dans la
+#     colonne de droite » — vrai sur les ecrans de SPIP, faux sur les notres,
+#     dont la colonne de gauche est volontairement vide. L'aide decrivait un
+#     bouton qui n'existait pas. Zero photographie en base, et personne ne
+#     s'etait demande pourquoi.
+#
+#     La faute a survecu a DEUX recherches, la mienne et celle du client, qui
+#     cherchaient toutes deux « logo » en minuscules quand la balise s'ecrit
+#     #FORMULAIRE_EDITER_LOGO. Une recherche mal filtree ne rend pas « je n'ai
+#     pas su chercher », elle rend « rien trouve » avec l'aplomb d'un resultat.
+#     C'est la deuxieme fois dans la meme journee ; d'ou cette regle, qui ne se
+#     fatigue pas et ne se trompe pas de casse.
+_OBJETS_SPIP = ('article', 'rubrique', 'auteur', 'breve', 'site', 'mot',
+                'syndic', 'document', 'groupe')
+_logos_promis = set()
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in re.finditer(r'#LOGO_([A-Z_]+)', _masque):
+        _o = _c.group(1).lower()
+        if _o not in _OBJETS_SPIP:
+            _logos_promis.add(_o)
+
+_prive = ''
+for _f in glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.html'), recursive=True):
+    try:
+        _prive += open(_f, encoding='utf-8').read()
+    except Exception:
+        pass
+
+for _o in sorted(_logos_promis):
+    if not re.search(r'#FORMULAIRE_EDITER_LOGO\{\s*' + re.escape(_o) + r'\s*,', _prive):
+        signaler('plugin-marly/prive/squelettes/contenu/', 1,
+                 f"les gabarits publics affichent #LOGO_{_o.upper()}, mais aucun ecran de "
+                 "l'espace prive ne porte #FORMULAIRE_EDITER_LOGO pour cet objet : la "
+                 "mairie n'a nulle part ou deposer la photographie, et la fiche restera "
+                 "sur son repli pour toujours")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
