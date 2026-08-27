@@ -118,7 +118,7 @@
 					{recherche?}
 					{par date_debut}{0,24}>
 				<a class="carte" href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">
-					[<span class="carte-photo">(#LOGO_MANIFESTATION||image_reduire{560,315})</span>]
+					[<span class="carte-photo"><img src="(#LOGO_MANIFESTATION||image_reduire{560,315}|extraire_attribut{src}|url_absolue)" alt=""></span>]
 					<span class="carte-corps">
 						<span class="carte-quand">[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate_jourcourt)] · [(#DATE_DEBUT|affdate{'H\hi'})]</span>
 						<span class="carte-titre">#TITRE</span>
@@ -140,7 +140,7 @@
 			<div class="cartes">
 				<BOUCLE_salles(SALLES){statut=publie}{recherche?}{par titre}>
 				<a class="carte" href="[(#URL_PAGE{salle}|parametre_url{id_salle,#ID_SALLE})]">
-					[<span class="carte-photo">(#LOGO_SALLE||image_reduire{560,315})</span>]
+					[<span class="carte-photo"><img src="(#LOGO_SALLE||image_reduire{560,315}|extraire_attribut{src}|url_absolue)" alt=""></span>]
 					<span class="carte-corps">
 						<span class="carte-quand"><:marly:location:></span>
 						<span class="carte-titre">#TITRE</span>

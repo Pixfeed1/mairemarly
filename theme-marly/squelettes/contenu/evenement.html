@@ -14,7 +14,7 @@
 	<div class="fiche-grille">
 
 		<div class="fiche-gauche">
-			[<div class="fiche-photo">(#LOGO_MANIFESTATION||image_reduire{960,540})</div>]
+			[<div class="fiche-photo"><img src="(#LOGO_MANIFESTATION||image_reduire{960,540}|extraire_attribut{src}|url_absolue)" alt=""></div>]
 
 			<p class="fiche-quand">[(#DATE_DEBUT|nom_jour) ][(#DATE_DEBUT|affdate)] · [(#DATE_DEBUT|affdate{'H\hi'})][ – (#DATE_FIN|affdate{'H\hi'})]</p>
 			<h1 class="fiche-titre">#TITRE</h1>
@@ -34,7 +34,7 @@
 			[(#VIDEO|marly_video_embed|oui)
 			<div class="video-facade" data-video="[(#VIDEO|marly_video_embed|attribut_html)]"
 			     data-titre="[(#TITRE|attribut_html)]">
-				[<div class="video-fond">(#LOGO_MANIFESTATION||image_reduire{960,540})</div>]
+				[<div class="video-fond"><img src="(#LOGO_MANIFESTATION||image_reduire{960,540}|extraire_attribut{src}|url_absolue)" alt=""></div>]
 				<button type="button" class="video-lire">
 					<svg class="ico" aria-hidden="true"><use href="#ri-play-circle-line"/></svg>
 					<span><:marly:voir_la_video:></span>
@@ -50,7 +50,7 @@
 			<div class="galerie">
 				<BOUCLE_photos(DOCUMENTS){id_manifestation}{extension IN jpg,jpeg,png,webp}{par num titre, titre}>
 				<figure>
-					[(#FICHIER|image_reduire{480,320})]
+					[<img src="(#FICHIER|image_reduire{480,320}|extraire_attribut{src}|url_absolue)" alt="">]
 					[<figcaption><b>(#TITRE)</b>[<span class="credit">(#CREDITS)</span>]</figcaption>]
 				</figure>
 				</BOUCLE_photos>

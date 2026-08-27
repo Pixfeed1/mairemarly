@@ -2003,6 +2003,31 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "photographie s'afficherait trois fois")
 
 
+# 74. Une adresse d'image ecrite en RELATIF dans un squelette public.
+#     Mesure du 27 aout 2026, sur /infos/article/alerte-meteo : la page servait
+#     src="IMG/png/neige-2.png". Le navigateur resout ce chemin depuis
+#     /infos/article/ et demande /infos/article/IMG/png/neige-2.png — 404.
+#     Le site emploie les URLs propres, a plusieurs segments : toute adresse
+#     relative est fausse des que la page n'est pas a la racine.
+#
+#     LE DEFAUT DORMAIT DEPUIS DES SEMAINES sur les fiches d'elus, d'assos et
+#     de commerces. Il ne se voyait pas parce que presque aucune n'a de photo :
+#     il serait reapparu seul le jour du premier depot.
+#
+#     PAS DE BALISE <base> POUR REGLER CA D'UN COUP. Le theme dessine ses
+#     icones avec <use href="#ri-...">, et <base> ferait resoudre ces fragments
+#     contre l'adresse du site : toutes les icones disparaitraient.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    if os.sep + 'apercu' + os.sep in _f:
+        continue
+    for _n, _l in enumerate(open(_f, encoding='utf-8'), 1):
+        if ('image_reduire' in _l or '#URL_DOCUMENT' in _l) and 'url_absolue' not in _l:
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), _n,
+                     "adresse d'image relative : sur une URL propre a plusieurs segments "
+                     "le navigateur la resout depuis le dossier de la page et recoit un 404 "
+                     "— terminer par |url_absolue")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
