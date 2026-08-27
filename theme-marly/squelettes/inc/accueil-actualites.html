@@ -117,7 +117,7 @@
 					<BOUCLE_illuune(DOCUMENTS){id_article}{mode=image}{par num titre, date}{0,1}>
 					#SET{illu,#FICHIER}
 					</BOUCLE_illuune>
-					[<img src="(#LOGO_ARTICLE||sinon{#GET{illu}}|image_reduire{900,460}|extraire_attribut{src}|url_absolue)" alt="">]
+					[(#LOGO_ARTICLE||sinon{#GET{illu}}|image_reduire{900,460})]
 				</span>
 				<span class="une-carton">
 					[<span class="une-date">(#DATE|affdate)</span>]

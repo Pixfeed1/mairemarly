@@ -30,7 +30,7 @@
 	        dernier venu couvrirait les precedents. ]
 	#SET{bandeau,#VAL|marly_url_bandeau}
 
-	[<div class="bandeau-image"><img src="(#LOGO_RUBRIQUE||image_reduire{1920,0}|extraire_attribut{src}|url_absolue)" alt=""></div>]
+	[<div class="bandeau-image">(#LOGO_RUBRIQUE||image_reduire{1920,0})</div>]
 
 	[(#LOGO_RUBRIQUE|non)
 		[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]

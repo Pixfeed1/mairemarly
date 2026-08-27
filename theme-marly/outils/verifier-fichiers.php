@@ -85,9 +85,18 @@ function interroger($url, $auth, $corps = false) {
 	return array('code' => 0, 'type' => '', 'page' => '', 'erreur' => 'aucune reponse');
 }
 
-/** Résout une adresse relative contre celle de la page qui la porte. C'est
-    exactement ce que fait le navigateur, et c'est ce qui a manqué aux
-    gabarits : IMG/png/x.png sur /infos/article/y donne /infos/article/IMG/... */
+/** Résout une adresse relative COMME LE FAIT UN NAVIGATEUR, c'est-à-dire
+    contre la balise <base> de la page quand elle existe, et contre l'adresse
+    de la page sinon.
+
+    LA PREMIÈRE VERSION IGNORAIT LE <base>, et ce n'était pas un détail : elle
+    a rendu 57 pages en 404 qui n'existent pour personne. SPIP pose lui-même
+    <base href="https://le-site/"> quand les URLs propres sont actives, et
+    tout le thème s'appuie dessus — le menu écrit href="evenements/", les
+    liens d'articles href="infos/article/x", et c'est correct.
+
+    Un contrôle qui invente des pannes est pire qu'aucun contrôle : on cesse
+    de le lire. */
 function absolue($lien, $base) {
 	$lien = trim(html_entity_decode($lien, ENT_QUOTES, 'UTF-8'));
 	if ($lien === '' or preg_match(',^(#|mailto:|tel:|javascript:|data:),i', $lien)) { return ''; }
@@ -146,9 +155,22 @@ while ($a_voir and $n_pages < $max) {
 
 	printf("%3d. %s\n", $n_pages, $cle);
 
+	/* LA BALISE <base> EST LE POINT DE DEFAILLANCE UNIQUE DU SITE. Tout le
+	   thème écrit ses liens en relatif et s'appuie sur elle. Le jour où elle
+	   disparaît, la navigation entière tombe d'un coup, sur toutes les pages
+	   sauf l'accueil. C'est donc elle qu'il faut surveiller, et non les
+	   adresses relatives qu'elle rend légitimes. */
+	$base = $cle;
+	if (preg_match(',<base[^>]+href\s*=\s*["\']([^"\']+)["\'],i', $r['page'], $b)) {
+		$base = $b[1];
+	} else {
+		$soucis[] = "BASE MANQUANTE sur $cle — tous les liens relatifs de cette "
+		          . "page sont faux pour le visiteur";
+	}
+
 	if (preg_match_all(',(?:href|src)\s*=\s*["\']([^"\']+)["\'],i', $r['page'], $m)) {
 		foreach ($m[1] as $lien) {
-			$u = absolue($lien, $cle);
+			$u = absolue($lien, $base);
 			if ($u === '') { continue; }
 			$meme = (parse_url($u, PHP_URL_HOST) === $hote);
 			if (!$meme and !$externes) { continue; }
@@ -185,8 +207,10 @@ if (!$ko and !$soucis) {
 	echo "Tout repond. Aucun lien mort, aucun fichier manquant.\n";
 } else {
 	printf("%d fichier(s) en defaut, %d page(s) en defaut.\n", $ko, count($soucis));
-	echo "\nUn 404 sur un fichier qui EXISTE sur le disque n'est pas forcement\n";
-	echo "une adresse fausse : verifier a qui il appartient. Le serveur refuse\n";
-	echo "ce qui n'appartient pas a l'utilisateur du site, et repond 404.\n";
+	echo "\nUN 404 SUR UN FICHIER QUI EXISTE SUR LE DISQUE n'est pas une adresse\n";
+	echo "fausse : regarder A QUI IL APPARTIENT. Le serveur refuse ce qui\n";
+	echo "n'appartient pas a l'utilisateur du site, et repond 404, pas 403.\n";
+	echo "C'est ce qui a tenu les 52 PDF de comptes rendus morts pendant cinq\n";
+	echo "jours. La commande :  chown -R <utilisateur> <racine>/IMG\n";
 	exit(1);
 }

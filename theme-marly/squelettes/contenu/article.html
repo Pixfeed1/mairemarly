@@ -94,7 +94,7 @@
 	#SET{illu,#FICHIER}
 	</BOUCLE_illu>
 	[<figure class="article-photo">
-		<img src="(#LOGO_ARTICLE|sinon{#GET{illu}}|image_reduire{760,0}|extraire_attribut{src}|url_absolue)" alt="">
+		<img src="(#LOGO_ARTICLE|sinon{#GET{illu}}|image_reduire{760,0}|extraire_attribut{src})" alt="">
 	</figure>]
 
 	<div class="texte">#TEXTE</div>
@@ -105,8 +105,8 @@
 	<h2><:marly:en_images:></h2>
 	<div class="galerie">
 		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{par num titre, date}>
-		<figure><a href="[(#URL_DOCUMENT|url_absolue)]" title="<:marly:voir_la_photo:>">
-			<img src="[(#FICHIER|image_reduire{400,260}|extraire_attribut{src}|url_absolue)]" alt="[(#TITRE|attribut_html)]">
+		<figure><a href="#URL_DOCUMENT" title="<:marly:voir_la_photo:>">
+			<img src="[(#FICHIER|image_reduire{400,260}|extraire_attribut{src})]" alt="[(#TITRE|attribut_html)]">
 		</a>[<figcaption><b>(#TITRE)</b>[<span class="credit">(#CREDITS)</span>]</figcaption>]</figure>
 		</BOUCLE_galerie>
 	</div>
@@ -122,7 +122,7 @@
 			<b>[(#TITRE|sinon{#FICHIER|basename})]</b>
 			<span>[(#EXTENSION|majuscules)][ · (#TAILLE|taille_en_octets)][ · <:marly:publie_le_min:> (#DATE|affdate)]</span>
 		</span>
-		<a class="pilule plein" href="[(#URL_DOCUMENT|url_absolue)]"><:marly:telecharger:></a>
+		<a class="pilule plein" href="#URL_DOCUMENT"><:marly:telecharger:></a>
 	</div>
 	</BOUCLE_docs>
 	</B_docs>
@@ -143,7 +143,7 @@
 				#SET{illu,#FICHIER}
 				</BOUCLE_illuliee>
 				[<div class="carte-photo"><a href="#URL_ARTICLE">
-					<img src="(#LOGO_ARTICLE|sinon{#GET{illu}}|image_reduire{420,240}|extraire_attribut{src}|url_absolue)" alt=""></a></div>]
+					<img src="(#LOGO_ARTICLE|sinon{#GET{illu}}|image_reduire{420,240}|extraire_attribut{src})" alt=""></a></div>]
 				<div class="carte-corps">
 					<p class="carte-quand"><BOUCLE_lr(RUBRIQUES){id_rubrique}>#TITRE</BOUCLE_lr></p>
 					<h3 class="carte-titre"><a href="#URL_ARTICLE">#TITRE</a></h3>
