@@ -182,7 +182,11 @@ body::after{
 	   La mesure a dit l'inverse : a 20 % on gagne du ciel vide et on perd le
 	   batiment. Sur une photographie dont le sujet est vertical, ce qui
 	   compte est la HAUTEUR de la bande, pas le point d'ancrage. */
-	min-height:clamp(340px,40vw,520px);
+	min-height:clamp(430px,46vw,650px);
+	/* De quoi loger la bande d'acces rapides par-dessus : elle remonte de
+	   196 px, la photographie doit donc descendre d'autant sous le champ de
+	   recherche. */
+	padding-bottom:196px;
 	display:flex; align-items:center; justify-content:center;
 	overflow:hidden;
 	/* Ciel dégradé + bande de paysage ancrée en bas. Une scène plein cadre
@@ -373,10 +377,39 @@ body::after{
 
 /* Une bande discrète, pas un pavé : elle sert à repartir vite, pas à
    occuper l'écran. Le liseré vert la rattache à la bannière au-dessus. */
+/* LA BANDE EST POSEE SUR LA PHOTOGRAPHIE, ELLE NE LA COUPE PLUS.
+
+   La banniere se prolonge de 196 px sous elle, et la bande remonte d'autant.
+   Le creme est translucide : on devine l'eglise a travers, et la page cesse
+   de s'interrompre net au bas de l'image.
+
+   LE CHIFFRE 88 % N'EST PAS UN GOUT, IL EST CALCULE. Le texte de cette bande
+   est en encre sombre ; a 88 % d'opacite, meme si la photographie derriere
+   etait entierement noire, le fond compose reste assez clair pour tenir plus
+   de 11:1 de contraste — tres au-dessus des 4,5:1 exiges (RGAA 3.2). C'est ce
+   qui rend la transparence SURE quelle que soit la photographie que la mairie
+   posera un jour : le calcul tient pour le pire cas, pas pour celle-ci.
+
+   Descendre plus bas resterait conforme pour le texte, mais les pictogrammes
+   des ronds n'ont pas de fond opaque : c'est eux qui se degradent en premier.
+   Mesure faite a 88, 78 et 66 % avant de trancher. */
 .acces{
-  background:var(--creme);
-  border-top:3px solid var(--accent); border-bottom:1px solid var(--trait);
+  background:rgba(253,248,238,.88);
   padding-block:32px;
+  margin-top:-196px; position:relative; z-index:2;
+}
+/* Le liseré vert passe SOUS la bande : au-dessus il aurait tranché la
+   photographie, ce qu'on cherche justement à éviter. */
+.acces::after{
+  content:''; position:absolute; left:0; right:0; bottom:0; height:3px;
+  background:var(--accent);
+}
+/* SOUS 900 PX, PAS DE CHEVAUCHEMENT. La bande y passe en deux rangées et
+   devient plus haute que la bannière elle-même : elle la mangerait en
+   entier. On revient au fond plein et à l'empilement simple. */
+@media (max-width:899px){
+  .acces{ background:var(--creme); margin-top:0; border-top:3px solid var(--accent); }
+  .acces::after{ display:none; }
 }
 .acces-grille{ display:grid; grid-template-columns:minmax(250px,310px) 1fr; gap:44px; align-items:start; }
 .acces .titre-bloc{ font-size:clamp(28px,3.2vw,38px); margin-bottom:16px; }
@@ -448,6 +481,11 @@ body::after{
 @media (max-width:1080px){
   .acces-grille{ grid-template-columns:1fr; gap:30px; }
   .acces .titre-bloc.droite{ text-align:left; }
+  /* La grille passe sur une colonne : la bande double de hauteur et le
+     chevauchement n'a plus de sens bien avant le seuil des 900 px. */
+  .heros{ padding-bottom:0; min-height:clamp(340px,40vw,520px); }
+  .acces{ background:var(--creme); margin-top:0; border-top:3px solid var(--accent); }
+  .acces::after{ display:none; }
 }
 @media (max-width:899px){
   .acces-liens ul{ grid-template-columns:repeat(3,1fr); }
