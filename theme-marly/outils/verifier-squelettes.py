@@ -1979,6 +1979,30 @@ for _o in sorted(_logos_promis):
                  "sur son repli pour toujours")
 
 
+# 73. Un script qui INSERE un raccourci <imgNN> dans le texte d'un article,
+#     alors que le theme illustre deja l'article depuis ses documents joints.
+#     Mesure du 27 aout 2026 : le reparateur d'images attachait la photo comme
+#     document — juste — et posait en plus <imgNN|center> a l'endroit de
+#     l'ancienne balise. Le nom du fichier ressortait CINQ fois dans la page :
+#     illustration de tete, image du texte, vignette du portfolio.
+#
+#     Attacher suffit. Le raccourci d'image dans le texte n'a de sens que si
+#     le gabarit cesse par ailleurs de se rabattre et d'alimenter le
+#     portfolio — trois conditions SPIP qu'on ne peut pas tester hors ligne.
+#
+#     <docNN> n'est pas vise : une piece a telecharger a sa place dans le
+#     texte, et le theme ne la montre pas ailleurs.
+_INSERE_IMG = re.compile(r"""['"]<img['"]\s*\.|['"]<img\{?\$|<img'\s*\.\s*\$""")
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    if _INSERE_IMG.search(_src):
+        _ligne = _src[:_INSERE_IMG.search(_src).start()].count('\n') + 1
+        signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), _ligne,
+                 "insere un raccourci <imgNN> dans le texte d'un article : le theme "
+                 "montre deja les images jointes en tete et dans le portfolio, la "
+                 "photographie s'afficherait trois fois")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

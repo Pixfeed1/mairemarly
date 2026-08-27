@@ -214,8 +214,14 @@ foreach ($articles as $a) {
 			objet_associer(array('document' => intval($id_doc)), array('article' => $id));
 			sql_updateq('spip_documents', array('statut' => 'publie'),
 				'id_document = ' . intval($id_doc));
-			$apres = str_replace($tag, '<img' . intval($id_doc) . '|center>', $apres);
-			$lignes[] = '      -> document ' . intval($id_doc);
+			/* ON N'INSERE PAS DE RACCOURCI <imgNN> DANS LE TEXTE, on retire la
+			   balise cassee et on s'arrete la. Mesure du 27 aout 2026 : la
+			   premiere version l'inserait, et le nom du fichier apparaissait
+			   CINQ fois dans la page servie — le theme montre deja ces
+			   documents en illustration de tete et dans le portfolio. Le
+			   raccourci en faisait un troisieme affichage de la meme photo. */
+			$apres = str_replace($tag, '', $apres);
+			$lignes[] = '      -> document ' . intval($id_doc) . ' (attache, pas insere)';
 		}
 
 		/* Une balise retiree laisse souvent un paragraphe vide derriere elle.
