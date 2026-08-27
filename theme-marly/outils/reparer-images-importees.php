@@ -218,9 +218,26 @@ foreach ($articles as $a) {
 			$lignes[] = '      -> document ' . intval($id_doc);
 		}
 
-		/* Une balise retiree laisse souvent un paragraphe vide derriere elle. */
-		$apres = preg_replace(',<p[^>]*>\s*</p>,i', '', $apres);
-		$apres = preg_replace(',(<br\s*/?>\s*){3,},i', '<br>', $apres);
+		/* Une balise retiree laisse souvent un paragraphe vide derriere elle.
+
+		   DELIMITEUR ~ ET NON LA VIRGULE. Le second motif contient {3,} : la
+		   virgule du quantificateur refermait le motif au milieu, PHP lisait
+		   << }i >> comme des modificateurs, preg_replace echouait et rendait
+		   NULL. Ce null repartait dans $apres, se trouvait different du texte
+		   d'origine, et serait parti en base : avec --ecrire il vidait le
+		   texte des dix-neuf articles. Trouve par l'essai a blanc. */
+		$net = preg_replace('~<p[^>]*>\s*</p>~i', '', $apres);
+		if ($net !== null) { $apres = $net; }
+		$net = preg_replace('~(<br\s*/?>\s*){3,}~i', '<br>', $apres);
+		if ($net !== null) { $apres = $net; }
+
+		/* CEINTURE. Un motif qui echoue rend null, et un texte devenu null
+		   ecraserait l'article. Rien ne part en base sans etre une chaine
+		   non vide alors que la precedente ne l'etait pas. */
+		if (!is_string($apres) or ($apres === '' and $avant !== '')) {
+			fwrite(STDERR, "  [$id] $champ : reecriture abandonnee, resultat vide.\n");
+			continue;
+		}
 
 		if ($apres !== $avant) { $modifs[$champ] = $apres; }
 	}

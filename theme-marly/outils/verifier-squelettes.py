@@ -1903,6 +1903,35 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
 
 
 # 71. Un objet dont la fiche publique montre une photographie, sans nulle part
+
+# 72. Un motif preg_ dont le DELIMITEUR reparait a l'interieur du motif.
+#     Le cas rencontre : preg_replace(',(<br\s*/?>\s*){3,},i', ...). Le
+#     delimiteur est la virgule, et il y en a une dans le quantificateur {3,} :
+#     PHP referme le motif au milieu, lit << }i >> comme des modificateurs,
+#     echoue, et rend NULL.
+#
+#     C'EST LE NULL QUI EST DANGEREUX, pas l'echec. Il repart dans la variable
+#     de travail, se trouve different du texte d'origine, et part en base : le
+#     reparateur d'images aurait vide le texte de dix-neuf articles. Il n'a ete
+#     vu que parce que le script tourne a blanc par defaut.
+#
+#     On ne cherche pas tous les delimiteurs mal choisis — impossible a decider
+#     en general. On cherche le cas exact et frequent : une virgule delimiteuse
+#     avec un quantificateur {n,} ou {n,m} dans le motif.
+#     Les modificateurs (i, s, u...) se glissent entre le delimiteur de fin et
+#     le guillemet : les oublier faisait rater la regle son premier essai.
+_MOTIF_VIRGULE = re.compile(
+    r"""preg_\w+\(\s*(['"]),(.*?),[imsxuADSUXJn]*\1""", re.S)
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
+    _src = open(_f, encoding='utf-8').read()
+    for _m in _MOTIF_VIRGULE.finditer(_src):
+        if re.search(r"\{\d+,\d*\}", _m.group(2)):
+            _ligne = _src[:_m.start()].count('\n') + 1
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), _ligne,
+                     "motif preg_ delimite par une virgule alors qu'il contient un "
+                     "quantificateur {n,} : PHP referme le motif sur cette virgule, "
+                     "l'appel echoue et rend NULL — et ce null s'ecrit en base")
+
 #     ou la deposer.
 #     #LOGO_COMMERCE dans un gabarit public promet une image. Si aucun ecran
 #     de l'espace prive ne porte #FORMULAIRE_EDITER_LOGO pour cet objet, la
