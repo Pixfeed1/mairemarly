@@ -189,9 +189,9 @@ body::after{
 	padding-bottom:196px;
 	display:flex; align-items:center; justify-content:center;
 	overflow:hidden;
-	/* Ciel dégradé + bande de paysage ancrée en bas. Une scène plein cadre
-	   se déforme dès que le rapport hauteur/largeur change ; une bande
-	   ancrée garde ses proportions à toutes les tailles d'écran. */
+	/* Le dégradé n'est visible que le temps du chargement de la photographie,
+	   et sur les rares écrans où elle ne se charge pas : le texte du héros
+	   doit rester lisible dans ce cas-là aussi. */
 	background:linear-gradient(to bottom, #3A7D5C 0%, #1E5B41 55%, #123F2D 100%);
 }
 /* LE PAYSAGE DESSINE A QUITTE CETTE BANNIERE le 26 aout 2026, remplace par la
@@ -565,7 +565,6 @@ section{ padding-block:70px; position:relative; }
    titre est le trait cyan de Franconville, dans notre couleur. */
 .pied{ position:relative; overflow:hidden; border-top:0; }
 .pied{ background:var(--creme); color:var(--encre); padding-bottom:20px; text-align:center; }
-.pied-paysage{ display:block; width:100%; height:112px; object-fit:cover; object-position:bottom; }
 
 .pied-embleme{ padding-top:32px; }
 .pied-embleme .sceau{ color:var(--accent); width:104px; height:104px; }
