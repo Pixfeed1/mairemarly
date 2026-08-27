@@ -16,15 +16,23 @@
 <div class="bandeau-illustre">
 	[(#REM) Meme regle que sur les autres pages de section : la photographie
 	        si la mairie en a depose une, le paysage dessine sinon. ]
-	<B_banniere>
-	<BOUCLE_banniere(ARTICLES){titre_mot=Bannière ma mairie}{par date}{inverse}{0,1}>
-	<div class="bandeau-image">[(#LOGO_ARTICLE|image_reduire{1920,0})]</div>
-	[<p class="bandeau-credit">(#DESCRIPTIF|textebrut|couper{120})</p>]
-	</BOUCLE_banniere>
-	</B_banniere>
-	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
-	     width="1440" height="260" alt="" aria-hidden="true">
-	<//B_banniere>
+	[(#REM) LA PHOTOGRAPHIE DES PAGES DE SECTION vient de Configuration,
+	        Reglages de la commune.
+
+	        Elle venait auparavant d'un article portant le mot-cle
+	        << Banniere ma mairie >>. Mesure du 27 aout 2026 : ce mot-cle
+	        n'existe pas dans la base, il n'en existe que quatre en tout, tous
+	        poses par le script des pages legales. Le mecanisme n'avait donc
+	        JAMAIS servi et ne pouvait pas servir : personne n'aurait devine
+	        qu'il fallait creer un article et lui poser un mot-cle a l'orthographe
+	        exacte pour changer une image de fond.
+
+	        Tant que rien n'est depose, le paysage dessine tient la place. ]
+	#SET{bandeau,#VAL|marly_url_bandeau}
+	[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
+	[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
+	[(#GET{bandeau}|non)<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
+	     width="1440" height="260" alt="" aria-hidden="true">]
 
 	<div class="bandeau-carton">
 		<div>

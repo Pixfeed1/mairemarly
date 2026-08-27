@@ -231,8 +231,25 @@ function filtre_marly_rubrique_comptes_rendus_dist($rien = '') {
  *     n'existe pas ne s'affiche pas, et le thème reprend la place.
  */
 function filtre_marly_url_banniere_dist($rien = '') {
+	return marly_url_image_deposee('banniere');
+}
+
+/**
+ * L'adresse publique de la photographie des pages de section, ou ''.
+ * ---------------------------------------------------------------------------
+ * La bande étroite en tête des pages qui n'existent pas dans la base — les
+ * démarches, l'annuaire des commerces, les réservations, le contact — et qui
+ * n'ont donc aucune rubrique à qui emprunter un logo. Une rubrique, elle,
+ * garde le sien : c'est plus juste, chacune mérite son image.
+ */
+function filtre_marly_url_bandeau_dist($rien = '') {
+	return marly_url_image_deposee('bandeau');
+}
+
+/** Le travail commun aux deux : lire la configuration, et vérifier le disque. */
+function marly_url_image_deposee($champ) {
 	include_spip('inc/config');
-	$nom = lire_config('marly/banniere', '');
+	$nom = lire_config('marly/' . $champ, '');
 	if ($nom === '' or !@is_file(_DIR_IMG . $nom)) {
 		return '';
 	}

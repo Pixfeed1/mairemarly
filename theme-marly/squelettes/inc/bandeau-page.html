@@ -28,8 +28,18 @@
 #SET{titre,#VAL{marly:}|concat{#ENV{cle}}|_T}
 
 <div class="bandeau-illustre">
-	<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
-	     width="1440" height="260" alt="" aria-hidden="true">
+	#SET{bandeau,#VAL|marly_url_bandeau}
+
+	[(#REM) LA PHOTOGRAPHIE DES PAGES DE SECTION vient de Configuration,
+	        Reglages de la commune. Une seule pour toutes ces pages : elles
+	        n'existent pas dans la base et n'ont donc aucune rubrique a qui
+	        emprunter un logo. Une rubrique, elle, garde le sien.
+
+	        Tant que rien n'est depose, le paysage dessine tient la place. ]
+	[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
+	[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
+	[(#GET{bandeau}|non)<img class="bandeau-paysage" src="#CHEMIN{img/paysage.svg}"
+	     width="1440" height="260" alt="" aria-hidden="true">]
 
 	<div class="bandeau-carton">
 		<div>

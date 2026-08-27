@@ -52,6 +52,35 @@
 		</fieldset>
 
 		<fieldset>
+			<legend><:marly:legende_bandeau:></legend>
+			<p class="explication"><:marly:bandeau_intro:></p>
+			<ul>
+				[<li class="marly-champ marly-bandeau-apercu">
+					<img src="(#ENV{bandeau_url}|attribut_html)" alt=""
+					     style="max-width:340px;height:auto;display:block;border:1px solid #ccc">
+				</li>]
+				<li class="marly-champ marly-bandeau[ (#ENV**{erreurs}|table_valeur{bandeau}|oui)erreur]">
+					<label for="bandeau"><:marly:champ_bandeau:></label>
+					[<span class="erreur_message" id="erreur-bandeau">(#ENV**{erreurs}|table_valeur{bandeau})</span>]
+					<input type="file" name="bandeau" id="bandeau"
+					       accept="image/jpeg,image/png,image/webp"[(#ENV**{erreurs}|table_valeur{bandeau}|oui) aria-invalid="true" aria-describedby="erreur-bandeau"]>
+					<small><:marly:bandeau_aide:></small>
+				</li>
+				[(#ENV{bandeau}|oui)
+				<li class="marly-champ marly-bandeau-retirer">
+					<label><input type="checkbox" name="bandeau_retirer" value="oui"> <:marly:banniere_retirer:></label>
+					<small><:marly:banniere_retirer_aide:></small>
+				</li>
+				]
+				<li class="marly-champ marly-bandeau_credit">
+					<label for="bandeau_credit"><:marly:champ_bandeau_credit:></label>
+					<input type="text" class="text" name="bandeau_credit" id="bandeau_credit" value="[(#ENV{bandeau_credit}|attribut_html)]">
+					<small><:marly:bandeau_credit_aide:></small>
+				</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
 			<legend><:marly:legende_contact:></legend>
 			<ul>
 				<li class="marly-champ marly-telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">

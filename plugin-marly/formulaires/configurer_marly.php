@@ -29,6 +29,22 @@ function marly_champs_url() {
 	);
 }
 
+/**
+ * Les images déposées depuis cet écran.
+ * ---------------------------------------------------------------------------
+ * Deux, et elles ne servent pas au même endroit :
+ *   banniere — la grande photographie du haut de la page d'accueil ;
+ *   bandeau  — la bande étroite en tête des pages de section, celles qui
+ *              n'existent pas dans la base et n'ont donc pas de rubrique à
+ *              qui emprunter un logo.
+ *
+ * Une rubrique, elle, garde son propre logo : c'est déjà le cas et c'est plus
+ * juste, chaque rubrique méritant sa propre image.
+ */
+function marly_champs_image() {
+	return array('banniere', 'bandeau');
+}
+
 /** Les champs de texte libre. */
 function marly_champs_texte() {
 	return array(
@@ -46,7 +62,7 @@ function marly_champs_texte() {
 		/* Le crédit de la photographie de bannière. Il s'affiche en petit dans
 		   son coin. Une photographie a un auteur, et la mairie doit pouvoir le
 		   citer sans appeler personne. */
-		'banniere_credit',
+		'banniere_credit', 'bandeau_credit',
 	);
 }
 
@@ -55,14 +71,14 @@ function marly_champs() {
 }
 
 /**
- * Le fichier de bannière déjà en place, ou ''.
+ * Le fichier déjà en place pour ce champ, ou ''.
  * ---------------------------------------------------------------------------
  * On relit le DISQUE, pas seulement la configuration : si le fichier a été
  * effacé à la main, la configuration mentirait et la page publique appellerait
  * une image absente. Ce qui n'existe pas ne s'affiche pas.
  */
-function marly_banniere_fichier() {
-	$nom = lire_config('marly/banniere', '');
+function marly_image_fichier($champ) {
+	$nom = lire_config('marly/' . $champ, '');
 	if ($nom === '' or !@is_file(_DIR_IMG . $nom)) {
 		return '';
 	}
@@ -74,10 +90,10 @@ function formulaires_configurer_marly_charger_dist() {
 	foreach (marly_champs() as $champ) {
 		$valeurs[$champ] = lire_config('marly/' . $champ, '');
 	}
-	$valeurs['banniere'] = marly_banniere_fichier();
-	$valeurs['banniere_url'] = $valeurs['banniere']
-		? _DIR_IMG . $valeurs['banniere']
-		: '';
+	foreach (marly_champs_image() as $champ) {
+		$valeurs[$champ] = marly_image_fichier($champ);
+		$valeurs[$champ . '_url'] = $valeurs[$champ] ? _DIR_IMG . $valeurs[$champ] : '';
+	}
 	return $valeurs;
 }
 
@@ -99,34 +115,35 @@ function formulaires_configurer_marly_verifier_dist() {
 		$erreurs['courriel'] = _T('marly:erreur_courriel');
 	}
 
-	/* LA PHOTOGRAPHIE DE BANNIERE. On refuse ici plutot que d'accepter et
-	   d'afficher mal : une image trop petite s'agrandit et pixelise sur toute
-	   la largeur de l'ecran, et c'est la premiere chose que voit un visiteur.
+	/* LES IMAGES DEPOSEES. On refuse ici plutot que d'accepter et d'afficher
+	   mal : une image trop petite s'agrandit et pixelise sur toute la largeur
+	   de l'ecran, et c'est la premiere chose que voit un visiteur.
 
 	   getimagesize() sert de controle de type ET de mesure : elle rend false
-	   sur tout ce qui n'est pas une image, quel que soit le nom du fichier.
-	   Se fier a l'extension laisserait passer un .jpg qui n'en est pas un. */
-	$envoi = isset($_FILES['banniere']) ? $_FILES['banniere'] : null;
-	if ($envoi and $envoi['error'] !== UPLOAD_ERR_NO_FILE) {
+	   sur tout ce qui n'est pas une image, quel que soit le nom du fichier. Se
+	   fier a l'extension laisserait passer un .jpg qui n'en est pas un. */
+	foreach (marly_champs_image() as $champ) {
+		$envoi = isset($_FILES[$champ]) ? $_FILES[$champ] : null;
+		if (!$envoi or $envoi['error'] === UPLOAD_ERR_NO_FILE) {
+			continue;
+		}
 		if ($envoi['error'] !== UPLOAD_ERR_OK) {
 			/* Le cas le plus frequent : le fichier depasse la limite du
 			   serveur, qui n'est pas la notre. On le dit dans les termes de
 			   l'usager plutot que de rendre un code. */
-			$erreurs['banniere'] = _T('marly:erreur_banniere_envoi');
-		} else {
-			$taille = @getimagesize($envoi['tmp_name']);
-			if (!$taille) {
-				$erreurs['banniere'] = _T('marly:erreur_banniere_type');
-			} elseif (!in_array($taille[2], array(IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP), true)) {
-				$erreurs['banniere'] = _T('marly:erreur_banniere_type');
-			} elseif ($taille[0] < 1200) {
-				$erreurs['banniere'] = _T('marly:erreur_banniere_petite',
-					array('largeur' => (int) $taille[0]));
-			} elseif ($taille[0] < $taille[1]) {
-				$erreurs['banniere'] = _T('marly:erreur_banniere_portrait');
-			} elseif ($envoi['size'] > 8 * 1024 * 1024) {
-				$erreurs['banniere'] = _T('marly:erreur_banniere_lourde');
-			}
+			$erreurs[$champ] = _T('marly:erreur_banniere_envoi');
+			continue;
+		}
+		$taille = @getimagesize($envoi['tmp_name']);
+		if (!$taille or !in_array($taille[2], array(IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP), true)) {
+			$erreurs[$champ] = _T('marly:erreur_banniere_type');
+		} elseif ($taille[0] < 1200) {
+			$erreurs[$champ] = _T('marly:erreur_banniere_petite',
+				array('largeur' => (int) $taille[0]));
+		} elseif ($taille[0] < $taille[1]) {
+			$erreurs[$champ] = _T('marly:erreur_banniere_portrait');
+		} elseif ($envoi['size'] > 8 * 1024 * 1024) {
+			$erreurs[$champ] = _T('marly:erreur_banniere_lourde');
 		}
 	}
 
@@ -174,7 +191,9 @@ function formulaires_configurer_marly_traiter_dist() {
 		ecrire_config('marly/adresse_situee', '');
 	}
 
-	marly_enregistrer_banniere();
+	foreach (marly_champs_image() as $champ) {
+		marly_enregistrer_image($champ);
+	}
 
 	return array(
 		'message_ok' => _T('marly:reglages_ok'),
@@ -183,7 +202,7 @@ function formulaires_configurer_marly_traiter_dist() {
 }
 
 /**
- * Enregistre la photographie de bannière déposée, ou la retire.
+ * Enregistre l'image déposée pour ce champ, ou la retire.
  * ---------------------------------------------------------------------------
  * LE FICHIER VA DANS IMG/, ET C'EST UN CHOIX. Le dossier des squelettes est
  * recopié à chaque déploiement : une image déposée là serait effacée au
@@ -197,19 +216,19 @@ function formulaires_configurer_marly_traiter_dist() {
  * L'ancien fichier est effacé dans la foulée, sinon IMG/ se remplirait de
  * bannières mortes.
  */
-function marly_enregistrer_banniere() {
-	$ancien = lire_config('marly/banniere', '');
+function marly_enregistrer_image($champ) {
+	$ancien = lire_config('marly/' . $champ, '');
 
 	/* La case « retirer » : on revient à la photographie du thème. */
-	if (_request('banniere_retirer')) {
+	if (_request($champ . '_retirer')) {
 		if ($ancien !== '' and @is_file(_DIR_IMG . $ancien)) {
 			@unlink(_DIR_IMG . $ancien);
 		}
-		ecrire_config('marly/banniere', '');
+		ecrire_config('marly/' . $champ, '');
 		return;
 	}
 
-	$envoi = isset($_FILES['banniere']) ? $_FILES['banniere'] : null;
+	$envoi = isset($_FILES[$champ]) ? $_FILES[$champ] : null;
 	if (!$envoi or $envoi['error'] !== UPLOAD_ERR_OK) {
 		return;
 	}
@@ -227,7 +246,7 @@ function marly_enregistrer_banniere() {
 		return;
 	}
 
-	$nom = 'marly-banniere-' . time() . '.' . $extensions[$taille[2]];
+	$nom = 'marly-' . $champ . '-' . time() . '.' . $extensions[$taille[2]];
 	if (!@move_uploaded_file($envoi['tmp_name'], _DIR_IMG . $nom)) {
 		return;
 	}
@@ -243,5 +262,5 @@ function marly_enregistrer_banniere() {
 	if ($ancien !== '' and $ancien !== $nom and @is_file(_DIR_IMG . $ancien)) {
 		@unlink(_DIR_IMG . $ancien);
 	}
-	ecrire_config('marly/banniere', $nom);
+	ecrire_config('marly/' . $champ, $nom);
 }
