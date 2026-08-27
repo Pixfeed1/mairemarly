@@ -209,14 +209,42 @@ foreach ($articles as $a) {
 	printf("\n--- article %d : %s\n", $a['id_article'], $a['titre']);
 	foreach ($m[0] as $tag) {
 		echo '    ' . preg_replace('/\s+/', ' ', $tag) . "\n";
-		if (preg_match(',src="([^"]+)",i', $tag, $u)) {
-			$base = strtolower(basename(parse_url($u[1], PHP_URL_PATH) ?: $u[1]));
-			/* Une vignette SPIP 3 s'appelle souvent L300xH225-<nom>.jpg ou
-			   porte le nom d'origine tel quel : on tente les deux lectures. */
+		/* LES DEUX ECRITURES DU GUILLEMET. La premiere version ne lisait que
+		   src="..." : les articles 60, 67 et 75 ecrivent src='...', leur
+		   recherche n'a donc jamais tourne et la sonde a rendu un silence
+		   qu'on aurait pu lire comme une absence de probleme. Faux positif
+		   par omission, le pire genre. */
+		if (preg_match(',src=["\']([^"\']+)["\'],i', $tag, $u)) {
+			$chemin = parse_url($u[1], PHP_URL_PATH) ?: $u[1];
+			$base = strtolower(basename($chemin));
+
+			/* UNE VIGNETTE SPIP 3 PORTE LE NOM DE SON ORIGINAL, habille de
+			   deux facons : le dossier L500xH708/ devant, et un suffixe de
+			   hachage -55456 juste avant l'extension. On deshabille les deux
+			   pour retrouver le fichier de depart. */
 			$nu = preg_replace('/^L\d+xH\d+[-_]?/i', '', $base);
-			if (isset($noms[$base]))      { echo '      -> original present : ' . $noms[$base] . "\n"; }
-			elseif (isset($noms[$nu]))    { echo '      -> original present : ' . $noms[$nu] . "\n"; }
-			else                          { echo "      -> AUCUN original sur le disque\n"; }
+			$nu = preg_replace('/-[0-9a-f]{4,8}(\.[a-z0-9]+)$/i', '$1', $nu);
+
+			$trouve = $noms[$base] ?? $noms[$nu] ?? null;
+			if ($trouve) {
+				echo '      -> original sur le disque : ' . $trouve . "\n";
+			} else {
+				echo "      -> AUCUN original sur le disque (cherche : $nu)\n";
+			}
+
+			/* Et surtout : ce fichier est-il DEJA un document attache a cet
+			   article ? Si oui la reparation ne consiste pas a recopier un
+			   fichier mais a remplacer la balise par le raccourci du document,
+			   ce qui la rend solidaire de la base au lieu d'un chemin en dur. */
+			foreach (sql_allfetsel('d.id_document, d.fichier',
+					'spip_documents AS d JOIN spip_documents_liens AS l ON l.id_document = d.id_document',
+					"l.objet='article' AND l.id_objet=" . intval($a['id_article'])) as $d) {
+				if (strtolower(basename($d['fichier'])) === $nu
+						or strtolower(basename($d['fichier'])) === $base) {
+					echo '      -> DEJA ATTACHE comme document ' . $d['id_document']
+					   . ' (' . $d['fichier'] . ")\n";
+				}
+			}
 		}
 	}
 }
