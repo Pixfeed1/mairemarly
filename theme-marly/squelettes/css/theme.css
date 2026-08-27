@@ -1716,9 +1716,14 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 
    UN VOILE CREME EN DEGRADE, dense a gauche ou se pose le cartouche, presque
    nul a droite ou il n'y a rien a lire. On protege le titre la ou il est, on
-   laisse l'image vivre la ou elle ne gene personne. */
-.bandeau-associatif .bandeau-image img{ filter:saturate(.55) contrast(.95); }
-.bandeau-associatif .bandeau-image::after{
+   laisse l'image vivre la ou elle ne gene personne.
+
+   LA CLASSE EST SUR LE CONTENEUR DE L'IMAGE, et non sur la bande : le
+   traitement ne vaut que pour CETTE image-la. Le jour ou la mairie depose sa
+   propre photographie du forum des associations, elle s'affiche telle quelle,
+   sans etre desaturee de moitie — ce serait absurde. */
+.bandeau-image.associatif img{ filter:saturate(.55) contrast(.95); }
+.bandeau-image.associatif::after{
 	content:""; position:absolute; inset:0;
 	background:linear-gradient(to right,
 		rgba(253,248,238,.86) 0%, rgba(253,248,238,.62) 46%, rgba(253,248,238,.24) 100%);

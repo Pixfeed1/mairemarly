@@ -22,20 +22,34 @@
 	        1. Le logo de la rubrique, s'il y en a un. C'est le plus juste :
 	           chaque rubrique merite son image, et il se depose dans la
 	           rubrique elle-meme, sur l'ecran de SPIP.
-	        2. Sinon, la photographie commune des pages de section, deposee
+	        2. Si c'est la rubrique de la vie associative, son illustration :
+	           celle deposee dans Configuration, celle du theme a defaut. Le
+	           menu principal mene ICI et non a l'annuaire — sans ce niveau,
+	           le visiteur qui arrive par le menu ne voyait pas l'image.
+	        3. Sinon, la photographie commune des pages de section, deposee
 	           dans Configuration.
-	        3. Sinon, la mosaique des armes de la commune.
+	        4. Sinon, la mosaique des armes de la commune.
 
-	        UN SEUL des trois est ecrit : ils sont poses en absolu, et le
+	        UN SEUL des quatre est ecrit : ils sont poses en absolu, et le
 	        dernier venu couvrirait les precedents. ]
 	#SET{bandeau,#VAL|marly_url_bandeau}
+	#SET{asso,#ID_RUBRIQUE|=={#VAL|marly_rubrique_associations}}
+	#SET{asso_photo,#VAL|marly_url_associations}
 
 	[<div class="bandeau-image">(#LOGO_RUBRIQUE||image_reduire{1920,0})</div>]
 
 	[(#LOGO_RUBRIQUE|non)
-		[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
-		[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
-		[(#GET{bandeau}|non)<div class="bandeau-motif"></div>]
+		[(#GET{asso}|oui)
+			[<div class="bandeau-image"><img src="(#GET{asso_photo}|attribut_html)" alt=""></div>]
+			[(#GET{asso_photo}|oui)[<p class="bandeau-credit">(#CONFIG{marly/associations_credit})</p>]]
+			[(#GET{asso_photo}|non)<div class="bandeau-image associatif"><img
+			     src="#CHEMIN{img/vie-associative.jpg}" alt=""></div>]
+		]
+		[(#GET{asso}|non)
+			[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
+			[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
+			[(#GET{bandeau}|non)<div class="bandeau-motif"></div>]
+		]
 	]
 
 	<div class="bandeau-carton">

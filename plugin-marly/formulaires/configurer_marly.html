@@ -81,6 +81,35 @@
 		</fieldset>
 
 		<fieldset>
+			<legend><:marly:legende_associations:></legend>
+			<p class="explication"><:marly:associations_intro:></p>
+			<ul>
+				[<li class="marly-champ marly-associations-apercu">
+					<img src="(#ENV{associations_url}|attribut_html)" alt=""
+					     style="max-width:340px;height:auto;display:block;border:1px solid #ccc">
+				</li>]
+				<li class="marly-champ marly-associations[ (#ENV**{erreurs}|table_valeur{associations}|oui)erreur]">
+					<label for="associations"><:marly:champ_associations:></label>
+					[<span class="erreur_message" id="erreur-associations">(#ENV**{erreurs}|table_valeur{associations})</span>]
+					<input type="file" name="associations" id="associations"
+					       accept="image/jpeg,image/png,image/webp"[(#ENV**{erreurs}|table_valeur{associations}|oui) aria-invalid="true" aria-describedby="erreur-associations"]>
+					<small><:marly:associations_aide:></small>
+				</li>
+				[(#ENV{associations}|oui)
+				<li class="marly-champ marly-associations-retirer">
+					<label><input type="checkbox" name="associations_retirer" value="oui"> <:marly:banniere_retirer:></label>
+					<small><:marly:banniere_retirer_aide:></small>
+				</li>
+				]
+				<li class="marly-champ marly-associations_credit">
+					<label for="associations_credit"><:marly:champ_associations_credit:></label>
+					<input type="text" class="text" name="associations_credit" id="associations_credit" value="[(#ENV{associations_credit}|attribut_html)]">
+					<small><:marly:associations_credit_aide:></small>
+				</li>
+			</ul>
+		</fieldset>
+
+		<fieldset>
 			<legend><:marly:legende_contact:></legend>
 			<ul>
 				<li class="marly-champ marly-telephone[ (#ENV**{erreurs}|table_valeur{telephone}|oui)erreur]">

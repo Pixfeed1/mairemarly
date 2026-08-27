@@ -32,6 +32,17 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'bandeau_aide'     => 'Format paysage, au moins 1200 pixels de large. La bande est basse et très large : une vue dégagée du village convient mieux qu’un bâtiment cadré serré. Tant qu’aucune n’est déposée, une mosaïque discrète du blason s’affiche.',
 	'champ_bandeau_credit' => 'Crédit photographique',
 	'bandeau_credit_aide'  => 'S’affiche en petit dans le coin de la bande. À remplir si la photographie n’a pas été prise par la commune.',
+
+	// --- L'image de la vie associative ---------------------------------------
+	// La seule page illustrée du site, et le seul champ d'image propre à une
+	// page. Le thème en fournit une par défaut ; ce champ existe pour que la
+	// mairie la remplace par une photographie de chez elle.
+	'legende_associations' => 'Image de la vie associative',
+	'associations_intro'   => 'Elle s’affiche en tête de la rubrique « Vie associative » et de l’annuaire des associations. Le site en fournit une par défaut ; déposez-en une autre pour la remplacer, par exemple une photographie du forum des associations ou de la fête du village.',
+	'champ_associations'   => 'Choisir une photographie',
+	'associations_aide'    => 'Format paysage, au moins 1200 pixels de large. La bande est basse et très large : une vue d’ensemble convient mieux qu’un sujet cadré serré. Votre photographie s’affiche telle quelle, sans la retouche appliquée à l’image livrée avec le site.',
+	'champ_associations_credit' => 'Crédit photographique',
+	'associations_credit_aide'  => 'S’affiche en petit dans le coin de la bande. À remplir si la photographie n’a pas été prise par la commune.',
 	'erreur_banniere_envoi' => 'Le fichier n’a pas pu être envoyé. Il est probablement trop lourd pour le serveur : essayez une image plus légère.',
 	'erreur_banniere_type'  => 'Ce fichier n’est pas une image. Formats acceptés : JPEG, PNG, WebP.',
 	'erreur_banniere_petite' => 'Cette image ne fait que @largeur@ pixels de large. Il en faut au moins 1200, sinon elle sera floue sur un grand écran.',

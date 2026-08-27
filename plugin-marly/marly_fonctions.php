@@ -246,7 +246,40 @@ function filtre_marly_url_bandeau_dist($rien = '') {
 	return marly_url_image_deposee('bandeau');
 }
 
-/** Le travail commun aux deux : lire la configuration, et vérifier le disque. */
+/**
+ * L'adresse publique de la photographie de la vie associative, ou ''.
+ * ---------------------------------------------------------------------------
+ * Le thème en fournit une par défaut. Celle-ci, si elle existe, la remplace :
+ * une photographie du forum des associations ou de la fête du village dit
+ * toujours mieux la vie associative de la commune qu'une image générique.
+ */
+/**
+ * L'identifiant de la rubrique de la vie associative, ou 0.
+ * ---------------------------------------------------------------------------
+ * Le site a DEUX pages qui parlent des associations, et c'est une vraie
+ * particularité de sa structure : la RUBRIQUE, où sont les articles écrits par
+ * les associations, et l'ANNUAIRE, qui liste les associations elles-mêmes avec
+ * leurs contacts. Le menu principal, qui boucle sur les rubriques racines,
+ * mène à la première. L'annuaire n'est atteint que depuis une fiche, la
+ * recherche et le plan.
+ *
+ * L'illustration doit donc couvrir les deux, sans quoi le visiteur qui arrive
+ * par le menu ne la voit jamais — c'est ce qui s'est passé.
+ *
+ * ANCRÉ SUR LE TITRE, comme les comptes rendus. Si la mairie renomme la
+ * rubrique, la reconnaissance cesse et la rubrique retombe sur son propre
+ * logo : c'est un repli honnête, et pas une page cassée.
+ */
+function filtre_marly_rubrique_associations_dist($rien = '') {
+	return (int) sql_getfetsel('id_rubrique', 'spip_rubriques',
+		'titre LIKE ' . sql_quote('Vie associative%'));
+}
+
+function filtre_marly_url_associations_dist($rien = '') {
+	return marly_url_image_deposee('associations');
+}
+
+/** Le travail commun aux trois : lire la configuration, et vérifier le disque. */
 function marly_url_image_deposee($champ) {
 	include_spip('inc/config');
 	$nom = lire_config('marly/' . $champ, '');

@@ -32,17 +32,24 @@ function marly_champs_url() {
 /**
  * Les images déposées depuis cet écran.
  * ---------------------------------------------------------------------------
- * Deux, et elles ne servent pas au même endroit :
- *   banniere — la grande photographie du haut de la page d'accueil ;
- *   bandeau  — la bande étroite en tête des pages de section, celles qui
- *              n'existent pas dans la base et n'ont donc pas de rubrique à
- *              qui emprunter un logo.
+ * Trois, et elles ne servent pas au même endroit :
+ *   banniere     — la grande photographie du haut de la page d'accueil ;
+ *   bandeau      — la bande étroite en tête des pages de section, celles qui
+ *                  n'existent pas dans la base et n'ont donc pas de rubrique à
+ *                  qui emprunter un logo ;
+ *   associations — la seule image propre à UNE page. Elle couvre à la fois la
+ *                  rubrique « Vie associative », où mène le menu principal, et
+ *                  l'annuaire des associations.
  *
  * Une rubrique, elle, garde son propre logo : c'est déjà le cas et c'est plus
  * juste, chaque rubrique méritant sa propre image.
  */
 function marly_champs_image() {
-	return array('banniere', 'bandeau');
+	/* << associations >> est la seule image PROPRE A UNE PAGE. Le thème en
+	   fournit une par défaut ; ce champ existe pour que la mairie la remplace
+	   par une photographie de chez elle — un forum des associations, une fête
+	   du village — sans avoir à toucher au thème. */
+	return array('banniere', 'bandeau', 'associations');
 }
 
 /** Les champs de texte libre. */
@@ -59,10 +66,10 @@ function marly_champs_texte() {
 		   audit n'a eu lieu : annoncer un niveau qu'on n'a pas mesuré est une
 		   déclaration fausse, et c'est une déclaration légale. */
 		'accessibilite_niveau',
-		/* Le crédit de la photographie de bannière. Il s'affiche en petit dans
+		/* Le crédit de chaque photographie déposée. Il s'affiche en petit dans
 		   son coin. Une photographie a un auteur, et la mairie doit pouvoir le
 		   citer sans appeler personne. */
-		'banniere_credit', 'bandeau_credit',
+		'banniere_credit', 'bandeau_credit', 'associations_credit',
 	);
 }
 
