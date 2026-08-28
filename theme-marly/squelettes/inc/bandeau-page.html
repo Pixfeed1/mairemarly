@@ -62,13 +62,11 @@
 		        theme, et s'affiche TELLE QUELLE : la desaturation de moitie
 		        n'a de sens que pour l'illustration livree avec le site. ]
 		[<div class="bandeau-image"><img src="(#GET{asso_photo}|attribut_html)" alt=""></div>]
-		[(#GET{asso_photo}|oui)[<p class="bandeau-credit">(#CONFIG{marly/associations_credit})</p>]]
 		[(#GET{asso_photo}|non)<div class="bandeau-image associatif"><img
 		     src="#CHEMIN{img/vie-associative.jpg}" alt=""></div>]
 	]
 	[(#GET{asso}|non)
 		[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
-		[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
 	]
 	[(#GET{illustre}|non)<div class="bandeau-motif"></div>]
 

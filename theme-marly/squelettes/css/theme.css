@@ -256,11 +256,6 @@ body::after{
 .recherche-heros button:hover{ background:var(--accent-sombre); }
 
 /* Le crédit photographique : discret, mais toujours présent. */
-.heros-credit{
-	position:absolute; left:0; bottom:0; z-index:1; margin:0;
-	background:rgba(29,26,26,.72); color:#fff;
-	font-size:12px; padding:6px 14px;
-}
 
 @media (max-width:560px){
 	.recherche-heros{ padding:6px 6px 6px 16px; }
@@ -1145,6 +1140,26 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 	.renvoi:hover .renvoi-fleche{ transform:none; }
 }
 
+/* ===========================================================================
+   LES CREDITS PHOTOGRAPHIQUES, SUR LA PAGE CREDITS.
+   ---------------------------------------------------------------------------
+   Les deux pastilles qui vivaient ici — .heros-credit et .bandeau-credit — ont
+   ete retirees le 28 aout 2026. Elles posaient un rectangle noir opaque dans
+   le coin d'une photographie qu'on avait passe du temps a cadrer, et les sites
+   de collectivites ne font pas ca : ils regroupent les credits sur une page.
+
+   La liste ci-dessous les remplace. Elle n'est pas recopiee a la main : le
+   gabarit lit quelle image est REELLEMENT en service et n'ecrit que sa ligne.
+   =========================================================================== */
+.credits-photos{ list-style:none; margin:0 0 30px; padding:0; }
+.credits-photos li{
+	font-family:var(--texte); font-size:15.5px; line-height:1.6;
+	color:var(--encre-doux); padding:9px 0;
+	border-bottom:1px solid var(--trait);
+}
+.credits-photos li:last-child{ border-bottom:0; }
+.credits-photos b{ color:var(--encre); font-weight:700; margin-right:6px; }
+
 /* --- La liste des fiches ------------------------------------------------- */
 .fiches{ list-style:none; margin:0 0 10px; padding:0; }
 .fiches li{ border-bottom:1px solid var(--trait); }
@@ -1811,10 +1826,6 @@ a.pagination-item-label:focus-visible{ background:var(--creme-sombre); }
 	content:""; position:absolute; inset:0;
 	background:linear-gradient(to right,
 		rgba(253,248,238,.86) 0%, rgba(253,248,238,.62) 46%, rgba(253,248,238,.24) 100%);
-}
-.bandeau-credit{
-	position:absolute; right:0; top:0; z-index:1; margin:0;
-	background:rgba(29,26,26,.72); color:#fff; font-size:12px; padding:6px 14px;
 }
 .bandeau-carton{
 	position:relative; z-index:1;

@@ -57,6 +57,10 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	   de Configuration ne couvre QUE l'image deposee : sans cette chaine,
 	   l'accueil affichait une photographie sans auteur. */
 	'credit_eglise_defaut' => 'Photo : Tourisme Thiérache',
+	'credits_photos' => 'Photographies',
+	'credit_ou_banniere' => 'Bannière de la page d’accueil :',
+	'credit_ou_bandeau' => 'Bandeau des pages de section :',
+	'credit_ou_associations' => 'Bandeau de la vie associative :',
 
 	'article_precedent' => 'Article précédent',
 	'article_suivant' => 'Article suivant',

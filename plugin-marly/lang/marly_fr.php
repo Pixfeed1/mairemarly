@@ -25,13 +25,13 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'banniere_retirer' => 'Retirer cette photographie',
 	'banniere_retirer_aide' => 'Cochez puis enregistrez : la photographie du thème reprendra sa place.',
 	'champ_banniere_credit' => 'Crédit photographique',
-	'banniere_credit_aide'  => 'S’affiche en petit dans le coin de la bannière. Par exemple : Photo : Tourisme Thiérache. À remplir si la photographie n’a pas été prise par la commune.',
+	'banniere_credit_aide'  => 'S’affiche sur la page Crédits du site, et non sur la photographie elle-même. À remplir si la photographie n’a pas été prise par la commune. Par exemple : Photo : Jean Dupont.',
 	'legende_bandeau'  => 'Photographie des pages de section',
 	'bandeau_intro'    => 'La bande étroite en tête des pages qui n’ont pas de rubrique : les démarches, l’annuaire des commerces, les réservations, le contact, le conseil municipal. Une rubrique, elle, garde son propre logo, à déposer dans la rubrique.',
 	'champ_bandeau'    => 'Choisir une photographie',
 	'bandeau_aide'     => 'Format paysage, au moins 1200 pixels de large. La bande est basse et très large : une vue dégagée du village convient mieux qu’un bâtiment cadré serré. Tant qu’aucune n’est déposée, une mosaïque discrète du blason s’affiche.',
 	'champ_bandeau_credit' => 'Crédit photographique',
-	'bandeau_credit_aide'  => 'S’affiche en petit dans le coin de la bande. À remplir si la photographie n’a pas été prise par la commune.',
+	'bandeau_credit_aide'  => 'S’affiche sur la page Crédits du site, et non sur la photographie elle-même. À remplir si la photographie n’a pas été prise par la commune.',
 
 	// --- L'image de la vie associative ---------------------------------------
 	// La seule page illustrée du site, et le seul champ d'image propre à une
@@ -42,7 +42,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'champ_associations'   => 'Choisir une photographie',
 	'associations_aide'    => 'Format paysage, au moins 1200 pixels de large. La bande est basse et très large : une vue d’ensemble convient mieux qu’un sujet cadré serré. Votre photographie s’affiche telle quelle, sans la retouche appliquée à l’image livrée avec le site.',
 	'champ_associations_credit' => 'Crédit photographique',
-	'associations_credit_aide'  => 'S’affiche en petit dans le coin de la bande. À remplir si la photographie n’a pas été prise par la commune.',
+	'associations_credit_aide'  => 'S’affiche sur la page Crédits du site, et non sur la photographie elle-même. À remplir si la photographie n’a pas été prise par la commune.',
 	'erreur_banniere_envoi' => 'Le fichier n’a pas pu être envoyé. Il est probablement trop lourd pour le serveur : essayez une image plus légère.',
 	'erreur_banniere_type'  => 'Ce fichier n’est pas une image. Formats acceptés : JPEG, PNG, WebP.',
 	'erreur_banniere_petite' => 'Cette image ne fait que @largeur@ pixels de large. Il en faut au moins 1200, sinon elle sera floue sur un grand écran.',

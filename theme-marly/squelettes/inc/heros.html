@@ -46,28 +46,21 @@
 
 	[<div class="heros-image"><img src="(#GET{banniere}|attribut_html)" alt=""></div>]
 
-	[(#REM) Le credit se saisit dans le meme ecran, juste sous le fichier. Une
-	        photographie a un auteur, et la mairie doit pouvoir le citer sans
-	        appeler personne. ]
-	[(#GET{banniere}|oui)[<p class="heros-credit">(#CONFIG{marly/banniere_credit})</p>]]
+	[(#REM) AUCUN CREDIT N'EST TAMPONNE SUR LA PHOTOGRAPHIE, et c'est un choix
+	        arrete le 28 aout 2026. Le theme posait ici une pastille noire dans
+	        le coin de l'image. Les sites de collectivites ne font pas ca — ils
+	        regroupent les credits sur une page — et le client l'a dit sans
+	        detour : << c'est moche, les autres sites font pas ca >>.
+
+	        Le credit n'est pas perdu, il a change d'endroit : la page Credits
+	        affiche celui de la photographie REELLEMENT en service, deposee ou
+	        livree avec le theme, par inc/credits-photos.html. Le champ de
+	        Configuration existe toujours, il alimente cette page. ]
 
 	[(#REM) Aucune photographie deposee : celle du theme, avec ses reglages de
 	        lumiere. Ils ne s'appliquent qu'a elle — on ne corrige pas une
-	        image qu'on n'a pas vue.
-
-	        SON CREDIT EST EN DUR, ET IL LE FAUT. Le champ de Configuration ne
-	        s'affiche que si une banniere y est deposee : tant que le site
-	        tourne sur la photographie du theme, aucun credit ne sortait, et
-	        elle a pourtant un auteur comme les autres. Signale par le client
-	        le 28 aout 2026.
-
-	        Une image livree avec le theme doit porter son credit dans le
-	        theme : personne ne peut le saisir a notre place, puisque personne
-	        d'autre ne sait d'ou elle vient. C'est aussi ce qu'exige la
-	        regle 77 du verificateur, qui demande que chaque photographie de
-	        squelettes/img/ soit inscrite dans img/CREDITS.md. ]
-	[(#GET{banniere}|non)<div class="heros-image heros-defaut"><img src="#CHEMIN{img/eglise-defaut.jpg}" alt=""></div>
-	<p class="heros-credit"><:marly:credit_eglise_defaut:></p>]
+	        image qu'on n'a pas vue. ]
+	[(#GET{banniere}|non)<div class="heros-image heros-defaut"><img src="#CHEMIN{img/eglise-defaut.jpg}" alt=""></div>]
 
 	<div class="heros-voile" aria-hidden="true"></div>
 

@@ -24,4 +24,9 @@
 	<h1>[(#ENV{titre})]</h1>
 	<p class="explication"><:marly:page_en_preparation:></p>
 	<//B_page>
+
+	[(#REM) Les credits photographiques, sur la seule page qui les demande.
+	        Le parametre vient de contenu/credits.html : le gabarit ne
+	        reconnait AUCUN nom de page, il repond a ce qu'on lui passe. ]
+	[(#ENV{photos}|oui)<INCLURE{fond=inc/credits-photos}{env}>]
 </div>

@@ -1,0 +1,49 @@
+[(#REM)
+  Les credits photographiques, sur la page Credits et nulle part ailleurs.
+  ---------------------------------------------------------------------------
+  RIEN N'EST TAMPONNE SUR LES IMAGES. Le theme posait une pastille noire dans
+  le coin de chaque photographie. Les sites de collectivites ne font pas ca —
+  ils regroupent les credits sur une page — et le client l'a dit sans detour :
+  << c'est moche, les autres sites font pas ca >>. La pastille salissait une
+  photographie qu'on avait passe du temps a cadrer.
+
+  CE BLOC N'EST PAS UN TEXTE RECOPIE, IL LIT L'ETAT DU SITE. Chaque ligne ne
+  parait que si l'image qu'elle credite est REELLEMENT AFFICHEE :
+
+    - une photographie deposee dans Configuration ? sa ligne porte le credit
+      saisi dans le meme ecran, juste sous le fichier ;
+    - rien de depose ? c'est l'image livree avec le theme qui tient la place,
+      et sa ligne porte SON credit, ecrit en dur ici parce que personne
+      d'autre ne sait d'ou elle vient.
+
+  Le jour ou la mairie depose sa propre banniere, la ligne de la photographie
+  du theme disparait toute seule et la sienne prend sa place. Personne n'a a
+  y penser, et la page ne peut pas mentir.
+
+  DEUX SILENCES SONT VOULUS. Quand aucun bandeau de section n'est depose, les
+  pages de section montrent la mosaique des armes : un dessin original, deja
+  couvert par le paragraphe des dessins. Et l'illustration de la vie
+  associative livree avec le theme n'a pas de ligne tant que son origine
+  n'est pas connue — inventer un credit serait pire que de n'en pas mettre.
+  Les deux points sont ecrits dans squelettes/img/CREDITS.md.
+]
+#SET{banniere,#VAL|marly_url_banniere}
+#SET{bandeau,#VAL|marly_url_bandeau}
+#SET{assos,#VAL|marly_url_associations}
+
+<h2><:marly:credits_photos:></h2>
+<ul class="credits-photos">
+
+	[(#REM) La banniere d'accueil. Deposee, ou celle du theme. ]
+	[(#GET{banniere}|oui)[<li><b><:marly:credit_ou_banniere:></b> (#CONFIG{marly/banniere_credit})</li>]]
+	[(#GET{banniere}|non)<li><b><:marly:credit_ou_banniere:></b> <:marly:credit_eglise_defaut:></li>]
+
+	[(#REM) Le bandeau des pages de section. Rien quand il n'est pas depose :
+	        c'est alors la mosaique des armes, un dessin. ]
+	[(#GET{bandeau}|oui)[<li><b><:marly:credit_ou_bandeau:></b> (#CONFIG{marly/bandeau_credit})</li>]]
+
+	[(#REM) Le bandeau de la vie associative. Rien quand il n'est pas depose :
+	        l'origine de l'image du theme n'est pas connue. ]
+	[(#GET{assos}|oui)[<li><b><:marly:credit_ou_associations:></b> (#CONFIG{marly/associations_credit})</li>]]
+
+</ul>

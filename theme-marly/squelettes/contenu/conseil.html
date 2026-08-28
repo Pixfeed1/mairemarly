@@ -44,7 +44,6 @@
 	        27 aout 2026, il se lisait comme une illustration generee. ]
 	#SET{bandeau,#VAL|marly_url_bandeau}
 	[<div class="bandeau-image"><img src="(#GET{bandeau}|attribut_html)" alt=""></div>]
-	[(#GET{bandeau}|oui)[<p class="bandeau-credit">(#CONFIG{marly/bandeau_credit})</p>]]
 	[(#GET{bandeau}|non)<div class="bandeau-motif"></div>]
 
 	[(#REM) Le titre vit dans un carton pose sur l'image et debordant. Un titre
