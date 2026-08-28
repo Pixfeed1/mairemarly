@@ -53,8 +53,21 @@
 
 	[(#REM) Aucune photographie deposee : celle du theme, avec ses reglages de
 	        lumiere. Ils ne s'appliquent qu'a elle — on ne corrige pas une
-	        image qu'on n'a pas vue. ]
-	[(#GET{banniere}|non)<div class="heros-image heros-defaut"><img src="#CHEMIN{img/eglise-defaut.jpg}" alt=""></div>]
+	        image qu'on n'a pas vue.
+
+	        SON CREDIT EST EN DUR, ET IL LE FAUT. Le champ de Configuration ne
+	        s'affiche que si une banniere y est deposee : tant que le site
+	        tourne sur la photographie du theme, aucun credit ne sortait, et
+	        elle a pourtant un auteur comme les autres. Signale par le client
+	        le 28 aout 2026.
+
+	        Une image livree avec le theme doit porter son credit dans le
+	        theme : personne ne peut le saisir a notre place, puisque personne
+	        d'autre ne sait d'ou elle vient. C'est aussi ce qu'exige la
+	        regle 77 du verificateur, qui demande que chaque photographie de
+	        squelettes/img/ soit inscrite dans img/CREDITS.md. ]
+	[(#GET{banniere}|non)<div class="heros-image heros-defaut"><img src="#CHEMIN{img/eglise-defaut.jpg}" alt=""></div>
+	<p class="heros-credit"><:marly:credit_eglise_defaut:></p>]
 
 	<div class="heros-voile" aria-hidden="true"></div>
 

@@ -2138,6 +2138,42 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "Ecrire [(#CHEMIN{...}|timestamp)]")
 
 
+# 77. Une image livree avec le theme dont personne n'a note l'origine.
+#     ---------------------------------------------------------------------
+#     Le champ << Credit photographique >> de Configuration ne couvre QUE la
+#     photographie que la mairie y depose elle-meme. Les images livrees dans
+#     squelettes/img/ n'ont personne pour les documenter : la mairie ne sait
+#     pas d'ou elles viennent, et nous l'oublions.
+#
+#     Mesure du 28 aout 2026, signalee par le client : la banniere d'accueil
+#     par defaut, eglise-defaut.jpg, s'affichait sans le moindre credit — le
+#     bloc heros-credit ne sort que si une banniere est deposee. La photo
+#     venait de la page Facebook d'un office de tourisme. Et vie-associative.jpg
+#     etait dans le meme cas, sans que personne se souvienne de son origine.
+#
+#     La regle exige une ligne dans squelettes/img/CREDITS.md pour chaque
+#     photographie du dossier. Elle ne juge pas la licence — un verificateur
+#     ne sait pas lire un contrat — elle exige seulement que la question ait
+#     ete POSEE et la reponse ecrite, fut-elle << origine a confirmer >>.
+_CREDITS = os.path.join(RACINE, 'squelettes', 'img', 'CREDITS.md')
+_inscrit = open(_CREDITS, encoding='utf-8').read() if os.path.exists(_CREDITS) else ''
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', 'img', '*'))):
+    _nom = os.path.basename(_f)
+    if not _nom.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')):
+        continue
+    if not os.path.exists(_CREDITS):
+        signaler('squelettes/img/CREDITS.md', 1,
+                 "le fichier n'existe pas : aucune des photographies livrees avec le "
+                 "theme n'a d'origine notee")
+        break
+    if _nom not in _inscrit:
+        signaler('squelettes/img/' + _nom, 1,
+                 "photographie livree avec le theme mais absente de img/CREDITS.md : "
+                 "personne ne saura d'ou elle vient, et le champ << Credit "
+                 "photographique >> de Configuration ne couvre que l'image que la "
+                 "mairie depose elle-meme, pas celle-ci")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

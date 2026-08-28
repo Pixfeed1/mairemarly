@@ -52,6 +52,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	   boucle fait vaut mieux qu'un intitule par rubrique. */
 	'meme_rubrique' => 'Dans la même rubrique',
 	'tous_articles_rubrique' => 'Tous les articles de la rubrique',
+	/* Le credit de la photographie livree avec le theme, celle qui tient la
+	   place tant que la mairie n'a rien depose dans Configuration. Le champ
+	   de Configuration ne couvre QUE l'image deposee : sans cette chaine,
+	   l'accueil affichait une photographie sans auteur. */
+	'credit_eglise_defaut' => 'Photo : Tourisme Thiérache',
+
 	'article_precedent' => 'Article précédent',
 	'article_suivant' => 'Article suivant',
 	'lettre_invite' => 'Recevez les actualités du village par courriel, quelques lettres par an, rien de plus.',
