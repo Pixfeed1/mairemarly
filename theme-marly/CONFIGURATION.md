@@ -589,6 +589,27 @@ alors sur sa fiche.
 L'article proposé apparaît à la mairie dans `Publication ▸ Suivi de la
 publication`. Elle le lit, corrige si besoin, et publie.
 
+## L'image en tête d'un article
+
+Joignez une photographie à l'article : `Ajouter un document` sous le texte.
+**La première image jointe devient l'image de tête**, sans autre manipulation
+— il n'est pas nécessaire d'aller chercher l'écran séparé du « logo ».
+
+Elle s'affiche **à gauche, le titre à côté sur fond crème**. Le cadre a une
+taille fixe et la photographie le remplit : une photo prise avec le téléphone
+tenu verticalement donne exactement la même page qu'une photo prise en
+largeur. Sur téléphone, l'image passe au-dessus du titre.
+
+**Une affiche scannée n'a pas sa place ici : elle sera recadrée**, et son
+texte sortira du cadre. Déposez-la plutôt comme document à télécharger — elle
+apparaîtra dans « Documents joints », entière et lisible. Si vous voulez
+qu'elle se voie dans la page, joignez d'abord une photographie, puis
+l'affiche : la galerie « En images » plus bas la montre entière.
+
+**Un article sans photographie n'a l'air de rien manquer** : le titre prend
+alors toute la largeur. C'est le cas de la grande majorité des articles, et
+c'est très bien.
+
 ## Écrire un article
 
 Tout article, de la mairie ou d'une association, prend automatiquement

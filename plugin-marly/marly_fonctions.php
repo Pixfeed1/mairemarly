@@ -279,6 +279,53 @@ function filtre_marly_url_associations_dist($rien = '') {
 	return marly_url_image_deposee('associations');
 }
 
+/**
+ * L'illustration d'un article : son logo, et a defaut sa premiere image jointe.
+ * ---------------------------------------------------------------------------
+ * POURQUOI EN PHP ET PAS DANS LE GABARIT. La une d'article doit CHOISIR sa
+ * mise en page selon qu'il y a une image ou non — photographie a gauche et
+ * titre a droite, ou titre pleine largeur. Il faut donc un booleen AVANT
+ * d'ecrire quoi que ce soit, et non une valeur au moment de l'afficher.
+ *
+ * Ecrit dans le gabarit, ce test demanderait #LOGO_ARTICLE|sinon{#GET{illu}}
+ * a l'interieur d'un #SET, donc des accolades imbriquees. Ce site en a deja
+ * paye le prix deux fois. Ici il n'y a pas d'accolade du tout.
+ *
+ * LE REPLI SUR L'IMAGE JOINTE N'EST PAS UN LUXE. Mesure du 27 aout 2026 :
+ * aucun des 82 articles n'a de logo, sept portent une image jointe. Dans SPIP
+ * un document attache et un logo sont deux choses distinctes, et ce sont les
+ * logos que les gabarits montrent. Une secretaire de mairie joint une photo a
+ * son article ; elle ne va pas chercher l'ecran separe du logo.
+ *
+ * Rend le chemin du fichier, ou une chaine vide.
+ */
+function filtre_marly_illustration_article_dist($id_article) {
+	$id_article = intval($id_article);
+	if (!$id_article) {
+		return '';
+	}
+
+	include_spip('inc/logos');
+	$logo = chercher_logo($id_article, 'id_article', 'on');
+	if ($logo and !empty($logo[0])) {
+		return $logo[0];
+	}
+
+	/* La premiere image jointe, dans l'ordre ou le gabarit les montre :
+	   le rang saisi par la mairie, puis le titre, puis la date. */
+	return (string) sql_getfetsel(
+		'doc.fichier',
+		'spip_documents AS doc INNER JOIN spip_documents_liens AS lien
+		   ON lien.id_document = doc.id_document',
+		array(
+			'lien.objet = ' . sql_quote('article'),
+			'lien.id_objet = ' . $id_article,
+			'doc.mode = ' . sql_quote('image'),
+		),
+		'', 'doc.titre, doc.date', '0,1'
+	);
+}
+
 /** Le travail commun aux trois : lire la configuration, et vérifier le disque. */
 function marly_url_image_deposee($champ) {
 	include_spip('inc/config');

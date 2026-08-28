@@ -1427,9 +1427,51 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
 .article-signature{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); margin:14px 0 0; }
 .article-signature b{ font-weight:600; color:var(--encre); }
-.article-photo{ margin:26px 0 30px; }
-.article-photo img{ display:block; width:100%; height:auto; border-radius:6px; }
-.article-photo figcaption{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin-top:8px; }
+/* ===========================================================================
+   LA UNE D'ARTICLE : photographie a gauche, titre a droite.
+   ---------------------------------------------------------------------------
+   .article-photo vivait ici : une image posee dans la colonne de texte, en
+   largeur pleine et en hauteur libre. Retiree le 28 aout 2026. Sans plafond,
+   la mise en page dependait de ce que la mairie deposait — mesure du meme
+   jour, une photo de telephone tenue verticalement faisait 1 035 pixels de
+   haut avant le premier mot, une affiche A4 scannee 1 098.
+
+   LE CADRE EST DESORMAIS FIXE et la photographie le remplit, comme les
+   bandeaux de section. Photo verticale ou paysage, la page est la meme.
+
+   Le carton de droite porte tout ce qui identifie l'article : rubrique,
+   titre, chapo, date, et les deux outils. Sous 900px la grille s'empile —
+   photographie en bandeau de 230px, puis le carton.
+   =========================================================================== */
+.une-art{
+	display:grid; grid-template-columns:56% 44%;
+	min-height:460px; background:var(--creme);
+}
+.une-art-photo{ position:relative; overflow:hidden; }
+.une-art-photo img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.une-art-carton{
+	display:flex; flex-direction:column; justify-content:center;
+	padding:48px clamp(24px,5vw,72px);
+}
+.une-art-carton .article-rubrique{ margin:0 0 12px; }
+.une-art-carton h1{ margin:0 0 16px; }
+.une-art-carton .chapo{ margin:0 0 14px; }
+.une-art-carton .article-signature{ margin:0 0 18px; }
+.une-art-carton .page-outils{ margin:0; justify-content:flex-start; }
+
+/* Le fil d'Ariane est ecrit une seule fois, au-dessus des deux mises en page.
+   Il est cale sur la MEME colonne que le texte : sans ca il partait de 17px
+   avec une photographie et de 195px sans, et sautait d'un article a l'autre. */
+.une-fil{ max-width:820px; margin:0 auto; padding:26px 22px 18px; }
+
+/* Le fil etant sorti de la page, celle-ci n'a plus besoin de son air du haut. */
+.page-sous-fil{ padding-top:14px; }
+
+@media (max-width:900px){
+	.une-art{ grid-template-columns:1fr; min-height:0; }
+	.une-art-photo{ height:230px; }
+	.une-art-carton{ padding:28px 22px 34px; }
+}
 
 /* <quote> de SPIP : la citation posee sur un filet vert. */
 .texte blockquote{ margin:26px 0; padding:6px 0 6px 22px; border-left:4px solid var(--accent); }
