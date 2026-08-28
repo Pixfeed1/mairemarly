@@ -372,7 +372,6 @@ Votre réservation de @salle@ le @date_debut@ a été annulée.
 	'titre_vie_associative' => 'Vie associative',
 	'assos_intro'          => 'Les associations de la commune, ce qu’elles proposent et à qui s’adresser. Pour ajouter la vôtre ou corriger une information, écrivez à la mairie.',
 	'aucune_association_publiee' => 'L’annuaire est en cours de constitution.',
-	'assos_actus_communes' => 'Actualités de la vie associative',
 	'asso_responsable'     => 'Responsable',
 	'asso_ou'              => 'Où',
 	'asso_quand'           => 'Quand',

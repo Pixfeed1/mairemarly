@@ -279,58 +279,6 @@ function filtre_marly_url_associations_dist($rien = '') {
 	return marly_url_image_deposee('associations');
 }
 
-/**
- * L'adresse publique de la rubrique de la vie associative.
- * ---------------------------------------------------------------------------
- * Le menu principal boucle sur les rubriques racines : c'est CETTE adresse que
- * le visiteur connait, et c'est donc elle qui porte l'annuaire. La page
- * spip.php?page=associations s'y redirige.
- *
- * Rend une chaine vide si la rubrique n'existe pas — la mairie l'a renommee,
- * ou le site est neuf. L'appelant retombe alors sur l'ancienne page, qui
- * fonctionne toujours : un repli, pas une page cassee.
- */
-function filtre_marly_url_rubrique_associations_dist($rien = '') {
-	$id = filtre_marly_rubrique_associations_dist();
-	if (!$id) {
-		return '';
-	}
-	include_spip('inc/urls');
-	include_spip('inc/filtres');
-	return url_absolue(generer_url_entite($id, 'rubrique'));
-}
-
-/**
- * L'adresse de la fiche d'association rangee dans cette rubrique, s'il y en a.
- * ---------------------------------------------------------------------------
- * CHAQUE ASSOCIATION EXISTE DEUX FOIS DANS LA BASE, et c'est voulu : une fiche
- * pour ses coordonnees, une rubrique pour ses articles. La colonne id_rubrique
- * de la fiche relie les deux, et la fiche affiche deja les articles de sa
- * rubrique.
- *
- * Il ne doit donc y avoir qu'UNE page par association, la fiche. Sans cette
- * fonction, /vie-associative/as-marly-gomont/ etait une seconde page pour la
- * meme association : meme nom, memes articles, mais ni telephone ni horaires.
- * Deux adresses pour une chose, c'est ce que le client a vu tout de suite.
- *
- * On ne prend que les fiches publiees : rediriger vers une fiche en attente
- * enverrait le visiteur sur un 404.
- */
-function filtre_marly_url_association_de_rubrique_dist($id_rubrique) {
-	$id_rubrique = intval($id_rubrique);
-	if (!$id_rubrique) {
-		return '';
-	}
-	$id = (int) sql_getfetsel('id_association', 'spip_associations',
-		'id_rubrique = ' . $id_rubrique . ' AND statut = ' . sql_quote('publie'));
-	if (!$id) {
-		return '';
-	}
-	include_spip('inc/urls');
-	include_spip('inc/filtres');
-	return url_absolue(generer_url_entite($id, 'association'));
-}
-
 /** Le travail commun aux trois : lire la configuration, et vérifier le disque. */
 function marly_url_image_deposee($champ) {
 	include_spip('inc/config');

@@ -17,32 +17,7 @@
 ]
 <B_existe>
 <BOUCLE_existe(RUBRIQUES){id_rubrique}{0,1}><!-- on ne fait que verifier --></BOUCLE_existe>
-[(#REM) LA SOUS-RUBRIQUE D'UNE ASSOCIATION MENE A SA FICHE.
-
-        Chaque association existe deux fois dans la base, et c'est voulu :
-        une fiche pour ses coordonnees, une rubrique pour ses articles. La
-        colonne id_rubrique de la fiche relie les deux, et la fiche affiche
-        deja les articles de sa rubrique.
-
-        Sans cette redirection, /vie-associative/as-marly-gomont/ etait une
-        SECONDE page pour la meme association : meme nom, memes articles,
-        mais ni telephone, ni horaires, ni lieu. Deux adresses pour une
-        chose — c'est exactement ce que le client a signale.
-
-        En 301 : le rangement des articles d'une association dans SA rubrique
-        est la structure du site, pas une preference du moment. Les liens de
-        l'ancien site et l'index des moteurs suivent.
-
-        Le filtre ne rend une adresse que si une fiche PUBLIEE porte cette
-        rubrique. Une rubrique ordinaire, ou celle d'une fiche en attente,
-        s'affiche donc normalement — on ne redirige jamais vers nulle part,
-        et la regle 75 du verificateur l'exige. ]
-#SET{fiche,#ENV{id_rubrique}|marly_url_association_de_rubrique}
-[(#GET{fiche}|oui)
-#HTTP_HEADER{HTTP/1.1 301 Moved Permanently}
-#HTTP_HEADER{Location: [(#GET{fiche})]}
-]
-[(#GET{fiche}|non)<INCLURE{fond=structure}{env}{type-page=rubrique}>]
+<INCLURE{fond=structure}{env}{type-page=rubrique}>
 </B_existe>
 #HTTP_HEADER{HTTP/1.0 404 Not Found}
 #HTTP_HEADER{"Cache-Control: no-store, no-cache, must-revalidate"}
