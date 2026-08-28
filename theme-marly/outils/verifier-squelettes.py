@@ -2059,6 +2059,50 @@ for _f in _racine_html:
                  "il faut donc un lien depuis le plan du site, le pied ou une autre page")
 
 
+# 75. Le meme nom pour un objet de la base et pour une page du site.
+#     ---------------------------------------------------------------------
+#     Le plugin cree des objets en base et les nomme avec une chaine de
+#     langue : la rubrique << Vie associative >>, creee quand la mairie
+#     enregistre une association. Le selecteur de raccourcis nomme les pages
+#     du site avec des chaines de langue lui aussi. Quand c'est LA MEME, la
+#     mairie lit deux lignes identiques dans un menu deroulant et rien ne dit
+#     laquelle mene ou :
+#
+#         Rubrique — Vie associative
+#         Page     — Vie associative
+#
+#     Signale par le client le 28 aout 2026, apres que j'ai renomme la page
+#     partout SAUF dans ce selecteur. Le renommage a moitie fait est pire que
+#     pas de renommage : il laisse croire que c'est regle.
+#
+#     La regle compare deux listes tirees du code, sans base de donnees : les
+#     chaines qui NOMMENT un objet cree (le champ titre passe a objet_modifier
+#     ou a sql_insertq) et celles qui nomment une page dans le selecteur.
+#     L'intersection doit etre vide.
+_PLUGIN = os.path.normpath(os.path.join(RACINE, '..', 'plugin-marly'))
+_noms_objets = set()
+for _f in sorted(glob.glob(os.path.join(_PLUGIN, '**', '*.php'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    for _c in re.finditer(r"""['"]titre['"]\s*=>\s*_T\(\s*['"]marly:(\w+)['"]""", _src):
+        _noms_objets.add(_c.group(1))
+
+_noms_pages = {}
+_f = os.path.join(_PLUGIN, 'inc', 'marly_raccourcis.php')
+if os.path.exists(_f):
+    _src = open(_f, encoding='utf-8').read()
+    _bloc = re.search(r'\$pages\s*=\s*array\((.*?)\);', _src, re.S)
+    if _bloc:
+        for _c in re.finditer(r"""['"](\w[\w-]*)['"]\s*=>\s*['"]marly:(\w+)['"]""", _bloc.group(1)):
+            _noms_pages[_c.group(2)] = _c.group(1)
+
+for _cle in sorted(set(_noms_pages) & _noms_objets):
+    signaler('plugin-marly/inc/marly_raccourcis.php', 1,
+             f"la chaine marly:{_cle} nomme A LA FOIS un objet cree en base et la page "
+             f"<< {_noms_pages[_cle]} >> du selecteur de raccourcis : la mairie lit deux "
+             "lignes identiques dans le menu deroulant et rien ne dit laquelle mene ou. "
+             "Il faut une chaine distincte pour la page")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

@@ -60,7 +60,12 @@ function marly_cibles_raccourcis() {
 		'contact'      => 'marly:contact',
 		'demarches'    => 'marly:toutes_les_demarches',
 		'commerces'    => 'marly:titre_commerces',
-		'associations' => 'marly:titre_vie_associative',
+		/* CETTE PAGE EST L'ANNUAIRE, PAS LA RUBRIQUE. Elles portaient le meme
+		   nom : le selecteur affichait « Page — Vie associative » juste sous
+		   « Rubrique — Vie associative », et rien ne disait laquelle menait
+		   ou. Signale par le client le 28 aout 2026, dans la foulee du
+		   renommage de la page — que j'avais fait partout SAUF ici. */
+		'associations' => 'marly:titre_annuaire',
 		'conseil'      => 'marly:titre_conseil',
 		'lieux'        => 'marly:titre_ou_nous_trouver',
 		'reservation'  => 'marly:reserver',

@@ -80,6 +80,14 @@ function marly_rubrique_association($nom) {
 			return 0;
 		}
 		objet_modifier('rubrique', $parent, array(
+			/* CE NOM EST CELUI DE LA RUBRIQUE, et de rien d'autre. La PAGE de
+			   l'annuaire s'appelle « Annuaire des associations »
+			   (marly:titre_annuaire). Les deux ont porte le meme nom jusqu'au
+			   28 aout 2026 : deux pages au titre identique, au fil d'Ariane
+			   identique et a la photographie identique, et le selecteur de
+			   raccourcis proposait deux lignes « Vie associative » sans dire
+			   laquelle menait ou. La regle 75 du verificateur interdit
+			   desormais de reutiliser ce nom pour designer une page. */
 			'titre'      => _T('marly:titre_vie_associative'),
 			'descriptif' => _T('marly:assos_intro'),
 		));
