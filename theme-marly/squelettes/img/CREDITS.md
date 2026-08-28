@@ -13,7 +13,7 @@ une image dont plus personne ne connaîtra l'origine dans six mois.
 | Fichier | Ce que c'est | Auteur / source | Licence | Crédit affiché |
 |---|---|---|---|---|
 | `eglise-defaut.jpg` | La bannière d'accueil, tant que la mairie n'a rien déposé dans Configuration | Page Facebook de l'Office de Tourisme du Pays de Thiérache | **Aucun accord écrit à ce jour** | « Photo : Tourisme Thiérache », posé en dur dans `inc/heros.html` |
-| `vie-associative.jpg` | Le bandeau des pages de la vie associative | **Origine à confirmer** — fichier fourni par le client le 27 août 2026 | **Inconnue** | Aucun |
+| `vie-associative.jpg` | Le bandeau des pages de la vie associative | Canva, banque d'images intégrée — téléchargée depuis un abonnement Canva Pro (Pixfeed) | Licence de contenu Canva Pro, **sans obligation d'attribution** | Aucun, et c'est conforme |
 | `embleme-armes.svg` | Les armes de la commune | Dessin original réalisé pour ce site | Propriété de la commune | — |
 | `embleme-compact.svg` | L'emblème réduit | Dessin original réalisé pour ce site | Propriété de la commune | — |
 | `embleme-lettres.svg` | L'emblème en lettres | Dessin original réalisé pour ce site | Propriété de la commune | — |
@@ -29,9 +29,17 @@ reste à envoyer à `accueil@tourisme-thierache.fr` (7 avenue du Préau,
 02140 Vervins — 03 23 91 30 10), en joignant la photographie et en demandant le
 nom du photographe à citer.
 
-**`vie-associative.jpg`.** Personne n'a noté d'où vient ce fichier. Tant que
-son origine n'est pas connue, aucun crédit ne peut être écrit — en inventer un
-serait pire que de n'en pas mettre.
+**`vie-associative.jpg`.** Résolu le 28 août 2026 : l'image vient de la banque
+d'images de Canva, téléchargée depuis l'abonnement Canva Pro de Pixfeed. La
+licence de contenu Canva autorise l'usage dans un travail livré à un client et
+**n'impose aucune attribution**. L'absence de ligne sur la page Crédits est
+donc le comportement juste, et non un oubli — c'est la raison pour laquelle
+`inc/credits-photos.html` n'en écrit pas.
+
+Une seule limite à connaître : cette licence couvre l'usage de l'image dans le
+site. Elle ne transfère pas l'image à la commune, qui ne peut donc pas la
+reprendre ailleurs — sur un bulletin municipal, une affiche — sans son propre
+accès. Si elle le souhaite un jour, il faudra une image à elle.
 
 ## Ce que la page Crédits du site dit aujourd'hui
 
