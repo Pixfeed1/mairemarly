@@ -54,6 +54,10 @@ function marly_cibles_raccourcis() {
 	/* Les pages du thème, nommées en clair. Elles ne sont pas devinables
 	   depuis la base : c'est la seule liste que le code doit connaître. */
 	$pages = array(
+		/* actualites et contact manquaient : deux pages qu'une mairie veut
+		   evidemment mettre en avant, et qu'on ne pouvait pas choisir. */
+		'actualites'   => 'marly:toutes_actualites',
+		'contact'      => 'marly:contact',
 		'demarches'    => 'marly:toutes_les_demarches',
 		'commerces'    => 'marly:titre_commerces',
 		'associations' => 'marly:titre_vie_associative',

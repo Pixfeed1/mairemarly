@@ -1088,6 +1088,63 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .page-simple .fil{ margin:0 0 24px; }
 .page-simple .maj{ margin-top:40px; font-size:.9em; color:var(--encre-doux); }
 
+/* ===========================================================================
+   LE RENVOI — une page qui en designe une autre.
+   ---------------------------------------------------------------------------
+   Le menu principal boucle sur les rubriques racines : une page qui n'est pas
+   une rubrique en est absente par construction. Ce bloc remonte un lien d'un
+   cran la ou deux pages parlent de la meme chose.
+
+   Pose dans le flux, jamais en colonne laterale : le theme est une colonne
+   unique de 820px, et sous 900px un encart lateral retomberait de toute facon
+   dans le flux.
+
+   Le bloc ENTIER est le lien : la cible de clic fait 80px de haut au lieu des
+   20px d'une ligne de texte.
+   =========================================================================== */
+.renvoi{
+	display:flex; align-items:center; gap:18px;
+	margin:0 0 34px; padding:18px 22px;
+	background:var(--creme-sombre);
+	border-left:4px solid var(--accent);
+	border-radius:3px;
+	text-decoration:none; color:inherit;
+	transition:background .15s ease;
+}
+.renvoi:hover{ background:var(--creme-bandeau); }
+.renvoi .renvoi-rond{
+	flex:0 0 auto; width:46px; height:46px; border-radius:50%;
+	background:var(--accent); display:flex; align-items:center; justify-content:center;
+}
+.renvoi .renvoi-rond .ico{ width:22px; height:22px; fill:#fff; }
+.renvoi-texte{ flex:1 1 auto; min-width:0; }
+.renvoi-texte b{
+	display:block; font-family:var(--titre); font-size:17px;
+	color:var(--accent); margin-bottom:2px;
+}
+.renvoi-texte span{
+	display:block; font-family:var(--texte); font-size:14.5px;
+	color:var(--encre-doux); line-height:1.5;
+}
+.renvoi .renvoi-fleche{
+	flex:0 0 auto; width:18px; height:18px; fill:var(--accent);
+	transition:transform .15s ease;
+}
+.renvoi:hover .renvoi-fleche{ transform:translateX(4px); }
+
+/* La fleche disparait sous 560px : elle ne porte aucune information que le
+   bloc ne porte deja, et la place gagnee evite au titre de passer sur trois
+   lignes. */
+@media (max-width:560px){
+	.renvoi{ gap:14px; padding:16px 18px; }
+	.renvoi .renvoi-rond{ width:40px; height:40px; }
+	.renvoi .renvoi-fleche{ display:none; }
+}
+@media (prefers-reduced-motion:reduce){
+	.renvoi, .renvoi .renvoi-fleche{ transition:none; }
+	.renvoi:hover .renvoi-fleche{ transform:none; }
+}
+
 /* --- La liste des fiches ------------------------------------------------- */
 .fiches{ list-style:none; margin:0 0 10px; padding:0; }
 .fiches li{ border-bottom:1px solid var(--trait); }

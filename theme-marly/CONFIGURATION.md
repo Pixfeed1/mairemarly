@@ -126,6 +126,43 @@ mention « (site extérieur) », lue par les lecteurs d'écran.
 
 ---
 
+## 3 bis. Comment on rend une page trouvable
+
+Le site a **six niveaux de navigation**, et il faut les connaître pour savoir
+où poser un lien. Du plus visible au plus discret :
+
+| Niveau | Ce qu'il atteint | Qui le décide |
+|---|---|---|
+| Menu principal | **les rubriques racines, et rien d'autre** | la mairie, en créant des rubriques |
+| Accès rapides (accueil) | 6 raccourcis, ou les rubriques à défaut | la mairie, `Édition ▸ Raccourcis` |
+| Bandeaux de l'accueil | actualités, agenda, documents | automatique |
+| Pied de page | contact, démarches, newsletter, pages légales, plan | le thème |
+| **Plan du site** | **tout le site** | le thème |
+| Recherche | tout le site | automatique |
+
+**Le point qui surprend : le menu principal ne sait pointer que sur des
+rubriques.** Il est bâti sur la liste des rubriques racines. Une page qui
+n'est pas une rubrique — l'annuaire des associations, celui des commerces, les
+démarches, le conseil municipal, l'agenda — ne peut donc **pas** être ajoutée
+au menu. Ce n'est pas un oubli : c'est ce qui garantit que le menu reflète
+toujours l'arborescence réelle, sans liste parallèle à tenir à jour.
+
+**Aucune page n'est pour autant perdue** : le plan du site les liste toutes, et
+il est appelé depuis le pied de chaque page. C'est le filet.
+
+**Pour remonter une page tout en haut, on crée un raccourci.**
+`Édition ▸ Raccourcis ▸ Créer`. On choisit un titre, une icône, et une cible
+dans une liste déroulante — rubriques, sous-rubriques, démarches, et les pages
+du site nommées en clair. Les six premiers par rang s'affichent dans « Accès
+rapides » sur l'accueil.
+
+Tant qu'aucun raccourci n'est saisi, le bloc affiche les rubriques racines,
+c'est-à-dire la même chose que le menu. **Il fait alors doublon, et c'est de
+la place perdue.** Six raccourcis bien choisis valent mieux : mettez-y ce que
+le menu ne peut pas montrer.
+
+---
+
 ## 4. Les réglages : un écran, des champs étiquetés
 
 Tout ce qui n'est pas du contenu — coordonnées, horaires, réseaux sociaux —

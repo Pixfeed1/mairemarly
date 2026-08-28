@@ -2009,6 +2009,56 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "photographie s'afficherait trois fois")
 
 
+# 74. Une page du site qu'aucune autre page n'appelle.
+#     ---------------------------------------------------------------------
+#     Le menu principal est une boucle sur les rubriques racines : il ne sait
+#     pointer que sur des rubriques. Toute page qui n'en est pas une n'existe
+#     donc dans la navigation que si QUELQU'UN l'appelle — le pied, le plan du
+#     site, une autre page. Personne ne s'en apercoit quand ce lien manque :
+#     la page repond parfaitement, elle est simplement introuvable.
+#
+#     Ecrite le 28 aout 2026. Elle vient d'un inventaire fait pour repondre a
+#     une question du client — « en dehors des raccourcis, si un element n'y
+#     est pas ? » — et cet inventaire a trouve une page sans le moindre lien.
+#     C'etait une fausse alerte, mais je ne l'ai su qu'en ouvrant le fichier.
+#     La question etait bonne, et la reponse ne doit pas dependre de qui pense
+#     a faire l'inventaire.
+#
+#     DEUX SORTES DE PAGES SONT EXCLUES, et aucune ne l'est arbitrairement.
+#
+#     Les pages FERMEES : elles posent un en-tete 404 et n'ont pas de
+#     squelette de contenu. Ce sont les pages de SPIP qu'on a neutralisees —
+#     calendrier, forum, auteur, mot, site, nouveautes. Ne pas y mener est
+#     exactement leur raison d'etre, et le test le lit dans le fichier plutot
+#     que dans une liste a tenir a jour.
+#
+#     Les pages STRUCTURELLES, qui ne sont pas atteintes par un lien mais par
+#     le moteur : structure est incluse et non appelee, sommaire est l'accueil
+#     (#URL_SITE_SPIP/), 404 est servie par le serveur, article et rubrique
+#     par #URL_ARTICLE et #URL_RUBRIQUE, spip_pass par le courriel de mot de
+#     passe oublie.
+_PAGES_MOTEUR = ('structure', 'sommaire', '404', 'article', 'rubrique', 'spip_pass')
+_racine_html = sorted(glob.glob(os.path.join(RACINE, 'squelettes', '*.html')))
+_tout = ''
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _tout += open(_f, encoding='utf-8').read()
+
+for _f in _racine_html:
+    _page = os.path.basename(_f)[:-5]
+    if _page in _PAGES_MOTEUR:
+        continue
+    _src = open(_f, encoding='utf-8').read()
+    _fermee = ('404 Not Found' in _src
+               and not os.path.exists(os.path.join(RACINE, 'squelettes', 'contenu', _page + '.html')))
+    if _fermee:
+        continue
+    if not re.search(r'#URL_PAGE\{\s*' + re.escape(_page) + r'\s*\}', _tout):
+        signaler(os.path.relpath(_f, RACINE), 1,
+                 f"aucune page du site n'appelle #URL_PAGE{{{_page}}} : cette page repond, "
+                 "mais rien n'y mene. Le menu ne sait pointer que sur des rubriques — "
+                 "il faut donc un lien depuis le plan du site, le pied ou une autre page")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

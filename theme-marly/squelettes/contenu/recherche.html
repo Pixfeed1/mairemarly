@@ -96,7 +96,7 @@
 
 	<B_asso>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:titre_vie_associative:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
+	<h2 class="titre-bloc"><:marly:titre_annuaire:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_asso(ASSOCIATIONS){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="[(#URL_PAGE{association}|parametre_url{id_association,#ID_ASSOCIATION})]">
@@ -160,7 +160,7 @@
 			<a class="pilule" href="#URL_PAGE{commerces}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> <:marly:titre_commerces:></a>
 			<a class="pilule" href="#URL_PAGE{associations}">
-				<svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg> <:marly:titre_vie_associative:></a>
+				<svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg> <:marly:titre_annuaire:></a>
 			[<a class="pilule" href="mailto:(#CONFIG{marly/courriel}|attribut_html)">
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:pied_nous_ecrire:></a>]
 		</p>

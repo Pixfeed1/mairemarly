@@ -18,11 +18,34 @@
   Un titre de groupe ne s'affiche que si le groupe contient quelque chose :
   c'est le role du bloc optionnel autour de chacune.
 ]
-<INCLURE{fond=inc/bandeau-page}{cle=titre_vie_associative}{associatif=oui}>
+<INCLURE{fond=inc/bandeau-page}{cle=titre_annuaire}{associatif=oui}>
 
 <div class="page-simple page-sous-carton">
 
 	<p class="chapo"><:marly:assos_intro:></p>
+
+	[(#REM) LE RENVOI VERS LA RUBRIQUE, ou vivent les articles des
+	        associations. Les deux pages parlaient de la meme chose sans se
+	        connaitre : le menu principal mene a la rubrique, l'annuaire n'est
+	        atteint que par le plan, la recherche et les fiches. Le client l'a
+	        signale — << pourquoi pour les associations j'ai deux pages ? >>
+
+	        LA BOUCLE EST LA GARDE. Si la rubrique n'existe pas — renommee,
+	        supprimee, site neuf — elle ne tourne pas et rien ne s'affiche. Pas
+	        de lien mort, pas de condition a ecrire a cote.
+
+	        RIEN N'EST POSE EN SENS INVERSE, sur la rubrique. Ce squelette-ci
+	        ne sert qu'a l'annuaire : la ligne y est inconditionnelle, et c'est
+	        du travail de theme. Le squelette des rubriques, lui, sert TOUTES
+	        les rubriques du site : pour n'y poser l'encart que sur une seule,
+	        il faudrait que le theme reconnaisse une rubrique a son nom. Ecrire
+	        le nom d'une rubrique en dur dans le theme, c'est mettre du contenu
+	        dans du code. On s'en passe : la mairie remonte l'annuaire par un
+	        raccourci d'acces rapide, qu'elle gere elle-meme. ]
+	#SET{rub_assos,#VAL|marly_rubrique_associations}
+	<BOUCLE_versrub(RUBRIQUES){id_rubrique=#GET{rub_assos}}{0,1}>
+	<INCLURE{fond=inc/renvoi}{url=#URL_RUBRIQUE}{ico=ri-file-text-line}{titre=renvoi_actus_assos_titre}{texte=renvoi_actus_assos_texte}>
+	</BOUCLE_versrub>
 
 	<B_t_sport>
 	<h2 class="titre-bloc"><:marly:theme_sport:></h2>

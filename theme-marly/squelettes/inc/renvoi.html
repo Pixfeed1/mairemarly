@@ -1,0 +1,44 @@
+[(#REM)
+  inc/renvoi.html — une page qui en designe une autre.
+  ---------------------------------------------------------------------------
+  POURQUOI CE COMPOSANT EXISTE. Le menu principal du site est une boucle sur
+  les rubriques racines : il ne sait pointer que sur des rubriques. Toute page
+  qui n'en est pas une — l'annuaire, les commerces, les demarches, le conseil,
+  l'agenda — est donc absente du menu par construction. Elles restent
+  atteignables par le plan du site, par la recherche et par les acces rapides
+  de l'accueil, mais c'est un filet bas : il faut savoir aller les chercher.
+
+  Ce bloc remonte un lien d'un cran, la ou deux pages parlent de la meme
+  chose. Il ne remplace pas la navigation, il la complete a un endroit precis.
+
+  IL EST POSE DANS LE FLUX, apres l'introduction et avant la liste. Pas en
+  colonne de gauche : le theme est une colonne unique de 820 pixels, et sous
+  900 pixels un encart lateral retomberait de toute facon dans le flux — on
+  construirait une mecanique pour les grands ecrans en laissant la question
+  entiere sur telephone. Pas en bas non plus : sous une liste et sa
+  pagination, personne n'y arrive.
+
+  LE BLOC ENTIER EST LE LIEN, pas seulement sa derniere ligne : la cible de
+  clic fait 80 pixels de haut au lieu de 20, ce qui se sent au doigt.
+
+  UN RENVOI NE SERT QUE S'IL DIT CE QU'IL Y A DE L'AUTRE COTE. << Voir aussi
+  l'annuaire >> ne fait rien ; << coordonnees, horaires et contact de chacune
+  des associations >> fait entrer. D'ou les deux lignes plutot qu'une.
+
+  Parametres :
+    url    l'adresse. VIDE, RIEN NE S'AFFICHE — c'est la garde du bloc, et
+           elle evite un lien mort quand la cible n'existe pas.
+    titre  la cle de langue du titre, sans le prefixe marly:
+    texte  la cle de langue de la phrase, sans le prefixe marly:
+    ico    l'identifiant de l'icone, ri-arrow-right-line a defaut
+]
+[<a class="renvoi" href="(#ENV{url}|attribut_html)">
+	<span class="renvoi-rond" aria-hidden="true">
+		<svg class="ico"><use href="#[(#ENV{ico}|sinon{ri-arrow-right-line}|trim)]"/></svg>
+	</span>
+	<span class="renvoi-texte">
+		<b>[(#VAL{marly:}|concat{#ENV{titre}}|_T)]</b>
+		<span>[(#VAL{marly:}|concat{#ENV{texte}}|_T)]</span>
+	</span>
+	<svg class="renvoi-fleche" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg>
+</a>]

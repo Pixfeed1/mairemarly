@@ -179,7 +179,18 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'plan_rubriques'       => 'Les rubriques',
 	'plan_services'        => 'Services',
 	'plan_demarches_quoi'  => 'toutes les fiches, classées selon l’endroit où la démarche se fait',
-	'plan_annuaire'        => 'Annuaire des associations',
+	/* Le nom de la page de l'annuaire, partout ou on la designe : son propre
+	   titre, le plan du site, la recherche. Il ne peut PAS s'appeler
+	   « Vie associative » : c'est le nom de la rubrique, et les deux pages
+	   portaient donc le meme titre, le meme fil d'Ariane et la meme photo —
+	   rien ne les distinguait a l'oeil. */
+	'titre_annuaire'       => 'Annuaire des associations',
+
+	/* Le renvoi de l'annuaire vers la rubrique. Il dit ce qu'il y a de
+	   l'autre cote, pas « voir aussi » : c'est la difference entre un lien
+	   qu'on suit et un lien qu'on saute. */
+	'renvoi_actus_assos_titre' => 'Les actualités des associations',
+	'renvoi_actus_assos_texte' => 'Ce que chacune publie, classé par année.',
 	// --- Le conseil municipal -------------------------------------------------
 	'ma_mairie'            => 'Ma mairie',
 	'titre_conseil'        => 'Le conseil municipal',
