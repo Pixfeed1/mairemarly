@@ -53,9 +53,9 @@
 		      data-lat="(#LATITUDE|attribut_html)" data-lon="[(#LONGITUDE|attribut_html)]"
 		      data-nom="[(#NOM|attribut_html)]"></div>]
 		[(#LATITUDE|oui)
-		<link rel="stylesheet" href="#CHEMIN{js/leaflet/leaflet.css}">
-		<script src="#CHEMIN{js/leaflet/leaflet.js}"></script>
-		<script src="#CHEMIN{js/carte.js}"></script>
+		<link rel="stylesheet" href="[(#CHEMIN{js/leaflet/leaflet.css}|timestamp)]">
+		<script src="[(#CHEMIN{js/leaflet/leaflet.js}|timestamp)]"></script>
+		<script src="[(#CHEMIN{js/carte.js}|timestamp)]"></script>
 		]
 	</section>]
 	[<section><h2><:marly:asso_quand:></h2>(#HORAIRES|propre)</section>]

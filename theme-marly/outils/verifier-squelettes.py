@@ -2103,6 +2103,41 @@ for _cle in sorted(set(_noms_pages) & _noms_objets):
              "Il faut une chaine distincte pour la page")
 
 
+# 76. Une feuille de style ou un script appele sans horodatage.
+#     ---------------------------------------------------------------------
+#     #CHEMIN{css/theme.css} rend TOUJOURS la meme adresse, quel que soit le
+#     contenu du fichier. Le navigateur garde donc sa copie et ne redemande
+#     jamais rien : une modification de style deployee sur le serveur reste
+#     invisible pour quiconque a deja ouvert le site une fois. Y compris la
+#     mairie. Y compris nous.
+#
+#     C'EST LA PANNE LA PLUS TROMPEUSE DE TOUT LE PROJET, parce qu'elle
+#     n'accuse pas le CSS : elle accuse le travail qu'on vient de faire. Le
+#     28 aout 2026, l'encart de renvoi est sorti sans le moindre style sur le
+#     site en ligne — fleche noire geante, texte souligne — alors que le
+#     fichier etait correctement deploye et que la maquette rendue localement
+#     etait juste. J'ai d'abord cherche la faute dans le CSS que je venais
+#     d'ecrire. Le titre de la page, lui, avait bien change : les squelettes
+#     etaient a jour, le CSS non. Quatorze adresses etaient dans ce cas,
+#     depuis le premier jour, dont menu.js et carte.js.
+#
+#     |timestamp ajoute la date de modification du fichier a l'adresse. Elle
+#     change quand le fichier change, et pas avant : le navigateur garde son
+#     cache tant que rien ne bouge, et redemande le jour ou ca bouge.
+_SANS_HORODATAGE = re.compile(r'(?:href|src)="#CHEMIN\{[^}]+\.(?:css|js)\}"')
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in _SANS_HORODATAGE.finditer(_masque):
+        signaler(os.path.relpath(_f, RACINE),
+                 _masque[:_c.start()].count('\n') + 1,
+                 "appelle une feuille de style ou un script sans |timestamp : l'adresse "
+                 "ne change jamais, le navigateur garde sa copie, et toute modification "
+                 "deployee reste invisible pour qui a deja ouvert le site. "
+                 "Ecrire [(#CHEMIN{...}|timestamp)]")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
