@@ -39,8 +39,19 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'en_images' => 'En images',
 	'voir_la_photo' => 'Voir la photo en grand',
 	'telecharger' => 'Télécharger',
-	'actus_liees' => 'Les actualités liées',
-	'toutes_actus_rubrique' => 'Toutes les actualités de la rubrique',
+	/* LA BOUCLE NE CHERCHE PAS DES ACTUALITES, elle cherche les autres
+	   articles de la MEME RUBRIQUE. L'intitule disait donc une chose que le
+	   contenu ne fait pas, et ca se voyait des qu'on sortait des
+	   actualites : sous les mentions legales, le site annonçait « les
+	   actualités liées » avant de lister la declaration d'accessibilite et
+	   les donnees personnelles. Signale par le client le 28 aout 2026.
+
+	   << Dans la meme rubrique >> est vrai partout — sur un compte rendu de
+	   conseil, sur un arrete d'urbanisme, sur une page legale — et ne
+	   demande aucun cas particulier. Un intitule qui decrit ce que la
+	   boucle fait vaut mieux qu'un intitule par rubrique. */
+	'meme_rubrique' => 'Dans la même rubrique',
+	'tous_articles_rubrique' => 'Tous les articles de la rubrique',
 	'article_precedent' => 'Article précédent',
 	'article_suivant' => 'Article suivant',
 	'lettre_invite' => 'Recevez les actualités du village par courriel, quelques lettres par an, rien de plus.',

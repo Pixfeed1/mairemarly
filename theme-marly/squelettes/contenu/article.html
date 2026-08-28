@@ -4,7 +4,7 @@
 
   L'ordre de lecture : fil d'ariane, rubrique et outils, titre, sous-titre,
   chapo, signature datee, image legendee, texte, galerie, documents, puis la
-  suite — actualites liees, toute la rubrique, precedent et suivant, et
+  suite — les autres articles de la rubrique, precedent et suivant, et
   l'invitation a la lettre d'information.
 
   PAS DE SOMMAIRE AUTOMATIQUE. Un << Dans cet article >> etait pose par
@@ -130,7 +130,7 @@
 	<section class="article-suite">
 
 		<B_liees>
-		<h2><:marly:actus_liees:></h2>
+		<h2><:marly:meme_rubrique:></h2>
 		<div class="cartes">
 			<BOUCLE_liees(ARTICLES){id_rubrique}{id_article!=#ID_ARTICLE}{!par date}{0,3}>
 			<article class="carte">
@@ -152,7 +152,7 @@
 			</article>
 			</BOUCLE_liees>
 		</div>
-		<p class="toutes-actus"><a class="lien-fleche" href="#URL_RUBRIQUE"><:marly:toutes_actus_rubrique:>
+		<p class="toutes-actus"><a class="lien-fleche" href="#URL_RUBRIQUE"><:marly:tous_articles_rubrique:>
 			<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a></p>
 		</B_liees>
 
