@@ -159,7 +159,7 @@
 				<svg class="ico" aria-hidden="true"><use href="#ri-file-text-line"/></svg> <:marly:toutes_les_demarches:></a>
 			<a class="pilule" href="#URL_PAGE{commerces}">
 				<svg class="ico" aria-hidden="true"><use href="#ri-map-pin-2-line"/></svg> <:marly:titre_commerces:></a>
-			<a class="pilule" href="#URL_PAGE{associations}">
+			<a class="pilule" href="[(#VAL|marly_url_rubrique_associations|sinon{#URL_PAGE{associations}}|attribut_html)]">
 				<svg class="ico" aria-hidden="true"><use href="#ri-team-line"/></svg> <:marly:titre_vie_associative:></a>
 			[<a class="pilule" href="mailto:(#CONFIG{marly/courriel}|attribut_html)">
 				<svg class="ico" aria-hidden="true"><use href="#ri-mail-line"/></svg> <:marly:pied_nous_ecrire:></a>]

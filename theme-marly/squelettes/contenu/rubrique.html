@@ -2,9 +2,16 @@
   Une rubrique, et le choix de sa mise en page.
   ---------------------------------------------------------------------------
   Presque toutes les rubriques se ressemblent : un titre, une introduction,
-  des articles. Une seule demande autre chose — l'urbanisme, dont l'essentiel
-  n'est pas ce que la mairie ecrit mais ce que la loi impose, et qui ne se
-  retape pas a la main.
+  des articles. Deux demandent autre chose.
+
+  L'urbanisme, dont l'essentiel n'est pas ce que la mairie ecrit mais ce que
+  la loi impose, et qui ne se retape pas a la main.
+
+  La vie associative, qui porte l'ANNUAIRE et non la liste de ses
+  sous-rubriques. Chaque association y a une sous-rubrique — c'est la que
+  vivent ses articles — et une fiche, qui porte ses coordonnees ET affiche ces
+  memes articles. Lister les sous-rubriques ici, c'etait ecrire les cinq memes
+  noms deux fois sur le site, et c'est ce que le client a vu.
 
   LE CHOIX SE FAIT SUR LE TITRE, comme la page du conseil reconnait deja la
   rubrique << Comptes rendus >>. Une rubrique dont le titre commence par
@@ -15,5 +22,7 @@
 ]
 <BOUCLE_choix(RUBRIQUES){id_rubrique}>
 #SET{mise_en_page,#TITRE|match{'^Urbanisme'}|?{inc/rubrique-urbanisme,inc/rubrique-simple}}
-<INCLURE{fond=#GET{mise_en_page}}{id_rubrique=#ID_RUBRIQUE}{env}>
+#SET{associative,#ID_RUBRIQUE|=={#VAL|marly_rubrique_associations}}
+[(#GET{associative}|oui)<INCLURE{fond=inc/rubrique-associative}{id_rubrique=#ID_RUBRIQUE}{env}>]
+[(#GET{associative}|non)<INCLURE{fond=#GET{mise_en_page}}{id_rubrique=#ID_RUBRIQUE}{env}>]
 </BOUCLE_choix>

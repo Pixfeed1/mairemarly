@@ -10,7 +10,14 @@
 	        signalement est celui des reglages ; sans lui, le bouton n'a pas
 	        de destinataire et ne s'affiche pas. ]
 	<div class="fil-rangee">
-	<p class="fil"><a class="lien-fleche" href="#URL_PAGE{associations}"><:marly:retour_associations:>
+	[(#REM) LE RETOUR MENE A LA RUBRIQUE, pas a spip.php?page=associations :
+	        c'est la que vit l'annuaire depuis le 28 aout 2026, et c'est
+	        l'adresse du menu principal. L'ancienne page s'y redirige, donc
+	        l'ancien lien marcherait encore — mais il ferait faire un
+	        aller-retour au visiteur pour rien. Le repli sur l'ancienne
+	        adresse sert si la rubrique n'existe pas. ]
+	#SET{annuaire,#VAL|marly_url_rubrique_associations}
+	<p class="fil"><a class="lien-fleche" href="[(#GET{annuaire}|sinon{#URL_PAGE{associations}}|attribut_html)]"><:marly:retour_associations:>
 		<svg class="ico" aria-hidden="true"><use href="#ri-arrow-right-line"/></svg></a></p>
 	<p class="page-outils">
 		[<a class="outil" href="mailto:(#CONFIG{marly/courriel}|attribut_html)?subject=[(#NOM|attribut_html|urlencode)]"
@@ -75,7 +82,7 @@
 	<B_actus>
 	<h2><:marly:actus_association:></h2>
 	<ul class="fiches">
-		<BOUCLE_actus(ARTICLES){id_rubrique=#ID_RUBRIQUE}{par date}{inverse}{0,10}>
+		<BOUCLE_actus(ARTICLES){id_rubrique=#ID_RUBRIQUE}{par date}{inverse}{pagination 10}>
 		<li><a href="#URL_ARTICLE">
 			<span class="fiche-texte">
 				<b>#TITRE</b>
@@ -84,6 +91,12 @@
 		</a></li>
 		</BOUCLE_actus>
 	</ul>
+	[(#REM) PAGINEE DEPUIS QUE LA SOUS-RUBRIQUE REDIRIGE ICI. Elle s'arretait
+	        a dix articles, et les suivants n'etaient plus lisibles que sur la
+	        page de la rubrique. Cette page mene desormais ici : sans
+	        pagination, l'archive d'une association qui publie beaucoup
+	        deviendrait inatteignable. ]
+	[<nav class="pagination" aria-label="<:marly:pagination_nav:>">(#PAGINATION{prive})</nav>]
 	</B_actus>
 
 </div>

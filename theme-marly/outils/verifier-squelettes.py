@@ -2009,6 +2009,59 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
                  "photographie s'afficherait trois fois")
 
 
+# 74. Un en-tete Location: sans ligne de statut de redirection.
+#     ---------------------------------------------------------------------
+#     C'est la panne la plus silencieuse qui soit. Le serveur repond 200 avec
+#     un en-tete Location que le navigateur IGNORE : la page s'affiche
+#     normalement, aucune erreur nulle part, et la redirection ne se produit
+#     jamais. On ne s'en apercoit qu'en lisant les en-tetes avec curl -I.
+#
+#     Ecrite le 28 aout 2026, en meme temps que les deux redirections de la
+#     vie associative : spip.php?page=associations vers la rubrique, et la
+#     sous-rubrique d'une association vers sa fiche. Sans elles le site avait
+#     deux adresses pour la meme chose ; avec un Location sans statut, il en
+#     aurait toujours deux et je l'aurais cru regle.
+_STATUT_REDIR = re.compile(r'#HTTP_HEADER\{\s*HTTP/\d\.\d\s+30\d\b')
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in re.finditer(r'#HTTP_HEADER\{\s*Location\s*:', _masque):
+        if not _STATUT_REDIR.search(_masque):
+            signaler(os.path.relpath(_f, RACINE),
+                     _masque[:_c.start()].count('\n') + 1,
+                     "pose un en-tete Location: sans ligne de statut 30x : le serveur "
+                     "repond 200, le navigateur ignore l'en-tete et la page s'affiche "
+                     "comme si de rien n'etait — la redirection ne se produit jamais")
+
+
+# 75. Une redirection vers une adresse qui peut etre vide.
+#     ---------------------------------------------------------------------
+#     Les deux adresses de redirection du site viennent de filtres qui rendent
+#     une chaine VIDE quand ils ne trouvent rien : la rubrique de la vie
+#     associative a ete renommee, la fiche n'est pas publiee. Un
+#     Location: vide renvoie le navigateur sur la page elle-meme, qui
+#     redirige a nouveau : la boucle est infinie et le visiteur ne voit rien
+#     d'autre qu'une erreur du navigateur.
+#
+#     La regle exige donc que le #GET{x} pose en Location soit ENTOURE d'un
+#     bloc [(#GET{x}|oui) … ] qui teste ce meme nom. Le repli — afficher la
+#     page au lieu de rediriger — est alors obligatoire par construction.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _c in re.finditer(r'#HTTP_HEADER\{\s*Location\s*:[^}]*?#GET\{(\w+)\}', _masque):
+        _nom = _c.group(1)
+        if not re.search(r'\[\(#GET\{' + re.escape(_nom) + r'\}\|oui\)', _masque):
+            signaler(os.path.relpath(_f, RACINE),
+                     _masque[:_c.start()].count('\n') + 1,
+                     f"redirige vers #GET{{{_nom}}} sans avoir verifie que la valeur "
+                     f"n'est pas vide : il manque un bloc [(#GET{{{_nom}}}|oui) … ]. "
+                     "Un Location vide renvoie sur la page elle-meme, qui redirige "
+                     "encore : boucle infinie")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

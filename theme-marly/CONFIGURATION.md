@@ -542,6 +542,22 @@ commun finit toujours par circuler.
 « Rubrique où l'association publie ». Ses articles publiés s'afficheront
 alors sur sa fiche.
 
+**Une association, une seule page publique : sa fiche.** Une fois la fiche
+reliée à sa rubrique, l'adresse publique de cette rubrique — par exemple
+`/vie-associative/as-marly-gomont/` — renvoie automatiquement sur la fiche.
+Sans ça le site aurait deux pages pour la même association : la rubrique, qui
+ne montre que les articles, et la fiche, qui montre les articles *et* le
+téléphone, le lieu, les horaires. La rubrique reste ce qu'elle est côté
+mairie, le tiroir où l'association range ses articles ; elle n'est simplement
+plus une page à part pour le visiteur.
+
+**Et la page « Vie associative » affiche l'annuaire.** C'est l'adresse du menu
+principal. Elle ne liste plus les sous-rubriques : elle liste les
+associations, groupées par thème, avec leur contact. Un article déposé
+directement dans « Vie associative », et non dans la rubrique d'une
+association, s'affiche en bas de cette page — il n'appartient à personne, donc
+aucune fiche ne le montrerait.
+
 ### Ce que peut et ne peut pas un rédacteur
 
 - **Il peut** écrire un article, le modifier tant qu'il n'est pas publié, y
