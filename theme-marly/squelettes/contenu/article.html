@@ -1,45 +1,29 @@
 <BOUCLE_art(ARTICLES){id_article}>
 
-[(#REM) LA UNE DE L'ARTICLE : deux mises en page, choisies par la presence
-        d'une illustration.
+[(#REM) DEUX EN-TETES, CHOISIS PAR LA PRESENCE D'UNE ILLUSTRATION, et chacun
+        dans son fichier.
 
-        AVEC UNE IMAGE — photographie a gauche, titre a droite sur le creme.
-        Le cadre est FIXE et la photographie le remplit : une photo de
-        telephone tenue verticalement donne exactement la meme page qu'une
-        photo paysage. Sans ce cadre, la mise en page dependait de ce que la
-        secretaire depose. Mesure du 28 aout 2026 : sans plafond, une photo
-        verticale faisait 1 035 pixels de haut avant le premier mot du texte,
-        une affiche A4 scannee 1 098.
+        AVEC UNE IMAGE — photographie a gauche, titre a droite sur le creme,
+        cadre fixe. SANS IMAGE — le titre pleine largeur, la page telle
+        qu'elle etait ; c'est le cas de 75 des 82 articles publies.
 
-        SANS IMAGE — le titre pleine largeur, c'est-a-dire la page telle
-        qu'elle etait. Ce n'est pas un repli de secours : mesure du 27 aout
-        2026, 75 des 82 articles publies n'ont AUCUNE image. C'est le cas le
-        plus frequent, et il ne devait pas devenir le cas degrade.
+        POURQUOI DEUX FICHIERS ET NON DEUX BLOCS ICI. Ils ont ete ecrits en
+        blocs optionnels, et la page a rendu << Erreur d'execution >> en
+        production le 28 aout 2026. Un en-tete d'article contient quatre blocs
+        entre crochets — sous-titre, chapo, date de mise a jour, adresse de
+        l'image — dont deux de la forme parenthesee. Places dans un bloc
+        optionnel, le PREMIER crochet fermant referme le bloc exterieur et
+        tout le gabarit part de travers.
 
-        UNE AFFICHE SCANNEE SERA RECADREE, et c'est assume. Sa place est en
-        document joint ou dans la galerie << En images >>, qui la montrent
-        entiere. C'est ecrit dans CONFIGURATION.md.
+        Une inclusion, elle, tient dans un bloc optionnel sans rien casser :
+        ce site l'ecrit deja a cinq endroits. Les blocs entre crochets se
+        retrouvent au premier niveau de leur fichier, ou ils sont chez eux.
 
-        Le fil d'Ariane est ecrit UNE SEULE FOIS, au-dessus des deux, et cale
-        sur la meme colonne que le texte. Rendu dans chaque branche il aurait
-        fallu une boucle HIERARCHIE a l'interieur d'un bloc optionnel — ce que
-        le langage n'accepte pas — et il sautait de 17 a 195 pixels selon que
-        l'article portait une image. ]
-
-[(#REM) Le titre de la rubrique est mis de cote AVANT les blocs optionnels :
-        une boucle ne peut pas vivre a l'interieur de l'un d'eux. ]
-#SET{rub,''}
-<BOUCLE_rubtitre(RUBRIQUES){id_rubrique}>#SET{rub,#TITRE}</BOUCLE_rubtitre>
-[(#REM) LES DEUX DATES SONT MISES DE COTE ICI, et surtout pas comparees
-        en ligne. Comparer la date de modification a la date de publication
-        au fil du texte met des accolades DANS des accolades : le compilateur
-        ne referme pas au bon endroit et la page rend << Erreur d'execution >>.
-        Mesure du 28 aout 2026, sur cette page meme, une heure apres l'avoir
-        ecrit. Le squelette d'avant passait deja par une mise de cote pour
-        cette raison ; je l'avais defait sans le voir. ]
-#SET{pub,#DATE|affdate}
-#SET{maj,#DATE_MODIF|affdate}
-#SET{photo,#ID_ARTICLE|marly_illustration_article}
+        LE FIL D'ARIANE EST ECRIT UNE SEULE FOIS, ici, au-dessus des deux. Il
+        porte une boucle HIERARCHIE, qui ne peut vivre dans aucun bloc
+        optionnel. Et cale sur la meme colonne que le texte : au premier rendu
+        il sautait de 17 a 195 pixels selon que l'article portait une image. ]
+#SET{photo,#ID_ARTICLE|marly_illustration_src}
 
 <nav class="fil-ariane une-fil" aria-label="Fil d’Ariane">
 	<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
@@ -51,62 +35,11 @@
 	<span aria-current="page">#TITRE</span>
 </nav>
 
-[(#GET{photo}|oui)
-<div class="une-art">
-	<div class="une-art-photo">
-		<img src="[(#GET{photo}|image_reduire{1400,0}|extraire_attribut{src})]" alt="">
-	</div>
-	<div class="une-art-carton">
-		<p class="article-rubrique">#GET{rub}</p>
-		<h1>#TITRE</h1>
-		[<p class="chapo">(#SOUSTITRE)</p>]
-		[<p class="chapo">(#CHAPO|propre)</p>]
-		<p class="article-signature"><:marly:publie_le:> #GET{pub}[(#GET{maj}|=={#GET{pub}}|non)
-			· <:marly:mis_a_jour_le:> #GET{maj}]</p>
-		<p class="page-outils">
-			<button type="button" class="outil" data-imprimer title="<:marly:outil_imprimer:>">
-				<svg class="ico" aria-hidden="true"><use href="#ri-printer-line"/></svg>
-				<span class="cache"><:marly:outil_imprimer:></span></button>
-			<button type="button" class="outil" data-partager data-copie="<:marly:lien_copie:>" title="<:marly:outil_partager:>">
-				<svg class="ico" aria-hidden="true"><use href="#ri-share-line"/></svg>
-				<span class="cache"><:marly:outil_partager:></span></button>
-		</p>
-	</div>
-</div>
-]
+[(#GET{photo}|oui)<INCLURE{fond=inc/article-une}{id_article=#ID_ARTICLE}>]
 
 <div class="page-simple fiche-demarche page-sous-fil">
 
-	[(#REM) PAS DE SIGNATURE D'AUTEUR, ET C'EST UN CHOIX D'INSTITUTION.
-	        Cette ligne affichait << par MVaertan, Severine >> : le compte du
-	        prestataire, et le prenom de la secretaire de mairie. Retire le
-	        26 aout 2026. Un article sur le site d'une commune n'engage pas la
-	        personne qui l'a saisi, il engage la commune : la directrice de la
-	        publication est la Maire, et c'est la seule signature qui a une
-	        valeur.
-
-	        La date reste : elle dit au lecteur si l'information est encore
-	        d'actualite. La date de mise a jour ne parait que si elle differe du
-	        jour de publication — SPIP la fait bouger a chaque enregistrement,
-	        et << mis a jour le jour meme >> ne dirait rien. ]
-	[(#GET{photo}|non)
-	<div class="fil-rangee">
-		<p class="article-rubrique">#GET{rub}</p>
-		<p class="page-outils">
-			<button type="button" class="outil" data-imprimer title="<:marly:outil_imprimer:>">
-				<svg class="ico" aria-hidden="true"><use href="#ri-printer-line"/></svg>
-				<span class="cache"><:marly:outil_imprimer:></span></button>
-			<button type="button" class="outil" data-partager data-copie="<:marly:lien_copie:>" title="<:marly:outil_partager:>">
-				<svg class="ico" aria-hidden="true"><use href="#ri-share-line"/></svg>
-				<span class="cache"><:marly:outil_partager:></span></button>
-		</p>
-	</div>
-	<h1>#TITRE</h1>
-	[<p class="chapo">(#SOUSTITRE)</p>]
-	[<p class="chapo">(#CHAPO|propre)</p>]
-	<p class="article-signature"><:marly:publie_le:> #GET{pub}[(#GET{maj}|=={#GET{pub}}|non)
-		· <:marly:mis_a_jour_le:> #GET{maj}]</p>
-	]
+	[(#GET{photo}|non)<INCLURE{fond=inc/article-tete}{id_article=#ID_ARTICLE}>]
 
 	<div class="texte">#TEXTE</div>
 

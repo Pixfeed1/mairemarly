@@ -1,0 +1,33 @@
+[(#REM)
+  L'en-tete d'un article SANS illustration : le titre prend toute la largeur.
+  ---------------------------------------------------------------------------
+  Ce n'est pas un repli de secours. Mesure du 27 aout 2026 : 75 des 82 articles
+  publies n'ont AUCUNE image. C'est le cas le plus frequent du site, et il ne
+  devait pas devenir le cas degrade — c'est la page telle qu'elle etait.
+
+  PAS DE SIGNATURE D'AUTEUR, ET C'EST UN CHOIX D'INSTITUTION. Cette ligne
+  affichait << par MVaertan, Severine >> : le compte du prestataire, et le
+  prenom de la secretaire de mairie. Retiree le 26 aout 2026. Un article sur le
+  site d'une commune n'engage pas la personne qui l'a saisi, il engage la
+  commune : la directrice de la publication est la Maire, c'est ecrit dans les
+  mentions legales, et c'est la seule signature qui ait une valeur.
+
+  La date reste : elle dit au lecteur si l'information est encore d'actualite.
+
+  Parametre : id_article.
+]
+<BOUCLE_tete(ARTICLES){id_article}>
+#SET{pub,#DATE|affdate}
+#SET{maj,#DATE_MODIF|affdate}
+#SET{rub,''}
+<BOUCLE_rub(RUBRIQUES){id_rubrique}>#SET{rub,#TITRE}</BOUCLE_rub>
+<div class="fil-rangee">
+	<p class="article-rubrique">#GET{rub}</p>
+	<INCLURE{fond=inc/article-outils}>
+</div>
+<h1>#TITRE</h1>
+[<p class="chapo">(#SOUSTITRE)</p>]
+[<p class="chapo">(#CHAPO|propre)</p>]
+<p class="article-signature"><:marly:publie_le:> #GET{pub}[(#GET{maj}|=={#GET{pub}}|non)
+	· <:marly:mis_a_jour_le:> #GET{maj}]</p>
+</BOUCLE_tete>

@@ -1,0 +1,46 @@
+[(#REM)
+  L'en-tete d'un article ILLUSTRE : photographie a gauche, titre a droite.
+  ---------------------------------------------------------------------------
+  POURQUOI C'EST UN FICHIER SEPARE, ET NON UN BLOC OPTIONNEL DANS article.html.
+  Il l'a ete, et la page rendait << Erreur d'execution >> en production le
+  28 aout 2026. Le bloc contenait quatre blocs entre crochets — le chapo, le
+  sous-titre, la date de mise a jour, l'adresse de l'image — dont deux de la
+  forme parenthesee. Le PREMIER crochet fermant referme le bloc exterieur, et
+  tout le reste du gabarit part de travers.
+
+  Sorti ici, ces blocs sont au premier niveau et ne genent personne. Une
+  inclusion a l'interieur d'un bloc optionnel, elle, est une ecriture que ce
+  site pratique deja a cinq endroits.
+
+  LE CADRE EST FIXE et la photographie le remplit, comme les bandeaux de
+  section. Mesure du 28 aout 2026, a la largeur reelle de la colonne : sans
+  cadre fixe, une photo de telephone tenue verticalement faisait 1 035 pixels
+  de haut avant le premier mot du texte, une affiche A4 scannee 1 098.
+
+  L'adresse de l'image vient toute prete d'un filtre : la reduire ici
+  ramenerait le crochet dans le crochet.
+
+  Parametre : id_article.
+]
+<BOUCLE_une(ARTICLES){id_article}>
+#SET{pub,#DATE|affdate}
+#SET{maj,#DATE_MODIF|affdate}
+#SET{photo,#ID_ARTICLE|marly_illustration_src}
+#SET{rub,''}
+<BOUCLE_rub(RUBRIQUES){id_rubrique}>#SET{rub,#TITRE}</BOUCLE_rub>
+<div class="une-art">
+	<div class="une-art-photo"><img src="[(#GET{photo}|attribut_html)]" alt=""></div>
+	<div class="une-art-carton">
+		<p class="article-rubrique">#GET{rub}</p>
+		<h1>#TITRE</h1>
+		[<p class="chapo">(#SOUSTITRE)</p>]
+		[<p class="chapo">(#CHAPO|propre)</p>]
+		[(#REM) La date de mise a jour ne parait que si elle differe du jour de
+		        publication : SPIP la fait bouger a chaque enregistrement, et
+		        << mis a jour le jour meme >> ne dirait rien. ]
+		<p class="article-signature"><:marly:publie_le:> #GET{pub}[(#GET{maj}|=={#GET{pub}}|non)
+			· <:marly:mis_a_jour_le:> #GET{maj}]</p>
+		<INCLURE{fond=inc/article-outils}>
+	</div>
+</div>
+</BOUCLE_une>

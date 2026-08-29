@@ -339,6 +339,28 @@ function filtre_marly_illustration_article_dist($id_article) {
 	);
 }
 
+/**
+ * L'adresse toute prete de l'illustration d'un article, reduite pour la une.
+ * ---------------------------------------------------------------------------
+ * POURQUOI CE FILTRE EXISTE PLUTOT QU'UN CALCUL DANS LE GABARIT. La une doit
+ * choisir sa mise en page selon qu'il y a une image, donc poser un bloc
+ * optionnel. Ecrire la reduction a l'interieur de ce bloc demandait
+ * [(...|image_reduire{...}|extraire_attribut{...})] DANS un [(...)] : le
+ * premier crochet fermant referme le bloc exterieur, et la page entiere rend
+ * << Erreur d'execution >>. Mesure du 28 aout 2026 en production.
+ *
+ * Ici il n'y a ni crochet ni accolade. Le gabarit n'ecrit plus qu'un GET.
+ */
+function filtre_marly_illustration_src_dist($id_article) {
+	$fichier = filtre_marly_illustration_article_dist($id_article);
+	if (!$fichier) {
+		return '';
+	}
+	include_spip('inc/filtres');
+	include_spip('inc/filtres_images');
+	return extraire_attribut(image_reduire($fichier, 1400, 0), 'src');
+}
+
 /** Le travail commun aux trois : lire la configuration, et vérifier le disque. */
 function marly_url_image_deposee($champ) {
 	include_spip('inc/config');
