@@ -194,3 +194,81 @@ if [ -n "$SCHEMA" ] && [ -f "$CONNECT" ]; then
 		fi
 	fi
 fi
+
+# ---------------------------------------------------------------------------
+# UN COUP D'OEIL SUR LE SITE AVANT DE DIRE << DEPLOYE >>.
+#
+# Le 29 aout 2026 a 23 h 55, ce script a affiche << Deploye >> et une base a
+# jour pendant que TOUTES les pages d'article du site rendaient
+# << Erreur d'execution >>. Une fonction du noyau de SPIP avait disparu et un
+# filtre du plugin l'appelait encore. Le script ne pouvait pas le savoir : il
+# verifiait ce qu'il avait COPIE, jamais ce que le site RENDAIT.
+#
+# Il ouvre donc maintenant quelques pages. Pas un controle complet — c'est le
+# role de verifier-fichiers.php, qui parcourt les 162 pages — mais les six
+# familles de gabarits, en trois secondes.
+#
+# UNE PAGE D'ARTICLE EST TIREE DE LA BASE, et non ecrite en dur : un
+# identifiant fige finirait par pointer sur un article depublie, et le
+# controle crierait pour rien.
+#
+# LE MOT DE PASSE DU SITE N'EST PAS DANS CE FICHIER. Le depot est versionne.
+# Il vient de MARLY_AUTH, et sans lui le controle s'annonce comme saute
+# plutot que de faire croire qu'il a eu lieu.
+echo
+if [ -z "$MARLY_AUTH" ]; then
+	echo "Controle des pages : SAUTE (MARLY_AUTH absent)."
+	echo "  Pour l'activer :  MARLY_AUTH='mairie:motdepasse' bash $0"
+else
+	# L'ADRESSE DU SITE VIENT DE LA BASE, ou SPIP la garde. La deduire du nom
+	# du dossier marcherait ici et nulle part ailleurs.
+	RACINE_SITE=$(mysql -h "${HOTE:-localhost}" -u "$LOGIN" -p"$PASSE" "$BASE" -N -B \
+	              -e "SELECT valeur FROM spip_meta WHERE nom='adresse_site'" 2>/dev/null)
+	RACINE_SITE=${RACINE_SITE%/}
+	ART=$(mysql -h "${HOTE:-localhost}" -u "$LOGIN" -p"$PASSE" "$BASE" -N -B \
+	      -e "SELECT id_article FROM spip_articles WHERE statut='publie' ORDER BY date DESC LIMIT 1" 2>/dev/null)
+	ADRESSES="/ \
+	          /spip.php?page=actualites \
+	          /spip.php?page=associations \
+	          /spip.php?page=demarches \
+	          /spip.php?page=plan \
+	          /spip.php?page=credits"
+	if [ -n "$ART" ]; then
+		ADRESSES="$ADRESSES /spip.php?page=article&id_article=$ART"
+	fi
+
+	if [ -z "$RACINE_SITE" ]; then
+		echo "Controle des pages : SAUTE (adresse du site introuvable en base)."
+		ADRESSES=""
+	fi
+
+	CASSEES=0
+	VUES=0
+	for CHEMIN in $ADRESSES; do
+		VUES=$((VUES + 1))
+		SORTIE=$(curl -s -u "$MARLY_AUTH" --max-time 20 -w '\n%{http_code}' "$RACINE_SITE$CHEMIN" 2>/dev/null)
+		CODE=$(printf '%s' "$SORTIE" | tail -1)
+		CORPS=$(printf '%s' "$SORTIE" | sed '$d')
+		if [ "$CODE" != "200" ]; then
+			echo "  CASSE  $CHEMIN  ->  code $CODE"
+			CASSEES=$((CASSEES + 1))
+		elif printf '%s' "$CORPS" | grep -q "Erreur d’exécution\|Erreur d'execution"; then
+			LIGNE=$(printf '%s' "$CORPS" | grep -o "Erreur d[’']ex[eé]cution[^<]*" | head -1)
+			echo "  CASSE  $CHEMIN  ->  $LIGNE"
+			CASSEES=$((CASSEES + 1))
+		fi
+	done
+
+	if [ "$VUES" -eq 0 ]; then
+		:
+	elif [ "$CASSEES" -eq 0 ]; then
+		echo "Controle des pages : $VUES pages ouvertes, tout repond."
+	else
+		echo
+		echo "  ================================================================"
+		echo "  $CASSEES PAGE(S) CASSEE(S). Le code est copie, le site ne rend pas."
+		echo "  Le journal de SPIP nomme la cause, avec le fichier et la ligne :"
+		echo "      tail -20 $SITE/tmp/log/spip.log"
+		echo "  ================================================================"
+	fi
+fi

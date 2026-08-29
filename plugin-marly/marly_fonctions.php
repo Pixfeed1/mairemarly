@@ -305,10 +305,24 @@ function filtre_marly_illustration_article_dist($id_article) {
 		return '';
 	}
 
+	/* LE LOGO N'EST LU QUE SI CETTE VERSION DE SPIP SAIT LE LIRE.
+	   chercher_logo() a disparu du noyau : l'appeler a fait tomber la page
+	   d'article entiere en << Erreur d'execution >> le 29 aout 2026 a 23 h 55,
+	   sur toutes les pages d'article du site. Journal de SPIP :
+	   << Call to undefined function chercher_logo() >>.
+
+	   Le garde-fou ne masque rien : depuis SPIP 4.2 un logo EST un document
+	   attache, et la requete ci-dessous le trouve donc de toute facon. Sur une
+	   version plus ancienne, l'appel reprend son role. Dans les deux cas la
+	   page s'affiche.
+
+	   Mesure du 27 aout 2026 : aucun des 82 articles n'a de logo. */
 	include_spip('inc/logos');
-	$logo = chercher_logo($id_article, 'id_article', 'on');
-	if ($logo and !empty($logo[0])) {
-		return $logo[0];
+	if (function_exists('chercher_logo')) {
+		$logo = chercher_logo($id_article, 'id_article', 'on');
+		if ($logo and !empty($logo[0])) {
+			return $logo[0];
+		}
 	}
 
 	/* DEUX REQUETES SIMPLES PLUTOT QU'UNE JOINTURE ECRITE A LA MAIN.
