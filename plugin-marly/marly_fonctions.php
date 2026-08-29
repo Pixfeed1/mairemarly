@@ -311,18 +311,31 @@ function filtre_marly_illustration_article_dist($id_article) {
 		return $logo[0];
 	}
 
-	/* La premiere image jointe, dans l'ordre ou le gabarit les montre :
-	   le rang saisi par la mairie, puis le titre, puis la date. */
-	return (string) sql_getfetsel(
-		'doc.fichier',
-		'spip_documents AS doc INNER JOIN spip_documents_liens AS lien
-		   ON lien.id_document = doc.id_document',
+	/* DEUX REQUETES SIMPLES PLUTOT QU'UNE JOINTURE ECRITE A LA MAIN.
+	   sql_getfetsel prefixe lui-meme les noms de tables : une chaine
+	   << spip_documents AS doc INNER JOIN ... >> passe par ce prefixage avec
+	   ses alias, et la requete part de travers. Deux appels ordinaires
+	   coutent une requete de plus et ne peuvent pas se tromper. */
+	$liens = sql_allfetsel('id_document', 'spip_documents_liens', array(
+		'objet = ' . sql_quote('article'),
+		'id_objet = ' . $id_article,
+	));
+	if (!$liens) {
+		return '';
+	}
+
+	$ids = array();
+	foreach ($liens as $lien) {
+		$ids[] = intval($lien['id_document']);
+	}
+
+	/* La premiere image jointe, dans l'ordre ou le gabarit les montre. */
+	return (string) sql_getfetsel('fichier', 'spip_documents',
 		array(
-			'lien.objet = ' . sql_quote('article'),
-			'lien.id_objet = ' . $id_article,
-			'doc.mode = ' . sql_quote('image'),
+			sql_in('id_document', $ids),
+			'mode = ' . sql_quote('image'),
 		),
-		'', 'doc.titre, doc.date', '0,1'
+		'', 'titre, date', '0,1'
 	);
 }
 
