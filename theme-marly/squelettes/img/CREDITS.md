@@ -12,7 +12,7 @@ une image dont plus personne ne connaîtra l'origine dans six mois.
 
 | Fichier | Ce que c'est | Auteur / source | Licence | Crédit affiché |
 |---|---|---|---|---|
-| `eglise-defaut.jpg` | La bannière d'accueil, tant que la mairie n'a rien déposé dans Configuration | Page Facebook de l'Office de Tourisme du Pays de Thiérache | **Aucun accord écrit à ce jour** | « Photo : Tourisme Thiérache », posé en dur dans `inc/heros.html` |
+| `eglise-defaut.jpg` | La bannière d'accueil, tant que la mairie n'a rien déposé dans Configuration | Office de Tourisme du Pays de Thiérache | Accord de l'office, confirmé par le client le 28 août 2026 | « Photo : Tourisme Thiérache », sur la page Crédits |
 | `vie-associative.jpg` | Le bandeau des pages de la vie associative | Canva, banque d'images intégrée — téléchargée depuis un abonnement Canva Pro (Pixfeed) | Licence de contenu Canva Pro, **sans obligation d'attribution** | Aucun, et c'est conforme |
 | `embleme-armes.svg` | Les armes de la commune | Dessin original réalisé pour ce site | Propriété de la commune | — |
 | `embleme-compact.svg` | L'emblème réduit | Dessin original réalisé pour ce site | Propriété de la commune | — |
@@ -20,14 +20,15 @@ une image dont plus personne ne connaîtra l'origine dans six mois.
 | `embleme-saint-remy.svg` | Le sceau gravé, d'après l'église fortifiée Saint-Rémy | Dessin original réalisé pour ce site, relevé sur le bâtiment | Propriété de la commune | — |
 | `favicon.svg` | L'icône d'onglet | Dessin original réalisé pour ce site | Propriété de la commune | — |
 
-## Les deux points ouverts
+## Ce qu'il faut savoir sur deux d'entre elles
 
-**`eglise-defaut.jpg`.** La photographie vient de la page Facebook de l'office
-de tourisme. Le crédit est affiché, mais **un crédit n'est pas une licence** :
-il documente l'origine, il n'autorise pas la publication. Une demande écrite
-reste à envoyer à `accueil@tourisme-thierache.fr` (7 avenue du Préau,
-02140 Vervins — 03 23 91 30 10), en joignant la photographie et en demandant le
-nom du photographe à citer.
+**`eglise-defaut.jpg`.** Résolu le 28 août 2026 : l'Office de Tourisme du Pays
+de Thiérache autorise l'usage, confirmé par le client. Le crédit « Photo :
+Tourisme Thiérache » paraît sur la page Crédits.
+
+Contact de l'office, s'il faut un jour y revenir — nom du photographe à citer,
+autre photographie, usage sur un autre support : `accueil@tourisme-thierache.fr`,
+7 avenue du Préau, 02140 Vervins, 03 23 91 30 10.
 
 **`vie-associative.jpg`.** Résolu le 28 août 2026 : l'image vient de la banque
 d'images de Canva, téléchargée depuis l'abonnement Canva Pro de Pixfeed. La
