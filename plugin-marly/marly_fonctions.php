@@ -365,6 +365,78 @@ function filtre_marly_illustration_article_dist($id_article) {
  *
  * Ici il n'y a ni crochet ni accolade. Le gabarit n'ecrit plus qu'un GET.
  */
+/**
+ * Le titre d'une page FIXE du site, pour le <title> du navigateur.
+ * ---------------------------------------------------------------------------
+ * MESURE DU 30 AOUT 2026 : les 162 pages du site portaient TOUTES le meme
+ * titre, << Marly-Gomont — Site officiel de la commune >>. inc/head.html le
+ * construisait a partir d'une variable titre_page qu'aucun squelette n'a
+ * jamais definie. Trois consequences : RGAA 8.6 — un titre identique partout
+ * n'est pas pertinent ; le referencement — c'est la ligne bleue d'un resultat
+ * de recherche, et le site en avait une seule ; et l'usage courant — onglets
+ * et favoris indistinguables.
+ *
+ * POURQUOI UNE TABLE ICI ET PAS DANS LES SQUELETTES. L'en-tete HTML est rendu
+ * AVANT le contenu de la page : un titre pose dans contenu/credits.html ne
+ * peut pas remonter jusqu'a lui. Il faudrait donc le passer en argument
+ * depuis chacun des trente squelettes de racine — trente endroits a tenir a
+ * jour, et trente occasions d'en oublier un.
+ *
+ * LES PAGES D'OBJET NE SONT PAS ICI, et c'est voulu : un article, une fiche,
+ * une rubrique portent le titre de leur objet, que inc/head.html lit dans une
+ * boucle. Seules les pages dont le titre est fixe ont besoin d'une ligne.
+ *
+ * Rend une chaine vide pour l'accueil — qui n'a pas de titre de page, et
+ * affiche a la place << Site officiel de la commune >> — et pour toute page
+ * inconnue. La regle 78 du verificateur interdit qu'une page de racine soit
+ * inconnue des deux mecanismes a la fois.
+ */
+function filtre_marly_titre_page_dist($type_page) {
+	$titres = array(
+		'sommaire'         => '',
+		'404'              => 'marly:titre_404',
+		'accessibilite'    => 'marly:titre_accessibilite',
+		'actualites'       => 'marly:titre_actualites',
+		'associations'     => 'marly:titre_annuaire',
+		'commerces'        => 'marly:titre_commerces',
+		'confidentialite'  => 'marly:titre_confidentialite',
+		'conseil'          => 'marly:titre_conseil',
+		'contact'          => 'marly:contact',
+		'credits'          => 'marly:credits',
+		'demarches'        => 'marly:toutes_les_demarches',
+		'lieux'            => 'marly:titre_ou_nous_trouver',
+		'login'            => 'marly:connexion',
+		'mentions-legales' => 'marly:mentions_legales',
+		'newsletter'       => 'marly:newsletter',
+		'plan'             => 'marly:plan_du_site',
+		'recherche'        => 'marly:titre_recherche',
+		'reservation'      => 'marly:reserver',
+		'spip_pass'        => 'marly:mot_de_passe_oublie',
+	);
+
+	$type_page = (string) $type_page;
+	if (!isset($titres[$type_page]) or $titres[$type_page] === '') {
+		return '';
+	}
+	return _T($titres[$type_page]);
+}
+
+/**
+ * Le nom du site, debarrasse de ses espaces de bout — insecables compris.
+ * ---------------------------------------------------------------------------
+ * Le nom est saisi a la main dans SPIP, et il l'a ete avec une espace de trop.
+ * Le squelette passait deja par trim(), et le titre sortait pourtant avec DEUX
+ * espaces avant le tiret — mesure du 30 aout 2026, visible dans chaque
+ * resultat de recherche. trim() de PHP ne connait que l'espace ordinaire, la
+ * tabulation et les sauts de ligne : une espace INSECABLE lui passe sous le
+ * nez, et c'est ce qu'un copier-coller depose le plus souvent.
+ *
+ * Corriger le champ dans SPIP ne suffirait pas : il sera ressaisi un jour.
+ */
+function filtre_marly_nom_site_dist($nom) {
+	return trim((string) $nom, " \t\n\r\0\x0B\xc2\xa0");
+}
+
 function filtre_marly_illustration_src_dist($id_article) {
 	$fichier = filtre_marly_illustration_article_dist($id_article);
 	if (!$fichier) {

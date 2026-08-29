@@ -57,6 +57,14 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	   de Configuration ne couvre QUE l'image deposee : sans cette chaine,
 	   l'accueil affichait une photographie sans auteur. */
 	'credit_eglise_defaut' => 'Photo : Tourisme Thiérache',
+	/* Les titres de page qui manquaient. Ils ne servent qu'au <title> du
+	   navigateur : les pages legales portent leur titre en clair dans leur
+	   propre gabarit, mais celui-ci est rendu APRES l'en-tete HTML et ne
+	   peut donc pas l'alimenter. */
+	'titre_accessibilite' => 'Déclaration d’accessibilité',
+	'titre_actualites' => 'Actualités',
+	'titre_confidentialite' => 'Données personnelles',
+
 	'credits_photos' => 'Photographies',
 	'credit_ou_banniere' => 'Bannière de la page d’accueil :',
 	'credit_ou_bandeau' => 'Bandeau des pages de section :',

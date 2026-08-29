@@ -1208,7 +1208,7 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                  "renverrait le visiteur dans l'espace prive, donc sur la page "
                  "de connexion qu'il vient de quitter")
 
-# 53. Le nom du site affiche sans trim.
+# 53. Le nom du site affiche sans nettoyage de ses espaces de bout.
 #     Il est saisi a la main dans SPIP, et il l'a ete avec une espace avant et
 #     une apres. Le titre sortait donc << _Marly-Gomont_ — Site officiel >>,
 #     une espace en tete et deux avant le tiret, dans le titre de CHAQUE page,
@@ -1218,6 +1218,16 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
 #     commune</title>. Corriger le champ dans l'espace prive repare le jour
 #     meme et rien de plus : il sera ressaisi un jour, par quelqu'un d'autre,
 #     et personne ne reverra jamais l'espace en trop.
+#
+#     ELARGIE LE 30 AOUT 2026 : |trim NE SUFFIT PAS. Le titre sortait toujours
+#     avec deux espaces avant le tiret, quatre jours apres la correction, et le
+#     verificateur etait content. trim() de PHP ne connait que l'espace
+#     ordinaire, la tabulation et les sauts de ligne : une espace INSECABLE lui
+#     passe sous le nez, et c'est ce qu'un copier-coller depose le plus
+#     souvent. La regle accepte donc aussi marly_nom_site, qui retire les deux.
+#
+#     Une regle qui exige le remede insuffisant fait pire que rien : elle
+#     certifie que le defaut est traite.
 for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
     _src = open(_f, encoding='utf-8').read()
     # Les commentaires sont neutralises SANS perdre les sauts de ligne : les
@@ -1227,7 +1237,7 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
     _sans_rem = re.sub(r'\[\(#REM\).*?\]',
                        lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
     for _c in re.finditer(r'#NOM_SITE_SPIP((\|\w+(\{[^}]*\})?)*)', _sans_rem):
-        if 'trim' in _c.group(1):
+        if 'trim' in _c.group(1) or 'marly_nom_site' in _c.group(1):
             continue
         # Employe comme argument d'un filtre — |sinon{#NOM_SITE_SPIP} — le trim
         # se pose en bout de chaine, sur le resultat.
@@ -2172,6 +2182,75 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', 'img', '*'))):
                  "personne ne saura d'ou elle vient, et le champ << Credit "
                  "photographique >> de Configuration ne couvre que l'image que la "
                  "mairie depose elle-meme, pas celle-ci")
+
+
+# 78. Une page du site qui n'annonce son titre nulle part.
+#     ---------------------------------------------------------------------
+#     MESURE DU 30 AOUT 2026 : les 162 pages du site portaient TOUTES le meme
+#     titre dans le navigateur, << Marly-Gomont — Site officiel de la
+#     commune >>. inc/head.html le construisait a partir d'une variable
+#     qu'aucun squelette n'avait jamais definie. Personne ne l'avait vu
+#     pendant cinq semaines : un titre s'affiche dans l'onglet, pas dans la
+#     page, et l'audit mecanique verifie qu'il EXISTE, pas qu'il DISTINGUE.
+#
+#     Trois consequences a la fois. RGAA 8.6 — un titre identique partout
+#     n'est pas pertinent. Le referencement — c'est la ligne bleue d'un
+#     resultat de recherche, et le site en avait une seule pour tout. Et
+#     l'usage courant — onglets et favoris indistinguables.
+#
+#     DEUX MECANISMES COUVRENT LES PAGES, et la regle exige qu'une page
+#     releve de l'un ou de l'autre :
+#
+#       - les pages FIXES sont listees dans marly_titre_page, cote plugin ;
+#       - les pages d'OBJET portent le titre de leur objet, lu par une boucle
+#         de inc/head.html.
+#
+#     RIEN N'EST ECRIT EN DUR DANS CETTE REGLE : la table est relue dans le
+#     PHP, les boucles sont relues dans l'en-tete. Ajouter une page a l'un ou
+#     l'autre suffit a la faire taire, et la regle ne peut pas devenir
+#     perimee comme la 53 l'etait.
+_HEAD = os.path.join(RACINE, 'squelettes', 'inc', 'head.html')
+_PLUGIN_F = os.path.normpath(os.path.join(RACINE, '..', 'plugin-marly', 'marly_fonctions.php'))
+
+_ids_titre = set()
+if os.path.exists(_HEAD):
+    _src_head = open(_HEAD, encoding='utf-8').read()
+    for _c in re.finditer(r'<BOUCLE_titre_\w+\([A-Z]+\)\{(id_\w+)\}', _src_head):
+        _ids_titre.add(_c.group(1))
+
+_pages_fixes = set()
+if os.path.exists(_PLUGIN_F):
+    _src_p = open(_PLUGIN_F, encoding='utf-8').read()
+    _m = re.search(r'function filtre_marly_titre_page_dist.*?\$titres\s*=\s*array\((.*?)\);',
+                   _src_p, re.S)
+    if _m:
+        for _c in re.finditer(r"'([\w-]+)'\s*=>", _m.group(1)):
+            _pages_fixes.add(_c.group(1))
+
+if _ids_titre and _pages_fixes:
+    for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '*.html'))):
+        _page = os.path.basename(_f)[:-5]
+        _src = open(_f, encoding='utf-8').read()
+        _t = re.search(r'\{type-page=([\w-]+)\}', _src)
+        if not _t:
+            continue
+        _type = _t.group(1)
+        if _type in _pages_fixes:
+            continue
+        # Page d'objet : le squelette de RACINE porte la boucle de controle
+        # qui verifie l'existence de l'objet, et c'est SON identifiant qui
+        # compte. Chercher aussi dans le squelette de contenu acceptait
+        # n'importe quel identifiant qui traine — article.html boucle aussi
+        # sur la rubrique pour son fil d'Ariane, et cela suffisait a
+        # contenter la regle alors que l'en-tete ne lisait plus les articles.
+        # Eprouve le 30 aout 2026 : la regle se taisait a tort.
+        if any(re.search(r'\{' + re.escape(_id) + r'\}', _src) for _id in _ids_titre):
+            continue
+        signaler(os.path.relpath(_f, RACINE), 1,
+                 f"la page << {_type} >> n'annonce son titre nulle part : ni dans la table "
+                 "marly_titre_page du plugin, ni par une boucle de inc/head.html. Son "
+                 "onglet, son favori et sa ligne dans les resultats de recherche "
+                 "afficheront le nom du site et rien d'autre")
 
 
 if fautes:

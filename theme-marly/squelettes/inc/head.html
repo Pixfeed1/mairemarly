@@ -25,7 +25,31 @@
 	        deux avant le tiret. Mesure du 26 aout 2026, sur le site : ca se
 	        voyait dans chaque resultat Google. Corriger le champ ne suffit
 	        pas, il sera ressaisi un jour. ]
-	<title>[(#ENV{titre_page}|textebrut) — ][(#NOM_SITE_SPIP|trim)][(#ENV{titre_page}|non) — <:marly:site_officiel:>]</title>
+	[(#REM) LE TITRE SE CONSTRUIT EN DEUX TEMPS.
+
+	        D'abord le titre des pages FIXES, tire d'une table tenue dans le
+	        plugin. Ensuite les pages d'OBJET : chaque boucle ne tourne que si
+	        son identifiant est dans l'environnement, et ecrase alors le titre
+	        fixe. Une seule des dix peut tourner a la fois.
+
+	        Cet ordre evite d'ecrire une condition : une affectation posee
+	        dans un bloc optionnel est une ecriture que ce site ne pratique
+	        pas, et les boucles font le meme travail sans elle.
+
+	        Tous les objets du plugin declarent leur nom comme titre — c'est
+	        la ligne titre de leur description de table — donc la meme balise
+	        sert partout. ]
+	#SET{titre,#ENV{type-page}|marly_titre_page}
+	<BOUCLE_titre_art(ARTICLES){id_article}>#SET{titre,#TITRE}</BOUCLE_titre_art>
+	<BOUCLE_titre_rub(RUBRIQUES){id_rubrique}>#SET{titre,#TITRE}</BOUCLE_titre_rub>
+	<BOUCLE_titre_asso(ASSOCIATIONS){id_association}>#SET{titre,#TITRE}</BOUCLE_titre_asso>
+	<BOUCLE_titre_com(COMMERCES){id_commerce}>#SET{titre,#TITRE}</BOUCLE_titre_com>
+	<BOUCLE_titre_elu(ELUS){id_elu}>#SET{titre,#TITRE}</BOUCLE_titre_elu>
+	<BOUCLE_titre_dem(DEMARCHES){id_demarche}>#SET{titre,#TITRE}</BOUCLE_titre_dem>
+	<BOUCLE_titre_man(MANIFESTATIONS){id_manifestation}>#SET{titre,#TITRE}</BOUCLE_titre_man>
+	<BOUCLE_titre_salle(SALLES){id_salle}>#SET{titre,#TITRE}</BOUCLE_titre_salle>
+	<BOUCLE_titre_lieu(LIEUX){id_lieu}>#SET{titre,#TITRE}</BOUCLE_titre_lieu>
+	<title>[(#GET{titre}|textebrut) — ][(#NOM_SITE_SPIP|marly_nom_site)][(#GET{titre}|non) — <:marly:site_officiel:>]</title>
 
 	[(#REM) Faute de description propre à la page, on retombe sur celle du
 	        site : une page sans description laisse Google composer la sienne
