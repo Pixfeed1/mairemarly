@@ -2013,10 +2013,19 @@ for _o in sorted(_logos_promis):
 #
 #     <docNN> n'est pas vise : une piece a telecharger a sa place dans le
 #     texte, et le theme ne la montre pas ailleurs.
+#
+#     Fabriquer la chaine ne suffit pas a nuire : une sonde qui passe
+#     <imgNN|left> a propre() pour LIRE le HTML produit ne touche a aucun
+#     article. Ce qui nuit, c'est d'ecrire ce raccourci dans un article. La
+#     regle exige donc les deux : la chaine ET une ecriture sur l'objet
+#     article. Preuve dans les deux sens le 30 aout 2026 :
+#     reparer-images-importees.php (chaine + objet_modifier) reste signale,
+#     sonder-raccourci-image.php (chaine seule) ne l'est plus.
 _INSERE_IMG = re.compile(r"""['"]<img['"]\s*\.|['"]<img\{?\$|<img'\s*\.\s*\$""")
+_ECRIT_ARTICLE = re.compile(r"""objet_modifier\s*\(\s*['"]article['"]|sql_updateq?\s*\(\s*['"]spip_articles['"]""")
 for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.php'))):
     _src = open(_f, encoding='utf-8').read()
-    if _INSERE_IMG.search(_src):
+    if _INSERE_IMG.search(_src) and _ECRIT_ARTICLE.search(_src):
         _ligne = _src[:_INSERE_IMG.search(_src).start()].count('\n') + 1
         signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), _ligne,
                  "insere un raccourci <imgNN> dans le texte d'un article : le theme "
