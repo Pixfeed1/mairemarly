@@ -637,7 +637,7 @@ enrichir le texte :
 | Vous tapez | Vous obtenez |
 |---|---|
 | `{{{Le programme}}}` | un intertitre vert |
-| `<img2\|gauche>` ou `<img3\|droite>` | la photo numéro 2 (ou 3) posée dans le texte, que le texte habille |
+| le bouton **gauche** ou **droite** sous une image jointe | la photo posée dans le texte, que le texte habille |
 | `<quote>Merci aux bénévoles.</quote>` | une citation posée sur un filet vert |
 | `<pratique>La demande se fait en mairie.</pratique>` | un encadré « En pratique » sur fond crème |
 | `<important>Inscriptions avant le 15 juin.</important>` | un encadré jaune « À ne pas manquer » |
@@ -645,15 +645,37 @@ enrichir le texte :
 | des lignes `\| Matériel \| Tarif \|` | un tableau habillé (mettez `{{ }}` autour des titres de colonnes) |
 | `<bouton>[Télécharger le programme->doc5]</bouton>` | un grand bouton vert centré |
 
-Le numéro dans `<img2>` est celui que l'image porte dans la colonne
-« Ajouter une image ou un document » de l'article.
+### Poser une photo dans le texte
+
+**Ne tapez rien.** Placez le curseur dans le texte à l'endroit voulu, puis,
+dans la colonne « Ajouter une image ou un document », cliquez sur **gauche**,
+**centre** ou **droite** sous la photo. SPIP écrit le raccourci tout seul,
+par exemple `<img12|left>`, et vous n'avez ni le numéro ni l'orthographe à
+retenir.
+
+| Ce que vous cliquez | Ce que ça donne |
+|---|---|
+| **gauche** ou **droite**, une fois | la photo occupe un peu moins de la moitié de la colonne, le texte l'habille |
+| **gauche** deux fois de suite | les deux photos se posent côte à côte |
+| **gauche** trois fois de suite | les trois se posent en rangée, au même cadrage |
+| **centre** | la photo prend toute la largeur de la colonne |
+
+La rangée se fait toute seule : il suffit que les photos se suivent, sans
+texte entre elles. Sur téléphone, elles repassent les unes sous les autres.
+
+**Deux pièges à connaître.** L'alignement s'écrit en anglais : `left`,
+`center`, `right`. Si vous tapez `<img12|gauche>` à la main, SPIP ne
+reconnaît pas le mot et centre la photo. Et un raccourci sans alignement,
+`<img12>` tout court, n'est pas interprété du tout : le code s'affiche en
+clair sur la page. Passez par les boutons et ces deux cas ne se présentent
+jamais.
 
 Une composition de plus, pour mettre un contenu en avant : l'encart, la
 photo d'un côté, le titre et le lien de l'autre.
 
 ```
 <encart>
-<img4>
+<img4|left>
 {{{Le sentier de la Vallée rouvre}}}
 Fermé après les crues de l'hiver, le sentier est de nouveau praticable.
 [Voir l'itinéraire->article12]
@@ -666,8 +688,8 @@ gauche, le titre à côté** ; les PDF deviennent des cartes « Télécharger »
 **« En images », en bas de l'article, montre les autres photographies
 jointes** — toutes sauf celle qui s'affiche en tête.
 
-Une photo que vous placez vous-même dans le texte avec `<img12|gauche>`
-apparaît **aussi** dans cette galerie. Si vous ne le souhaitez pas, ne la
+Une photo que vous placez vous-même dans le texte apparaît **aussi** dans
+cette galerie. Si vous ne le souhaitez pas, ne la
 joignez pas à l'article : insérez-la et retirez-la ensuite de la liste des
 documents… ou laissez faire, deux vues d'une même photo dans un article long
 ne gênent personne.

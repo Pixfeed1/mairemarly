@@ -1489,27 +1489,85 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 /* --- les compositions de texte -------------------------------------------- */
 /* Valide maquette en main : apercu-compositions, l'article d'ete. */
 
-/* <imgN|droite> et <imgN|gauche> : la photo dans le texte, que le texte
-   habille. SPIP pose ces classes lui-meme sur le conteneur du document. */
-.texte .spip_documents_droite,
-.texte .spip_documents_gauche{ display:block; width:min(46%,380px); margin:6px 0 14px; }
-.texte .spip_documents_droite{ float:right; margin-left:28px; }
-.texte .spip_documents_gauche{ float:left; margin-right:28px; }
-.texte .spip_documents_droite img,
-.texte .spip_documents_gauche img{ display:block; width:100%; height:auto; border-radius:6px; }
-.texte .spip_documents_droite figcaption,
-.texte .spip_documents_gauche figcaption,
-.texte .spip_documents_droite .spip_doc_legende,
-.texte .spip_documents_gauche .spip_doc_legende{
+/* La photo posee dans le corps d'un article.
+   ---------------------------------------------------------------------------
+   Les classes ci-dessous sont celles que SPIP fabrique VRAIMENT. Mesure du
+   30 aout 2026, outils/sonder-raccourci-image.php sur l'installation en
+   ligne, qui demande le calcul a propre() au lieu de le deviner :
+
+     <img32|left>   -> spip_documents spip_document_image spip_documents_left
+     <img32|center> -> spip_documents spip_document_image spip_documents_center
+     <img32|right>  -> spip_documents spip_document_image spip_documents_right
+     <img32|gauche> -> spip_documents_center, plus une classe << gauche >>
+                       morte : un mot que SPIP ne connait pas est rabattu
+                       sur center
+     <img32>        -> pas interprete du tout, le code sort en clair dans un
+                       <tt> a l'ecran
+
+   Le theme visait spip_documents_gauche et spip_documents_droite. Ces deux
+   classes n'existent nulle part. Aucune photo du corps d'article n'a donc
+   jamais ete habillee : elle sortait a sa taille de fichier, 1065 px dans
+   une colonne de 776, et emmenait la page entiere a 1459 px de large, ce qui
+   la fait defiler de cote sur telephone.
+
+   Le bouton d'insertion de l'espace prive ecrit toujours un alignement, en
+   anglais : plugins-dist/medias/inc/documents.php, affiche_raccourci_doc(). */
+
+/* Le plancher. Quoi qu'il arrive, y compris sur un mot d'alignement inconnu,
+   rien ne sort de la colonne. La <figure> interne a une marge par defaut du
+   navigateur, 1em 40px, qu'il faut annuler. */
+.texte .spip_documents{ margin:6px 0 14px; max-width:100%; }
+.texte .spip_doc_inner{ margin:0; }
+.texte .spip_documents img{ max-width:100%; height:auto; }
+/* Seules les vraies images se laissent etirer a la largeur de leur bloc :
+   <docNN> pose les memes classes d'alignement mais son icone doit garder sa
+   taille, d'ou spip_document_image. */
+.texte .spip_document_image img{ display:block; width:100%; border-radius:6px; }
+.texte .spip_documents figcaption,
+.texte .spip_documents .spip_doc_legende{
   font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin-top:6px; }
+
+/* Une photo seule, ou deux qui se suivent : le texte les habille. */
+.texte .spip_documents_left,.texte .spip_documents_right{ width:min(46%,380px); }
+.texte .spip_documents_left{ float:left; margin-right:28px; }
+.texte .spip_documents_right{ float:right; margin-left:28px; }
+
+/* Trois photos qui se suivent : une rangee, sans que personne l'ait demande.
+   La sonde a montre que SPIP les sort voisines dans le HTML, meme collees au
+   milieu d'un paragraphe : les selecteurs de voisinage suffisent, il n'y a
+   rien de nouveau a taper. Trois selecteurs pour trois positions dans la
+   suite : la premiere, la deuxieme, la troisieme.
+   Mesure a 1280 px : 243 px chacune, posees a 252, 509 et 765, meme hauteur.
+   Sur un navigateur sans :has(), les trois gardent 46 % et reviennent a deux
+   plus une, c'est-a-dire le comportement d'avant. Rien ne casse. */
+.texte .spip_documents_left:has(+ .spip_documents_left + .spip_documents_left),
+.texte .spip_documents_left + .spip_documents_left:has(+ .spip_documents_left),
+.texte .spip_documents_left + .spip_documents_left + .spip_documents_left{
+  width:calc(33.333% - 16px); margin-right:14px; }
+/* Le meme cadrage pour les trois : sans cela les hauteurs sont inegales et le
+   texte suivant s'insinue dans le creux. C'est le cadrage de la galerie de
+   bas de page, 3/2 recadre. */
+.texte .spip_document_image.spip_documents_left:has(+ .spip_documents_left + .spip_documents_left) img,
+.texte .spip_documents_left + .spip_document_image.spip_documents_left:has(+ .spip_documents_left) img,
+.texte .spip_documents_left + .spip_documents_left + .spip_document_image.spip_documents_left img{
+  aspect-ratio:3/2; object-fit:cover; }
+
+/* Centree, et par ricochet tout alignement que SPIP ne reconnait pas :
+   toute la colonne, quelle que soit la taille du fichier d'origine. */
+.texte .spip_documents_center{ display:block; float:none; width:100%; clear:both; margin:26px 0; }
+
 /* Un intertitre reprend toute la largeur, et rien ne depasse en bas. */
 .texte h2,.texte h3{ clear:both; }
 .texte::after{ content:""; display:block; clear:both; }
 /* Les listes glissent a cote de la photo au lieu de passer dessous : sans
    cela, les pastilles des etapes (posees en absolu) se peignent sur l'image. */
 .texte ol,.texte ul{ display:flow-root; }
+
 @media(max-width:640px){
-  .texte .spip_documents_droite,.texte .spip_documents_gauche{
+  .texte .spip_documents_left,.texte .spip_documents_right,
+  .texte .spip_documents_left:has(+ .spip_documents_left + .spip_documents_left),
+  .texte .spip_documents_left + .spip_documents_left:has(+ .spip_documents_left),
+  .texte .spip_documents_left + .spip_documents_left + .spip_documents_left{
     float:none; width:100%; margin:18px 0; }
 }
 
@@ -1540,8 +1598,11 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    une image, un intertitre, un texte court, un lien seul sur sa ligne. */
 .texte encart{ display:grid; grid-template-columns:minmax(0,44%) 1fr; align-items:center;
   background:var(--creme-sombre); border-radius:6px; overflow:hidden; margin:32px 0; }
+/* La photo colle aux bords de l'encart : padding:0 annule les 30 px que
+   << .texte encart > * >> pose sur le texte. Mesure du 30 aout 2026 : sans
+   lui la photo demarre a 282 au lieu de 252 et laisse une bande creme. */
 .texte encart > .spip_documents{ grid-column:1; grid-row:1 / span 20; align-self:stretch;
-  float:none; width:auto; margin:0; }
+  float:none; width:auto; margin:0; padding:0; }
 .texte encart > .spip_documents img{ display:block; width:100%; height:100%;
   object-fit:cover; border-radius:0; }
 .texte encart > *{ grid-column:2; margin:0 0 12px; padding:0 30px; }

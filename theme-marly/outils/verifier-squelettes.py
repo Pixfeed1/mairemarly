@@ -1715,9 +1715,13 @@ if os.path.exists(_somm):
 #     fichiers n'ecrit se met dans _CSS_HORS_NOUS, avec la raison.
 _CSS_HORS_NOUS = {
     # SPIP ecrit lui-meme ces classes en rendant #TEXTE : un document joint
-    # aligne a gauche ou a droite, et sa legende. Aucun de nos fichiers ne les
-    # pose, et pourtant elles doivent etre habillees.
-    'spip_documents_gauche', 'spip_documents_droite', 'spip_doc_legende',
+    # dans le corps d'un article, son conteneur, sa legende. Aucun de nos
+    # fichiers ne les pose, et pourtant elles doivent etre habillees.
+    # Relevees le 30 aout 2026 par outils/sonder-raccourci-image.php sur
+    # l'installation en ligne, pas devinees : voir la regle 83.
+    'spip_documents', 'spip_documents_left', 'spip_documents_right',
+    'spip_documents_center', 'spip_document_image', 'spip_doc_inner',
+    'spip_doc_legende',
     # Le modele de pagination de SPIP pose les siennes sur la liste qu'il rend :
     # nos gabarits n'ecrivent que #PAGINATION. Sans cette exemption, habiller
     # une pagination revenait a declencher la regle — ce qui pousse a ne pas
@@ -2432,6 +2436,48 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.sh'))):
                  "set -e : grep qui ne trouve RIEN sort en erreur, et le script "
                  "s'arrete la, en silence, precisement quand il n'y a rien a "
                  "signaler. Ajouter || true")
+
+
+# 83. Le theme habille une classe de document que SPIP ne fabrique jamais.
+#     ---------------------------------------------------------------------
+#     Mesure du 30 aout 2026, outils/sonder-raccourci-image.php execute sur
+#     l'installation en ligne. On a demande a propre() de calculer sept
+#     raccourcis, et imprime le HTML tel quel :
+#
+#       <img32|left>   donne spip_documents_left
+#       <img32|center> donne spip_documents_center
+#       <img32|right>  donne spip_documents_right
+#       <img32|gauche> donne spip_documents_center, plus une classe morte
+#
+#     spip_documents_gauche, _droite et _centre n'existent nulle part. Le
+#     theme les habillait depuis le premier jour : aucune photo posee dans le
+#     corps d'un article n'etait touchee par une regle. Elle sortait a sa
+#     taille de fichier, 1065 px dans une colonne de 776, et emmenait la page
+#     a 1459 px de large, ce qui la fait defiler de cote sur telephone.
+#
+#     Aucune regle ne pouvait le voir : ces deux noms figuraient dans la liste
+#     d'exemptions de la regle 71, avec pour justification << SPIP les ecrit
+#     lui-meme >>. Une exemption ecrite de memoire vaut une regle en moins.
+#     Celle-ci nomme les six orthographes fausses et refuse de les revoir.
+#
+#     Le bouton d'insertion de l'espace prive ecrit toujours l'anglais :
+#     plugins-dist/medias/inc/documents.php, affiche_raccourci_doc().
+_CLASSES_MORTES = ('spip_documents_gauche', 'spip_documents_droite',
+                   'spip_documents_centre', 'spip_document_gauche',
+                   'spip_document_droite', 'spip_document_centre')
+_css_doc = os.path.join(RACINE, 'squelettes', 'css', 'theme.css')
+if os.path.exists(_css_doc):
+    _src_css = open(_css_doc, encoding='utf-8').read()
+    _sans_com = re.sub(r'/\*.*?\*/', ' ', _src_css, flags=re.S)
+    for _morte in _CLASSES_MORTES:
+        if '.' + _morte in _sans_com:
+            _ligne = _src_css[:_src_css.index('.' + _morte)].count('\n') + 1
+            signaler('theme-marly/squelettes/css/theme.css', _ligne,
+                     "habille ." + _morte + ", une classe que SPIP ne fabrique "
+                     "jamais : mesure du 30 aout 2026, l'alignement s'ecrit en "
+                     "anglais (left, center, right) et un mot inconnu retombe sur "
+                     "spip_documents_center ; la regle ne s'applique a rien et la "
+                     "photo sort a sa taille de fichier")
 
 
 if fautes:

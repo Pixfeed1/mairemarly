@@ -102,7 +102,12 @@ $tout = '';
 foreach ($cas as $raccourci) {
 	$tout .= propre($raccourci);
 }
-if (preg_match_all('/class="([^"]*)"/', $tout, $m)) {
+// SPIP ecrit ses attributs en guillemets simples sur le conteneur et en
+// doubles sur la figure interne : chercher les deux, sinon le releve sort
+// vide alors que le HTML brut, lui, montre bien les classes.
+if (preg_match_all('/class=(?:"([^"]*)"|\'([^\']*)\')/', $tout, $m)) {
+	$m[1] = array_map(function ($a, $b) { return $a !== '' ? $a : $b; },
+		$m[1], $m[2]);
 	$vues = array();
 	foreach ($m[1] as $liste) {
 		foreach (preg_split('/\s+/', trim($liste)) as $classe) {
