@@ -18,6 +18,22 @@
 # est une mauvaise idee — le shell le lit au fur et a mesure.
 set -e
 
+# UN SCRIPT QUI MEURT EN SILENCE EST PIRE QU'UN SCRIPT QUI ECHOUE.
+#
+# Avec set -e, n'importe quelle commande qui sort en erreur arrete tout, sans
+# un mot. Le 30 aout 2026 le deploiement n'a rien affiche — ni en-tete, ni
+# erreur — et il a fallu reproduire la ligne fautive a la main pour comprendre
+# que c'etait un grep sans resultat. Rien a l'ecran ressemble a rien a faire.
+#
+# Ce piege nomme la ligne et dit que le travail n'est pas fait.
+trap 'CODE=$?; if [ "$CODE" != 0 ]; then
+	echo
+	echo "  ================================================================"
+	echo "  LE DEPLOIEMENT S EST ARRETE LIGNE $LINENO, SANS ALLER AU BOUT."
+	echo "  Le site est peut-etre a moitie copie. Relancez apres correction."
+	echo "  ================================================================"
+fi' EXIT
+
 # Le depot, c'est la racine du dossier qui contient ce script. Aucun chemin
 # en dur : le script marche quel que soit l'utilisateur et l'emplacement.
 DEPOT=$(cd "$(dirname "$0")/../.." && pwd)
@@ -67,8 +83,12 @@ fi
 #
 # Une seconde de php -l avant la copie evite de mettre un site par terre.
 if command -v php >/dev/null 2>&1; then
+	# LE || true N'EST PAS UNE PRECAUTION, IL EST OBLIGATOIRE. grep qui ne
+	# trouve rien sort en ERREUR, et set -e tue alors le script — c'est-a-dire
+	# exactement quand tout va bien. Le 30 aout 2026 le deploiement n'a plus
+	# rien affiche du tout, pas meme son en-tete : il mourait sur ce grep.
 	CASSES=$(find "$DEPOT/plugin-marly" -name '*.php' -exec php -l {} \; 2>&1 \
-	         | grep -v '^No syntax errors' | grep -v '^$')
+	         | grep -v '^No syntax errors' | grep -v '^$' || true)
 	if [ -n "$CASSES" ]; then
 		echo "  ================================================================"
 		echo "  RIEN N'A ETE COPIE : du PHP du plugin ne compile pas."

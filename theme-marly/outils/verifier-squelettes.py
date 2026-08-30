@@ -2387,6 +2387,44 @@ else:
                      "charger et tout le site tombe. " + re.sub(r' in /[^ ]+', '', _msg))
 
 
+# 82. Un grep dans une substitution de commande, sous set -e.
+#     ---------------------------------------------------------------------
+#     grep QUI NE TROUVE RIEN SORT EN ERREUR. Sous set -e, une substitution
+#     de commande dont le dernier maillon est un grep sans resultat arrete
+#     donc le script — c'est-a-dire exactement quand tout va bien.
+#
+#     Mesure du 30 aout 2026 : le deploiement n'affichait plus rien du tout,
+#     pas meme son en-tete. Le controle php -l que je venais d'ajouter
+#     cherchait les fichiers qui ne compilent pas ; tous compilaient ; le grep
+#     ne trouvait rien ; le script mourait avant sa premiere ligne d'affichage.
+#     Rien a l'ecran ressemble a rien a faire, et le client a relance deux fois
+#     avant qu'on comprenne.
+#
+#     Le remede tient en trois caracteres, || true, et il est OBLIGATOIRE des
+#     qu'un grep termine une substitution dans un script en set -e.
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.sh'))):
+    _src = open(_f, encoding='utf-8').read()
+    if not re.search(r'^\s*set -e', _src, re.M):
+        continue
+    for _c in re.finditer(r'\$\((?:[^()]|\([^()]*\))*\)', _src, re.S):
+        _bloc = _c.group(0)
+        if 'grep' not in _bloc:
+            continue
+        # Le dernier maillon compte : un grep au milieu d'un tube est suivi
+        # d'autre chose, qui fixe le code de sortie.
+        _dernier = _bloc[:-1].rsplit('|', 1)[-1]
+        if 'grep' not in _dernier:
+            continue
+        if '|| true' in _bloc or '|| :' in _bloc or 'echo' in _dernier:
+            continue
+        signaler(os.path.relpath(_f, RACINE),
+                 _src[:_c.start()].count('\n') + 1,
+                 "une substitution de commande finit par un grep, dans un script en "
+                 "set -e : grep qui ne trouve RIEN sort en erreur, et le script "
+                 "s'arrete la, en silence, precisement quand il n'y a rien a "
+                 "signaler. Ajouter || true")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
