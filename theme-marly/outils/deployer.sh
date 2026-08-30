@@ -225,8 +225,22 @@ else
 	RACINE_SITE=$(mysql -h "${HOTE:-localhost}" -u "$LOGIN" -p"$PASSE" "$BASE" -N -B \
 	              -e "SELECT valeur FROM spip_meta WHERE nom='adresse_site'" 2>/dev/null)
 	RACINE_SITE=${RACINE_SITE%/}
+	# DEUX ARTICLES, ET C'EST TOUT LE SUJET. Le 30 aout 2026, ce controle a
+	# annonce << tout repond >> pendant que toutes les pages d'article ILLUSTRE
+	# rendaient << Erreur d'execution >>. Il n'en ouvrait qu'un, le plus
+	# recent, et celui-la n'avait pas d'image : il passait donc par l'en-tete
+	# sans photographie et ne touchait jamais l'autre.
+	#
+	# Un article porte deux mises en page selon qu'il a une image ou non. Un
+	# controle qui n'en essaie qu'une n'en controle que la moitie, et il le
+	# dit avec l'aplomb d'un resultat complet.
 	ART=$(mysql -h "${HOTE:-localhost}" -u "$LOGIN" -p"$PASSE" "$BASE" -N -B \
 	      -e "SELECT id_article FROM spip_articles WHERE statut='publie' ORDER BY date DESC LIMIT 1" 2>/dev/null)
+	ART_ILLUSTRE=$(mysql -h "${HOTE:-localhost}" -u "$LOGIN" -p"$PASSE" "$BASE" -N -B \
+	      -e "SELECT a.id_article FROM spip_articles a
+	          JOIN spip_documents_liens l ON l.id_objet = a.id_article AND l.objet = 'article'
+	          JOIN spip_documents d ON d.id_document = l.id_document AND d.mode = 'image'
+	          WHERE a.statut = 'publie' GROUP BY a.id_article LIMIT 1" 2>/dev/null)
 	ADRESSES="/ \
 	          /spip.php?page=actualites \
 	          /spip.php?page=associations \
@@ -235,6 +249,9 @@ else
 	          /spip.php?page=credits"
 	if [ -n "$ART" ]; then
 		ADRESSES="$ADRESSES /spip.php?page=article&id_article=$ART"
+	fi
+	if [ -n "$ART_ILLUSTRE" ] && [ "$ART_ILLUSTRE" != "$ART" ]; then
+		ADRESSES="$ADRESSES /spip.php?page=article&id_article=$ART_ILLUSTRE"
 	fi
 
 	if [ -z "$RACINE_SITE" ]; then

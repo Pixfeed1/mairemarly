@@ -353,30 +353,6 @@ function filtre_marly_illustration_article_dist($id_article) {
 	);
 }
 
-/**
- * L'adresse toute prete de l'illustration d'un article, reduite pour la une.
- * ---------------------------------------------------------------------------
- * POURQUOI CE FILTRE EXISTE PLUTOT QU'UN CALCUL DANS LE GABARIT. La une doit
- * choisir sa mise en page selon qu'il y a une image, donc poser un bloc
- * optionnel. Ecrire la reduction a l'interieur de ce bloc demandait
- * [(...|image_reduire{...}|extraire_attribut{...})] DANS un [(...)] : le
- * premier crochet fermant referme le bloc exterieur, et la page entiere rend
- * << Erreur d'execution >>. Mesure du 28 aout 2026 en production.
- *
- * Ici il n'y a ni crochet ni accolade. Le gabarit n'ecrit plus qu'un GET.
- */
-/**
- * Le titre d'une page FIXE du site, pour le <title> du navigateur.
- * ---------------------------------------------------------------------------
- * MESURE DU 30 AOUT 2026 : les 162 pages du site portaient TOUTES le meme
- * titre, << Marly-Gomont — Site officiel de la commune >>. inc/head.html le
- * construisait a partir d'une variable titre_page qu'aucun squelette n'a
- * jamais definie. Trois consequences : RGAA 8.6 — un titre identique partout
- * n'est pas pertinent ; le referencement — c'est la ligne bleue d'un resultat
- * de recherche, et le site en avait une seule ; et l'usage courant — onglets
- * et favoris indistinguables.
- *
- * POURQUOI UNE TABLE ICI ET PAS DANS LES SQUELETTES. L'en-tete HTML est rendu
  * AVANT le contenu de la page : un titre pose dans contenu/credits.html ne
  * peut pas remonter jusqu'a lui. Il faudrait donc le passer en argument
  * depuis chacun des trente squelettes de racine — trente endroits a tenir a
@@ -477,16 +453,6 @@ function filtre_marly_nom_site_dist($nom) {
 	return trim((string) $nom);
 }
 
-function filtre_marly_illustration_src_dist($id_article) {
-	$fichier = filtre_marly_illustration_article_dist($id_article);
-	if (!$fichier) {
-		return '';
-	}
-	include_spip('inc/filtres');
-	include_spip('inc/filtres_images');
-	return extraire_attribut(image_reduire($fichier, 1400, 0), 'src');
-}
-
 /** Le travail commun aux trois : lire la configuration, et vérifier le disque. */
 function marly_url_image_deposee($champ) {
 	include_spip('inc/config');
@@ -498,16 +464,6 @@ function marly_url_image_deposee($champ) {
 	return url_absolue(_DIR_IMG . $nom);
 }
 
-/**
- * « sept. » à partir d'une date SQL.
- * ---------------------------------------------------------------------------
- * Pour la pastille de date de l'agenda : un rond de 52 pixels ne loge pas
- * « septembre », et un rond plus grand mangerait le titre à côté.
- *
- * La table est ÉCRITE ICI plutôt que déduite de affdate() : les abréviations
- * françaises ne sont pas mécaniques — « juin » et « août » ne s'abrègent pas,
- * « juil. » perd deux lettres, « déc. » trois. Une troncature à quatre
- * caractères donnerait « juin. », « août. » et « févr » selon les cas.
  *
  * Rend une chaîne vide si la date est illisible : l'affichage est dans un
  * bloc optionnel, la pastille se contente alors du quantième.

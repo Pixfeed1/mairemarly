@@ -17,19 +17,27 @@
   cadre fixe, une photo de telephone tenue verticalement faisait 1 035 pixels
   de haut avant le premier mot du texte, une affiche A4 scannee 1 098.
 
-  L'adresse de l'image vient toute prete d'un filtre : la reduire ici
-  ramenerait le crochet dans le crochet.
+  LA REDUCTION SE FAIT ICI, ET NON DANS LE PLUGIN. Elle y a ete, et toutes les
+  pages d'article ILLUSTRE sont mortes le 30 aout 2026 :
+  << Call to undefined function image_reduire() >>. image_reduire est un
+  filtre de gabarit ; disponible dans tout le theme, il ne l'est pas dans le
+  contexte d'un filtre PHP du plugin. C'est la deuxieme fois en deux jours,
+  apres chercher_logo.
+
+  Ecrite ici, la reduction est au premier niveau de la boucle et non dans un
+  bloc optionnel — donc aucun crochet dans un crochet, ce qui etait l'autre
+  piege de la veille.
 
   Parametre : id_article.
 ]
 <BOUCLE_une(ARTICLES){id_article}>
 #SET{pub,#DATE|affdate}
 #SET{maj,#DATE_MODIF|affdate}
-#SET{photo,#ID_ARTICLE|marly_illustration_src}
+#SET{photo,#ID_ARTICLE|marly_illustration_article}
 #SET{rub,''}
 <BOUCLE_rub(RUBRIQUES){id_rubrique}>#SET{rub,#TITRE}</BOUCLE_rub>
 <div class="une-art">
-	<div class="une-art-photo"><img src="[(#GET{photo}|attribut_html)]" alt=""></div>
+	<div class="une-art-photo"><img src="[(#GET{photo}|image_reduire{1400,0}|extraire_attribut{src})]" alt=""></div>
 	<div class="une-art-carton">
 		<p class="article-rubrique">#GET{rub}</p>
 		<h1>#TITRE</h1>

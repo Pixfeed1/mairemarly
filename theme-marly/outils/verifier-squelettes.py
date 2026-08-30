@@ -2296,6 +2296,52 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
                          "Composer la valeur dans un filtre PHP")
 
 
+# 80. Le plugin appelle une fonction de la couche des gabarits.
+#     ---------------------------------------------------------------------
+#     DEUX PANNES DE PRODUCTION EN DEUX JOURS, LA MEME CAUSE.
+#
+#       29 aout, 23 h 55  chercher_logo()   toutes les pages d'article
+#       30 aout, 10 h 54  image_reduire()   toutes les pages d'article ILLUSTRE
+#
+#     Les deux sont des fonctions d'image ou de logo. Elles sont disponibles
+#     partout dans les squelettes — le theme ecrit |image_reduire depuis des
+#     semaines — mais elles ne le sont pas dans le contexte d'un filtre PHP du
+#     plugin, ou seul le noyau strict de SPIP est charge. La page entiere meurt
+#     avec << Erreur d'execution >>, et le nom du gabarit accuse a tort.
+#
+#     LA REGLE DIT DONC UNE REGLE DE CONCEPTION, pas un detail technique : le
+#     travail sur les images appartient au gabarit, ou il fonctionne, et le
+#     plugin rend des donnees — un chemin de fichier, un identifiant, un titre.
+#
+#     La liste est courte et fermee a dessein. Interdire au plugin toute
+#     fonction du noyau serait interdire sql_getfetsel et _T ; viser les
+#     images et les logos couvre les deux pannes constatees sans accuser ce
+#     qui marche.
+_LAYOUT = ('image_reduire', 'image_recadre', 'image_passe_partout',
+           'image_reduire_par', 'image_graver', 'chercher_logo', 'logo_get')
+for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.php'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    # Les commentaires PHP sont neutralises : ils citent ces noms pour
+    # expliquer la panne, et c'est justement ce qu'on veut garder.
+    _code = re.sub(r'/\*.*?\*/', lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    _code = re.sub(r'//[^\n]*', '', _code)
+    for _nom in _LAYOUT:
+        for _c in re.finditer(r'\b' + _nom + r'\s*\(', _code):
+            # Un appel garde par function_exists est deliberement tolere : il
+            # ne peut pas tuer la page, et c'est la seule facon de lire un
+            # logo sur les versions de SPIP qui savent encore le faire.
+            _avant = _code[max(0, _c.start() - 400):_c.start()]
+            if "function_exists('" + _nom + "')" in _avant:
+                continue
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
+                     _code[:_c.start()].count('\n') + 1,
+                     f"le plugin appelle {_nom}(), qui appartient a la couche des "
+                     "gabarits : elle n'est pas chargee dans le contexte d'un filtre "
+                     "PHP, et la page entiere meurt en << Erreur d'execution >>. Le "
+                     "travail sur les images se fait dans le gabarit ; le plugin rend "
+                     "un chemin de fichier")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
