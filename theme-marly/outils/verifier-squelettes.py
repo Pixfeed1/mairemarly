@@ -1228,6 +1228,11 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
 #
 #     Une regle qui exige le remede insuffisant fait pire que rien : elle
 #     certifie que le defaut est traite.
+#
+#     Elle n'accepte donc plus |trim du tout, et exige marly_nom_site aux SEPT
+#     endroits ou le nom parait : le titre, le pied, l'en-tete, le heros, la
+#     page de contact, et les deux balises de partage. Laisser |trim passer
+#     ailleurs, c'etait garder six trappes ouvertes pour n'en fermer qu'une.
 for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
     _src = open(_f, encoding='utf-8').read()
     # Les commentaires sont neutralises SANS perdre les sauts de ligne : les
@@ -1237,16 +1242,16 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), r
     _sans_rem = re.sub(r'\[\(#REM\).*?\]',
                        lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
     for _c in re.finditer(r'#NOM_SITE_SPIP((\|\w+(\{[^}]*\})?)*)', _sans_rem):
-        if 'trim' in _c.group(1) or 'marly_nom_site' in _c.group(1):
+        if 'marly_nom_site' in _c.group(1):
             continue
-        # Employe comme argument d'un filtre — |sinon{#NOM_SITE_SPIP} — le trim
-        # se pose en bout de chaine, sur le resultat.
-        _suite = _sans_rem[_c.end():_c.end() + 60]
-        if _suite.startswith('}') and 'trim' in _suite[:_suite.find(')') + 1 or 60]:
+        # Employe comme argument d'un filtre — |sinon{#NOM_SITE_SPIP} — le
+        # nettoyage se pose en bout de chaine, sur le resultat.
+        _suite = _sans_rem[_c.end():_c.end() + 80]
+        if _suite.startswith('}') and 'marly_nom_site' in _suite[:_suite.find(')') + 1 or 80]:
             continue
         signaler(os.path.relpath(_f, os.path.join(RACINE, '..')),
                  _sans_rem[:_c.start()].count(chr(10)) + 1,
-                 "nom du site affiche sans |trim : il est saisi a la main et "
+                 "nom du site affiche sans |marly_nom_site : il est saisi a la main et "
                  "l'a ete avec des espaces autour. Elles se voient dans le titre "
                  "de chaque page, donc dans les resultats de recherche")
 

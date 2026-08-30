@@ -434,7 +434,12 @@ function filtre_marly_titre_page_dist($type_page) {
  * Corriger le champ dans SPIP ne suffirait pas : il sera ressaisi un jour.
  */
 function filtre_marly_nom_site_dist($nom) {
-	return trim((string) $nom, " \t\n\r\0\x0B\xc2\xa0");
+	/* On ne se contente pas de rogner les bouts : on ramene TOUTE suite
+	   d'espaces a une seule, quelle que soit l'espace — ordinaire, insecable,
+	   fine insecable, tabulation. Enumerer les caracteres a la main, c'est en
+	   oublier un ; \pZ les prend tous. */
+	$nom = preg_replace('/[\pZ\s]+/u', ' ', (string) $nom);
+	return trim((string) $nom);
 }
 
 function filtre_marly_illustration_src_dist($id_article) {

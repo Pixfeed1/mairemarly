@@ -52,7 +52,7 @@
 			[(#REM) La carte, si la commune a pu etre localisee. Sans JavaScript
 			        le cadre reste vide et l'adresse ci-dessus suffit. ]
 			#SET{lon,#CONFIG{marly/longitude}|attribut_html}
-			#SET{nom,#NOM_SITE_SPIP|trim|attribut_html}
+			#SET{nom,#NOM_SITE_SPIP|marly_nom_site|attribut_html}
 			[<div class="carte-cadre" data-carte
 			      data-lat="(#CONFIG{marly/latitude}|attribut_html)"
 			      data-lon="#GET{lon}" data-nom="#GET{nom}"></div>]

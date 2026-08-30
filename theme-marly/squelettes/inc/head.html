@@ -64,8 +64,8 @@
 	<meta name="robots" content="[(#ENV{type-page}|match{'^(login|spip_pass|recherche)$'}|?{noindex,index}), follow">
 
 	[(#REM) Partage sur les réseaux et messageries ]
-	<meta property="og:site_name" content="[(#NOM_SITE_SPIP|trim)]">
-	<meta property="og:title" content="[(#ENV{titre_page}|textebrut|sinon{#NOM_SITE_SPIP}|trim)]">
+	<meta property="og:site_name" content="[(#NOM_SITE_SPIP|marly_nom_site)]">
+	<meta property="og:title" content="[(#GET{titre}|textebrut|sinon{#NOM_SITE_SPIP}|marly_nom_site)]">
 	<meta property="og:type" content="website">
 	[<meta property="og:description" content="(#ENV{description}|sinon{#DESCRIPTIF_SITE_SPIP}|textebrut|couper{200}|attribut_html)">]
 	<meta property="og:url" content="#SELF|url_absolue">
