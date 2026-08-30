@@ -24,7 +24,7 @@
         optionnel. Et cale sur la meme colonne que le texte : au premier rendu
         il sautait de 17 a 195 pixels selon que l'article portait une image. ]
 #SET{photo,#ID_ARTICLE|marly_illustration_article}
-#SET{illu_id,#ID_ARTICLE|marly_illustration_id}
+#SET{posees,#ID_ARTICLE|marly_images_posees}
 
 <nav class="fil-ariane une-fil" aria-label="Fil d’Ariane">
 	<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
@@ -47,17 +47,27 @@
 	[(#REM) Le portfolio : les images jointes, SAUF celle qui est deja en tete
 	        de page. Chaque vignette ouvre l'image en grand.
 
-	        L'EXCLUSION EST VENUE AVEC LA UNE DU 28 AOUT. Avant elle, l'image de
-	        tete etait dans le flux du texte et la galerie montrait le reste.
-	        Depuis, la photographie s'affiche en grand dans l'en-tete PUIS
-	        ressortait en vignette vingt lignes plus bas, sur la meme page.
+	        C'EST UNE GALERIE DE RESTES, et c'est ce qu'elle a toujours voulu
+	        etre. Elle ecarte deux choses : la photographie de tete, et celles
+	        que la mairie a placees elle-meme dans le texte par <imgNN>. Sans
+	        ça, une photographie sortait DEUX FOIS sur la meme page — posee
+	        par la secretaire a l'endroit qu'elle voulait, puis remontree en
+	        vignette vingt lignes plus bas.
 
-	        A zero — aucune illustration — le critere n'ecarte rien : aucun
-	        document ne porte l'identifiant 0. ]
+	        Le premier cas est arrive avec la une du 28 aout 2026 ; le second
+	        existait depuis toujours et personne ne l'avait vu.
+
+	        ET ÇA DONNE UNE GALERIE MANUELLE SANS RIEN AJOUTER : la mairie
+	        place dans le texte les photographies qu'elle veut a un endroit
+	        precis, les autres forment la galerie. Aucune balise de plus a
+	        apprendre.
+
+	        La liste commence toujours par 0 : aucun document ne porte cet
+	        identifiant, donc un article sans image n'ecarte rien. ]
 	<B_galerie>
 	<h2><:marly:en_images:></h2>
 	<div class="galerie">
-		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{id_document!=#GET{illu_id}}{par num titre, date}>
+		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{id_document !IN #GET{posees}}{par num titre, date}>
 		<figure><a href="#URL_DOCUMENT" title="<:marly:voir_la_photo:>">
 			<img src="[(#FICHIER|image_reduire{400,260}|extraire_attribut{src})]" alt="[(#TITRE|attribut_html)]">
 		</a>[<figcaption><b>(#TITRE)</b>[<span class="credit">(#CREDITS)</span>]</figcaption>]</figure>

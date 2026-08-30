@@ -305,17 +305,50 @@ function filtre_marly_illustration_article_dist($id_article) {
 }
 
 /**
- * L'identifiant de cette meme illustration, ou 0.
+ * Les images DEJA POSEES dans un article : celle de tete, et celles que la
+ * mairie a placees elle-meme dans le texte.
  * ---------------------------------------------------------------------------
- * Il sert a l'ECARTER de la galerie << En images >>. Sans lui, la photographie
- * qui vient de s'afficher en grand dans l'en-tete ressort en vignette vingt
- * lignes plus bas, sur la meme page. Le defaut est arrive avec la une du
- * 28 aout : avant elle, l'image de tete etait dans le flux et la galerie ne
- * montrait que le reste.
+ * << EN IMAGES >> EST UNE GALERIE DE RESTES, et c'est ce qu'elle a toujours
+ * voulu etre : elle montre les photographies qui ne sont posees nulle part
+ * ailleurs. Sans cette liste, une photographie sortait DEUX FOIS sur la meme
+ * page — en grand dans l'en-tete, ou habillee par le texte, puis en vignette
+ * en bas.
+ *
+ * Le premier cas est arrive avec la une du 28 aout 2026 ; le second existait
+ * depuis toujours et je ne l'avais pas vu. Meme defaut, deux fois.
+ *
+ * ET ÇA DONNE UNE GALERIE MANUELLE SANS RIEN AJOUTER. La mairie place dans le
+ * texte les photographies qu'elle veut a un endroit precis ; les autres
+ * forment la galerie. Pas de nouvelle balise a apprendre, pas de second
+ * mecanisme a documenter.
+ *
+ * Rend une liste separee par des virgules, qui commence TOUJOURS par 0 :
+ * aucun document ne porte l'identifiant 0, donc une liste sans image
+ * n'ecarte rien et le critere reste valide.
  */
-function filtre_marly_illustration_id_dist($id_article) {
+function filtre_marly_images_posees_dist($id_article) {
+	$id_article = intval($id_article);
+	$ids = array(0);
+	if (!$id_article) {
+		return '0';
+	}
+
 	$doc = marly_illustration_document($id_article);
-	return $doc ? (int) $doc['id'] : 0;
+	if ($doc and !empty($doc['id'])) {
+		$ids[] = (int) $doc['id'];
+	}
+
+	/* Les raccourcis du texte : <img12>, <img12|gauche>, <img12|droite>. Le
+	   chapo compte aussi — la mairie y pose parfois une photographie. */
+	$champs = sql_fetsel('texte, chapo', 'spip_articles', 'id_article = ' . $id_article);
+	$texte = $champs ? ($champs['texte'] . ' ' . $champs['chapo']) : '';
+	if (preg_match_all('/<img([0-9]+)/i', $texte, $trouves)) {
+		foreach ($trouves[1] as $n) {
+			$ids[] = (int) $n;
+		}
+	}
+
+	return implode(',', array_unique($ids));
 }
 
 /**
