@@ -24,7 +24,7 @@
         optionnel. Et cale sur la meme colonne que le texte : au premier rendu
         il sautait de 17 a 195 pixels selon que l'article portait une image. ]
 #SET{photo,#ID_ARTICLE|marly_illustration_article}
-#SET{posees,#ID_ARTICLE|marly_images_posees}
+#SET{illu_id,#ID_ARTICLE|marly_illustration_id}
 
 <nav class="fil-ariane une-fil" aria-label="Fil d’Ariane">
 	<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
@@ -47,27 +47,26 @@
 	[(#REM) Le portfolio : les images jointes, SAUF celle qui est deja en tete
 	        de page. Chaque vignette ouvre l'image en grand.
 
-	        C'EST UNE GALERIE DE RESTES, et c'est ce qu'elle a toujours voulu
-	        etre. Elle ecarte deux choses : la photographie de tete, et celles
-	        que la mairie a placees elle-meme dans le texte par <imgNN>. Sans
-	        ça, une photographie sortait DEUX FOIS sur la meme page — posee
-	        par la secretaire a l'endroit qu'elle voulait, puis remontree en
-	        vignette vingt lignes plus bas.
+	        ELLE ECARTE LA PHOTOGRAPHIE DE TETE, qui sinon ressortait en
+	        vignette apres s'etre affichee en grand vingt lignes plus haut.
+	        Le defaut est arrive avec la une du 28 aout 2026 : avant elle,
+	        l'image de tete etait dans le flux et la galerie montrait le reste.
 
-	        Le premier cas est arrive avec la une du 28 aout 2026 ; le second
-	        existait depuis toujours et personne ne l'avait vu.
+	        A zero — aucune illustration — le critere n'ecarte rien : aucun
+	        document ne porte l'identifiant 0.
 
-	        ET ÇA DONNE UNE GALERIE MANUELLE SANS RIEN AJOUTER : la mairie
-	        place dans le texte les photographies qu'elle veut a un endroit
-	        precis, les autres forment la galerie. Aucune balise de plus a
-	        apprendre.
-
-	        La liste commence toujours par 0 : aucun document ne porte cet
-	        identifiant, donc un article sans image n'ecarte rien. ]
+	        UNE PHOTOGRAPHIE PLACEE DANS LE TEXTE par <imgNN> y ressort
+	        ENCORE, et ce n'est pas un oubli. Les ecarter toutes d'un coup
+	        demandait le critere !IN sur une liste calculee : essaye en
+	        production le 30 aout, il n'ecarte RIEN et ne signale aucune
+	        erreur — IN attend une liste ecrite dans le gabarit, pas une
+	        chaine construite a l'execution. La comparaison simple ci-dessous
+	        est, elle, employee depuis des semaines dans la bande
+	        d'actualites. On s'en tient a ce qui est prouve. ]
 	<B_galerie>
 	<h2><:marly:en_images:></h2>
 	<div class="galerie">
-		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{id_document !IN #GET{posees}}{par num titre, date}>
+		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{id_document!=#GET{illu_id}}{par num titre, date}>
 		<figure><a href="#URL_DOCUMENT" title="<:marly:voir_la_photo:>">
 			<img src="[(#FICHIER|image_reduire{400,260}|extraire_attribut{src})]" alt="[(#TITRE|attribut_html)]">
 		</a>[<figcaption><b>(#TITRE)</b>[<span class="credit">(#CREDITS)</span>]</figcaption>]</figure>

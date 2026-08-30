@@ -663,14 +663,14 @@ Fermé après les crues de l'hiver, le sentier est de nouveau praticable.
 Le reste vient tout seul : **la première image jointe s'affiche en grand à
 gauche, le titre à côté** ; les PDF deviennent des cartes « Télécharger ».
 
-**« En images », en bas de l'article, montre les photographies que vous n'avez
-posées nulle part ailleurs** — ni en tête, ni dans le texte. Une photo que vous
-placez vous-même avec `<img12|gauche>` reste là où vous l'avez mise et n'est
-pas répétée en bas.
+**« En images », en bas de l'article, montre les autres photographies
+jointes** — toutes sauf celle qui s'affiche en tête.
 
-C'est aussi la façon de composer une galerie à votre goût, sans rien apprendre
-de plus : **placez dans le texte les photos que vous voulez à un endroit
-précis, les autres formeront la galerie.**
+Une photo que vous placez vous-même dans le texte avec `<img12|gauche>`
+apparaît **aussi** dans cette galerie. Si vous ne le souhaitez pas, ne la
+joignez pas à l'article : insérez-la et retirez-la ensuite de la liste des
+documents… ou laissez faire, deux vues d'une même photo dans un article long
+ne gênent personne.
 
 **Il n'y a pas de sommaire automatique**, et c'est voulu : il a été retiré le
 26 août. Sur un texte de mairie long de deux écrans, il prenait la place du
