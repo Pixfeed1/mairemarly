@@ -63,6 +63,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	   peut donc pas l'alimenter. */
 	'titre_accessibilite' => 'Déclaration d’accessibilité',
 	'titre_actualites' => 'Actualités',
+	'titre_evenements' => 'Événements',
 	'titre_confidentialite' => 'Données personnelles',
 
 	'credits_photos' => 'Photographies',
@@ -138,8 +139,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'je'                   => 'Je',
 	'souhaite'             => 'souhaite…',
 	'les'                  => 'Les',
-	'actus'                => 'actus',
-	'evenements'           => 'événements',
 	'le'                   => 'Le',
 	'conseil_municipal'    => 'conseil municipal',
 	'nos'                  => 'Nos',

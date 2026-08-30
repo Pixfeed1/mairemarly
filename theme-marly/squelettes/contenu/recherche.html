@@ -69,7 +69,7 @@
 
 	<B_art>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:actus:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
+	<h2 class="titre-bloc"><:marly:titre_actualites:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_art(ARTICLES){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="#URL_ARTICLE">
@@ -123,7 +123,7 @@
 
 	<B_evt>
 	#SET{trouve,oui}
-	<h2 class="titre-bloc"><:marly:evenements:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
+	<h2 class="titre-bloc"><:marly:titre_evenements:> <span class="recherche-compte">[(#TOTAL_BOUCLE|singulier_ou_pluriel{marly:un_resultat,marly:des_resultats})]</span></h2>
 	<ul class="fiches">
 		<BOUCLE_evt(MANIFESTATIONS){recherche}{statut=publie}{par points}{inverse}{0,20}>
 		<li><a href="[(#URL_PAGE{evenement}|parametre_url{id_manifestation,#ID_MANIFESTATION})]">

@@ -26,19 +26,48 @@ pas**. Il sert à ne pas promettre au maire une conformité qui n'existe pas.
 
 | Obligation | Ce qu'il faut |
 |---|---|
-| **Déclaration d'accessibilité** | page obligatoire, avec le niveau de conformité réellement constaté (« non conforme », « partiellement conforme », « totalement conforme »), la date de l'audit, les contenus non accessibles, et un moyen de contact. Une commune ne peut pas s'en dispenser |
+| **Déclaration d'accessibilité** | la page EXISTE et est publiée depuis le 25 août. Son contenu ne peut pas être arrêté avant la fin de l'audit : elle doit porter le niveau réellement constaté, la date, et la liste des contenus non accessibles |
 | **Schéma pluriannuel de mise en accessibilité** | document distinct, publié, couvrant trois ans |
-| **Mentions légales** | éditeur, directeur de publication, hébergeur avec ses coordonnées |
-| **Politique de confidentialité** | la page vers laquelle pointe la mention des formulaires |
-| **Audit RGAA** | les 106 critères. Le thème est écrit pour les respecter, mais **écrit pour** n'est pas **vérifié contre** |
+| **Audit RGAA** | **commencé le 30 août 2026.** Les critères mécaniques sont vérifiés : zéro défaut sur les 23 pages de l'échantillon. Restent ceux qui demandent un jugement — voir plus bas |
 | **Registre des traitements** | côté mairie, pas côté site |
 | **SPF, DKIM et DMARC** | trois enregistrements DNS sur le domaine expéditeur. Sans eux, la lettre part en indésirables — voire est rejetée. Ce n'est pas du code : c'est une configuration chez l'hébergeur du nom de domaine, à faire avant le premier envoi réel |
 | **Délégué à la protection des données** | obligatoire pour un organisme public. Peut être mutualisé au niveau de l'intercommunalité — c'est le cas le plus fréquent pour une petite commune |
 
+## Où en est l'audit RGAA — 30 août 2026
+
+`python3 theme-marly/outils/auditer-rgaa.py https://marlygomont.pixfeed.net user:motdepasse`
+
+**Vérifié par machine, zéro défaut** sur les 23 pages de l'échantillon —
+les 6 pages obligatoires du RGAA plus une page par gabarit : alternatives
+présentes, étiquettes de formulaire, hiérarchie des titres, liens non vides,
+contrastes de la palette.
+
+**Vérifié à la main depuis, et corrigé :**
+
+| Critère | Ce qui a été trouvé |
+|---|---|
+| **8.6** titre de page | les 162 pages portaient **le même titre**. Une variable jamais définie. Chaque page a désormais le sien |
+| **9.1** hiérarchie | les 26 pages portent exactement un titre de premier niveau. Vérifié gabarit par gabarit |
+| **9.1** pertinence | deux titres de la page de recherche s'écrivaient « actus » et « événements », en minuscules et abrégés, au milieu de cinq intitulés pleins |
+
+**Reste à faire, et rien de ceci ne se mécanise :**
+
+| Critère | Ce qu'il faut |
+|---|---|
+| **1.3 / 1.9** | la pertinence de chaque alternative. En particulier : la photographie de tête d'un article porte `alt=""`, choix défendable pour une illustration, à trancher si elle porte de l'information |
+| **3.1** | une information portée par la seule couleur |
+| **8.2** | la validité du code au validateur du W3C, une page par gabarit |
+| **10.x** | le rendu sans feuille de style, et l'agrandissement du seul texte à 200 % |
+| **12.8 / 12.9** | l'ordre de tabulation réel, page par page |
+| **13.3** | **les 52 comptes rendus en PDF.** Ils ont leurs propres exigences, et nous ne les avons pas produits. La déclaration devra les nommer comme contenus non accessibles |
+| **Lecteur d'écran** | un parcours complet avec NVDA ou VoiceOver. Rien ne le remplace |
+
 ## Ce que ça veut dire concrètement
 
-Les formulaires sont conformes. **Le site ne l'est pas encore**, parce qu'il
-lui manque quatre pages obligatoires et un audit.
+Les formulaires sont conformes, **les quatre pages obligatoires existent**, et
+l'audit mécanique est propre. Le site n'est pas conforme pour autant : la
+moitié des 106 critères demande un jugement humain, et cette moitié-là n'a été
+entamée que le 30 août.
 
 Ces quatre pages ne sont pas du remplissage : la déclaration d'accessibilité
 engage la commune sur un niveau constaté. La rédiger suppose d'avoir fait
