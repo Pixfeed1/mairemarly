@@ -422,6 +422,41 @@ function filtre_marly_titre_page_dist($type_page) {
 }
 
 /**
+ * Le titre complet d'une page, tel qu'il part dans l'onglet du navigateur.
+ * ---------------------------------------------------------------------------
+ * POURQUOI CE FILTRE EXISTE. Le titre etait compose de trois blocs optionnels
+ * dans le gabarit, et l'accueil sortait avec DEUX espaces avant le tiret.
+ * Mesure du 30 aout 2026 : 6f 6e 74 20 20 e2 80 94 — deux espaces ORDINAIRES,
+ * pas une insecable. J'ai cherche un caractere exotique pendant trois tours
+ * alors que c'etait la mecanique du langage.
+ *
+ * |non NE REND PAS UN BOOLEEN, IL REND UNE ESPACE. C'est ainsi que SPIP fait
+ * marcher ses blocs optionnels : ' ' pour vrai, '' pour faux. Et dans la
+ * forme entre crochets, SPIP affiche LA VALEUR puis le texte qui suit. La
+ * valeur, ici, c'etait cette espace.
+ *
+ * Le titre se compose donc en PHP, ou une condition est une condition et
+ * n'imprime rien. Trois blocs optionnels de moins dans le gabarit.
+ *
+ * Le nom du site vient des metas et non d'un argument : le passer depuis le
+ * gabarit demanderait une balise dans les accolades d'un filtre, et ce site a
+ * deja paye ce piege trois fois.
+ */
+function filtre_marly_titre_complet_dist($titre) {
+	$nom = filtre_marly_nom_site_dist($GLOBALS['meta']['nom_site'] ?? '');
+	$titre = filtre_marly_nom_site_dist($titre);
+
+	if ($titre !== '') {
+		return $titre . ' — ' . $nom;
+	}
+
+	/* L'accueil n'a pas de titre de page. La mention qui le remplace est ce
+	   qui, dans une liste de resultats de recherche, distingue le vrai site de
+	   l'ancien marlygomont.free.fr et des pages non officielles. */
+	return $nom . ' — ' . _T('marly:site_officiel');
+}
+
+/**
  * Le nom du site, debarrasse de ses espaces de bout — insecables compris.
  * ---------------------------------------------------------------------------
  * Le nom est saisi a la main dans SPIP, et il l'a ete avec une espace de trop.

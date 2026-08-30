@@ -49,7 +49,7 @@
 	<BOUCLE_titre_man(MANIFESTATIONS){id_manifestation}>#SET{titre,#TITRE}</BOUCLE_titre_man>
 	<BOUCLE_titre_salle(SALLES){id_salle}>#SET{titre,#TITRE}</BOUCLE_titre_salle>
 	<BOUCLE_titre_lieu(LIEUX){id_lieu}>#SET{titre,#TITRE}</BOUCLE_titre_lieu>
-	<title>[(#GET{titre}|textebrut) — ][(#NOM_SITE_SPIP|marly_nom_site)][(#GET{titre}|non) — <:marly:site_officiel:>]</title>
+	<title>[(#GET{titre}|textebrut|marly_titre_complet)]</title>
 
 	[(#REM) Faute de description propre à la page, on retombe sur celle du
 	        site : une page sans description laisse Google composer la sienne

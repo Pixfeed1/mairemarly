@@ -2258,6 +2258,44 @@ if _ids_titre and _pages_fixes:
                  "afficheront le nom du site et rien d'autre")
 
 
+# 79. Un test |oui ou |non dans un titre de page ou une balise meta.
+#     ---------------------------------------------------------------------
+#     |non ET |oui NE RENDENT PAS UN BOOLEEN : ils rendent UNE ESPACE. C'est
+#     ainsi que SPIP fait marcher ses blocs optionnels — ' ' pour vrai, ''
+#     pour faux. Et dans la forme entre crochets, SPIP affiche LA VALEUR puis
+#     le texte qui suit : l'espace part donc dans la page.
+#
+#     Dans du HTML courant elle ne fait aucun mal, un navigateur reduit les
+#     espaces. La regle ne vise donc PAS tout le site : elle viserait alors
+#     une trentaine d'ecritures qui fonctionnent, et une regle qui accuse ce
+#     qui marche est pire que pas de regle — mesure du 29 aout.
+#
+#     Elle ne vise que les endroits ou la valeur est lue comme une DONNEE, et
+#     non affichee comme du texte : le titre de la page, et les balises meta.
+#     La, l'espace se voit — mesure du 30 aout 2026, dans le titre de
+#     l'accueil : << Marly-Gomont[espace][espace]— Site officiel >>, visible
+#     dans chaque resultat de recherche. J'ai cherche un caractere exotique
+#     pendant trois tours avant de comprendre que c'etait le langage.
+_ZONES = (
+    (re.compile(r'<title>.*?</title>', re.S), 'le titre de la page'),
+    (re.compile(r'<meta[^>]*content="[^"]*"', re.S), 'une balise meta'),
+)
+_TEST_IMPRIME = re.compile(r'\|(oui|non)\)')
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _zone, _ou in _ZONES:
+        for _z in _zone.finditer(_masque):
+            for _c in _TEST_IMPRIME.finditer(_z.group(0)):
+                signaler(os.path.relpath(_f, RACINE),
+                         _masque[:_z.start()].count('\n') + 1,
+                         f"un test |{_c.group(1)} dans {_ou} : ces filtres rendent UNE "
+                         "ESPACE, pas un booleen, et la forme entre crochets affiche la "
+                         "valeur avant le texte. L'espace part dans la page et se voit. "
+                         "Composer la valeur dans un filtre PHP")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
