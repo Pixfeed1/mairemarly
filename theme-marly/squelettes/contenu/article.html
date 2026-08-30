@@ -24,6 +24,7 @@
         optionnel. Et cale sur la meme colonne que le texte : au premier rendu
         il sautait de 17 a 195 pixels selon que l'article portait une image. ]
 #SET{photo,#ID_ARTICLE|marly_illustration_article}
+#SET{illu_id,#ID_ARTICLE|marly_illustration_id}
 
 <nav class="fil-ariane une-fil" aria-label="Fil d’Ariane">
 	<a href="#URL_SITE_SPIP/"><:marly:accueil:></a>
@@ -43,12 +44,20 @@
 
 	<div class="texte">#TEXTE</div>
 
-	[(#REM) Le portfolio : les images jointes sans etre inserees dans le
-	        texte. Chaque vignette ouvre l'image en grand. ]
+	[(#REM) Le portfolio : les images jointes, SAUF celle qui est deja en tete
+	        de page. Chaque vignette ouvre l'image en grand.
+
+	        L'EXCLUSION EST VENUE AVEC LA UNE DU 28 AOUT. Avant elle, l'image de
+	        tete etait dans le flux du texte et la galerie montrait le reste.
+	        Depuis, la photographie s'affiche en grand dans l'en-tete PUIS
+	        ressortait en vignette vingt lignes plus bas, sur la meme page.
+
+	        A zero — aucune illustration — le critere n'ecarte rien : aucun
+	        document ne porte l'identifiant 0. ]
 	<B_galerie>
 	<h2><:marly:en_images:></h2>
 	<div class="galerie">
-		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{par num titre, date}>
+		<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{id_document!=#GET{illu_id}}{par num titre, date}>
 		<figure><a href="#URL_DOCUMENT" title="<:marly:voir_la_photo:>">
 			<img src="[(#FICHIER|image_reduire{400,260}|extraire_attribut{src})]" alt="[(#TITRE|attribut_html)]">
 		</a>[<figcaption><b>(#TITRE)</b>[<span class="credit">(#CREDITS)</span>]</figcaption>]</figure>

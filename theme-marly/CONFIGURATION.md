@@ -610,6 +610,24 @@ l'affiche : la galerie « En images » plus bas la montre entière.
 alors toute la largeur. C'est le cas de la grande majorité des articles, et
 c'est très bien.
 
+## Choisir l'image qui s'affiche en grand
+
+**La première image de la liste** « Ajouter une image ou un document » est
+celle qui part en grand dans l'en-tête. Les suivantes vont dans la galerie
+« En images », en bas de l'article — **celle du haut n'y est pas répétée**.
+
+Pour qu'une autre photo soit celle du haut, deux moyens :
+
+- **la joindre en premier**, avant les autres. C'est le geste le plus simple,
+  et il suffit dans presque tous les cas ;
+- **la déposer dans la boîte « Logo »**, dans la colonne de l'article. Celle-là
+  gagne toujours, quel que soit l'ordre des documents joints.
+
+**Une affiche scannée n'a pas sa place en image de tête** : le cadre est fixe
+et elle sera recadrée, son texte sortira du cadre. Joignez d'abord une
+photographie, l'affiche ensuite — ou déposez l'affiche comme document à
+télécharger, elle apparaîtra entière dans « Documents joints ».
+
 ## Écrire un article
 
 Tout article, de la mairie ou d'une association, prend automatiquement
@@ -642,11 +660,14 @@ Fermé après les crues de l'hiver, le sentier est de nouveau praticable.
 </encart>
 ```
 
-Le reste vient tout seul : l'image jointe à l'article s'affiche en grand
-sous le titre, les autres images font la galerie « En images » avec leur
-titre en légende et leur crédit, les PDF deviennent des cartes
-« Télécharger », et quand l'article a trois intertitres ou plus, un
-sommaire « Dans cet article » apparaît de lui-même.
+Le reste vient tout seul : **la première image jointe s'affiche en grand à
+gauche, le titre à côté** ; les autres font la galerie « En images » avec leur
+titre en légende et leur crédit ; les PDF deviennent des cartes
+« Télécharger ».
+
+**Il n'y a pas de sommaire automatique**, et c'est voulu : il a été retiré le
+26 août. Sur un texte de mairie long de deux écrans, il prenait la place du
+début de l'article pour annoncer ce qu'on allait lire trente lignes plus bas.
 La date affichée est celle de la publication ; pour un texte ancien,
 choisissez « Afficher une date de rédaction antérieure » dans la colonne
 de gauche de l'article.

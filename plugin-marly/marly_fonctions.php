@@ -300,57 +300,95 @@ function filtre_marly_url_associations_dist($rien = '') {
  * Rend le chemin du fichier, ou une chaine vide.
  */
 function filtre_marly_illustration_article_dist($id_article) {
+	$doc = marly_illustration_document($id_article);
+	return $doc ? $doc['fichier'] : '';
+}
+
+/**
+ * L'identifiant de cette meme illustration, ou 0.
+ * ---------------------------------------------------------------------------
+ * Il sert a l'ECARTER de la galerie << En images >>. Sans lui, la photographie
+ * qui vient de s'afficher en grand dans l'en-tete ressort en vignette vingt
+ * lignes plus bas, sur la meme page. Le defaut est arrive avec la une du
+ * 28 aout : avant elle, l'image de tete etait dans le flux et la galerie ne
+ * montrait que le reste.
+ */
+function filtre_marly_illustration_id_dist($id_article) {
+	$doc = marly_illustration_document($id_article);
+	return $doc ? (int) $doc['id'] : 0;
+}
+
+/**
+ * Le document qui illustre un article : logo d'abord, premiere image jointe
+ * ensuite. Rend array('id', 'fichier'), ou null.
+ * ---------------------------------------------------------------------------
+ * << PREMIERE >> VEUT DIRE PREMIERE DE LA LISTE, dans l'ordre ou l'espace
+ * prive les montre — rang_lien, puis l'identifiant. C'est le seul ordre que
+ * la mairie voit et sur lequel elle peut agir.
+ *
+ * Le tri precedent etait titre, date. Mesure du 30 aout 2026 : les titres des
+ * documents sont TOUS VIDES, le tri retombait donc sur la date, c'est-a-dire
+ * l'ordre d'import. Arbitraire, et surtout invisible : rien a l'ecran ne
+ * disait pourquoi telle photo montait en tete plutot qu'une autre. L'article
+ * 38 en porte six, le 39 en porte quatre.
+ *
+ * rang_lien vaut 0 partout aujourd'hui — les documents viennent de l'import,
+ * qui ne l'a pas rempli. Le tri retombe alors sur l'identifiant, c'est-a-dire
+ * l'ordre d'ajout, et la regle enseignable tient quand meme : joignez d'abord
+ * la photo qui doit s'afficher en grand. Si SPIP tient ce rang pour les
+ * documents a venir, faire remonter la photo dans la liste marchera aussi.
+ */
+function marly_illustration_document($id_article) {
 	$id_article = intval($id_article);
 	if (!$id_article) {
-		return '';
+		return null;
 	}
 
 	/* LE LOGO N'EST LU QUE SI CETTE VERSION DE SPIP SAIT LE LIRE.
-	   chercher_logo() a disparu du noyau : l'appeler a fait tomber la page
-	   d'article entiere en << Erreur d'execution >> le 29 aout 2026 a 23 h 55,
-	   sur toutes les pages d'article du site. Journal de SPIP :
-	   << Call to undefined function chercher_logo() >>.
-
-	   Le garde-fou ne masque rien : depuis SPIP 4.2 un logo EST un document
-	   attache, et la requete ci-dessous le trouve donc de toute facon. Sur une
-	   version plus ancienne, l'appel reprend son role. Dans les deux cas la
-	   page s'affiche.
-
-	   Mesure du 27 aout 2026 : aucun des 82 articles n'a de logo. */
+	   chercher_logo() a disparu du noyau : l'appeler a fait tomber toutes les
+	   pages d'article le 29 aout 2026. Le garde-fou ne masque rien — depuis
+	   SPIP 4.2 un logo EST un document attache, et la requete ci-dessous le
+	   trouve de toute facon. */
 	include_spip('inc/logos');
 	if (function_exists('chercher_logo')) {
 		$logo = chercher_logo($id_article, 'id_article', 'on');
 		if ($logo and !empty($logo[0])) {
-			return $logo[0];
+			return array('id' => 0, 'fichier' => $logo[0]);
 		}
 	}
 
-	/* DEUX REQUETES SIMPLES PLUTOT QU'UNE JOINTURE ECRITE A LA MAIN.
-	   sql_getfetsel prefixe lui-meme les noms de tables : une chaine
-	   << spip_documents AS doc INNER JOIN ... >> passe par ce prefixage avec
-	   ses alias, et la requete part de travers. Deux appels ordinaires
-	   coutent une requete de plus et ne peuvent pas se tromper. */
+	/* Les liens, dans l'ordre de la liste. Deux requetes ordinaires plutot
+	   qu'une jointure ecrite a la main : sql_getfetsel prefixe lui-meme les
+	   noms de tables, et une chaine avec des alias part de travers. */
 	$liens = sql_allfetsel('id_document', 'spip_documents_liens', array(
 		'objet = ' . sql_quote('article'),
 		'id_objet = ' . $id_article,
-	));
+	), '', 'rang_lien, id_document');
 	if (!$liens) {
-		return '';
+		return null;
 	}
 
-	$ids = array();
+	$ordre = array();
 	foreach ($liens as $lien) {
-		$ids[] = intval($lien['id_document']);
+		$ordre[] = intval($lien['id_document']);
 	}
 
-	/* La premiere image jointe, dans l'ordre ou le gabarit les montre. */
-	return (string) sql_getfetsel('fichier', 'spip_documents',
-		array(
-			sql_in('id_document', $ids),
-			'mode = ' . sql_quote('image'),
-		),
-		'', 'titre, date', '0,1'
-	);
+	/* Celles qui sont des images. On garde l'ordre des liens, pas celui que
+	   la base voudrait rendre. */
+	$images = array();
+	foreach (sql_allfetsel('id_document, fichier', 'spip_documents', array(
+		sql_in('id_document', $ordre),
+		'mode = ' . sql_quote('image'),
+	)) as $doc) {
+		$images[intval($doc['id_document'])] = $doc['fichier'];
+	}
+
+	foreach ($ordre as $id) {
+		if (isset($images[$id])) {
+			return array('id' => $id, 'fichier' => $images[$id]);
+		}
+	}
+	return null;
 }
 
 /**
