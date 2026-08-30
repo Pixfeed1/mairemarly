@@ -56,6 +56,28 @@ if [ -d "$DEPOT/.git" ] && [ ! -w "$DEPOT/.git" ]; then
 	echo
 fi
 
+# ---------------------------------------------------------------------------
+# ON NE COPIE PAS UN PHP QUI NE COMPILE PAS.
+#
+# Le 30 aout 2026, un marly_fonctions.php avec une erreur de syntaxe est parti
+# sur le serveur. Le plugin entier cessait de se charger. Le controle des
+# pages, lui, a annonce << 8 pages ouvertes, tout repond >> : elles repondaient
+# bien 200 et ne contenaient pas << Erreur d'execution >> — elles affichaient
+# << Parse error >>, que rien ne cherchait.
+#
+# Une seconde de php -l avant la copie evite de mettre un site par terre.
+if command -v php >/dev/null 2>&1; then
+	CASSES=$(find "$DEPOT/plugin-marly" -name '*.php' -exec php -l {} \; 2>&1 \
+	         | grep -v '^No syntax errors' | grep -v '^$')
+	if [ -n "$CASSES" ]; then
+		echo "  ================================================================"
+		echo "  RIEN N'A ETE COPIE : du PHP du plugin ne compile pas."
+		echo "$CASSES" | head -6 | sed 's/^/  /'
+		echo "  ================================================================"
+		exit 1
+	fi
+fi
+
 echo "Depot : $DEPOT"
 echo "Site  : $SITE"
 echo
@@ -269,8 +291,8 @@ else
 		if [ "$CODE" != "200" ]; then
 			echo "  CASSE  $CHEMIN  ->  code $CODE"
 			CASSEES=$((CASSEES + 1))
-		elif printf '%s' "$CORPS" | grep -q "Erreur d’exécution\|Erreur d'execution"; then
-			LIGNE=$(printf '%s' "$CORPS" | grep -o "Erreur d[’']ex[eé]cution[^<]*" | head -1)
+		elif printf '%s' "$CORPS" | grep -q "Erreur d’exécution\|Erreur d'execution\|Parse error\|Fatal error\|Warning: \|Notice: "; then
+			LIGNE=$(printf '%s' "$CORPS" | grep -o "Erreur d[’']ex[eé]cution[^<]*\|Parse error[^<]*\|Fatal error[^<]*\|Warning: [^<]*\|Notice: [^<]*" | head -1)
 			echo "  CASSE  $CHEMIN  ->  $LIGNE"
 			CASSEES=$((CASSEES + 1))
 		fi

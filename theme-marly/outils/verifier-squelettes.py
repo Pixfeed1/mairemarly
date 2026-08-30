@@ -2342,6 +2342,51 @@ for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.p
                      "un chemin de fichier")
 
 
+# 81. Un fichier PHP du plugin qui ne compile pas.
+#     ---------------------------------------------------------------------
+#     Le 30 aout 2026 j'ai pousse, puis deploye, un marly_fonctions.php avec
+#     une erreur de syntaxe : une suppression par NUMEROS DE LIGNE avait mange
+#     l'ouverture d'un bloc de commentaire, les numeros ayant bouge apres une
+#     premiere suppression. Le plugin entier cessait de se charger.
+#
+#     DEUX CONTROLES ONT LAISSE PASSER ÇA. Le php -l que je croyais avoir
+#     lance tournait depuis un mauvais repertoire et ne verifiait rien. Et le
+#     controle de deploiement a annonce << 8 pages ouvertes, tout repond >> :
+#     les pages repondaient bien 200, sans le mot << Erreur d'execution >>
+#     qu'il cherchait — elles affichaient << Parse error >>, que personne ne
+#     cherchait.
+#
+#     Le verificateur tourne avant chaque commit ; c'est ici que ce controle
+#     coute le moins cher. Il ne remplace pas le php -l du deploiement, qui
+#     protege le serveur ; il empeche la faute de partir.
+#
+#     Sans php sur la machine, le controle s'ANNONCE comme saute plutot que de
+#     se taire : un controle muet ressemble a un controle satisfait.
+import shutil, subprocess
+_php = shutil.which('php')
+if not _php:
+    print('  (php absent : la syntaxe du plugin n\'a pas ete verifiee)')
+else:
+    for _f in sorted(glob.glob(os.path.join(RACINE, '..', 'plugin-marly', '**', '*.php'),
+                               recursive=True)):
+        _r = subprocess.run([_php, '-l', _f], capture_output=True, text=True)
+        if _r.returncode != 0:
+            # php -l ecrit deux lignes : le diagnostic, qui porte le numero,
+            # et un << Errors parsing >> qui ne dit rien. On garde la premiere
+            # qui nomme une ligne — sans quoi le rapport envoie chercher au
+            # debut du fichier.
+            _lignes = [_l.strip() for _l in (_r.stdout + _r.stderr).splitlines() if _l.strip()]
+            _msg = next((_l for _l in _lignes if 'on line' in _l), _lignes[0] if _lignes else '')
+            _ligne = 1
+            _m = re.search(r'on line (\d+)', _msg)
+            if _m:
+                _ligne = int(_m.group(1))
+                _msg = _msg[:_m.start()].strip()
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), _ligne,
+                     "ce fichier PHP ne compile pas — le plugin entier cesse de se "
+                     "charger et tout le site tombe. " + re.sub(r' in /[^ ]+', '', _msg))
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
