@@ -107,7 +107,18 @@
 :root{
   --accent:#1E5B41;  --accent-sombre:#14402E;  --jaune:#E5A93C;
   --encre:#1D1A1A;   --encre-doux:#55504A;
-  --creme:#FDF8EE;   --trait:#DED6C6;   --creme-sombre:#F3EFE6;
+  --creme:#FDF8EE;   --trait:#DED6C6;   --creme-sombre:#F3EFE6;   --creme-bandeau:#EDE6D8;
+
+  /* --trait dessine des cartes et des filets : c'est un decor, et WCAG exclut
+     le decor de sa regle de contraste. --trait-champ dessine la BORDURE D'UN
+     CHAMP, et celle-la est la seule chose qui dit ou commencer a taper : elle
+     doit atteindre 3:1 (WCAG 1.4.11, RGAA 3.3).
+
+     Mesure du 26 aout 2026 : --trait contre le blanc donne 1,44. Tres loin du
+     compte. --trait-champ donne 3,21 contre le blanc et 3,03 contre le creme,
+     en restant dans la famille chaude du theme — un gris neutre jurerait avec
+     le --trait des cartes, juste a cote. */
+  --trait-champ:#958F85;
 
   --script:"Caveat",cursive;
   --serif:"Alegreya",Georgia,serif;
@@ -125,7 +136,12 @@ body{
 a{ color:inherit; }
 h1,h2,h3,h4{ margin:0; line-height:1.1; }
 .large{ max-width:var(--large); margin-inline:auto; padding-inline:24px; }
-a:focus-visible,button:focus-visible,input:focus-visible{ outline:3px solid var(--jaune); outline-offset:2px; }
+/* Tous les elements qui prennent le focus, pas seulement trois. select,
+   textarea et summary retombaient sur l'anneau bleu du navigateur : visible,
+   mais etranger au site, et absent sur certains navigateurs anciens. */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, summary:focus-visible,
+[tabindex]:focus-visible{ outline:3px solid var(--jaune); outline-offset:2px; }
 .sr{ position:absolute; left:-9999px; }
 .saut{ position:absolute; left:-9999px; background:var(--accent); color:#fff; padding:12px 20px; z-index:100; }
 .saut:focus{ left:12px; top:12px; }
@@ -153,15 +169,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{ outline:3px solid var(
             stroke-linecap:round; stroke-linejoin:round; }
 
 .pilule .ico{ width:16px; height:16px; }
-.menu-mobile .fermer .ico, .panneau-recherche .fermer .ico{ width:22px; height:22px; }
-
-/* ---- photos : dégradé de secours si le fichier manque ------------------- */
-.ph{ position:relative; overflow:hidden; background:var(--f,var(--accent)); }
-.ph img{ width:100%; height:100%; object-fit:cover; display:block; }
-.ph::after{
-  content:''; position:absolute; inset:0; pointer-events:none;
-  background:radial-gradient(120% 90% at 20% 12%,rgba(255,255,255,.14),transparent 58%);
-}
+.panneau-recherche .fermer .ico{ width:22px; height:22px; }
 
 /* ---- grain papier ------------------------------------------------------- */
 body::after{
@@ -245,29 +253,66 @@ body::after{
 
 .heros{
 	position:relative;
-	min-height:clamp(300px,34vw,420px);
+	/* 520 PLUTOT QUE 420, ET C'EST LE REGLAGE QUI A LE PLUS COMPTE.
+	   Mesure du 27 aout 2026, quatre geometries rendues a 1440 et 1920 px sur
+	   la photographie reelle : a 420 px la bande fait 4,6:1 sur un ecran de
+	   bureau et il ne reste qu'un bandeau de brique. A 520 elle tombe a 3,7:1,
+	   et l'on voit enfin l'horloge, la tourelle ronde, la nef et le pignon —
+	   on reconnait l'eglise au lieu d'en deviner un morceau.
+
+	   J'avais annonce qu'il faudrait plutot remonter l'ancrage de 34 a 20 %.
+	   La mesure a dit l'inverse : a 20 % on gagne du ciel vide et on perd le
+	   batiment. Sur une photographie dont le sujet est vertical, ce qui
+	   compte est la HAUTEUR de la bande, pas le point d'ancrage. */
+	min-height:clamp(430px,46vw,650px);
+	/* De quoi loger la bande d'acces rapides par-dessus : elle remonte de
+	   196 px, la photographie doit donc descendre d'autant sous le champ de
+	   recherche. */
+	padding-bottom:196px;
 	display:flex; align-items:center; justify-content:center;
 	overflow:hidden;
-	/* Ciel dégradé + bande de paysage ancrée en bas. Une scène plein cadre
-	   se déforme dès que le rapport hauteur/largeur change ; une bande
-	   ancrée garde ses proportions à toutes les tailles d'écran. */
+	/* Le dégradé n'est visible que le temps du chargement de la photographie,
+	   et sur les rares écrans où elle ne se charge pas : le texte du héros
+	   doit rester lisible dans ce cas-là aussi. */
 	background:linear-gradient(to bottom, #3A7D5C 0%, #1E5B41 55%, #123F2D 100%);
 }
-/* Le paysage est un élément, pas une image de fond : un fond dimensionné se
-   maîtrise mal quand le rapport du bloc varie, un élément posé obéit. */
-.heros-paysage{
-	position:absolute; left:0; right:0; bottom:0; width:100%; height:auto;
-	display:block; pointer-events:none;
-}
-/* Dès qu'une photographie existe, elle passe devant l'illustration. */
+/* LE PAYSAGE DESSINE A QUITTE CETTE BANNIERE le 26 aout 2026, remplace par la
+   photographie de l'eglise Saint-Remy. Il disait « une commune » la ou une
+   photographie dit « CETTE commune », et c'est la premiere chose que voit
+   quelqu'un qui arrive. Il n'est pas perdu : il tient toujours le pied de page
+   et le bandeau des pages de section, ou il est a sa place — un decor.
+   Sa regle est donc partie avec lui, sinon elle serait devenue du style mort
+   que plus rien ne pose (regle 67 du verificateur). */
 .heros-image{ position:absolute; inset:0; }
+/* LE REGLAGE DE LUMIERE NE VIT QUE SUR LA PHOTOGRAPHIE PAR DEFAUT, et c'est
+   important : il est calibre pour CELLE-CI, prise a l'heure bleue. Le jour ou
+   la mairie publie sa propre banniere par un article portant le mot-cle
+   << Banniere >>, sa photographie ne subira aucun de ces filtres — sinon on
+   lui appliquerait une correction pensee pour une autre image.
+
+   contrast en dessous de 1 releve les noirs plus qu'il n'abaisse les blancs :
+   c'est la brique dans l'ombre qui remonte, pas le ciel. C'est ce qui
+   distingue ce reglage d'une simple montee de luminosite, qui delavait tout. */
+.heros-defaut img{
+	object-position:50% 34%;
+	filter:brightness(1.16) contrast(.94) saturate(1.08);
+}
 .heros-image:empty{ display:none; }
 .heros-image img{ width:100%; height:100%; object-fit:cover; }
-/* Un voile sombre en bas seulement : l'image reste lisible en haut, le champ
-   garde son contraste en bas. */
+/* UN VOILE BLANC, ET NON PLUS UN VOILE NOIR.
+
+   L'ancien assombrissait jusqu'a 45 % en bas de bande. Il datait d'un temps
+   ou l'on croyait devoir proteger le contraste du champ de recherche — mais
+   ce champ est un pave BLANC opaque, il porte son contraste avec lui, et le
+   credit photo a lui aussi son propre fond. Le voile noir ne protegeait donc
+   rien : il ne faisait qu'eteindre la photographie.
+
+   Celui-ci releve les noirs uniformement, comme un fondu de pellicule. La
+   brique de l'eglise sort de l'ombre sans que le ciel d'heure bleue vire au
+   turquoise — ce qui arrivait des qu'on montait la luminosite seule. */
 .heros-voile{
 	position:absolute; inset:0;
-	background:linear-gradient(to bottom,rgba(0,0,0,.18) 0%,rgba(0,0,0,.12) 45%,rgba(0,0,0,.45) 100%);
+	background:rgba(255,255,255,.12);
 }
 .heros-dedans{
 	position:relative; z-index:1; width:min(760px,100%); padding:24px;
@@ -293,11 +338,6 @@ body::after{
 .recherche-heros button:hover{ background:var(--accent-sombre); }
 
 /* Le crédit photographique : discret, mais toujours présent. */
-.heros-credit{
-	position:absolute; left:0; bottom:0; z-index:1; margin:0;
-	background:rgba(29,26,26,.72); color:#fff;
-	font-size:12px; padding:6px 14px;
-}
 
 @media (max-width:560px){
 	.recherche-heros{ padding:6px 6px 6px 16px; }
@@ -398,7 +438,7 @@ body::after{
 .panneau-recherche .fermer{
 	position:absolute; top:22px; right:22px;
 	width:48px; height:48px; border-radius:50%;
-	border:1px solid var(--trait); background:#fff; cursor:pointer;
+	border:1px solid var(--trait-champ); background:#fff; cursor:pointer;
 	display:flex; align-items:center; justify-content:center; color:var(--encre);
 }
 .panneau-recherche .aide{ margin-top:16px; font-size:14px; color:var(--encre-doux); }
@@ -414,10 +454,39 @@ body::after{
 
 /* Une bande discrète, pas un pavé : elle sert à repartir vite, pas à
    occuper l'écran. Le liseré vert la rattache à la bannière au-dessus. */
+/* LA BANDE EST POSEE SUR LA PHOTOGRAPHIE, ELLE NE LA COUPE PLUS.
+
+   La banniere se prolonge de 196 px sous elle, et la bande remonte d'autant.
+   Le creme est translucide : on devine l'eglise a travers, et la page cesse
+   de s'interrompre net au bas de l'image.
+
+   LE CHIFFRE 88 % N'EST PAS UN GOUT, IL EST CALCULE. Le texte de cette bande
+   est en encre sombre ; a 88 % d'opacite, meme si la photographie derriere
+   etait entierement noire, le fond compose reste assez clair pour tenir plus
+   de 11:1 de contraste — tres au-dessus des 4,5:1 exiges (RGAA 3.2). C'est ce
+   qui rend la transparence SURE quelle que soit la photographie que la mairie
+   posera un jour : le calcul tient pour le pire cas, pas pour celle-ci.
+
+   Descendre plus bas resterait conforme pour le texte, mais les pictogrammes
+   des ronds n'ont pas de fond opaque : c'est eux qui se degradent en premier.
+   Mesure faite a 88, 78 et 66 % avant de trancher. */
 .acces{
-  background:var(--creme);
-  border-top:3px solid var(--accent); border-bottom:1px solid var(--trait);
+  background:rgba(253,248,238,.88);
   padding-block:32px;
+  margin-top:-196px; position:relative; z-index:2;
+}
+/* Le liseré vert passe SOUS la bande : au-dessus il aurait tranché la
+   photographie, ce qu'on cherche justement à éviter. */
+.acces::after{
+  content:''; position:absolute; left:0; right:0; bottom:0; height:3px;
+  background:var(--accent);
+}
+/* SOUS 900 PX, PAS DE CHEVAUCHEMENT. La bande y passe en deux rangées et
+   devient plus haute que la bannière elle-même : elle la mangerait en
+   entier. On revient au fond plein et à l'empilement simple. */
+@media (max-width:899px){
+  .acces{ background:var(--creme); margin-top:0; border-top:3px solid var(--accent); }
+  .acces::after{ display:none; }
 }
 .acces-grille{ display:grid; grid-template-columns:minmax(250px,310px) 1fr; gap:44px; align-items:start; }
 .acces .titre-bloc{ font-size:clamp(28px,3.2vw,38px); margin-bottom:16px; }
@@ -427,7 +496,7 @@ body::after{
 .champ-demarche{ display:flex; }
 .champ-demarche select{
   flex:1; min-width:0; appearance:none;
-  border:1px solid var(--trait); border-right:0; border-radius:4px 0 0 4px;
+  border:1px solid var(--trait-champ); border-right:0; border-radius:4px 0 0 4px;
   background-color:#fff; padding:14px 44px 14px 16px;
   font-family:var(--texte); font-size:15px; color:var(--encre); cursor:pointer;
   /* Chevron dessiné en dégradés : aucune image à charger. */
@@ -479,15 +548,21 @@ body::after{
   .acces-liens .rond{ transition:none; }
   .acces-liens a:hover .rond{ transform:none; }
 }
-/* Six ronds sur une ligne, ou deux rangées de trois — jamais cinq et un
-   orphelin. Entre 1080 et 1320 px la colonne de gauche ne laisse pas la
-   place aux six ; on tranche pour deux rangées franches. */
-@media (min-width:1081px) and (max-width:1319px){
-  .acces-liens ul{ grid-template-columns:repeat(3,1fr); }
-}
+/* CETTE RÈGLE A ÉTÉ RETIRÉE, ET LA RAISON MÉRITE D'ÊTRE ÉCRITE. Elle repliait
+   les six ronds en deux rangées de trois entre 1081 et 1319 px, « plutôt que
+   cinq et un orphelin ». Mesuré le 26 août 2026 dans Chromium à 1280, 1200 et
+   1100 px : les six tiennent sur une ligne dès 1100 px, et un seul intitulé
+   passe sur deux lignes, « Réserver une salle ». La règle doublait donc la
+   hauteur de la bande pour éviter un défaut qui n'existait pas — et c'est
+   elle qui donnait à l'accueil son air de page vide. */
 @media (max-width:1080px){
   .acces-grille{ grid-template-columns:1fr; gap:30px; }
   .acces .titre-bloc.droite{ text-align:left; }
+  /* La grille passe sur une colonne : la bande double de hauteur et le
+     chevauchement n'a plus de sens bien avant le seuil des 900 px. */
+  .heros{ padding-bottom:0; min-height:clamp(340px,40vw,520px); }
+  .acces{ background:var(--creme); margin-top:0; border-top:3px solid var(--accent); }
+  .acces::after{ display:none; }
 }
 @media (max-width:899px){
   .acces-liens ul{ grid-template-columns:repeat(3,1fr); }
@@ -500,109 +575,66 @@ body::after{
 
 section{ padding-block:70px; position:relative; }
 
-/* ---- 4. GRAVURE QUI DÉBORDE --------------------------------------------- */
-.gravure{ position:absolute; width:300px; height:300px; opacity:.8; mix-blend-mode:multiply; pointer-events:none; z-index:0; }
-.gravure.dr{ right:0; top:40px; transform:translateX(45%); }
-.gravure.ga{ left:0; top:120px; transform:translateX(-45%); }
+/* Le reste de l'ancienne composition — actu vedette, evenements, conseil,
+   associations, « a lire » — vivait ici en 103 lignes. AUCUNE n'etait
+   appelee par un squelette : elles venaient de la maquette d'origine et y
+   sont restees. Elles sont retirees le 26 aout 2026, en meme temps que la
+   page d'accueil est refaite pour de bon. Une d'elles s'appelait
+   .bande-creme, comme la bande de l'accueil ci-dessous : le doublon aurait
+   ete tres difficile a voir. */
 
-/* ---- 3. ACTU VEDETTE ---------------------------------------------------- */
-.actu-vedette{ position:relative; display:flex; align-items:center; z-index:1; text-decoration:none; }
-.actu-vedette .ph{ width:72%; aspect-ratio:1087/578; border-radius:4px; --f:linear-gradient(135deg,#C98B3C,#8E5526); }
-.actu-vedette .txt{
-  background:#fff; border-radius:4px; border-bottom:4px solid var(--accent);
-  padding:40px 44px; max-width:470px; margin-left:-140px; position:relative; z-index:2;
-  box-shadow:0 16px 44px rgba(29,26,26,.12);
+/* ---- LA PAGE DE RECHERCHE ----------------------------------------------- */
+/* Le champ reste visible en tete des resultats : on affine sans rouvrir le
+   panneau plein ecran, et l'adresse de la page suffit a repartager la
+   recherche. */
+.recherche-champ{
+	display:flex; align-items:center; gap:10px;
+	border:1px solid var(--trait-champ); border-radius:30px;
+	background:#fff; padding:6px 8px 6px 22px; margin:0 0 30px;
 }
-.cat{ display:inline-block; background:var(--jaune); color:var(--encre); font-size:12px; letter-spacing:.09em; text-transform:uppercase; font-weight:700; padding:4px 11px; margin-bottom:12px; }
-.actu-vedette .txt h3{ font-family:var(--titre); font-weight:800; font-size:34px; margin-bottom:12px; }
-.actu-vedette .txt p{ margin:0; color:var(--encre-doux); font-size:16px; }
-
-/* ---- 2. BANDE CRÈME ----------------------------------------------------- */
-.bande-creme{ position:relative; margin-top:46px; padding-top:34px; padding-bottom:38px; }
-.bande-creme::before{
-  content:''; position:absolute; left:50%; transform:translateX(-50%); width:100vw;
-  top:0; bottom:0; background:var(--creme); border-bottom:3px solid var(--accent); z-index:0;
+/* PAS DE outline:none ICI. Cette declaration a existe, et elle supprimait la
+   seule indication de prise de focus du champ de recherche — celui de
+   l'accueil, du 404 et des panneaux. Au clavier, on tabulait dedans sans
+   rien voir (RGAA 10.7, releve le 26 aout 2026). L'anneau jaune est
+   volontairement voyant : c'est son travail. */
+.recherche-champ input{
+	flex:1; min-width:0; border:0; background:none;
+	font-family:var(--texte); font-size:17px; color:var(--encre); padding:10px 0;
 }
-.bande-creme>*{ position:relative; z-index:1; }
-.actus-petites{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-.actu-petite{ position:relative; aspect-ratio:540/288; border-radius:4px; overflow:hidden; display:block; text-decoration:none; color:#fff; }
-.actu-petite .ph{ position:absolute; inset:0; }
-.actu-petite .voile{ position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.15) 58%,transparent 100%); }
-.actu-petite .txt{ position:absolute; bottom:0; padding:16px 20px; width:100%; }
-.actu-petite h3{ font-family:var(--titre); font-weight:700; font-size:20px; color:#fff; }
-
-.filet{ position:relative; margin-top:38px; text-align:right; }
-.filet::before{ content:''; position:absolute; left:0; right:0; top:50%; height:2px; background:var(--accent); }
-.filet a{ position:relative; display:inline-flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--accent); border-radius:30px; padding:11px 26px; text-decoration:none; font-weight:600; font-size:15px; }
-.filet a:hover{ background:var(--accent); color:#fff; }
-
-/* ---- ÉVÉNEMENTS --------------------------------------------------------- */
-.evt-zone{ position:relative; }
-.evt-zone::before{ content:''; position:absolute; left:50%; transform:translateX(-50%); width:100vw; top:120px; bottom:0; background:var(--creme); border-bottom:3px solid var(--accent); z-index:0; }
-.evt-grille{ position:relative; z-index:1; display:grid; grid-template-columns:440px 1fr; gap:56px; }
-.affiche{ position:relative; }
-.affiche .ph{ aspect-ratio:450/357; border-radius:4px; --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
-.affiche .txt{ background:#fff; padding:26px 28px 22px; margin:-46px 18px 0; position:relative; border-radius:4px; box-shadow:0 14px 34px rgba(29,26,26,.12); }
-.affiche h3{ font-family:var(--titre); font-weight:800; font-size:26px; margin-bottom:8px; }
-.affiche p{ margin:0; color:var(--encre-doux); font-size:15px; }
-.pastille-date{
-  position:absolute; left:20px; bottom:-26px; z-index:3; width:106px; height:106px;
-  border-radius:50%; background:var(--accent); color:#fff; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; line-height:1;
+.recherche-champ input::placeholder{ color:var(--encre-doux); }
+.recherche-champ button{
+	flex-shrink:0; border:0; cursor:pointer; border-radius:50%;
+	width:44px; height:44px; background:var(--accent); color:#fff;
+	display:flex; align-items:center; justify-content:center;
 }
-.pastille-date b{ font-family:var(--titre); font-size:29px; font-weight:800; }
-.pastille-date span{ font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-top:3px; }
+.recherche-champ button:hover{ background:var(--accent-sombre); }
+.recherche-champ .ico{ width:20px; height:20px; }
 
-.filtres{ display:flex; gap:10px; justify-content:flex-end; margin-bottom:26px; flex-wrap:wrap; position:relative; z-index:1; }
-.filtres button{ border:1px solid var(--accent); background:#fff; color:var(--encre); border-radius:24px; padding:8px 20px; font-size:14px; cursor:pointer; font-family:var(--texte); }
-.filtres button:hover{ background:var(--accent); color:#fff; }
+/* Le compte, colle au titre du groupe. Il dit combien sans faire un chiffre
+   geant : ce qui compte ici, c'est la liste, pas le score. */
+/* Le selecteur porte .titre-bloc, sans quoi la regle .titre-bloc span —
+   celle du second mot des titres a deux tons, en serif et jusqu'a 70 pixels —
+   l'emporte et le compte s'affiche en geant. Deja rencontre sur le bouton du
+   pied de page : une regle plus specifique gagne, meme ecrite plus haut. */
+.titre-bloc .recherche-compte{
+	/* Alignee sur la LIGNE DE BASE du titre, et non calee a une hauteur
+	   choisie a l'oeil : la pastille suit alors le titre quelle que soit sa
+	   taille, y compris quand il retrecit sur un petit ecran. */
+	display:inline-block; margin-left:14px; vertical-align:baseline;
+	font-family:var(--texte); font-weight:600; font-size:14px; letter-spacing:0;
+	text-transform:none; color:var(--encre-doux); background:var(--creme-sombre);
+	border-radius:20px; padding:4px 14px;
+}
 
-.evt-liste{ list-style:none; margin:0; padding:0; }
-.evt-liste li{ display:flex; gap:24px; align-items:center; padding:22px 0; border-bottom:1px solid var(--trait); }
-.evt-liste li:last-child{ border-bottom:0; }
-.rond-date{ flex-shrink:0; width:88px; height:88px; border-radius:50%; background:var(--accent); color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; }
-.rond-date b{ font-family:var(--titre); font-size:26px; font-weight:800; }
-.rond-date span{ font-size:9.5px; letter-spacing:.12em; text-transform:uppercase; margin-top:2px; }
-.evt-liste h3{ font-family:var(--titre); font-weight:700; font-size:21px; margin-top:6px; }
+.recherche-vide{ margin:10px 0 0; }
+.recherche-rien{ font-size:1.12em; color:var(--encre); margin:0 0 6px; }
+.recherche-vide .fiche-liens{ margin-top:18px; }
 
-/* ---- CONSEIL MUNICIPAL -------------------------------------------------- */
-.conseil{ background:var(--accent); color:#fff; }
-.conseil .titre-bloc{ color:var(--jaune); }
-.conseil .titre-bloc span{ color:#fff; }
-.conseil-grille{ display:grid; grid-template-columns:1fr 1.05fr; gap:56px; align-items:center; }
-.conseil p.intro{ font-size:18px; opacity:.93; margin:0 0 26px; }
-.conseil-recherche{ display:flex; background:#fff; border-radius:4px; overflow:hidden; }
-.conseil-recherche input{ flex:1; border:0; padding:16px 18px; font-size:16px; min-width:0; font-family:var(--texte); }
-.conseil-recherche button{ border:0; background:var(--jaune); color:var(--encre); padding:0 26px; font-weight:700; cursor:pointer; font-family:var(--texte); }
-.pv{ background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); border-radius:4px; }
-.pv ul{ list-style:none; margin:0; padding:8px; }
-.pv li{ display:flex; align-items:center; gap:14px; padding:14px; border-bottom:1px solid rgba(255,255,255,.13); }
-.pv li:last-child{ border-bottom:0; }
-.pv i{ color:var(--jaune); font-size:20px; flex-shrink:0; }
-.pv b{ font-family:var(--titre); font-size:17px; font-weight:700; }
-.pv small{ display:block; opacity:.75; font-size:13px; }
-.pv .marq{ margin-left:auto; font-size:11px; background:var(--jaune); color:var(--encre); padding:3px 9px; font-weight:700; white-space:nowrap; }
+@media(max-width:560px){
+	.recherche-champ{ padding-left:16px; }
+	.recherche-champ input{ font-size:16px; }
+}
 
-/* ---- ASSOCIATIONS ------------------------------------------------------- */
-.assos{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
-.asso{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:28px 24px; text-decoration:none; display:block; }
-.asso:hover{ border-color:var(--accent); }
-.asso .rond{ width:52px; height:52px; border-radius:50%; background:var(--creme); display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
-.asso .rond i{ font-size:25px; color:var(--accent); }
-.asso h3{ font-family:var(--titre); font-weight:800; font-size:19px; margin-bottom:5px; }
-.asso p{ margin:0; font-size:14px; color:var(--encre-doux); }
-
-/* ---- À LIRE ------------------------------------------------------------- */
-.lire{ background:var(--creme); }
-.lire-grille{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
-.bulletin{ display:flex; gap:26px; align-items:center; }
-.couv{ width:160px; height:216px; flex-shrink:0; border-radius:2px; box-shadow:0 12px 30px rgba(29,26,26,.22); --f:linear-gradient(160deg,#1E5B41,#0F3B2A); }
-.lettre{ background:#fff; border:1px solid var(--trait); border-radius:4px; padding:30px; }
-.lettre form{ display:flex; gap:8px; margin-top:18px; flex-wrap:wrap; }
-.lettre input{ flex:1; min-width:190px; border:1px solid var(--trait); border-radius:3px; padding:13px 15px; font-family:var(--texte); }
-.lettre button{ border:0; background:var(--accent); color:#fff; border-radius:3px; padding:13px 24px; font-weight:700; cursor:pointer; font-family:var(--texte); }
-
-/* ---- PIED --------------------------------------------------------------- */
 /* ---- PIED DE PAGE ------------------------------------------------------- */
 /* Batî sur ce que font les mairies : des coordonnees d'abord, pas un plan du
    site. Les horaires ont leur colonne, avec son titre — c'est la premiere
@@ -610,7 +642,6 @@ section{ padding-block:70px; position:relative; }
    titre est le trait cyan de Franconville, dans notre couleur. */
 .pied{ position:relative; overflow:hidden; border-top:0; }
 .pied{ background:var(--creme); color:var(--encre); padding-bottom:20px; text-align:center; }
-.pied-paysage{ display:block; width:100%; height:112px; object-fit:cover; object-position:bottom; }
 
 .pied-embleme{ padding-top:32px; }
 .pied-embleme .sceau{ color:var(--accent); width:104px; height:104px; }
@@ -619,9 +650,9 @@ section{ padding-block:70px; position:relative; }
   letter-spacing:.1em; text-transform:uppercase; color:var(--encre-doux); margin:5px 0 0; }
 
 .pied-quatre{ display:grid; grid-template-columns:repeat(4,1fr); gap:34px; margin:42px 0 0; }
-.pied-quatre h3{ font-family:var(--titre); font-size:14px; font-weight:800; letter-spacing:.14em;
+.pied-quatre h2{ font-family:var(--titre); font-size:14px; font-weight:800; letter-spacing:.14em;
   text-transform:uppercase; color:var(--accent); margin:0 0 4px; }
-.pied-quatre h3::after{ content:""; display:block; width:34px; height:2px; background:var(--jaune);
+.pied-quatre h2::after{ content:""; display:block; width:34px; height:2px; background:var(--jaune);
   margin:11px auto 16px; }
 .pied-quatre p{ margin:0 0 13px; font-weight:600; font-size:16px; line-height:1.75; }
 .pied-quatre ul{ list-style:none; margin:0; padding:0; }
@@ -682,19 +713,9 @@ section{ padding-block:70px; position:relative; }
 @media(max-width:560px){ .pied-quatre{ grid-template-columns:1fr; } }
 
 /* ---- responsive --------------------------------------------------------- */
-@media (max-width:1080px){
-  .actu-vedette{ flex-direction:column; align-items:stretch; }
-  .actu-vedette .ph{ width:100%; }
-  .actu-vedette .txt{ margin-left:0; margin-top:-60px; max-width:none; margin-inline:20px; }
-  .evt-grille{ grid-template-columns:1fr; gap:64px; }
-  .conseil-grille,.lire-grille{ grid-template-columns:1fr; gap:34px; }
-  .assos{ grid-template-columns:1fr 1fr; }
-  .gravure{ display:none; }
-}
+/* Ce bloc pilotait lui aussi l'ancienne composition. Il ne reste que les deux
+   declarations qui portent sur des selecteurs vivants. */
 @media (max-width:760px){
-  .actus-petites,.assos{ grid-template-columns:1fr; }
-  .bulletin{ flex-direction:column; align-items:flex-start; }
-  .filtres{ justify-content:flex-start; }
   .titre-bloc.droite{ text-align:left; }
   section{ padding-block:48px; }
 }
@@ -817,11 +838,6 @@ section{ padding-block:70px; position:relative; }
 	.rang-nav{ gap:12px; padding:10px 0 14px; }
 }
 
-/* On respecte le réglage système : pas d'animation pour qui n'en veut pas. */
-@media (prefers-reduced-motion:reduce){
-	.menu-mobile, .voile-menu{ transition:none; }
-}
-
 /* ===========================================================================
    RÉSERVER — le catalogue, puis les fiches
    ---------------------------------------------------------------------------
@@ -836,7 +852,7 @@ section{ padding-block:70px; position:relative; }
 /* --- la colonne de filtres ------------------------------------------------ */
 .filtres-cote{ position:sticky; top:calc(var(--h-entete,90px) + 20px); }
 
-.filtre-recherche{ display:flex; align-items:center; gap:9px; border:1px solid var(--trait);
+.filtre-recherche{ display:flex; align-items:center; gap:9px; border:1px solid var(--trait-champ);
                    border-radius:40px; background:#fff; padding:10px 18px; margin-bottom:26px; }
 .filtre-recherche .ico{ width:17px; height:17px; color:var(--accent); flex-shrink:0; }
 .filtre-recherche input{ flex:1; min-width:0; border:0; background:none; font-family:var(--texte);
@@ -844,10 +860,18 @@ section{ padding-block:70px; position:relative; }
 
 .filtre-types{ display:flex; flex-direction:column; margin-bottom:30px; }
 .filtre-types a{ font-family:var(--titre); font-size:16px; font-weight:600; color:var(--encre);
-                 text-decoration:none; padding:9px 0; border-bottom:1px solid var(--trait); }
+                 text-decoration:none; padding:9px 0; border-bottom:1px solid var(--trait-champ); }
 .filtre-types a:last-child{ border-bottom:0; }
 .filtre-types a:hover{ color:var(--accent); }
-.filtre-types a.actif{ color:var(--accent); }
+/* L'ETAT ACTIF NE TIENT PAS QU'A LA COULEUR. Il ne se marquait que par
+   var(--accent) — la meme teinte que le survol : impossible de distinguer le
+   filtre actif de celui sous le curseur, et rien du tout pour qui ne percoit
+   pas cette couleur (RGAA 3.1, releve le 26 aout 2026). La graisse et le
+   liseré se voient en niveaux de gris. */
+.filtre-types a.actif{
+	color:var(--accent); font-weight:800;
+	border-left:3px solid var(--accent); padding-left:11px;
+}
 
 /* --- le calendrier -------------------------------------------------------- */
 .filtre-calendrier{ border-top:3px solid var(--accent); padding-top:18px; }
@@ -934,7 +958,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .fiche-droite li{ margin-bottom:15px; }
 .fiche-droite label{ display:block; font-family:var(--texte); font-size:13.5px; font-weight:700; margin-bottom:5px; }
 .fiche-droite input, .fiche-droite textarea{
-  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+  width:100%; border:1px solid var(--trait-champ); border-radius:4px; background:#fff;
   padding:11px 13px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
 .fiche-droite small{ display:block; margin-top:5px; font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
@@ -1027,7 +1051,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .nl-dedans .fermer{
   position:absolute; top:14px; right:14px;
   width:42px; height:42px; border-radius:50%;
-  border:1px solid var(--trait); background:#fff; color:var(--encre);
+  border:1px solid var(--trait-champ); background:#fff; color:var(--encre);
   display:flex; align-items:center; justify-content:center; cursor:pointer;
 }
 .nl-dedans .fermer:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
@@ -1046,7 +1070,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .formulaire_signaler_association input[type="tel"],
 .formulaire_signaler_association select,
 .formulaire_signaler_association textarea{
-  width:100%; border:1px solid var(--trait); border-radius:4px; background:#fff;
+  width:100%; border:1px solid var(--trait-champ); border-radius:4px; background:#fff;
   padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
 }
 
@@ -1063,7 +1087,6 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   padding:15px 26px; font-family:var(--texte); font-weight:700; font-size:16px; cursor:pointer;
 }
 .formulaire_newsletter .submit:hover, .formulaire_signaler_association .submit:hover{ background:var(--accent-sombre); }
-.nl-note{ font-family:var(--texte); font-size:12.5px; line-height:1.55; color:var(--encre-doux); margin:16px 0 0; }
 .formulaire_newsletter .erreur_message, .formulaire_signaler_association .erreur_message{ display:block; font-family:var(--texte); font-size:13.5px;
                                         font-weight:700; color:#A32020; margin-bottom:5px; }
 .formulaire_newsletter .erreur input, .formulaire_signaler_association .erreur input{ border-color:#A32020; }
@@ -1141,6 +1164,83 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 }
 .page-simple .fil{ margin:0 0 24px; }
 .page-simple .maj{ margin-top:40px; font-size:.9em; color:var(--encre-doux); }
+
+/* ===========================================================================
+   LE RENVOI — une page qui en designe une autre.
+   ---------------------------------------------------------------------------
+   Le menu principal boucle sur les rubriques racines : une page qui n'est pas
+   une rubrique en est absente par construction. Ce bloc remonte un lien d'un
+   cran la ou deux pages parlent de la meme chose.
+
+   Pose dans le flux, jamais en colonne laterale : le theme est une colonne
+   unique de 820px, et sous 900px un encart lateral retomberait de toute facon
+   dans le flux.
+
+   Le bloc ENTIER est le lien : la cible de clic fait 80px de haut au lieu des
+   20px d'une ligne de texte.
+   =========================================================================== */
+.renvoi{
+	display:flex; align-items:center; gap:18px;
+	margin:0 0 34px; padding:18px 22px;
+	background:var(--creme-sombre);
+	border-left:4px solid var(--accent);
+	border-radius:3px;
+	text-decoration:none; color:inherit;
+	transition:background .15s ease;
+}
+.renvoi:hover{ background:var(--creme-bandeau); }
+.renvoi .renvoi-rond{
+	flex:0 0 auto; width:46px; height:46px; border-radius:50%;
+	background:var(--accent); display:flex; align-items:center; justify-content:center;
+}
+.renvoi .renvoi-rond .ico{ width:22px; height:22px; fill:#fff; }
+.renvoi-texte{ flex:1 1 auto; min-width:0; }
+.renvoi-texte b{
+	display:block; font-family:var(--titre); font-size:17px;
+	color:var(--accent); margin-bottom:2px;
+}
+.renvoi-texte span{
+	display:block; font-family:var(--texte); font-size:14.5px;
+	color:var(--encre-doux); line-height:1.5;
+}
+.renvoi .renvoi-fleche{
+	flex:0 0 auto; width:18px; height:18px; fill:var(--accent);
+	transition:transform .15s ease;
+}
+.renvoi:hover .renvoi-fleche{ transform:translateX(4px); }
+
+/* La fleche disparait sous 560px : elle ne porte aucune information que le
+   bloc ne porte deja, et la place gagnee evite au titre de passer sur trois
+   lignes. */
+@media (max-width:560px){
+	.renvoi{ gap:14px; padding:16px 18px; }
+	.renvoi .renvoi-rond{ width:40px; height:40px; }
+	.renvoi .renvoi-fleche{ display:none; }
+}
+@media (prefers-reduced-motion:reduce){
+	.renvoi, .renvoi .renvoi-fleche{ transition:none; }
+	.renvoi:hover .renvoi-fleche{ transform:none; }
+}
+
+/* ===========================================================================
+   LES CREDITS PHOTOGRAPHIQUES, SUR LA PAGE CREDITS.
+   ---------------------------------------------------------------------------
+   Les deux pastilles qui vivaient ici — .heros-credit et .bandeau-credit — ont
+   ete retirees le 28 aout 2026. Elles posaient un rectangle noir opaque dans
+   le coin d'une photographie qu'on avait passe du temps a cadrer, et les sites
+   de collectivites ne font pas ca : ils regroupent les credits sur une page.
+
+   La liste ci-dessous les remplace. Elle n'est pas recopiee a la main : le
+   gabarit lit quelle image est REELLEMENT en service et n'ecrit que sa ligne.
+   =========================================================================== */
+.credits-photos{ list-style:none; margin:0 0 30px; padding:0; }
+.credits-photos li{
+	font-family:var(--texte); font-size:15.5px; line-height:1.6;
+	color:var(--encre-doux); padding:9px 0;
+	border-bottom:1px solid var(--trait);
+}
+.credits-photos li:last-child{ border-bottom:0; }
+.credits-photos b{ color:var(--encre); font-weight:700; margin-right:6px; }
 
 /* --- La liste des fiches ------------------------------------------------- */
 .fiches{ list-style:none; margin:0 0 10px; padding:0; }
@@ -1409,9 +1509,51 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
   letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
 .article-signature{ font-family:var(--texte); font-size:14px; color:var(--encre-doux); margin:14px 0 0; }
 .article-signature b{ font-weight:600; color:var(--encre); }
-.article-photo{ margin:26px 0 30px; }
-.article-photo img{ display:block; width:100%; height:auto; border-radius:6px; }
-.article-photo figcaption{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin-top:8px; }
+/* ===========================================================================
+   LA UNE D'ARTICLE : photographie a gauche, titre a droite.
+   ---------------------------------------------------------------------------
+   .article-photo vivait ici : une image posee dans la colonne de texte, en
+   largeur pleine et en hauteur libre. Retiree le 28 aout 2026. Sans plafond,
+   la mise en page dependait de ce que la mairie deposait — mesure du meme
+   jour, une photo de telephone tenue verticalement faisait 1 035 pixels de
+   haut avant le premier mot, une affiche A4 scannee 1 098.
+
+   LE CADRE EST DESORMAIS FIXE et la photographie le remplit, comme les
+   bandeaux de section. Photo verticale ou paysage, la page est la meme.
+
+   Le carton de droite porte tout ce qui identifie l'article : rubrique,
+   titre, chapo, date, et les deux outils. Sous 900px la grille s'empile —
+   photographie en bandeau de 230px, puis le carton.
+   =========================================================================== */
+.une-art{
+	display:grid; grid-template-columns:56% 44%;
+	min-height:460px; background:var(--creme);
+}
+.une-art-photo{ position:relative; overflow:hidden; }
+.une-art-photo img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.une-art-carton{
+	display:flex; flex-direction:column; justify-content:center;
+	padding:48px clamp(24px,5vw,72px);
+}
+.une-art-carton .article-rubrique{ margin:0 0 12px; }
+.une-art-carton h1{ margin:0 0 16px; }
+.une-art-carton .chapo{ margin:0 0 14px; }
+.une-art-carton .article-signature{ margin:0 0 18px; }
+.une-art-carton .page-outils{ margin:0; justify-content:flex-start; }
+
+/* Le fil d'Ariane est ecrit une seule fois, au-dessus des deux mises en page.
+   Il est cale sur la MEME colonne que le texte : sans ca il partait de 17px
+   avec une photographie et de 195px sans, et sautait d'un article a l'autre. */
+.une-fil{ max-width:820px; margin:0 auto; padding:26px 22px 18px; }
+
+/* Le fil etant sorti de la page, celle-ci n'a plus besoin de son air du haut. */
+.page-sous-fil{ padding-top:14px; }
+
+@media (max-width:900px){
+	.une-art{ grid-template-columns:1fr; min-height:0; }
+	.une-art-photo{ height:230px; }
+	.une-art-carton{ padding:28px 22px 34px; }
+}
 
 /* <quote> de SPIP : la citation posee sur un filet vert. */
 .texte blockquote{ margin:26px 0; padding:6px 0 6px 22px; border-left:4px solid var(--accent); }
@@ -1429,27 +1571,85 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 /* --- les compositions de texte -------------------------------------------- */
 /* Valide maquette en main : apercu-compositions, l'article d'ete. */
 
-/* <imgN|droite> et <imgN|gauche> : la photo dans le texte, que le texte
-   habille. SPIP pose ces classes lui-meme sur le conteneur du document. */
-.texte .spip_documents_droite,
-.texte .spip_documents_gauche{ display:block; width:min(46%,380px); margin:6px 0 14px; }
-.texte .spip_documents_droite{ float:right; margin-left:28px; }
-.texte .spip_documents_gauche{ float:left; margin-right:28px; }
-.texte .spip_documents_droite img,
-.texte .spip_documents_gauche img{ display:block; width:100%; height:auto; border-radius:6px; }
-.texte .spip_documents_droite figcaption,
-.texte .spip_documents_gauche figcaption,
-.texte .spip_documents_droite .spip_doc_legende,
-.texte .spip_documents_gauche .spip_doc_legende{
+/* La photo posee dans le corps d'un article.
+   ---------------------------------------------------------------------------
+   Les classes ci-dessous sont celles que SPIP fabrique VRAIMENT. Mesure du
+   30 aout 2026, outils/sonder-raccourci-image.php sur l'installation en
+   ligne, qui demande le calcul a propre() au lieu de le deviner :
+
+     <img32|left>   -> spip_documents spip_document_image spip_documents_left
+     <img32|center> -> spip_documents spip_document_image spip_documents_center
+     <img32|right>  -> spip_documents spip_document_image spip_documents_right
+     <img32|gauche> -> spip_documents_center, plus une classe << gauche >>
+                       morte : un mot que SPIP ne connait pas est rabattu
+                       sur center
+     <img32>        -> pas interprete du tout, le code sort en clair dans un
+                       <tt> a l'ecran
+
+   Le theme visait spip_documents_gauche et spip_documents_droite. Ces deux
+   classes n'existent nulle part. Aucune photo du corps d'article n'a donc
+   jamais ete habillee : elle sortait a sa taille de fichier, 1065 px dans
+   une colonne de 776, et emmenait la page entiere a 1459 px de large, ce qui
+   la fait defiler de cote sur telephone.
+
+   Le bouton d'insertion de l'espace prive ecrit toujours un alignement, en
+   anglais : plugins-dist/medias/inc/documents.php, affiche_raccourci_doc(). */
+
+/* Le plancher. Quoi qu'il arrive, y compris sur un mot d'alignement inconnu,
+   rien ne sort de la colonne. La <figure> interne a une marge par defaut du
+   navigateur, 1em 40px, qu'il faut annuler. */
+.texte .spip_documents{ margin:6px 0 14px; max-width:100%; }
+.texte .spip_doc_inner{ margin:0; }
+.texte .spip_documents img{ max-width:100%; height:auto; }
+/* Seules les vraies images se laissent etirer a la largeur de leur bloc :
+   <docNN> pose les memes classes d'alignement mais son icone doit garder sa
+   taille, d'ou spip_document_image. */
+.texte .spip_document_image img{ display:block; width:100%; border-radius:6px; }
+.texte .spip_documents figcaption,
+.texte .spip_documents .spip_doc_legende{
   font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); margin-top:6px; }
+
+/* Une photo seule, ou deux qui se suivent : le texte les habille. */
+.texte .spip_documents_left,.texte .spip_documents_right{ width:min(46%,380px); }
+.texte .spip_documents_left{ float:left; margin-right:28px; }
+.texte .spip_documents_right{ float:right; margin-left:28px; }
+
+/* Trois photos qui se suivent : une rangee, sans que personne l'ait demande.
+   La sonde a montre que SPIP les sort voisines dans le HTML, meme collees au
+   milieu d'un paragraphe : les selecteurs de voisinage suffisent, il n'y a
+   rien de nouveau a taper. Trois selecteurs pour trois positions dans la
+   suite : la premiere, la deuxieme, la troisieme.
+   Mesure a 1280 px : 243 px chacune, posees a 252, 509 et 765, meme hauteur.
+   Sur un navigateur sans :has(), les trois gardent 46 % et reviennent a deux
+   plus une, c'est-a-dire le comportement d'avant. Rien ne casse. */
+.texte .spip_documents_left:has(+ .spip_documents_left + .spip_documents_left),
+.texte .spip_documents_left + .spip_documents_left:has(+ .spip_documents_left),
+.texte .spip_documents_left + .spip_documents_left + .spip_documents_left{
+  width:calc(33.333% - 16px); margin-right:14px; }
+/* Le meme cadrage pour les trois : sans cela les hauteurs sont inegales et le
+   texte suivant s'insinue dans le creux. C'est le cadrage de la galerie de
+   bas de page, 3/2 recadre. */
+.texte .spip_document_image.spip_documents_left:has(+ .spip_documents_left + .spip_documents_left) img,
+.texte .spip_documents_left + .spip_document_image.spip_documents_left:has(+ .spip_documents_left) img,
+.texte .spip_documents_left + .spip_documents_left + .spip_document_image.spip_documents_left img{
+  aspect-ratio:3/2; object-fit:cover; }
+
+/* Centree, et par ricochet tout alignement que SPIP ne reconnait pas :
+   toute la colonne, quelle que soit la taille du fichier d'origine. */
+.texte .spip_documents_center{ display:block; float:none; width:100%; clear:both; margin:26px 0; }
+
 /* Un intertitre reprend toute la largeur, et rien ne depasse en bas. */
 .texte h2,.texte h3{ clear:both; }
 .texte::after{ content:""; display:block; clear:both; }
 /* Les listes glissent a cote de la photo au lieu de passer dessous : sans
    cela, les pastilles des etapes (posees en absolu) se peignent sur l'image. */
 .texte ol,.texte ul{ display:flow-root; }
+
 @media(max-width:640px){
-  .texte .spip_documents_droite,.texte .spip_documents_gauche{
+  .texte .spip_documents_left,.texte .spip_documents_right,
+  .texte .spip_documents_left:has(+ .spip_documents_left + .spip_documents_left),
+  .texte .spip_documents_left + .spip_documents_left:has(+ .spip_documents_left),
+  .texte .spip_documents_left + .spip_documents_left + .spip_documents_left{
     float:none; width:100%; margin:18px 0; }
 }
 
@@ -1480,8 +1680,11 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    une image, un intertitre, un texte court, un lien seul sur sa ligne. */
 .texte encart{ display:grid; grid-template-columns:minmax(0,44%) 1fr; align-items:center;
   background:var(--creme-sombre); border-radius:6px; overflow:hidden; margin:32px 0; }
+/* La photo colle aux bords de l'encart : padding:0 annule les 30 px que
+   << .texte encart > * >> pose sur le texte. Mesure du 30 aout 2026 : sans
+   lui la photo demarre a 282 au lieu de 252 et laisse une bande creme. */
 .texte encart > .spip_documents{ grid-column:1; grid-row:1 / span 20; align-self:stretch;
-  float:none; width:auto; margin:0; }
+  float:none; width:auto; margin:0; padding:0; }
 .texte encart > .spip_documents img{ display:block; width:100%; height:100%;
   object-fit:cover; border-radius:0; }
 .texte encart > *{ grid-column:2; margin:0 0 12px; padding:0 30px; }
@@ -1504,11 +1707,18 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 /* La carte d'un document a telecharger. */
 .doc-joint{ display:flex; align-items:center; gap:16px; border:1px solid var(--trait);
   border-radius:6px; background:#fff; padding:16px 20px; margin:10px 0; max-width:560px; }
+.doc-joint > .pilule{ flex-shrink:0; }
 .doc-joint .rond{ flex-shrink:0; width:44px; height:44px; border-radius:50%;
   background:var(--creme-sombre); display:flex; align-items:center; justify-content:center; }
 .doc-joint .rond .ico{ width:20px; height:20px; fill:var(--accent); }
 .doc-texte{ flex:1; min-width:0; }
-.doc-texte b{ display:block; font-family:var(--texte); font-size:15px; }
+/* Un nom de fichier n'a pas d'espaces : proces_verbal_conseil_municipal_du_
+   09_10_23.pdf est UN SEUL MOT pour le navigateur, qui ne coupe qu'aux
+   espaces et aux traits d'union — pas aux tirets bas. Il debordait donc de sa
+   colonne et passait sous le bouton. overflow-wrap:anywhere l'autorise a
+   couper n'importe ou, faute de mieux. */
+.doc-texte b{ display:block; font-family:var(--texte); font-size:15px;
+  overflow-wrap:anywhere; }
 .doc-texte span{ font-family:var(--texte); font-size:12.5px; color:var(--encre-doux); }
 
 /* La galerie : trois vignettes au format constant, cliquables vers l'image
@@ -1538,9 +1748,36 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 .article-lettre .pilule{ background:#fff; color:var(--accent); border-color:#fff; }
 .article-lettre .pilule:hover{ background:var(--creme); }
 
-/* La pagination d'une rubrique fournie. */
-.pagination{ font-family:var(--texte); font-size:14.5px; text-align:center; margin:26px 0 0; }
-.pagination a{ color:var(--accent); }
+/* ---- LA PAGINATION D'UNE RUBRIQUE FOURNIE -------------------------------
+
+   Le modele << prive >> de SPIP rend une LISTE, avec ses propres classes :
+   .pagination-items sur le ul, .pagination-item sur chaque li, .on.active sur
+   la page courante, .all sur le lien << tout afficher >>. Le theme n'en
+   habillait aucune : on voyait les puces nues d'une liste alignee a gauche.
+
+   LE LIEN << TOUT AFFICHER >> EST RETIRE. SPIP le rend par le signe infini,
+   qui ne veut rien dire pour un habitant, et il n'apporte rien sur deux ou
+   trois pages. On le cache plutot que de reecrire son libelle en CSS : du
+   texte d'interface dans une feuille de style ne se traduit pas et ne se
+   trouve pas quand on le cherche. */
+.pagination{ font-family:var(--texte); font-size:14.5px; margin:26px 0 0; }
+.pagination-items{
+	list-style:none; margin:0; padding:0;
+	display:flex; flex-wrap:wrap; justify-content:center; gap:8px;
+}
+.pagination-item-label{
+	display:block; min-width:38px; padding:7px 11px; border-radius:3px;
+	border:1px solid var(--trait-champ); color:var(--accent);
+	text-align:center; text-decoration:none;
+}
+a.pagination-item-label:hover,
+a.pagination-item-label:focus-visible{ background:var(--creme-sombre); }
+/* La page courante n'est pas un lien : elle se distingue par le fond, pas par
+   un soulignement qu'on chercherait a cliquer. */
+.pagination-item.on .pagination-item-label{
+	background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700;
+}
+.pagination-item.all{ display:none; }
 
 /* ===========================================================================
    Le plan du site
@@ -1635,9 +1872,6 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    vingt traits et la page devient un damier. L'air suffit a separer ; le seul
    trait est celui qui souligne le numero.
    =========================================================================== */
-.annuaire-titre{ text-align:center; margin-bottom:0; }
-.annuaire-titre::after{ content:""; display:block; width:64px; height:3px;
-  background:var(--accent); margin:20px auto 0; }
 .annuaire-intro{ text-align:center; max-width:60ch; margin:26px auto 52px; }
 
 .commerces{ list-style:none; margin:0; padding:0; }
@@ -1711,17 +1945,72 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
    =========================================================================== */
 .bandeau-illustre{
 	position:relative; min-height:230px; overflow:hidden;
-	background:linear-gradient(to bottom,#3A7D5C 0%,#1E5B41 55%,#123F2D 100%);
+	background:var(--creme-bandeau);
 }
-/* Le paysage est un element et non un fond : un fond dimensionne se maitrise
-   mal quand le rapport du bloc varie, un element pose obeit. */
-.bandeau-paysage{ position:absolute; left:0; right:0; bottom:0; width:100%; height:auto; }
+
+/* ---- LE FOND DE LA BANDE, SANS PHOTOGRAPHIE ------------------------------
+
+   Un paysage dessine tenait cette place. Retire le 27 aout 2026 : quel que
+   soit son metier — vectoriel plat, gravure, lavis — un dessin de paysage se
+   lit aujourd'hui comme une illustration generee. Ce n'est pas le trait qui
+   est en cause, c'est le genre. Une mairie n'illustre pas ses titres.
+
+   A la place, une mosaique des ARMES de la commune. Pas le blason lui-meme :
+   essaye et mesure, repete a 60px son detail tourne au tartan et ses rouges
+   se battent avec tout ce qu'on met autour. C'est sa STRUCTURE qui est
+   dessinee — le parti, le coupe a dextre, l'ecusson sur le tout. Trois traits
+   qui survivent a la reduction, et qui restent ceux de Marly-Gomont et
+   d'aucune autre commune.
+
+   Dessin original, d'apres le blasonnement publie : aucune licence a porter.
+   En data-URI comme le grain de papier plus haut — 640 octets, aucun fichier
+   a deployer, aucun chemin a resoudre depuis une feuille de style.
+
+   LE VERT A DISPARU, et avec lui le contraste qui detachait le cartouche :
+   14,7:1 sur le degrade, 1,17:1 sur ce creme. Ce qui tient le cartouche
+   desormais, c'est son ombre portee, son filet d'accent a gauche, et le fait
+   que la mosaique s'arrete net a son bord. Ne pas retirer l'ombre. */
+.bandeau-motif{
+	position:absolute; inset:0;
+	background-image:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='96' height='104'>\
+<defs><g id='e' transform='scale(.62)' fill='none' stroke='%23CFC5AF' stroke-linejoin='round'>\
+<path d='M6 6H74V52C74 70 60 82 40 92C20 82 6 70 6 52Z' stroke-width='3.4'/>\
+<path d='M40 6V92M6 49H40' stroke-width='2.6'/>\
+<path d='M6 6H74V52C74 70 60 82 40 92C20 82 6 70 6 52Z' stroke-width='9' transform='translate(40 44) scale(.34) translate(-40 -49)'/>\
+</g></defs><g opacity='.85'><use href='%23e' x='0' y='0'/><use href='%23e' x='48' y='52'/><use href='%23e' x='-48' y='52'/><use href='%23e' x='96' y='0'/><use href='%23e' x='0' y='104'/><use href='%23e' x='96' y='104'/></g></svg>");
+}
 .bandeau-image{ position:absolute; inset:0; }
 .bandeau-image:empty{ display:none; }
 .bandeau-image img{ width:100%; height:100%; object-fit:cover; }
-.bandeau-credit{
-	position:absolute; right:0; top:0; z-index:1; margin:0;
-	background:rgba(29,26,26,.72); color:#fff; font-size:12px; padding:6px 14px;
+
+/* ---- LA VIE ASSOCIATIVE, SEULE PAGE ILLUSTREE ---------------------------
+
+   Une image de mains levees, tres coloree. Brute, elle ecrase la charte : la
+   page devient une affiche et le vert de la commune n'existe plus nulle part.
+   Eteinte, elle ne dit plus rien.
+
+   D'ou ces deux reglages, et deux seulement :
+
+   LA SATURATION TOMBE DE MOITIE. Le geste reste lisible — ce sont toujours des
+   mains, on voit toujours qu'elles sont nombreuses et differentes — mais les
+   couleurs cessent de crier. Le calcul est fait par le NAVIGATEUR, pas dans le
+   fichier : l'image d'origine reste intacte, et si la mairie trouve ca terne un
+   jour, c'est un nombre a changer ici, pas une image a refabriquer.
+
+   UN VOILE CREME EN DEGRADE, dense a gauche ou se pose le cartouche, presque
+   nul a droite ou il n'y a rien a lire. On protege le titre la ou il est, on
+   laisse l'image vivre la ou elle ne gene personne.
+
+   LA CLASSE EST SUR LE CONTENEUR DE L'IMAGE, et non sur la bande : le
+   traitement ne vaut que pour CETTE image-la. Le jour ou la mairie depose sa
+   propre photographie du forum des associations, elle s'affiche telle quelle,
+   sans etre desaturee de moitie — ce serait absurde. */
+.bandeau-image.associatif img{ filter:saturate(.55) contrast(.95); }
+.bandeau-image.associatif::after{
+	content:""; position:absolute; inset:0;
+	background:linear-gradient(to right,
+		rgba(253,248,238,.86) 0%, rgba(253,248,238,.62) 46%, rgba(253,248,238,.24) 100%);
 }
 .bandeau-carton{
 	position:relative; z-index:1;
@@ -1744,6 +2033,7 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 	.bandeau-carton{ margin:92px auto -34px; }
 	.bandeau-carton > div{ padding:20px 22px 18px; }
 	.page-sous-carton{ padding-top:58px; }
+	.bandeau-motif{ background-size:68px auto; }
 }
 
 /* ===========================================================================
@@ -1814,11 +2104,6 @@ a.cal-jour.choisi{ background:var(--accent); color:#fff; }
 	justify-content:center; background:var(--accent); border-radius:3px;
 	color:#fff; overflow:hidden; }
 .elu-sceau-fiche{ width:130px; height:130px; opacity:.9; }
-/* Le credit sous le portrait. Aucun gabarit ne s'en sert encore : une
-   premiere version l'affichait quand il n'y avait PAS de photo, ce qui est
-   l'inverse de ce a quoi sert un credit. La regle reste ici pour le jour ou
-   on saura lire le champ credits du document depose. */
-.elu-credit{ display:block; margin-top:7px; font-size:12px; color:var(--encre-doux); }
 .elu-role h2{ margin-top:34px; }
 .elu-maj{ margin-top:38px; padding-top:14px; border-top:1px solid var(--trait);
 	font-size:13.5px; color:var(--encre-doux); }
@@ -1947,12 +2232,6 @@ a.elu-nom:hover{ text-decoration:underline; }
 .urba-local dl{ margin:0; position:relative; }
 .urba-local dt{ font-weight:700; margin-top:15px; }
 .urba-local dd{ margin:3px 0 0; color:var(--encre-doux); line-height:1.6; }
-.urba-verif{
-	display:inline-block; margin-left:6px; padding:1px 8px; border-radius:20px;
-	background:var(--jaune); color:var(--encre);
-	font-size:11.5px; font-weight:700; letter-spacing:.03em; vertical-align:2px;
-}
-
 @media (max-width:700px){
 	.urba-filigrane{ display:none; }
 	.urba-echelle{ grid-template-columns:1fr; grid-template-rows:none; }
@@ -1961,6 +2240,540 @@ a.elu-nom:hover{ text-decoration:underline; }
 	.urba-col + .urba-col{ border-top:1px solid var(--trait); }
 	.urba-depot{ grid-template-columns:1fr; }
 	.urba-depot > div + div{ border-left:0; border-top:1px solid var(--trait); }
+}
+
+/* ===========================================================================
+   CONNEXION ET MOT DE PASSE OUBLIÉ
+   ---------------------------------------------------------------------------
+   Les deux formulaires sont ceux de SPIP, non modifiés : ils portent la
+   session, le cookie, le jeton envoyé par courriel et les messages d'erreur.
+   On les habille, on ne les réécrit pas.
+
+   LE STYLE VISE NOTRE CARTE, PAS LES CLASSES DE SPIP. La première version
+   visait .formulaire_login et se serait donc appliquée à un seul des deux
+   formulaires ; le second, celui du nouveau mot de passe, ne peut pas être
+   relevé (il ne s'affiche qu'avec un jeton valide) et serait resté nu.
+   En visant .connexion-carte plus des sélecteurs d'éléments, tout formulaire
+   SPIP posé dans la carte est habillé, mesuré ou non.
+
+   Relevé du 26 août 2026, sur le site, pour les deux formulaires :
+
+     div.formulaire_spip.formulaire_login | .formulaire_oubli
+       form
+         span.form-hidden        (les champs cachés de l'action)
+         fieldset > legend [ > p  sur l'oubli : la phrase d'explication ]
+           div.editer-groupe
+             div.editer.editer_login.obligatoire    > label + input.text
+             div.editer.editer_password.obligatoire > label + input.password
+                                                      + p.details
+             div.editer.editer_session > div.choix  > input.checkbox + label
+             div.editer.saisie_oubli.obligatoire    > label + input.email
+         p[style=display:none] > label + input#nobot   <-- PIÈGE À ROBOTS
+         p.boutons > input.btn.submit
+
+   LE CHAMP nobot NE DOIT JAMAIS REDEVENIR VISIBLE. Il est masqué par un
+   style en ligne, qui l'emporte sur cette feuille ; une règle qui le
+   rouvrirait ferait remplir le piège par les navigateurs et SPIP rejetterait
+   alors tous les envois, sans que rien ne le signale. Le vérificateur garde
+   cette porte.
+   =========================================================================== */
+
+/* La page de connexion porte DEUX colonnes ; la largeur de lecture des pages
+   simples, 820 px, n'en laisse que 320 à la seconde et hache le texte en
+   lignes de six mots. On élargit, mais le carton du bandeau ET le corps
+   ensemble : ils partagent la même largeur, les désaligner ferait un
+   décroché visible sous le titre. La page du mot de passe garde 820 px,
+   elle n'a qu'une colonne. */
+body.page-login .bandeau-carton{ width:min(1080px,calc(100% - 44px)); }
+body.page-login .page-simple{ max-width:1080px; }
+
+.connexion-deux{
+	display:grid; grid-template-columns:minmax(0,380px) minmax(0,1fr); gap:0 64px;
+	align-items:start; margin-top:8px;
+}
+.connexion-solo{ max-width:520px; margin-inline:auto; }
+.connexion-avant{
+	max-width:520px; margin:0 auto 26px; text-align:center;
+	font-family:var(--texte); font-size:15px; line-height:1.7; color:var(--encre-doux);
+}
+
+.connexion-carte{
+	background:var(--creme); border-top:4px solid var(--accent);
+	padding:28px 30px 30px; position:sticky; top:20px;
+}
+.connexion-carte .titre-bloc{ font-size:26px; margin:0 0 6px; }
+.connexion-qui{
+	font-family:var(--texte); font-size:13px; line-height:1.55; color:var(--encre-doux);
+	margin:0 0 22px; padding-bottom:18px; border-bottom:1px solid var(--trait);
+}
+
+/* La légende de SPIP dit « Identifiants personnels » ou « Nouveau mot de
+   passe » ; le titre de la carte le dit déjà. On la retire de l'écran SANS
+   la retirer aux lecteurs d'écran : un display:none priverait le groupe de
+   champs de son nom accessible, ce qui est précisément ce que la légende
+   sert à donner. */
+.connexion-carte legend{ position:absolute; left:-9999px; }
+.connexion-carte fieldset{ border:0; margin:0; padding:0; }
+
+/* Sur l'oubli, SPIP place sa phrase d'explication DANS le fieldset, avant le
+   champ. C'est la bonne place : on l'habille en sous-titre plutôt que d'en
+   écrire une seconde à côté. */
+.connexion-carte fieldset > p{
+	font-family:var(--texte); font-size:14px; line-height:1.6; color:var(--encre-doux);
+	margin:0 0 18px;
+}
+.connexion-carte .editer{ margin-bottom:16px; }
+.connexion-carte label{
+	display:block; font-family:var(--texte); font-size:13.5px; font-weight:700;
+	margin-bottom:5px; color:var(--encre);
+}
+.connexion-carte input[type="text"],
+.connexion-carte input[type="email"],
+.connexion-carte input[type="password"]{
+	width:100%; border:1px solid var(--trait-champ); border-radius:4px; background:#fff;
+	padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
+}
+/* SPIP remplit ce span par ajax avec le logo de l'auteur reconnu. Vide la
+   plupart du temps : il ne doit pas creuser un trou sous le champ. */
+.connexion-carte #spip_logo_auteur:empty{ display:none; }
+.connexion-carte #spip_logo_auteur img{ max-width:60px; height:auto; margin-top:8px; }
+
+/* Le mot de passe oublié : SPIP le pose sous le champ concerné, c'est la
+   bonne place. */
+.connexion-carte .details{
+	margin:7px 0 0; text-align:right; font-family:var(--texte); font-size:13px;
+}
+.connexion-carte .details a{ color:var(--encre-doux); text-decoration:none; border-bottom:1px solid var(--trait); }
+.connexion-carte .details a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
+
+/* La case « se souvenir de moi » : cliquable sur toute sa ligne, cible de
+   plus de 24 px, un doigt n'atteint pas une case de 13 px. */
+.connexion-carte .choix{ display:flex; align-items:flex-start; gap:11px; }
+.connexion-carte .choix input{ width:20px; height:20px; margin:1px 0 0; flex-shrink:0; accent-color:var(--accent); }
+.connexion-carte .choix label{ font-weight:400; font-size:14px; line-height:1.5; margin:0; cursor:pointer; }
+
+.connexion-carte .boutons{ margin:22px 0 0; }
+.connexion-carte .submit{
+	border:0; background:var(--accent); color:#fff; border-radius:4px; width:100%;
+	padding:15px 26px; font-family:var(--texte); font-weight:700; font-size:16px; cursor:pointer;
+}
+.connexion-carte .submit:hover{ background:var(--accent-sombre); }
+.connexion-carte .erreur_message{
+	display:block; font-family:var(--texte); font-size:13.5px; font-weight:700;
+	color:#A32020; margin-bottom:5px;
+}
+.connexion-carte .erreur input{ border-color:#A32020; }
+
+.connexion-retour{ margin:16px 0 0; text-align:center; font-family:var(--texte); font-size:13.5px; }
+/* Sur la page du mot de passe la carte est etroite et son bouton pleine
+   largeur : centrer est juste. Sur la connexion tout est cale a gauche,
+   titre, compte et bouton ; un lien centre sous eux serait le seul element
+   de travers. */
+body.page-login .connexion-retour{ text-align:left; }
+.connexion-retour a{ color:var(--encre-doux); text-decoration:none; border-bottom:1px solid var(--trait); }
+.connexion-retour a:hover{ color:var(--accent); border-bottom-color:var(--accent); }
+
+.connexion-a-cote .titre-bloc{ font-size:clamp(26px,3vw,32px); margin:0 0 4px; }
+/* Une section, trois questions : le nom du service en gros serif, les
+   questions en sans-serif plus petit. Deux tailles suffisent à dire le
+   niveau ; trois grands titres identiques feraient un mur. */
+.connexion-a-cote h3{
+	font-family:var(--titre); font-size:21px; font-weight:700; color:var(--accent);
+	margin:34px 0 10px;
+}
+.connexion-a-cote h3:first-of-type{ margin-top:22px; }
+.connexion-a-cote p{
+	font-family:var(--texte); font-size:16px; line-height:1.7; color:var(--encre-doux);
+	max-width:62ch; margin:0 0 14px;
+}
+.connexion-a-cote a{ color:var(--accent); }
+
+/* Les exemples sous la question : une liste, avec une puce dessinée plutôt
+   que celle du navigateur, elle prend la couleur de la commune et se cale
+   sur la ligne de base du texte. */
+.connexion-liste{
+	list-style:none; margin:0 0 18px; padding:0;
+	font-family:var(--texte); font-size:16px; line-height:1.75; color:var(--encre-doux);
+}
+.connexion-liste li{ padding-left:18px; position:relative; }
+.connexion-liste li::before{
+	content:""; position:absolute; left:2px; top:.72em;
+	width:5px; height:5px; border-radius:50%; background:var(--accent);
+}
+
+.connexion-a-cote .fiche-liens{ margin:0 0 20px; }
+
+.connexion-encart{
+	background:var(--creme); border-left:4px solid var(--jaune);
+	padding:18px 22px; margin:18px 0 0;
+}
+.connexion-encart p{ margin:0; font-size:15px; }
+
+@media (max-width:860px){
+	/* Une colonne, et l'ordre du document donne déjà le bon ordre : celui qui
+	   vient se connecter atteint le champ sans faire défiler un discours. */
+	.connexion-deux{ grid-template-columns:1fr; gap:44px 0; }
+	.connexion-carte{ position:static; }
+}
+
+/* ===========================================================================
+   CONTACT
+   ---------------------------------------------------------------------------
+   Deux colonnes : les coordonnées à gauche, le formulaire à droite. Sur
+   téléphone la grille retombe en une colonne et l'ordre du document met les
+   coordonnées devant, ce qui est juste : on cherche neuf fois sur dix un
+   numéro, pas un champ de saisie.
+
+   Le formulaire est le nôtre, pas celui de SPIP : son balisage est écrit dans
+   plugin-marly/formulaires/contact.html, et les sélecteurs ci-dessous visent
+   ce que ce fichier produit. Le champ-piège garde la classe .piege, déjà
+   définie plus haut et déjà en service sur les autres formulaires : en créer
+   une seconde ferait une deuxième porte à surveiller.
+   =========================================================================== */
+/* --- Contact -------------------------------------------------------------- */
+body.page-contact .bandeau-carton{ width:min(1080px,calc(100% - 44px)); }
+body.page-contact .page-simple{ max-width:1080px; }
+
+.contact-deux{
+	display:grid; grid-template-columns:minmax(0,360px) minmax(0,1fr); gap:0 60px;
+	align-items:start; margin-top:8px;
+}
+.contact-infos{
+	background:var(--creme); border-top:4px solid var(--accent);
+	padding:26px 28px 28px; position:sticky; top:20px;
+}
+.contact-infos .titre-bloc{ font-size:26px; margin:0 0 18px; }
+.contact-ligne{ display:flex; gap:14px; align-items:flex-start; padding:13px 0; border-top:1px solid var(--trait); }
+.contact-ligne:first-of-type{ border-top:0; padding-top:0; }
+.contact-ligne .rond{
+	width:38px; height:38px; border-radius:50%; flex-shrink:0;
+	background:#fff; border:1px solid var(--trait); color:var(--accent);
+	display:flex; align-items:center; justify-content:center;
+}
+.contact-ligne .rond .ico{ width:18px; height:18px; }
+.contact-ligne b{ display:block; font-family:var(--titre); font-size:13px; letter-spacing:.06em;
+                  text-transform:uppercase; color:var(--encre-doux); margin-bottom:2px; }
+.contact-ligne p{ margin:0; font-family:var(--texte); font-size:15.5px; line-height:1.55; }
+.contact-ligne a{ color:var(--accent); text-decoration:none; border-bottom:1px solid var(--trait); }
+.contact-ligne a:hover{ border-bottom-color:var(--accent); }
+
+.contact-horaires{ margin-top:20px; padding-top:18px; border-top:1px solid var(--trait); }
+.contact-horaires h3{ font-family:var(--titre); font-size:13px; letter-spacing:.06em;
+                      text-transform:uppercase; color:var(--encre-doux); margin:0 0 8px; }
+.contact-horaires p{ margin:0; font-family:var(--texte); font-size:15.5px; line-height:1.7; }
+.contact-infos .carte-cadre{ margin-top:20px; height:190px; border-radius:3px; }
+
+.contact-form .titre-bloc{ font-size:clamp(26px,3vw,32px); margin:0 0 8px; }
+.contact-form > p{ font-family:var(--texte); font-size:16px; line-height:1.7;
+                   color:var(--encre-doux); max-width:62ch; margin:0 0 24px; }
+.contact-form ul{ list-style:none; margin:0; padding:0; }
+.contact-form li{ margin-bottom:16px; }
+.contact-form label{ display:block; font-family:var(--texte); font-size:13.5px;
+                     font-weight:700; margin-bottom:5px; color:var(--encre); }
+.contact-form .obligatoire{ font-weight:400; font-size:12px; color:var(--encre-doux); }
+.contact-form input[type="text"], .contact-form input[type="email"],
+.contact-form input[type="tel"], .contact-form select, .contact-form textarea{
+	width:100%; border:1px solid var(--trait-champ); border-radius:4px; background:#fff;
+	padding:12px 14px; font-family:var(--texte); font-size:15px; color:var(--encre);
+}
+.contact-form textarea{ resize:vertical; min-height:150px; }
+.contact-rang{ display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+.contact-form .submit{
+	border:0; background:var(--accent); color:#fff; border-radius:4px;
+	padding:15px 34px; font-family:var(--texte); font-weight:700; font-size:16px; cursor:pointer;
+}
+.contact-form .submit:hover{ background:var(--accent-sombre); }
+.contact-mention{ margin:18px 0 0; padding-top:14px; border-top:1px solid var(--trait);
+	font-family:var(--texte); font-size:12.5px; line-height:1.6; color:var(--encre-doux); }
+
+.contact-avant{ margin-top:56px; padding-top:34px; border-top:1px solid var(--trait); }
+.contact-avant .titre-bloc{ font-size:clamp(24px,2.6vw,30px); margin:0 0 8px; }
+.contact-avant > p{ font-family:var(--texte); font-size:16px; line-height:1.7;
+                    color:var(--encre-doux); max-width:70ch; margin:0 0 20px; }
+
+@media (max-width:860px){
+	.contact-deux{ grid-template-columns:1fr; gap:40px 0; }
+	.contact-infos{ position:static; }
+	.contact-rang{ grid-template-columns:1fr; }
+}
+
+/* ===========================================================================
+   LA PAGE D'ACCUEIL — LES TROIS BANDES
+   ---------------------------------------------------------------------------
+   MESURE DU 26 AOÛT 2026 : sur 82 articles publiés, 7 portent une image et
+   52 portent un PDF. Le contenu de cette commune est documentaire, pas
+   photographique. Une composition bâtie sur de grandes images montrerait un
+   cadre vide onze fois sur douze : la densité vient donc de la typographie.
+
+   LE RYTHME DE LA PAGE EST SA STRUCTURE. Vert de la bannière, crème des
+   accès, blanc des actualités, VERT PLEIN de l'agenda, crème des documents.
+   Les fonds ALTERNENT, sans exception : deux bandes de même couleur l'une
+   sous l'autre se relisent comme un seul bloc trop long, et la page redevient
+   la suite de billets qu'elle ne doit pas être.
+   =========================================================================== */
+
+.bande{ position:relative; padding:46px 0 40px; }
+.bande > .large{ position:relative; z-index:1; }
+.bande-creme{
+  background:var(--creme);
+  border-top:1px solid var(--trait); border-bottom:3px solid var(--accent);
+}
+.bande-verte{ background:var(--accent); color:#fff; padding:46px 0 48px; }
+.bande-verte .titre-bloc{ color:#fff; }
+.bande-verte .titre-bloc span{ color:var(--jaune); }
+.bande-verte .bande-tout{ color:#fff; }
+
+/* Le sceau gravé, À CHEVAL sur le bord de la bande. Il était d'abord posé à
+   5 % d'opacité : invisible, et l'ensemble avait l'air de manquer de dessin
+   sans qu'on sache dire pourquoi. À 10 % il se lit comme un filigrane. */
+.bande-sceau{ position:absolute; z-index:0; pointer-events:none; color:var(--accent); }
+.bande-sceau .bande-sceau-trace{ width:100%; height:100%; display:block; }
+.bande-sceau.a-droite{ top:-40px; right:-70px; width:330px; height:330px; opacity:.10; }
+.bande-verte .bande-sceau{ color:#fff; opacity:.10; }
+
+/* Titre à gauche, lien « tout voir » à droite, alignés sur la même ligne de
+   base : le lien fait partie du titre, il ne se cherche pas en bas de bande. */
+.bande-tete{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:24px; margin:0 0 20px;
+}
+.bande-tete .titre-bloc{ margin:0; font-size:clamp(28px,3.2vw,40px); }
+.bande-tout{
+  font-family:var(--texte); font-size:13.5px; font-weight:700; color:var(--accent);
+  text-decoration:none; white-space:nowrap; display:inline-flex; align-items:center; gap:7px;
+}
+.bande-tout .ico{ width:15px; height:15px; transition:transform .15s ease; }
+.bande-tout:hover{ text-decoration:underline; }
+.bande-tout:hover .ico{ transform:translateX(4px); }
+@media (max-width:560px){
+  .bande-tete{ flex-direction:column; align-items:flex-start; gap:10px; }
+}
+@media (prefers-reduced-motion:reduce){
+  .bande-tout .ico{ transition:none; }
+  .bande-tout:hover .ico{ transform:none; }
+}
+
+/* --- L'ACTUALITÉ EN TÊTE -------------------------------------------------- */
+.actus-grille{ display:grid; grid-template-columns:1.15fr 1fr; gap:0 40px; align-items:start; }
+@media (max-width:940px){ .actus-grille{ grid-template-columns:1fr; gap:30px 0; } }
+
+/* Le sceau est SOUS l'image, pas à côté : l'article qui porte une photo la
+   voit recouvrir le cadre entier, celui qui n'en porte pas montre le dessin.
+   Une seule écriture pour les deux cas — aucun des deux ne peut être oublié. */
+/* Toute la mise en avant est UN seul lien, image comprise. Le cartouche seul
+   etait cliquable et l'image ne l'etait pas : on clique sur une photographie
+   de cette taille, il ne se passe rien, et on croit le site casse. */
+.une-lien{ display:block; text-decoration:none; color:var(--encre); }
+.une-fond{
+  display:block;
+  position:relative; aspect-ratio:16/8; background:var(--creme);
+  border-top:3px solid var(--accent); overflow:hidden;
+}
+.une-fond img{ position:absolute; inset:0; z-index:1; width:100%; height:100%; object-fit:cover; }
+.une-grave{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--accent); opacity:.16;
+}
+.une-grave .une-trace{ width:58%; height:58%; }
+
+/* Le carton chevauche l'image : c'est le geste du thème, celui du cartouche
+   de bandeau et de la vignette de commerce. */
+.une-carton{
+  position:relative; z-index:2; margin:-58px 22px 0; background:#fff;
+  border-bottom:3px solid var(--accent); box-shadow:0 12px 34px rgba(29,26,26,.14);
+  padding:20px 24px 22px; display:block; text-decoration:none; color:var(--encre);
+  transition:transform .15s ease;
+}
+.une-lien:hover .une-carton{ transform:translateY(-3px); }
+@media (prefers-reduced-motion:reduce){
+  .une-carton{ transition:none; }
+  .une-lien:hover .une-carton{ transform:none; }
+}
+.une-date{
+  font-family:var(--titre); font-size:11.5px; font-weight:800; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--accent); display:block; margin-bottom:5px;
+}
+.une-titre{
+  display:block; font-family:var(--serif); font-size:clamp(21px,2.2vw,26px);
+  line-height:1.14; margin-bottom:6px;
+}
+.une-lien:hover .une-titre{ text-decoration:underline; }
+.une-chapo{
+  display:block; font-family:var(--texte); font-size:14.5px; line-height:1.6;
+  color:var(--encre-doux);
+}
+
+.actu-breve{
+  display:flex; gap:13px; align-items:flex-start; padding:13px 0;
+  border-top:1px solid var(--trait); text-decoration:none; color:var(--encre);
+}
+.actu-breve:first-child{ border-top:0; padding-top:0; }
+.actu-breve .rond{
+  width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  background:var(--creme); border:1px solid var(--trait); color:var(--accent);
+  display:flex; align-items:center; justify-content:center;
+}
+.actu-breve .rond .ico{ width:17px; height:17px; }
+.actu-breve b{
+  display:block; font-family:var(--serif); font-size:17.5px; line-height:1.22;
+  font-weight:400; margin-bottom:2px;
+}
+/* LA DATE SEULE PORTE LES CAPITALES. Écrit sur « .actu-breve span », le
+   text-transform descendait aussi dans le <b> et tous les titres de brèves
+   sortaient en capitales. D'où cette classe dédiée. */
+.actu-quand{
+  display:block; font-family:var(--texte); font-size:11.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--encre-doux);
+}
+.actu-breve:hover b{ color:var(--accent); text-decoration:underline; }
+
+/* --- L'AGENDA, SUR LE VERT ------------------------------------------------ */
+/* Franconville pose six cartes illustrées en 3×2. Nous n'avons pas les
+   images pour les remplir : un rendez-vous en grand, quatre en liste serrée. */
+.ag-grille{ display:grid; grid-template-columns:1.05fr .95fr; gap:0 42px; align-items:stretch; }
+@media (max-width:900px){ .ag-grille{ grid-template-columns:1fr; gap:28px 0; } }
+
+.ag-une{
+  display:flex; flex-direction:column; background:#fff; color:var(--encre);
+  text-decoration:none; border-bottom:4px solid var(--jaune);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.ag-tete{ display:flex; gap:22px; padding:24px 26px 26px; }
+
+/* LA PHOTO, QUAND LA MANIFESTATION EN PORTE UNE.
+   Elle prend toute la largeur de la carte et le bloc de date vient CHEVAUCHER
+   son bord bas — le geste du thème, déjà celui du cartouche de bandeau et de
+   la vignette de commerce.
+
+   ET LE TEXTE SE RÉDUIT AU TITRE. Une affiche de brocante dit déjà l'heure,
+   le lieu et le tarif : les répéter dessous fait de la carte un billet de
+   blog. C'est masqué ici plutôt que retiré du squelette parce qu'un
+   squelette à deux branches, c'est deux fois où oublier quelque chose ;
+   display:none retire aussi bien aux lecteurs d'écran qu'à l'œil, l'affichage
+   et l'annonce restent donc d'accord.
+
+   Sans photo, rien de tout ceci ne s'applique et la carte garde tout : c'est
+   ce qui la remplit. */
+.ag-photo{ display:block; aspect-ratio:16/8; overflow:hidden; }
+.ag-photo img{ display:block; width:100%; height:100%; object-fit:cover; }
+.ag-une.avec-photo .ag-tete{ padding-top:0; align-items:center; }
+.ag-une.avec-photo .ag-cal{
+  margin-top:-42px; position:relative; z-index:2;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+.ag-une.avec-photo .ag-corps{ padding-top:22px; }
+.ag-une.avec-photo .ag-titre{ margin-bottom:0; }
+.ag-une.avec-photo .ag-tag,
+.ag-une.avec-photo .ag-meta,
+.ag-une.avec-photo .ag-chapo,
+.ag-une.avec-photo .ag-lire{ display:none; }
+.ag-une:hover{ transform:translateY(-3px); box-shadow:0 16px 34px rgba(0,0,0,.24); }
+@media (prefers-reduced-motion:reduce){
+  .ag-une{ transition:none; }
+  .ag-une:hover{ transform:none; }
+}
+.ag-cal{
+  flex-shrink:0; width:74px; background:var(--jaune); color:var(--encre);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:12px 0 10px; line-height:1; align-self:flex-start;
+}
+.ag-cal b{ font-family:var(--titre); font-size:34px; font-weight:800; }
+.ag-cal span{
+  font-family:var(--titre); font-size:12px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; margin-top:4px;
+}
+.ag-cal i{
+  font-style:normal; font-family:var(--texte); font-size:10.5px; letter-spacing:.1em;
+  margin-top:6px; opacity:.75;
+}
+.ag-corps{ display:flex; flex-direction:column; align-items:flex-start; flex:1; }
+.ag-tag{
+  display:inline-block; font-family:var(--titre); font-size:10.5px; font-weight:700;
+  letter-spacing:.11em; text-transform:uppercase; color:var(--accent);
+  border:1px solid var(--accent); padding:3px 9px; margin-bottom:9px;
+}
+.ag-titre{
+  display:block; font-family:var(--serif); font-size:clamp(21px,2.2vw,27px);
+  line-height:1.13; margin-bottom:6px;
+}
+.ag-une:hover .ag-titre{ text-decoration:underline; }
+.ag-meta{
+  display:block; font-family:var(--texte); font-size:13px; font-weight:700;
+  color:var(--accent); margin-bottom:8px;
+}
+.ag-chapo{
+  display:block; font-family:var(--texte); font-size:14.5px; line-height:1.6;
+  color:var(--encre-doux);
+}
+/* Poussé en bas de la carte : les hauteurs des deux colonnes se répondent. */
+.ag-lire{
+  margin-top:auto; padding-top:14px; font-family:var(--texte); font-size:13px;
+  font-weight:700; color:var(--accent); display:inline-flex; align-items:center; gap:7px;
+}
+.ag-lire .ico{ width:15px; height:15px; transition:transform .15s ease; }
+.ag-une:hover .ag-lire .ico{ transform:translateX(4px); }
+@media (prefers-reduced-motion:reduce){
+  .ag-lire .ico{ transition:none; }
+  .ag-une:hover .ag-lire .ico{ transform:none; }
+}
+
+.ag-ligne{
+  display:flex; gap:16px; align-items:center; padding:13px 4px 13px 0;
+  border-top:1px solid rgba(255,255,255,.35); text-decoration:none; color:#fff;
+}
+.ag-ligne:first-child{ border-top:0; padding-top:0; }
+.ag-suite a:last-child{ border-bottom:1px solid rgba(255,255,255,.35); }
+.ag-jour{
+  flex-shrink:0; width:52px; height:52px; background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.5); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; line-height:1;
+}
+.ag-jour b{ font-family:var(--titre); font-size:19px; font-weight:800; }
+.ag-jour span{
+  font-family:var(--titre); font-size:9.5px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; margin-top:2px;
+}
+.ag-l-titre{
+  display:block; font-family:var(--serif); font-size:18px; font-weight:400;
+  line-height:1.2; margin-bottom:2px;
+}
+.ag-l-meta{ display:block; font-family:var(--texte); font-size:12.5px; color:rgba(255,255,255,.85); }
+.ag-ligne:hover .ag-jour{ background:var(--jaune); border-color:var(--jaune); color:var(--encre); }
+.ag-ligne:hover .ag-l-titre{ text-decoration:underline; }
+
+/* --- LES DOCUMENTS -------------------------------------------------------- */
+/* 52 des 82 articles portent un PDF. C'est la matière réelle du site : une
+   liste dense sur deux colonnes, pas quatre tuiles avec de l'air autour. */
+/* DEUX COLONNES EN « columns », PAS EN GRILLE. Une grille à deux colonnes
+   range le premier document à gauche et le DEUXIÈME à droite : la colonne de
+   gauche lue de haut en bas donne alors le 1er, le 3e, le 5e. On lit une
+   liste de comptes rendus de haut en bas, pas en zigzag. columns remplit la
+   première colonne avant d'ouvrir la seconde, et l'ordre visible redevient
+   l'ordre du document — celui qu'entend aussi un lecteur d'écran. */
+.docs-liste{ columns:2; column-gap:40px; }
+@media (max-width:760px){ .docs-liste{ columns:1; } }
+.doc-ligne{
+  display:flex; gap:13px; align-items:baseline; padding:11px 0;
+  border-top:1px solid var(--trait); text-decoration:none; color:var(--encre);
+  break-inside:avoid;
+}
+.doc-ligne .ico{
+  width:17px; height:17px; color:var(--accent); flex-shrink:0;
+  position:relative; top:3px;
+}
+.doc-ligne b{
+  font-family:var(--serif); font-size:16.5px; font-weight:400; line-height:1.25;
+  overflow-wrap:anywhere;
+}
+.doc-quoi{
+  display:block; font-family:var(--texte); font-size:11.5px; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--encre-doux); margin-top:2px;
+}
+.doc-ligne:hover b{ color:var(--accent); text-decoration:underline; }
+
+@media (max-width:820px){
+  .bande-sceau{ display:none; }
+  .une-carton{ margin-inline:12px; }
 }
 
 .faux-contenu{ padding:56px 24px 140px; font-family:var(--texte); color:var(--encre-doux); }
@@ -2102,10 +2915,14 @@ a.elu-nom:hover{ text-decoration:underline; }
     <path d="M22 74 H78"/>
   </g>
 
-  <path id="arcNom" d="M 16 52 A 34 34 0 0 1 84 52" fill="none"/>
+  
+  #SET{arc,#VAL{arcNom}|concat{#ENV{ref}}}
+  
+  #SET{ancre,#VAL{'#'}|concat{#GET{arc}}}
+  <path id="#GET{arc}" d="M 16 52 A 34 34 0 0 1 84 52" fill="none"/>
   <text font-family="Alegreya Sans, Georgia, sans-serif" font-size="11" font-weight="700"
         letter-spacing="1" fill="currentColor">
-    <textPath href="#arcNom" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
+    <textPath href="#GET{ancre}" startOffset="50%" text-anchor="middle">MARLY-GOMONT</textPath>
   </text>
 
   <circle cx="50" cy="50" r="47.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
@@ -2144,7 +2961,7 @@ a.elu-nom:hover{ text-decoration:underline; }
 
 <div class="heros">
 	<div class="heros-image"></div>
-	<img class="heros-paysage" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDQwIiBoZWlnaHQ9IjI2MCIgdmlld0JveD0iMCAwIDE0NDAgMjYwIgogICAgIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iU2lsaG91ZXR0ZSBkZSBib2NhZ2UgZXQgZCfDqWdsaXNlIGZvcnRpZmnDqWUgZGUgVGhpw6lyYWNoZSI+CiAgPCEtLSBCYW5kZSBkZSBwYXlzYWdlIGFuY3LDqWUgZW4gYmFzIDogZWxsZSBnYXJkZSBzZXMgcHJvcG9ydGlvbnMgcXVlbGxlIHF1ZQogICAgICAgc29pdCBsYSBoYXV0ZXVyIGR1IGjDqXJvcywgY29udHJhaXJlbWVudCDDoCB1bmUgc2PDqG5lIHBsZWluIGNhZHJlLiAtLT4KICA8ZyBmaWxsPSIjMTIzRjJEIiBvcGFjaXR5PSIuNTUiPgogICAgPHBhdGggZD0iTTAgMTIwIFEgMzAwIDg0IDYwMCAxMDggVCAxMTQwIDk2IFQgMTQ0MCAxMTIgVjI2MCBIMCBaIi8+CiAgPC9nPgogIDxnIGZpbGw9IiMwRTMzMjQiIG9wYWNpdHk9Ii44Ij4KICAgIDxwYXRoIGQ9Ik0wIDE2OCBRIDM2MCAxMzggNzYwIDE2MiBUIDE0NDAgMTUwIFYyNjAgSDAgWiIvPgogIDwvZz4KICA8IS0tIMOJZ2xpc2UgZm9ydGlmacOpZSA6IGwnZW1ibMOobWUgZGUgbGEgVGhpw6lyYWNoZSAtLT4KICA8ZyBmaWxsPSIjMDgyMTFBIj4KICAgIDxwYXRoIGQ9Ik02NjAgMTkwIFYxMjYgbDMwLTI4IDMwIDI4IHY2NCB6Ii8+CiAgICA8cmVjdCB4PSI2ODEiIHk9IjE1OCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjMyIiBmaWxsPSIjMEUzMzI0Ii8+CiAgICA8cmVjdCB4PSI2MjgiIHk9IjE1MCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjQwIi8+CiAgICA8cmVjdCB4PSI3MjAiIHk9IjE1MCIgd2lkdGg9IjMyIiBoZWlnaHQ9IjQwIi8+CiAgICA8cGF0aCBkPSJNNjkwIDg0IHYxOCBNNjgxIDkyIGgxOCIgc3Ryb2tlPSIjMDgyMTFBIiBzdHJva2Utd2lkdGg9IjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwvZz4KICA8IS0tIEhhaWVzIGV0IGFyYnJlcyBkdSBib2NhZ2UgLS0+CiAgPGcgZmlsbD0iIzA4MjExQSI+CiAgICA8ZWxsaXBzZSBjeD0iMjMyIiBjeT0iMTUwIiByeD0iNDYiIHJ5PSIzMCIvPjxyZWN0IHg9IjIyOCIgeT0iMTUwIiB3aWR0aD0iOCIgaGVpZ2h0PSIyNiIvPgogICAgPGVsbGlwc2UgY3g9IjM5MiIgY3k9IjE2NCIgcng9IjMwIiByeT0iMjEiLz48cmVjdCB4PSIzODkiIHk9IjE2NCIgd2lkdGg9IjYiIGhlaWdodD0iMTgiLz4KICAgIDxlbGxpcHNlIGN4PSIxMTA4IiBjeT0iMTU2IiByeD0iNTIiIHJ5PSIzNCIvPjxyZWN0IHg9IjExMDQiIHk9IjE1NiIgd2lkdGg9IjkiIGhlaWdodD0iMjgiLz4KICAgIDxlbGxpcHNlIGN4PSIxMjY4IiBjeT0iMTcwIiByeD0iMzQiIHJ5PSIyMyIvPjxyZWN0IHg9IjEyNjUiIHk9IjE3MCIgd2lkdGg9IjciIGhlaWdodD0iMTkiLz4KICA8L2c+CiAgPGcgZmlsbD0iIzA4MjExQSIgb3BhY2l0eT0iLjkiPgogICAgPHBhdGggZD0iTTAgMTk2IFEgMzgwIDE3NiA4MDAgMTk0IFQgMTQ0MCAxODQgVjI2MCBIMCBaIi8+CiAgPC9nPgo8L3N2Zz4K" width="1440" height="260" alt="" aria-hidden="true">
+	<img class="heros-paysage" src="../squelettes/img/paysage.svg" width="1440" height="260" alt="" aria-hidden="true">
 	<div class="heros-voile" aria-hidden="true"></div>
 
 	<div class="heros-dedans">

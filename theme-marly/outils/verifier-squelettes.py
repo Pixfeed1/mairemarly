@@ -2480,6 +2480,38 @@ if os.path.exists(_css_doc):
                      "photo sort a sa taille de fichier")
 
 
+# 84. Un script de construction qui lit un fichier disparu du theme.
+#     ---------------------------------------------------------------------
+#     Le paysage dessine a ete retire du theme le 27 aout 2026, commit
+#     d5e6299. construire-apercu.py continuait a lire squelettes/img/
+#     paysage.svg : il s'arretait sur FileNotFoundError des la premiere ligne
+#     utile. Personne ne l'a su, parce qu'un script de construction ne tourne
+#     pas tout seul. apercu/publiable.html est donc reste fige quatre jours,
+#     avec 1245 lignes de retard, et montrait encore l'ancienne feuille — y
+#     compris le bloc de mise en page des photos que la regle 83 a condamne.
+#
+#     Un apercu perime est pire qu'un apercu absent : il sert a montrer le
+#     site hors ligne, donc il ment a celui a qui on le montre.
+#
+#     La regle relit les chemins que ces scripts declarent par leur fonction
+#     de lecture, et verifie que chacun existe. Elle ne les execute pas :
+#     elle constate seulement qu'ils ne peuvent pas echouer la-dessus.
+#     (Le nom de cette fonction n'est pas cite ici, sinon la regle se
+#     signalerait elle-meme sur son propre commentaire.)
+_LIRE = re.compile(r"lire\(\s*((?:'[^']+'|\"[^\"]+\")(?:\s*,\s*(?:'[^']+'|\"[^\"]+\"))*)\s*\)")
+for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.py'))):
+    _src = open(_f, encoding='utf-8').read()
+    for _m in _LIRE.finditer(_src):
+        _bouts = [_b.strip().strip('\'"') for _b in _m.group(1).split(',')]
+        _chemin = os.path.join(RACINE, *_bouts)
+        if not os.path.exists(_chemin):
+            _ligne = _src[:_m.start()].count('\n') + 1
+            signaler(os.path.relpath(_f, os.path.join(RACINE, '..')), _ligne,
+                     "lit " + '/'.join(_bouts) + ", qui n'existe pas dans le theme : "
+                     "le script s'arrete des sa premiere ligne utile et ce qu'il "
+                     "fabrique reste fige sur son dernier passage reussi")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')

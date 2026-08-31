@@ -28,9 +28,6 @@ css = polices + '\n' + lire('squelettes', 'css', 'theme.css')
 js = lire('squelettes', 'js', 'menu.js')
 sprite = lire('apercu', 'icones-sprite.html')
 
-# Le paysage devient une donnée intégrée : la page doit tenir en un fichier.
-paysage = base64.b64encode(lire('squelettes', 'img', 'paysage.svg').encode()).decode()
-
 # L'emblème est repris du squelette, commentaire SPIP retiré.
 embleme = re.sub(r'\[\(#REM\).*?\]', '', lire('squelettes', 'inc', 'embleme.html'), flags=re.S).strip()
 
@@ -38,8 +35,9 @@ corps = lire('apercu', 'entete.html')
 corps = corps[corps.index('<body>') + 6 : corps.index('<script src=')]
 corps = re.sub(r'<svg xmlns[^>]*style="display:none".*?</svg>', '', corps, flags=re.S)
 corps = re.sub(r'<img class="sceau"[^>]*>', embleme, corps)
-corps = re.sub(r'src="\.\./squelettes/img/paysage\.svg"',
-               f'src="data:image/svg+xml;base64,{paysage}"', corps)
+# Le paysage dessiné a été retiré du thème le 27 août 2026, commit d5e6299.
+# Le fichier n'existe plus : ce script s'arrêtait dessus depuis ce jour-là, et
+# l'aperçu autonome est resté figé sur l'état d'avant. Règle 84.
 
 page = f'''<!doctype html>
 <html lang="fr">
