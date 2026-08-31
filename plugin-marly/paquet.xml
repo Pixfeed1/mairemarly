@@ -1,7 +1,7 @@
 <paquet
 	prefix="marly"
 	categorie="outil"
-	version="3.51.0"
+	version="3.52.0"
 	etat="test"
 	compatibilite="[4.2.0;4.4.*]"
 	schema="3.39.0">

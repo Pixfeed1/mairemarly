@@ -1,0 +1,33 @@
+[(#REM) La galerie << En images >> d'un article.
+        ---------------------------------------------------------------------
+        Elle montre les photographies jointes que PERSONNE N'A PLACEES
+        ailleurs : ni celle qui s'affiche en tete de page, ni celles que la
+        redaction a posees elle-meme dans le texte en cliquant sur gauche,
+        centre ou droite.
+
+        La regle tient en une phrase, et c'est celle du mode d'emploi : une
+        photo se voit la ou on l'a mise ; celles qu'on n'a pas placees se
+        retrouvent ici.
+
+        POURQUOI CE FICHIER EXISTE. Le bloc B d'une boucle est rendu des
+        qu'elle ramene une ligne, meme si la galerie les saute toutes
+        ensuite : l'article aurait affiche le titre suivi de rien. Le compte
+        se fait donc en PHP avant d'entrer, et article.html n'appelle ce
+        fichier que s'il reste quelque chose a montrer.
+
+        L'image de tete s'ecarte par une comparaison simple, employee depuis
+        des semaines dans la bande d'actualites. Les photos posees dans le
+        texte s'ecartent une par une : les ecarter d'un coup demandait le
+        critere !IN sur une liste calculee, essaye en production le 30 aout
+        2026, il n'ecarte RIEN et ne signale aucune erreur.
+
+        A zero — aucune illustration de tete — la comparaison n'ecarte rien :
+        aucun document ne porte l'identifiant 0. ]
+<h2><:marly:en_images:></h2>
+<div class="galerie">
+	<BOUCLE_galerie(DOCUMENTS){id_article}{mode=image}{id_document!=#ENV{illu_id}}{par num titre, date}>
+	[(#ID_DOCUMENT|marly_document_pose{#ENV{id_article}}|non)<figure><a href="#URL_DOCUMENT" title="<:marly:voir_la_photo:>">
+		<img src="[(#FICHIER|image_reduire{400,260}|extraire_attribut{src})]" alt="[(#TITRE|attribut_html)]">
+	</a>[<figcaption><b>(#TITRE)</b>[<span class="credit">(#CREDITS)</span>]</figcaption>]</figure>]
+	</BOUCLE_galerie>
+</div>

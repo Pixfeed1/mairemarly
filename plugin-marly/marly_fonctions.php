@@ -401,6 +401,125 @@ function marly_illustration_document($id_article) {
 }
 
 /**
+ * Les documents que la redaction a POSES elle-meme dans le texte.
+ * ---------------------------------------------------------------------------
+ * Elle clique sur << gauche >> sous une photo jointe, SPIP ecrit un raccourci
+ * dans le texte, et la photo s'affiche a cet endroit precis. Jusqu'ici cette
+ * meme photo ressortait EN PLUS dans la galerie << En images >> du bas de
+ * page : elle se voyait deux fois dans le meme article.
+ *
+ * La regle devient : une photo se voit LA OU ON L'A MISE ; celles qu'on n'a
+ * pas placees se retrouvent dans la galerie. Si la redaction place tout, la
+ * galerie disparait d'elle-meme, ce qui est le comportement juste.
+ *
+ * POURQUOI EN PHP ET PAS EN CRITERE DE BOUCLE. Ecarter une liste demandait
+ * << id_document !IN >> sur une liste calculee. Essaye en production le
+ * 30 aout 2026 : il n'ecarte RIEN et ne signale aucune erreur, parce que IN
+ * attend une liste ecrite dans le gabarit et non une chaine construite a
+ * l'execution. On ne repasse pas par la.
+ *
+ * CE QU'ON CHERCHE. Les raccourcis de SPIP, <img12>, <doc12>, <emb12>, avec
+ * ou sans alignement. Le nombre colle au mot : <img src="..."> d'un HTML
+ * colle a la main ne correspond pas, il n'a pas de chiffre a cet endroit.
+ * On lit les trois champs ou la redaction ecrit : le texte, le chapo et le
+ * descriptif.
+ *
+ * Le resultat est garde en memoire pour la duree de la page : la galerie
+ * interroge une fois par vignette, et sans cela chaque vignette relisait
+ * l'article.
+ *
+ * @param int $id_article
+ * @return array identifiants de documents, en cle pour un test direct
+ */
+function marly_documents_poses($id_article) {
+	static $vus = array();
+	$id_article = intval($id_article);
+	if (!$id_article) {
+		return array();
+	}
+	if (isset($vus[$id_article])) {
+		return $vus[$id_article];
+	}
+
+	$article = sql_fetsel('texte, chapo, descriptif', 'spip_articles',
+		'id_article = ' . $id_article);
+	$poses = array();
+	if ($article) {
+		$matiere = $article['texte'] . ' ' . $article['chapo'] . ' ' . $article['descriptif'];
+		if (preg_match_all('/<(?:img|doc|emb)(\d+)/i', $matiere, $trouves)) {
+			foreach ($trouves[1] as $id) {
+				$poses[intval($id)] = true;
+			}
+		}
+	}
+
+	$vus[$id_article] = $poses;
+	return $poses;
+}
+
+/**
+ * Ce document est-il deja pose dans le texte de cet article ?
+ *
+ * Employe par la galerie pour sauter la vignette. Rend un booleen, que le
+ * gabarit lit avec |non dans un bloc optionnel.
+ *
+ * @param int $id_document
+ * @param int $id_article
+ * @return bool
+ */
+function filtre_marly_document_pose_dist($id_document, $id_article) {
+	$poses = marly_documents_poses($id_article);
+	return isset($poses[intval($id_document)]);
+}
+
+/**
+ * Combien de photographies resteront dans la galerie.
+ * ---------------------------------------------------------------------------
+ * Le gabarit en a besoin AVANT la boucle : <B_galerie> est vrai des qu'un
+ * document image est attache, meme si la boucle les saute tous ensuite. Sans
+ * ce compte, l'article afficherait le titre << En images >> suivi de rien.
+ *
+ * Le meme calcul que le filtre ci-dessus, sur l'ensemble des images jointes :
+ * les deux ne peuvent pas diverger.
+ *
+ * @param int $id_article
+ * @param int $illu_id  le document deja affiche en tete de page, 0 s'il n'y en a pas
+ * @return int
+ */
+function filtre_marly_galerie_reste_dist($id_article, $illu_id = 0) {
+	$id_article = intval($id_article);
+	if (!$id_article) {
+		return 0;
+	}
+	$illu_id = intval($illu_id);
+	$poses = marly_documents_poses($id_article);
+
+	$liens = sql_allfetsel('id_document', 'spip_documents_liens', array(
+		'objet = ' . sql_quote('article'),
+		'id_objet = ' . $id_article,
+	));
+	if (!$liens) {
+		return 0;
+	}
+	$ids = array();
+	foreach ($liens as $lien) {
+		$ids[] = intval($lien['id_document']);
+	}
+
+	$reste = 0;
+	foreach (sql_allfetsel('id_document', 'spip_documents', array(
+		sql_in('id_document', $ids),
+		'mode = ' . sql_quote('image'),
+	)) as $doc) {
+		$id = intval($doc['id_document']);
+		if ($id !== $illu_id and !isset($poses[$id])) {
+			$reste++;
+		}
+	}
+	return $reste;
+}
+
+/**
  * Le titre d'une page FIXE du site, pour le <title> du navigateur.
  * ---------------------------------------------------------------------------
  * MESURE DU 30 AOUT 2026 : les 162 pages du site portaient TOUTES le meme

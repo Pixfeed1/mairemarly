@@ -688,11 +688,10 @@ gauche, le titre à côté** ; les PDF deviennent des cartes « Télécharger »
 **« En images », en bas de l'article, montre les autres photographies
 jointes** — toutes sauf celle qui s'affiche en tête.
 
-Une photo que vous placez vous-même dans le texte apparaît **aussi** dans
-cette galerie. Si vous ne le souhaitez pas, ne la
-joignez pas à l'article : insérez-la et retirez-la ensuite de la liste des
-documents… ou laissez faire, deux vues d'une même photo dans un article long
-ne gênent personne.
+**Une photo se voit là où vous l'avez mise.** Celle que vous placez dans le
+texte ne réapparaît pas dans « En images » : la galerie ne montre que les
+photographies jointes que vous n'avez placées nulle part. Si vous les placez
+toutes, la section « En images » disparaît d'elle-même.
 
 **Il n'y a pas de sommaire automatique**, et c'est voulu : il a été retiré le
 26 août. Sur un texte de mairie long de deux écrans, il prenait la place du

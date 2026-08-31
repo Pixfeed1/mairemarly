@@ -2512,6 +2512,50 @@ for _f in sorted(glob.glob(os.path.join(RACINE, 'outils', '*.py'))):
                      "fabrique reste fige sur son dernier passage reussi")
 
 
+# 85. Une galerie de photos d'article qui ne sait pas ce qui est deja affiche.
+#     ---------------------------------------------------------------------
+#     Une meme photographie pouvait sortir trois fois dans la meme page :
+#     en grand en tete, posee dans le texte par la redaction, et en vignette
+#     dans << En images >>. Le premier doublon a ete ferme le 30 aout par une
+#     comparaison sur l'identifiant de l'illustration ; le second le 31, par
+#     un filtre qui lit les raccourcis du texte.
+#
+#     Une boucle DOCUMENTS en mode image sur un article doit donc porter les
+#     deux exclusions. Une seule ne suffit pas : c'est exactement l'etat dans
+#     lequel le gabarit est reste une journee, en croyant le probleme regle.
+#
+#     La regle ne vise que les boucles d'article. Une galerie de rubrique ou
+#     de fiche n'a ni image de tete ni texte de redaction a surveiller.
+_BOUCLE_IMG = re.compile(
+    r'<BOUCLE_\w+\(DOCUMENTS\)(\{[^>]*?\})>(.*?)</BOUCLE_\w+>', re.S)
+for _f in sorted(glob.glob(os.path.join(RACINE, 'squelettes', '**', '*.html'), recursive=True)):
+    _src = open(_f, encoding='utf-8').read()
+    _masque = re.sub(r'\[\(#REM\).*?\]',
+                     lambda _m: chr(10) * _m.group(0).count(chr(10)), _src, flags=re.S)
+    for _m in _BOUCLE_IMG.finditer(_masque):
+        _criteres, _corps = _m.group(1), _m.group(2)
+        if '{mode=image}' not in _criteres or '{id_article}' not in _criteres:
+            continue
+        #     UNE BOUCLE QUI NE PREND QU'UN DOCUMENT N'EST PAS UNE GALERIE.
+        #     inc/accueil-actualites.html en a une, {0,1}, pour choisir la
+        #     photo de la carte a la une : elle montre UNE image, la premiere,
+        #     et n'a rien a ecarter. La regle l'accusait au premier essai ;
+        #     une regle qui accuse ce qui marche est pire que pas de regle.
+        if re.search(r'\{\s*\d+\s*,\s*1\s*\}', _criteres):
+            continue
+        _manque = []
+        if 'id_document!=' not in _criteres.replace(' ', ''):
+            _manque.append("l'image de tete, par une comparaison sur id_document")
+        if 'marly_document_pose' not in _corps:
+            _manque.append("les photos posees dans le texte, par marly_document_pose")
+        if _manque:
+            _ligne = _masque[:_m.start()].count('\n') + 1
+            signaler(os.path.relpath(_f, RACINE), _ligne,
+                     "galerie d'images d'un article qui n'ecarte pas " +
+                     " ni ".join(_manque) + " : la meme photographie ressort "
+                     "deux fois dans la page")
+
+
 if fautes:
     print('\n'.join(fautes))
     print(f'\n{len(fautes)} probleme(s).')
