@@ -255,12 +255,32 @@ fi
 # controle crierait pour rien.
 #
 # LE MOT DE PASSE DU SITE N'EST PAS DANS CE FICHIER. Le depot est versionne.
-# Il vient de MARLY_AUTH, et sans lui le controle s'annonce comme saute
-# plutot que de faire croire qu'il a eu lieu.
+#
+# Il vient de deux endroits, dans cet ordre : la variable MARLY_AUTH si elle
+# est posee, sinon le fichier ~/.marly-auth, hors du depot et lisible du seul
+# proprietaire. Le fichier existe parce que la variable, il fallait la reposer
+# a chaque session : le 31 aout 2026 le controle a ete saute deux fois de
+# suite, une fois parce qu'un ^C avait mange la saisie, une fois parce qu'un
+# collage de plusieurs lignes avait ete avale par la lecture interactive. Un
+# controle qu'on oublie d'armer ne controle rien.
+#
+# Sans l'un ni l'autre, il s'annonce comme saute plutot que de faire croire
+# qu'il a eu lieu.
 echo
+FICHIER_AUTH="$HOME/.marly-auth"
+if [ -z "$MARLY_AUTH" ] && [ -r "$FICHIER_AUTH" ]; then
+	# head -1 : une ligne, sans le retour chariot, meme si le fichier en a
+	# recu plusieurs par megarde.
+	MARLY_AUTH=$(head -1 "$FICHIER_AUTH" | tr -d '\r\n')
+	if [ -n "$MARLY_AUTH" ]; then
+		echo "Identifiants lus dans $FICHIER_AUTH."
+	fi
+fi
 if [ -z "$MARLY_AUTH" ]; then
-	echo "Controle des pages : SAUTE (MARLY_AUTH absent)."
-	echo "  Pour l'activer :  MARLY_AUTH='mairie:motdepasse' bash $0"
+	echo "Controle des pages : SAUTE (aucun identifiant)."
+	echo "  Pour l'armer une fois pour toutes :"
+	echo "    printf 'mairie:motdepasse\\n' > ~/.marly-auth && chmod 600 ~/.marly-auth && history -c"
+	echo "  Ou pour une seule fois :  MARLY_AUTH='mairie:motdepasse' bash $0"
 else
 	# L'ADRESSE DU SITE VIENT DE LA BASE, ou SPIP la garde. La deduire du nom
 	# du dossier marcherait ici et nulle part ailleurs.
